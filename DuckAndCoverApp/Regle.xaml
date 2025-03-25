@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DuckAndCoverApp.Regle"
+             Title="Regle"
+             BackgroundColor="White">
+
+    <ScrollView Padding="20">
+    
+        <VerticalStackLayout>
+            <Label 
+                Text="Regle :"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+
+            <Image
+            Source="titre.png"
+            HeightRequest="185"
+            Aspect="AspectFit"
+            HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
