@@ -2,6 +2,8 @@
 
 ## 1. L’idée générale
 **DuckAndCover** est un jeu multijoueur local, conçu pour être joué sur un seul ordinateur, où les joueurs contrôlent des canards dans un environnement dynamique et amusant.
+
+
 Les moyens de gagner une partie sont simples: Il faut qu'il ne reste plus qu’une pile a un joueur soit une carte devans lui ou il faut que le nombre de joueur + le nombre de cartes dans la zone de défausses soit égale à 11.
   
 
