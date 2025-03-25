@@ -19,5 +19,9 @@
         Title="Regle"
         ContentTemplate="{DataTemplate local:Regle}"
         Route="ReglePage" />
+    <ShellContent
+    Title="Regle"
+    ContentTemplate="{DataTemplate local:GameMenuPage}"
+    Route="ReglePage" />
 
 </Shell>

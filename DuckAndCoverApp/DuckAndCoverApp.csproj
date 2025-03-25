@@ -66,6 +66,9 @@
 	  <Compile Update="CreditPage.xaml.cs">
 	    <DependentUpon>CreditPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="GameMenuPage.xaml.cs">
+	    <DependentUpon>GameMenuPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Regle.xaml.cs">
 	    <DependentUpon>Regle.xaml</DependentUpon>
 	  </Compile>
@@ -73,6 +76,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="CreditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="GameMenuPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Regle.xaml">
