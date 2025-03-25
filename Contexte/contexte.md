@@ -30,7 +30,7 @@ Le développement de **DuckAndCover** vise plusieurs objectifs :
 ---
 
 ## 4. Les fonctionnalités clés
-- **Multijoueur local** : Jusqu’à plusieurs joueurs peuvent s’affronter sur un seul écran, en partageant le clavier ou une manette.
+- **Multijoueur local** : Jusqu’à plusieurs joueurs peuvent s’affronter sur un seul écran, en partageant le clavier.
 - **Ajout de bots IA** : Possibilité d’ajouter des adversaires contrôlés par l’ordinateur pour compléter les parties en solo ou en petit groupe.
 - **Parties rapides et dynamiques** : Un gameplay qui permet d’enchaîner plusieurs parties sans temps d’attente prolongé.
 
