@@ -12,8 +12,8 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
     <ShellContent
-        Title="page1"
-        ContentTemplate="{DataTemplate local:NewPage1}"
+        Title="Crédits"
+        ContentTemplate="{DataTemplate local:CreditPage}"
         Route="MainPage" />
 
 </Shell>
