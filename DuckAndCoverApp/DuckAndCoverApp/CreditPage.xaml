@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DuckAndCoverApp.CreditPage">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            <!-- Titre principal -->
+            <Label Text="Crédits" 
+                   FontSize="32"
+                   TextColor="White"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <!-- Sous-titre -->
+            <Label Text="Développé par :" 
+                   FontSize="20"
+                   TextColor="LightGray"
+                   HorizontalOptions="Center" />
+
+            <!-- Séparateur -->
+            <BoxView HeightRequest="1" 
+                     Color="Gray"
+                     Margin="0,10"/>
+
+            <!-- Liste des contributeurs -->
+            <Label Text="Jean DUPONT" 
+                   FontSize="18"
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
+
+            <Label Text="Marie MARTIN" 
+                   FontSize="18"
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
+
+            <Label Text="Pierre DURAND" 
+                   FontSize="18"
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
+
+            <Label Text="Sophie LEROY" 
+                   FontSize="18"
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
+
+            <!-- Séparateur -->
+            <BoxView HeightRequest="1" 
+                     Color="Gray"
+                     Margin="0,10"/>
+
+            <!-- Copyright -->
+            <Label Text="© 2024 - Tous droits réservés" 
+                   FontSize="14"
+                   TextColor="LightGray"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
