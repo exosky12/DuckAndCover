@@ -16,8 +16,8 @@
         ContentTemplate="{DataTemplate local:CreditPage}"
         Route="CreditPage" />
     <ShellContent
-    Title="Regle"
-    ContentTemplate="{DataTemplate local:Regle}"
-    Route="MainPage" />
+        Title="Regle"
+        ContentTemplate="{DataTemplate local:Regle}"
+        Route="ReglePage" />
 
 </Shell>
