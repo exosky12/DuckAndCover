@@ -15,7 +15,7 @@
                 HeightRequest="185"
                 Aspect="AspectFit"
                 HorizontalOptions="Center"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
+                SemanticProperties.Description="dot net bot in a race car number eight"/>
 
             <Frame BackgroundColor="White"
                    CornerRadius="15"
@@ -34,7 +34,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <Button
                         x:Name="PlayBtn"
                         Text="Play"
@@ -45,11 +45,10 @@
                         BackgroundColor="DarkCyan"
                         TextColor="White"
                         FontSize="18"
-                        Grid.Row="0" Grid.Column="1"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        
-                    />
+                        VerticalOptions="Center"/>
 
                     <Button
                         x:Name="RulesBtn"
@@ -63,30 +62,30 @@
                         TextColor="Black"
                         Margin="10"
                         FontSize="18"
-                        Grid.Row="1" Grid.Column="1"
+                        Grid.Row="1"
+                        Grid.Column="1"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        
-                        />      
+                        VerticalOptions="Center"/>
+
+
                     <Button
                         x:Name="CreditsBtn"
                         Text="Crédits"
                         WidthRequest="230"
+                        BorderColor="Black"
+                        BorderWidth="1"
                         HeightRequest="50"
                         CornerRadius="25"
                         BackgroundColor="White"
                         TextColor="Black"
-                        BorderColor="Black"
-                        BorderWidth="1"
-                        FontSize="18"
                         Margin="10"
-                        Grid.Row="2" Grid.Column="1"
+                        FontSize="18"
+                        Grid.Row="2"
+                        Grid.Column="1"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        Clicked="CreditsBtn_Clicked"
-					/>
-                    
-                    
+                        VerticalOptions="Center"/>
+
+
                 </Grid>
             </Frame>
 

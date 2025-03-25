@@ -7,11 +7,11 @@
             InitializeComponent();
         }
 
-        async void CreditsBtn_Clicked(object sender, EventArgs args)
+        public async void CreditsBtn_Clicked(object sender, EventArgs args)
         {
             await Navigation.PushAsync(new CreditPage());
         }
     }
-    }
-
 }
+
+

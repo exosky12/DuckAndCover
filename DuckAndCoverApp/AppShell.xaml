@@ -10,18 +10,18 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage"/>
     <ShellContent
         Title="Crédits"
         ContentTemplate="{DataTemplate local:CreditPage}"
-        Route="CreditPage" />
+        Route="CreditPage"/>
     <ShellContent
-        Title="Regle"
-        ContentTemplate="{DataTemplate local:Regle}"
-        Route="ReglePage" />
+        Title="Regles"
+        ContentTemplate="{DataTemplate local:Regles}"
+        Route="ReglesPage"/>
     <ShellContent
-    Title="Regle"
-    ContentTemplate="{DataTemplate local:GameMenuPage}"
-    Route="ReglePage" />
+        Title="GameMenu"
+        ContentTemplate="{DataTemplate local:GameMenuPage}"
+        Route="GameMenuPage"/>
 
 </Shell>
