@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.MainPage"
+             xmlns:components="clr-namespace:DuckAndCoverApp.Views"
              BackgroundColor="White">
 
     <ScrollView Padding="20">
@@ -27,6 +28,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -35,22 +37,32 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button
-                        x:Name="PlayBtn"
-                        Text="Play"
-                        WidthRequest="230"
-                        HeightRequest="50"
-                        CornerRadius="25"
-                        Margin="10"
-                        BackgroundColor="DarkCyan"
-                        TextColor="White"
-                        FontSize="18"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"/>
+                    <components:Button
+                        x:Name="JouerBtn"
+                        ButtonName="Jouer"
+                        ButtonVariant="Primary"
+                        Grid.Row="0"/>
 
-                    <Button
+                    <components:Button
+                        x:Name="ClassementBtn"
+                        ButtonName="Classement"
+                        ButtonVariant="Secondary"
+                        Grid.Row="1"/>
+
+                    <components:Button
+                        x:Name="RèglesBtn"
+                        ButtonName="Règles du jeu"
+                        ButtonVariant="Secondary"
+                        Grid.Row="2"/>
+
+                    <components:Button
+                        x:Name="CréditsBtn"
+                        ButtonName="Crédits"
+                        ButtonVariant="Secondary"
+                        Grid.Row="3"/>
+
+
+                    <!-- <Button
                         x:Name="RulesBtn"
                         Text="Règles du jeu"
                         WidthRequest="230"
@@ -65,10 +77,10 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center"/>
+                        VerticalOptions="Center"/> -->
 
 
-                    <Button
+                    <!-- <Button
                         x:Name="CreditsBtn"
                         Text="Crédits"
                         WidthRequest="230"
@@ -83,7 +95,7 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center"/>
+                        VerticalOptions="Center"/> -->
 
 
                 </Grid>
