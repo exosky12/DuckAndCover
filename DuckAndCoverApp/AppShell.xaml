@@ -14,6 +14,6 @@
     <ShellContent
         Title="Crédits"
         ContentTemplate="{DataTemplate local:CreditPage}"
-        Route="MainPage" />
+        Route="CreditPage" />
 
 </Shell>

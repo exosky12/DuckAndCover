@@ -5,54 +5,68 @@
 
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
-            <!-- Titre principal -->
             <Label Text="Crédits" 
                    FontSize="32"
                    TextColor="White"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center"
+                   />
 
-            <!-- Sous-titre -->
             <Label Text="Développé par :" 
                    FontSize="20"
-                   TextColor="LightGray"
+                   TextColor="Black"
                    HorizontalOptions="Center" />
 
-            <!-- Séparateur -->
             <BoxView HeightRequest="1" 
                      Color="Gray"
                      Margin="0,10"/>
 
-            <!-- Liste des contributeurs -->
-            <Label Text="Jean DUPONT" 
-                   FontSize="18"
-                   TextColor="White"
-                   HorizontalOptions="Center"/>
 
-            <Label Text="Marie MARTIN" 
+            <StackLayout  Spacing="20" Padding="10">
+                <Label Text="Barrère Jordy" 
                    FontSize="18"
-                   TextColor="White"
+                   TextColor="Black"
                    HorizontalOptions="Center"/>
+                   
+            <BoxView HeightRequest="1"
+                     WidthRequest="80" 
+                     Color="Blue"
+                     Margin="0,0"/>
 
-            <Label Text="Pierre DURAND" 
+            <Label Text="Merienne Jules" 
                    FontSize="18"
-                   TextColor="White"
+                   TextColor="Black"
                    HorizontalOptions="Center"/>
+                   
+            <BoxView HeightRequest="1"
+                     WidthRequest="80" 
+                     Color="Blue"
+                     Margin="0,0"/>
 
-            <Label Text="Sophie LEROY" 
+            <Label Text="Barrès Julien" 
                    FontSize="18"
-                   TextColor="White"
+                   TextColor="Black"
                    HorizontalOptions="Center"/>
+                   
+            <BoxView HeightRequest="1"
+                     WidthRequest="80" 
+                     Color="Blue"
+                     Margin="0,0"/>
 
-            <!-- Séparateur -->
+            <Label Text="Ory Florentin" 
+                   FontSize="18"
+                   TextColor="Black"
+                   HorizontalOptions="Center"/>
+                   
+        </StackLayout>
+
             <BoxView HeightRequest="1" 
                      Color="Gray"
                      Margin="0,10"/>
 
-            <!-- Copyright -->
-            <Label Text="© 2024 - Tous droits réservés" 
+            <Label Text="© 2025 - Tous droits réservés" 
                    FontSize="14"
-                   TextColor="LightGray"
+                   TextColor="Black"
                    HorizontalOptions="Center"/>
         </VerticalStackLayout>
     </ScrollView>

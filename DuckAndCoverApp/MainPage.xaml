@@ -10,7 +10,6 @@
             HorizontalOptions="Center"
             VerticalOptions="Fill">
 
-            <!-- Titre avec image -->
             <Image
                 Source="titre.png"
                 HeightRequest="185"
@@ -18,18 +17,15 @@
                 HorizontalOptions="Center"
                 SemanticProperties.Description="dot net bot in a race car number eight" />
 
-            <!-- Espace vide pour pousser les éléments vers le bas -->
             <BoxView HeightRequest="1"  />
-
-            <!-- Frame pour arrondir les coins et ajouter l'ombre -->
             <Frame BackgroundColor="LightGray"
                    CornerRadius="15"
-                   Padding="20"
+                   Padding="30"
                    HasShadow="True"
                    HorizontalOptions="Center">
-                <!-- Grid pour les boutons -->
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -39,15 +35,14 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
-                    <!-- Bouton Play -->
+                    
                     <Button
                         x:Name="CounterBtn2"
                         Text="Play"
-                        WidthRequest="150"
+                        WidthRequest="230"
                         HeightRequest="50"
-                        CornerRadius="25"
-                        Margin="20"
+                        CornerRadius="Magenta"
+                        Margin="10"
                         BackgroundColor="RoyalBlue"
                         TextColor="White"
                         FontSize="18"
@@ -55,19 +50,38 @@
                         HorizontalOptions="Center"
                         VerticalOptions="Center"/>
 
-                    <!-- Bouton Crédits -->
+                    <Button
+                        x:Name="CounterBtn3"
+                        Text="Règles du jeu"
+                        WidthRequest="230"
+                        HeightRequest="50"
+                        CornerRadius="25"
+                        BackgroundColor="RoyalBlue"
+                        TextColor="White"
+                        Margin="10"
+                        FontSize="18"
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+				
+                        />      
                     <Button
                         x:Name="CounterBtn"
                         Text="Crédits"
-                        WidthRequest="150"
+                        WidthRequest="230"
                         HeightRequest="50"
                         CornerRadius="25"
                         BackgroundColor="RoyalBlue"
                         TextColor="White"
                         FontSize="18"
-                        Grid.Row="1" Grid.Column="1"
+                        Margin="10"
+                        Grid.Row="2" Grid.Column="1"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center"/>
+                        VerticalOptions="Center"
+						
+					    />
+                    
+                    
                 </Grid>
             </Frame>
 
