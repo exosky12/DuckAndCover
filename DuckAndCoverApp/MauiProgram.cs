@@ -13,6 +13,7 @@ namespace DuckAndCoverApp
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Kalam-Variable.ttf", "Kalam");
                 });
 
 #if DEBUG

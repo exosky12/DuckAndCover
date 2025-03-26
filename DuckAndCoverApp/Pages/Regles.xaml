@@ -4,7 +4,6 @@
              x:Class="DuckAndCoverApp.Regles"
              Title="Regles"
              BackgroundColor="White">
-
     <ScrollView Padding="20">
 
         <VerticalStackLayout
@@ -24,21 +23,21 @@
 
             <BoxView HeightRequest="1"/>
             <FlexLayout
-                BackgroundColor="White"
-                WidthRequest="700"
+                BackgroundColor="LightCyan"
+                WidthRequest="350"
                 Padding="30"
                 JustifyContent="Center"
                 AlignItems="Center"
                 Direction="Column">
 
-                <Label
+                <Label Style="{StaticResource labelRegle}"
                     Text="On tire une carte du deck sur le côté, selon le nombre chaque joueur peut soit bouger (vers un trou dans la grille ou sur les bords tant qu'il y a une carte sur un côté) sa carte qui contient le chiffre soit recouvrir une carte adjacente (pour réduire les tâches)."
                     FontSize="16"
                     TextColor="Black"
-                    HorizontalTextAlignment="Center"
+                    HorizontalTextAlignment="Start"
                     VerticalTextAlignment="Center"/>
 
-                <Label
+                <Label Style="{StaticResource labelRegle}"
                     Text="Si quelqu’un n’a plus la carte tirée, il doit dire “coin” et ne joue pas.
                     Si les 3 joueurs ne peuvent pas jouer, la carte est mise sur le côté."
                     FontSize="16"
