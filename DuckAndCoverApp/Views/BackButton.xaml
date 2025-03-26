@@ -5,13 +5,14 @@
     <Button
         Text="{Binding ButtonName}"
         BackgroundColor="white"
-        BorderWidth="1"
-        WidthRequest="230"
+        BorderWidth="3"
+        WidthRequest="50"
+        FontFamily="Ionicons"
         HeightRequest="50"
         CornerRadius="25"
         Margin="10"
         TextColor="black"
-        FontSize="18"
+        FontSize="28"
         HorizontalOptions="Center"
         VerticalOptions="Center"/>
 </ContentView>

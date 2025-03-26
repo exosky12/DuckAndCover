@@ -45,7 +45,7 @@
                     TextColor="Black"
                     HorizontalTextAlignment="Center"
                     VerticalTextAlignment="Center"/>
-                    
+
             </FlexLayout>
         </VerticalStackLayout>
     </ScrollView>

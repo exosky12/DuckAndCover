@@ -5,12 +5,17 @@
              xmlns:components="clr-namespace:DuckAndCoverApp.Views"
              BackgroundColor="White">
 
+    
     <ScrollView Padding="20">
         <VerticalStackLayout
             Spacing="30"
             HorizontalOptions="Center"
             VerticalOptions="Fill">
 
+            <components:BackButton
+                x:Name="BackBtn"
+                ButtonName="&#xf2ca;"
+                ButtonVariant="Primary"/>
             <Image
                 Source="titre.png"
                 HeightRequest="185"
