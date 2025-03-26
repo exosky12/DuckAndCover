@@ -11,52 +11,36 @@
             Spacing="30"
             HorizontalOptions="Center"
             VerticalOptions="Fill">
-            <Label 
+            <Label
                 Text="Regles :"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />
+                VerticalOptions="Center"
+                HorizontalOptions="Center"/>
 
             <Image
-            Source="titre.png"
-            HeightRequest="185"
-            Aspect="AspectFit"
-            HorizontalOptions="Center"/>
+                Source="titre.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"/>
 
-            <BoxView HeightRequest="1"  />
-            <Frame BackgroundColor="LightCoral"
-                   WidthRequest="400"
-               CornerRadius="15"
-               Padding="30"
-               HasShadow="True"
-               HorizontalOptions="Center">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <BoxView HeightRequest="1"/>
+            <FlexLayout
+                BackgroundColor="LightCoral"
+                WidthRequest="700"
+                Padding="30"
+                HorizontalOptions="Center">
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label
+                <Label
                     Text="On tire une carte du deck sur le côté, selon le nombre chaque joueur peut soit bouger (vers un trou dans la grille ou sur les bords tant qu'il y a une carte sur un coté) sa carte qui contient le chiffre soit recouvrir une carte adjacente (pour réduire les tâches)."
                     VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                    Grid.Row="0" Grid.Column="0"
-                />
-                    <Label
-                        Text="Si quelqu’un n’as plus la carte tiré il doit dire “coin” et ne joue pas.
+                    HorizontalOptions="Center"/>
+
+                <Label
+                    Text="Si quelqu’un n’as plus la carte tiré il doit dire “coin” et ne joue pas.
                         Si les 3 joueurs ne peuvent pas jouer la cartes est mise sur le coté"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        Grid.Row="2" Grid.Column="0"
-/>
-                </Grid>
-            </Frame>
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+
+            </FlexLayout>
 
         </VerticalStackLayout>
     </ScrollView>
