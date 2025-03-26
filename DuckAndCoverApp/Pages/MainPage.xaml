@@ -5,108 +5,74 @@
              xmlns:components="clr-namespace:DuckAndCoverApp.Views"
              BackgroundColor="White">
 
-    
-    <ScrollView Padding="20">
-        <VerticalStackLayout
-            Spacing="30"
-            HorizontalOptions="Center"
-            VerticalOptions="Fill">
+    <Grid>
+        <!-- Bouton en haut à gauche -->
+        <components:BackButton
+            x:Name="BackBtn"
+            ButtonName="&#xf2ca;"
+            ButtonVariant="Primary"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            Margin="10"/>
 
-            <components:BackButton
-                x:Name="BackBtn"
-                ButtonName="&#xf2ca;"
-                ButtonVariant="Primary"/>
-            <Image
-                Source="titre.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
+        <ScrollView Padding="20"
+                    Grid.Row="1">
+            <VerticalStackLayout
+                Spacing="30"
                 HorizontalOptions="Center"
-                SemanticProperties.Description="dot net bot in a race car number eight"/>
+                VerticalOptions="Fill">
 
-            <Frame BackgroundColor="White"
-                   CornerRadius="15"
-                   Padding="30"
-                   HasShadow="True"
-                   HorizontalOptions="Center">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                <Image
+                    Source="titre.png"
+                    HeightRequest="185"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center"
+                    SemanticProperties.Description="dot net bot in a race car number eight"/>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <Frame BackgroundColor="White"
+                       CornerRadius="15"
+                       Padding="30"
+                       HasShadow="True"
+                       HorizontalOptions="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <components:Button
-                        x:Name="JouerBtn"
-                        ButtonName="Jouer"
-                        ButtonVariant="Primary"
-                        Grid.Row="0"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <components:Button
-                        x:Name="ClassementBtn"
-                        ButtonName="Classement"
-                        ButtonVariant="Secondary"
-                        Grid.Row="1"/>
+                        <components:Button
+                            x:Name="JouerBtn"
+                            ButtonName="Jouer"
+                            ButtonVariant="Primary"
+                            Grid.Row="0"/>
 
-                    <components:Button
-                        x:Name="RèglesBtn"
-                        ButtonName="Règles du jeu"
-                        ButtonVariant="Secondary"
-                        Grid.Row="2"/>
+                        <components:Button
+                            x:Name="ClassementBtn"
+                            ButtonName="Classement"
+                            ButtonVariant="Secondary"
+                            Grid.Row="1"/>
 
-                    <components:Button
-                        x:Name="CréditsBtn"
-                        ButtonName="Crédits"
-                        ButtonVariant="Secondary"
-                        Grid.Row="3"/>
+                        <components:Button
+                            x:Name="RèglesBtn"
+                            ButtonName="Règles du jeu"
+                            ButtonVariant="Secondary"
+                            Grid.Row="2"/>
 
+                        <components:Button
+                            x:Name="CréditsBtn"
+                            ButtonName="Crédits"
+                            ButtonVariant="Secondary"
+                            Grid.Row="3"/>
+                    </Grid>
+                </Frame>
 
-                    <!-- <Button
-                        x:Name="RulesBtn"
-                        Text="Règles du jeu"
-                        WidthRequest="230"
-                        BorderColor="Black"
-                        BorderWidth="1"
-                        HeightRequest="50"
-                        CornerRadius="25"
-                        BackgroundColor="White"
-                        TextColor="Black"
-                        Margin="10"
-                        FontSize="18"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"/> -->
-
-
-                    <!-- <Button
-                        x:Name="CreditsBtn"
-                        Text="Crédits"
-                        WidthRequest="230"
-                        BorderColor="Black"
-                        BorderWidth="1"
-                        HeightRequest="50"
-                        CornerRadius="25"
-                        BackgroundColor="White"
-                        TextColor="Black"
-                        Margin="10"
-                        FontSize="18"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"/> -->
-
-
-                </Grid>
-            </Frame>
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

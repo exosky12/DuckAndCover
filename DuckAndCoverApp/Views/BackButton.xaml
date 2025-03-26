@@ -2,17 +2,22 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.Views.BackButton">
-    <Button
-        Text="{Binding ButtonName}"
-        BackgroundColor="white"
-        BorderWidth="3"
-        WidthRequest="50"
-        FontFamily="Ionicons"
-        HeightRequest="50"
+    <Frame
+        Padding="0"
         CornerRadius="25"
-        Margin="10"
-        TextColor="black"
-        FontSize="28"
+        HasShadow="True"
+        WidthRequest="50"
+        HeightRequest="50"
+        BorderColor="Black"
         HorizontalOptions="Center"
-        VerticalOptions="Center"/>
+        VerticalOptions="Center"
+        Margin="10">
+
+        <Button
+            BackgroundColor="white"
+            Text="{Binding ButtonName}"
+            FontFamily="Ionicons"
+            TextColor="Black"
+            FontSize="28"/>
+    </Frame>
 </ContentView>
