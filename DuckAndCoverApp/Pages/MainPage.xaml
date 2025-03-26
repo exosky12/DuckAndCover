@@ -6,7 +6,6 @@
              BackgroundColor="White">
 
     <Grid>
-        <!-- Bouton en haut à gauche -->
         <components:BackButton
             x:Name="BackBtn"
             ButtonName="&#xf2ca;"
