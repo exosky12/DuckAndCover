@@ -4,48 +4,85 @@
              x:Class="DuckAndCoverApp.Regles"
              Title="Regles"
              BackgroundColor="White">
-    <ScrollView Padding="20">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="1,1">
+                <GradientStop Color="{StaticResource GradientStart}"
+                              Offset="0.1"/>
+                <GradientStop Color="{StaticResource GradientEnd}"
+                              Offset="0.9"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <ScrollView Padding="20">
 
-        <VerticalStackLayout
-            Spacing="30"
-            HorizontalOptions="Center"
-            VerticalOptions="Fill">
-            <Label
-                Text="Regles :"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"/>
+            <VerticalStackLayout
+                Spacing="30"
+                HorizontalOptions="Center"
+                VerticalOptions="Fill"
+                WidthRequest="400">
 
-            <Image
-                Source="titre.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                HorizontalOptions="Center"/>
+                <Image
+                    Source="titre.png"
+                    HeightRequest="185"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center"/>
 
-            <BoxView HeightRequest="1"/>
-            <FlexLayout
-                BackgroundColor="LightCyan"
-                WidthRequest="350"
-                Padding="30"
-                JustifyContent="Center"
-                AlignItems="Center"
-                Direction="Column">
+                <BoxView Color="White"
+                         HeightRequest="1"/>
 
-                <Label Style="{StaticResource labelRegle}"
-                    Text="On tire une carte du deck sur le côté, selon le nombre chaque joueur peut soit bouger (vers un trou dans la grille ou sur les bords tant qu'il y a une carte sur un côté) sa carte qui contient le chiffre soit recouvrir une carte adjacente (pour réduire les tâches)."
-                    FontSize="16"
-                    TextColor="Black"
-                    HorizontalTextAlignment="Start"
-                    VerticalTextAlignment="Center"/>
+                <Frame HasShadow="True"
+                       HeightRequest="800"
+                       WidthRequest="600"
+                       BorderColor="Black"
+                       BackgroundColor="White"
+                       CornerRadius="15">
 
-                <Label Style="{StaticResource labelRegle}"
-                    Text="Si quelqu’un n’a plus la carte tirée, il doit dire “coin” et ne joue pas.
-                    Si les 3 joueurs ne peuvent pas jouer, la carte est mise sur le côté."
-                    FontSize="16"
-                    TextColor="Black"
-                    HorizontalTextAlignment="Center"
-                    VerticalTextAlignment="Center"/>
+                    <FlexLayout
+                        Padding="10"
+                        AlignItems="Stretch"
+                        HorizontalOptions="Center"
+                        JustifyContent="Center"
+                        Direction="Column">
 
-            </FlexLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+                        <Label
+                            Style="{StaticResource labelRegle}"
+                            Text="- On tire une carte du deck sur le côté, selon le nombre chaque joueur peut soit bouger (vers un trou dans la grille ou sur les bords tant qu'il y a une carte sur un côté) sa carte qui contient le chiffre soit recouvrir une carte adjacente (pour réduire les tâches)."
+                            FontSize="28"
+                            TextColor="Black"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="0,0,0,15"/>
+
+                        <Label
+                            Style="{StaticResource labelRegle}"
+                            Text="- Si quelqu'un est sur un espace adjacent, il peut l'aider à avancer."
+                            FontSize="28"
+                            TextColor="Black"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="0,0,0,15"/>
+
+                        <Label
+                            Style="{StaticResource labelRegle}"
+                            Text="Si les 3 joueurs ne peuvent pas jouer, la carte est mise sur le côté."
+                            FontSize="28"
+                            TextColor="Black"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="0,0,0,20"/>
+
+                        <Label
+                            Style="{StaticResource labelRegle}"
+                            Text="&#xf471;"
+                            FontSize="72"
+                            TextColor="Black"
+                            FontFamily="Ionicons"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="End"/>
+                    </FlexLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
