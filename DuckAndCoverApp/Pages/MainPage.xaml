@@ -5,7 +5,17 @@
              xmlns:components="clr-namespace:DuckAndCoverApp.Views"
              BackgroundColor="White">
 
-    <Grid>
+    <Grid
+        Padding="100">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="1,1">
+                <GradientStop Color="{StaticResource GradientStart}"
+                              Offset="0.1"/>
+                <GradientStop Color="{StaticResource GradientEnd}"
+                              Offset="0.9"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <components:BackButton
             x:Name="BackBtn"
             ButtonName="&#xf2ca;"
@@ -19,7 +29,8 @@
             <VerticalStackLayout
                 Spacing="30"
                 HorizontalOptions="Center"
-                VerticalOptions="Fill">
+                VerticalOptions="Fill"
+                Margin="0,200,0,0">
 
                 <Image
                     Source="titre.png"
@@ -27,8 +38,8 @@
                     Aspect="AspectFit"
                     HorizontalOptions="Center"
                     SemanticProperties.Description="dot net bot in a race car number eight"/>
-
                 <Frame BackgroundColor="White"
+                       BorderColor="Black"
                        CornerRadius="15"
                        Padding="30"
                        HasShadow="True"
