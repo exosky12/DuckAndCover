@@ -2,14 +2,21 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Color x:Key="PrimaryColor">#512BD4</Color>
+    <Color x:Key="PrimaryColor">#396afc</Color>
     <Color x:Key="ForegroundColor">white</Color>
-    <Color x:Key="AccentColor">#B74F6F</Color>
+    <Color x:Key="AccentColor">#FFF1C26F</Color>
+    <Color x:Key="GradientStart">#396afc</Color>
+    <Color x:Key="GradientEnd">#4facfe</Color>
 
     <Style x:Key="labelRegle"
            TargetType="Label">
-        <Setter Property="FontFamily" Value="Kalam" />
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="FontFamily"
+                Value="KalamRegular"/>
+        <Setter Property="LineHeight"
+                Value="1.3"/>
+        <Setter Property="FontSize"
+                Value="16"/>
+        <Setter Property="TextColor"
+                Value="Black"/>
     </Style>
 </ResourceDictionary>

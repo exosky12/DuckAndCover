@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.Views.BackButton">
     <Frame
-        Padding="0"
-        CornerRadius="25"
+        CornerRadius="50"
         HasShadow="True"
-        WidthRequest="50"
-        HeightRequest="50"
+        WidthRequest="100"
+        HeightRequest="100"
         BorderColor="Black"
         HorizontalOptions="Center"
         VerticalOptions="Center"
@@ -18,6 +17,6 @@
             Text="{Binding ButtonName}"
             FontFamily="Ionicons"
             TextColor="Black"
-            FontSize="28"/>
+            FontSize="52"/>
     </Frame>
 </ContentView>
