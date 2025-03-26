@@ -14,7 +14,9 @@ namespace DuckAndCoverApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("ionicons.ttf", "Ionicons");
-                    fonts.AddFont("Kalam-Variable.ttf", "Kalam");
+                    fonts.AddFont("Kalam-Light.otf", "KalamLight");
+                    fonts.AddFont("Kalam-Regular.otf", "KalamRegular");
+                    fonts.AddFont("Kalam-Bold.otf", "KalamBold");
                 });
 
 #if DEBUG
