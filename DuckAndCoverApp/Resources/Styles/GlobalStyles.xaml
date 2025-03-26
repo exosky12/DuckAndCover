@@ -4,5 +4,6 @@
 
     <Color x:Key="PrimaryColor">#512BD4</Color>
     <Color x:Key="ForegroundColor">white</Color>
+    <Color x:Key="AccentColor">#B74F6F</Color>
 
 </ResourceDictionary>
