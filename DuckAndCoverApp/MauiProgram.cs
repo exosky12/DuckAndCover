@@ -17,6 +17,7 @@ namespace DuckAndCoverApp
                     fonts.AddFont("Kalam-Light.otf", "KalamLight");
                     fonts.AddFont("Kalam-Regular.otf", "KalamRegular");
                     fonts.AddFont("Kalam-Bold.otf", "KalamBold");
+                    fonts.AddFont("ClashDisplay-Variable.ttf", "Clash");
                 });
 
 #if DEBUG

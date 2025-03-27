@@ -19,4 +19,15 @@
                 <Setter Property="TextColor"
                         Value="Black"/>
         </Style>
+        <Style x:Key="labelJeu"
+               TargetType="Label">
+            <Setter Property="FontFamily"
+                        Value="Clash"/>
+            <Setter Property="LineHeight"
+                        Value="1.3"/>
+            <Setter Property="FontSize"
+                        Value="26"/>
+            <Setter Property="TextColor"
+                        Value="Black"/>
+        </Style>
 </ResourceDictionary>
