@@ -38,11 +38,11 @@
                     Aspect="AspectFit"
                     HorizontalOptions="Center"
                     SemanticProperties.Description="dot net bot in a race car number eight"/>
-                <Frame BackgroundColor="White"
-                       BorderColor="Black"
+                <Frame BackgroundColor="Transparent"
+                       BorderColor="Transparent"
                        CornerRadius="15"
                        Padding="30"
-                       HasShadow="True"
+                       HasShadow="False"
                        HorizontalOptions="Center">
                     <Grid>
                         <Grid.RowDefinitions>

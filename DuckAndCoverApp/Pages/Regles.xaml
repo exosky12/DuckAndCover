@@ -31,11 +31,9 @@
                 <BoxView Color="White"
                          HeightRequest="1"/>
 
-                <Frame HasShadow="True"
+                <Frame HasShadow="False"
                        HeightRequest="800"
                        WidthRequest="600"
-                       BorderColor="Black"
-                       BackgroundColor="White"
                        CornerRadius="15">
 
                     <FlexLayout

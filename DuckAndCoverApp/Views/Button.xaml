@@ -7,12 +7,12 @@
     <Button
         Text="{Binding ButtonName}"
         BackgroundColor="{StaticResource PrimaryColor}"
-        WidthRequest="230"
-        HeightRequest="50"
-        CornerRadius="25"
+        Padding="20"
+        WidthRequest="300"
+        CornerRadius="40"
         Margin="10"
         TextColor="{StaticResource ForegroundColor}"
-        FontSize="18"
+        FontSize="32"
         HorizontalOptions="Center"
         VerticalOptions="Center"/>
 

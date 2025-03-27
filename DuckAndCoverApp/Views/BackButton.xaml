@@ -3,20 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.Views.BackButton">
     <Frame
-        CornerRadius="50"
-        HasShadow="True"
-        WidthRequest="100"
-        HeightRequest="100"
-        BorderColor="Black"
+        CornerRadius="40"
+        HasShadow="False"
+        WidthRequest="80"
+        HeightRequest="80"
+        BorderColor="Transparent"
         HorizontalOptions="Center"
+        BackgroundColor="{StaticResource PrimaryColor}"
         VerticalOptions="Center"
-        Margin="10">
+        Margin="10"
+        Padding="10">
 
         <Button
-            BackgroundColor="white"
             Text="{Binding ButtonName}"
+            BackgroundColor="Transparent"
             FontFamily="Ionicons"
-            TextColor="Black"
-            FontSize="52"/>
+            TextColor="{StaticResource ForegroundColor}"
+            FontSize="32"/>
     </Frame>
 </ContentView>
