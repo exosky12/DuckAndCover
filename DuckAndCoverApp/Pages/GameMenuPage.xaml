@@ -6,7 +6,7 @@
     <VerticalStackLayout>
         <FlexLayout>
             <Label 
-            Text=""
+            Text="Nombre de joueurs choisis."
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
             
