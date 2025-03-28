@@ -1,36 +1,36 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.Regles"
              Title="Regles"
-             BackgroundColor="White"
-             Shell.NavBarIsVisible="false">
+             BackgroundColor="White">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0"
                                  EndPoint="1,1">
                 <GradientStop Color="{StaticResource GradientStart}"
-                              Offset="0.1"/>
+                              Offset="0.1" />
                 <GradientStop Color="{StaticResource GradientEnd}"
-                              Offset="0.9"/>
+                              Offset="0.9" />
             </LinearGradientBrush>
         </Grid.Background>
 
         <ScrollView Padding="20">
 
             <FlexLayout Direction="Column"
-                WidthRequest="500"
-                AlignItems="Center"
-                JustifyContent="SpaceEvenly">
+                        WidthRequest="500"
+                        AlignItems="Center"
+                        JustifyContent="SpaceEvenly">
 
                 <Image
                     Source="titre.png"
                     HeightRequest="185"
                     Aspect="AspectFit"
-                    HorizontalOptions="Center"/>
+                    HorizontalOptions="Center" />
 
                 <BoxView Color="White"
-                         HeightRequest="1"/>
+                         HeightRequest="1" />
 
                 <Frame HasShadow="False"
                        CornerRadius="15"
@@ -51,7 +51,7 @@
                             TextColor="Black"
                             HorizontalTextAlignment="Start"
                             VerticalTextAlignment="Center"
-                            Margin="0,0,0,15"/>
+                            Margin="0,0,0,15" />
 
                         <Label
                             Style="{StaticResource labelRegle}"
@@ -60,7 +60,7 @@
                             TextColor="Black"
                             HorizontalTextAlignment="Start"
                             VerticalTextAlignment="Center"
-                            Margin="0,0,0,15"/>
+                            Margin="0,0,0,15" />
 
                         <Label
                             Style="{StaticResource labelRegle}"
@@ -69,7 +69,7 @@
                             TextColor="Black"
                             HorizontalTextAlignment="Start"
                             VerticalTextAlignment="Center"
-                            Margin="0,0,0,20"/>
+                            Margin="0,0,0,20" />
 
                         <Label
                             Style="{StaticResource labelRegle}"
@@ -78,7 +78,7 @@
                             TextColor="Black"
                             FontFamily="Ionicons"
                             HorizontalTextAlignment="End"
-                            VerticalTextAlignment="End"/>
+                            VerticalTextAlignment="End" />
                     </FlexLayout>
                 </Frame>
             </FlexLayout>
