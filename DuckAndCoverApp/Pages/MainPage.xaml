@@ -6,17 +6,14 @@
              BackgroundColor="White"
              Shell.NavBarIsVisible="false">
 
-    <Grid
-        Padding="100">
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0"
-                                 EndPoint="1,1">
-                <GradientStop Color="{StaticResource GradientStart}"
-                              Offset="0.1"/>
-                <GradientStop Color="{StaticResource GradientEnd}"
-                              Offset="0.9"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid>
+        <Image
+            x:Name="backgroundImage"
+            Source="bg.jpg"
+            Aspect="AspectFill"
+            HorizontalOptions="Start"/>
+    
+
         <components:BackButton
             x:Name="BackBtn"
             ButtonName="&#xf2ca;"
