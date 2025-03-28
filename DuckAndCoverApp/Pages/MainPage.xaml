@@ -26,8 +26,9 @@
                 Spacing="30"
                 HorizontalOptions="Center"
                 VerticalOptions="Fill"
-                Margin="0, 500">
-                <Grid RowSpacing="50">
+                Margin="0, 300">
+
+                <Grid RowSpacing="150">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -39,36 +40,40 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-
                     <Image
                         Grid.Row="0"
-                        Height="300"
-                        Width="500"
-                        Aspect="AspectFit"
+                        HeightRequest="300"
+                        WidthRequest="500"
+                        Aspect="Fill"
                         Source="titre.png"
                         HorizontalOptions="Center" />
 
-                    <FlexLayout
-                        Grid.Row="1">
-                        <components:Button
-                            x:Name="JouerBtn"
-                            ButtonName="Jouer"
-                            ButtonVariant="Primary" />
+                    <FlexLayout Grid.Row="1"
+                                JustifyContent="Center"
+                                AlignItems="Center"
+                                Direction="Row"
+                                Wrap="NoWrap">
 
-                        <components:Button
-                            x:Name="ClassementBtn"
-                            ButtonName="Classement"
-                            ButtonVariant="Secondary" />
+                        <components:Button x:Name="JouerBtn"
+                                           ButtonName="Jouer"
+                                           ButtonVariant="Primary"
+                                           Margin="10,0" />
 
-                        <components:Button
-                            x:Name="RèglesBtn"
-                            ButtonName="Règles du jeu"
-                            ButtonVariant="Secondary" />
+                        <components:Button x:Name="ClassementBtn"
+                                           ButtonName="Classement"
+                                           ButtonVariant="Secondary"
+                                           Margin="10,0" />
 
-                        <components:Button
-                            x:Name="CréditsBtn"
-                            ButtonName="Crédits"
-                            ButtonVariant="Secondary" />
+                        <components:Button x:Name="ReglesBtn"
+                                           ButtonName="Règles du jeu"
+                                           ButtonVariant="Secondary"
+                                           Margin="10,0" />
+
+                        <components:Button x:Name="CreditsBtn"
+                                           ButtonName="Crédits"
+                                           ButtonVariant="Secondary"
+                                           Margin="10,0" />
+
                     </FlexLayout>
                 </Grid>
             </VerticalStackLayout>

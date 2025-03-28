@@ -41,7 +41,7 @@
                         Direction="Column">
 
                         <Label
-                            Style="{StaticResource labelRegle}"
+                            Style="{StaticResource LabelRegle}"
                             Text="- On tire une carte du deck sur le côté, selon le nombre chaque joueur peut soit bouger (vers un trou dans la grille ou sur les bords tant qu'il y a une carte sur un côté) sa carte qui contient le chiffre soit recouvrir une carte adjacente (pour réduire les tâches)."
                             FontSize="28"
                             TextColor="Black"
@@ -50,7 +50,7 @@
                             Margin="0,0,0,15" />
 
                         <Label
-                            Style="{StaticResource labelRegle}"
+                            Style="{StaticResource LabelRegle}"
                             Text="- Si quelqu'un est sur un espace adjacent, il peut l'aider à avancer."
                             FontSize="28"
                             TextColor="Black"
@@ -59,7 +59,7 @@
                             Margin="0,0,0,15" />
 
                         <Label
-                            Style="{StaticResource labelRegle}"
+                            Style="{StaticResource LabelRegle}"
                             Text="Si les 3 joueurs ne peuvent pas jouer, la carte est mise sur le côté."
                             FontSize="28"
                             TextColor="Black"
@@ -68,7 +68,7 @@
                             Margin="0,0,0,20" />
 
                         <Label
-                            Style="{StaticResource labelRegle}"
+                            Style="{StaticResource LabelRegle}"
                             Text="&#xf471;"
                             FontSize="72"
                             TextColor="Black"

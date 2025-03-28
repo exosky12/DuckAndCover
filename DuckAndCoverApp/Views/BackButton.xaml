@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.Views.BackButton">
-    <Frame
-        CornerRadius="40"
-        HasShadow="False"
+    <Border
+        Style="{StaticResource  MainButton}"
         WidthRequest="80"
         HeightRequest="80"
-        BorderColor="Transparent"
-        HorizontalOptions="Center"
+        HorizontalOptions="
+        Center"
         BackgroundColor="{StaticResource PrimaryColor}"
-        VerticalOptions="Center"
+        VerticalOptions="
+        Center"
         Margin="10"
         Padding="10">
-
         <Button
             Text="{Binding ButtonName}"
             BackgroundColor="Transparent"
             FontFamily="Ionicons"
             TextColor="{StaticResource ForegroundColor}"
-            FontSize="32"/>
-    </Frame>
+            FontSize="32" />
+    </Border>
 </ContentView>
