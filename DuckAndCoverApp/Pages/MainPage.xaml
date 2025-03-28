@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.MainPage"
              xmlns:components="clr-namespace:DuckAndCoverApp.Views"
-             BackgroundColor="White">
+             BackgroundColor="White"
+             Shell.NavBarIsVisible="false">
 
     <Grid
         Padding="100">
@@ -30,7 +31,7 @@
                 Spacing="30"
                 HorizontalOptions="Center"
                 VerticalOptions="Fill"
-                Margin="0,200,0,0">
+                >
 
                 <Image
                     Source="titre.png"

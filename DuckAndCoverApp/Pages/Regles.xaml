@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.Regles"
              Title="Regles"
-             BackgroundColor="White">
+             BackgroundColor="White"
+             Shell.NavBarIsVisible="false">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0"
@@ -14,13 +15,13 @@
                               Offset="0.9"/>
             </LinearGradientBrush>
         </Grid.Background>
+
         <ScrollView Padding="20">
 
-            <VerticalStackLayout
-                Spacing="30"
-                HorizontalOptions="Center"
-                VerticalOptions="Fill"
-                WidthRequest="400">
+            <FlexLayout Direction="Column"
+                WidthRequest="500"
+                AlignItems="Center"
+                JustifyContent="SpaceEvenly">
 
                 <Image
                     Source="titre.png"
@@ -32,15 +33,15 @@
                          HeightRequest="1"/>
 
                 <Frame HasShadow="False"
-                       HeightRequest="800"
-                       WidthRequest="600"
-                       CornerRadius="15">
+                       CornerRadius="15"
+                       HorizontalOptions="Center"
+                       VerticalOptions="FillAndExpand">
 
                     <FlexLayout
                         Padding="10"
                         AlignItems="Stretch"
                         HorizontalOptions="Center"
-                        JustifyContent="Center"
+                        JustifyContent="Start"
                         Direction="Column">
 
                         <Label
@@ -80,7 +81,7 @@
                             VerticalTextAlignment="End"/>
                     </FlexLayout>
                 </Frame>
-            </VerticalStackLayout>
+            </FlexLayout>
         </ScrollView>
     </Grid>
 </ContentPage>
