@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DuckAndCoverApp.GameMenuPage">
-    <Grid Padding="100">
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="{StaticResource GradientStart}" Offset="0.1" />
-                <GradientStop Color="{StaticResource GradientEnd}" Offset="0.9" />
-            </LinearGradientBrush>
-        </Grid.Background>
+             x:Class="DuckAndCoverApp.GameMenuPage"
+             xmlns:components="clr-namespace:DuckAndCoverApp.Views"
+             Shell.NavBarIsVisible="false">
+    <Grid>
+        <Image
+        x:Name="backgroundImage"
+        Source="bg.jpg"
+        Aspect="AspectFill"
+        HorizontalOptions="Start"/>
 
         <ScrollView Padding="20">
             <VerticalStackLayout HorizontalOptions="Center">
@@ -20,14 +20,66 @@
 
                 <Frame BackgroundColor="White"
                        BorderColor="Black"
+                       Margin="30"
                        HeightRequest="50"
                        WidthRequest="300"
                        CornerRadius="15"
-
                        HasShadow="False">
-                    <Label Text="1"
-                           FontSize="18" />
                 </Frame>
+
+           
+
+                <HorizontalStackLayout HorizontalOptions="Start" VerticalOptions="Center"
+                                       Margin="60">
+                    <Frame BackgroundColor="White"
+                       BorderColor="Black"
+                        
+                       HeightRequest="50"
+                       WidthRequest="50"
+                       CornerRadius="15"/>
+                    <Label Style="{StaticResource labelJeu}"
+                       Text="Compléter avec des bots ?"
+                       VerticalOptions="Center"
+                       Margin="10,0,0,0"/>
+                </HorizontalStackLayout>
+
+                <Label Style="{StaticResource labelJeu}"
+                   Text="Nombre de bot choisis."
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+
+                <Frame BackgroundColor="White"
+                       Margin="30"
+                       BorderColor="Black"
+                       HeightRequest="50"
+                       WidthRequest="300"
+                       CornerRadius="15"
+                       HasShadow="False">
+                </Frame>
+
+                <Label Style="{StaticResource labelJeu}"
+                       Text="Choix de la variante du style de jeu."
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
+
+                <Frame BackgroundColor="White"
+                       Margin="30"
+                       BorderColor="Black"
+                       HeightRequest="50"
+                       WidthRequest="300"
+                       CornerRadius="15"
+                       HasShadow="False">
+                    <Label Text="Classique"/>
+
+                </Frame>
+
+                <components:Button
+                    Margin="60"
+                    x:Name="ContinuerBtn"
+                    ButtonName="Continuer"
+                    ButtonVariant="Primary"
+                    />
+
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
