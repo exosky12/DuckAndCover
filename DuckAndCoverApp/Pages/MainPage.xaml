@@ -1,18 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCoverApp.MainPage"
              xmlns:components="clr-namespace:DuckAndCoverApp.Views"
-             BackgroundColor="White"
-             Shell.NavBarIsVisible="false">
+             BackgroundColor="White">
 
     <Grid>
         <Image
-            x:Name="backgroundImage"
             Source="bg.jpg"
             Aspect="AspectFill"
-            HorizontalOptions="Start"/>
-    
+            HorizontalOptions="Start" />
+
 
         <components:BackButton
             x:Name="BackBtn"
@@ -20,66 +19,58 @@
             ButtonVariant="Primary"
             HorizontalOptions="Start"
             VerticalOptions="Start"
-            Margin="10"/>
+            Margin="10" />
 
-        <ScrollView Padding="20"
-                    Grid.Row="1">
+        <ScrollView Padding="20">
             <VerticalStackLayout
                 Spacing="30"
                 HorizontalOptions="Center"
                 VerticalOptions="Fill"
-                >
+                Margin="0, 500">
+                <Grid RowSpacing="50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Image
-                    Source="titre.png"
-                    HeightRequest="185"
-                    Aspect="AspectFit"
-                    HorizontalOptions="Center"
-                    SemanticProperties.Description="dot net bot in a race car number eight"/>
-                <Frame BackgroundColor="Transparent"
-                       BorderColor="Transparent"
-                       CornerRadius="15"
-                       Padding="30"
-                       HasShadow="False"
-                       HorizontalOptions="Center">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
 
+                    <Image
+                        Grid.Row="0"
+                        Height="300"
+                        Width="500"
+                        Aspect="AspectFit"
+                        Source="titre.png"
+                        HorizontalOptions="Center" />
+
+                    <FlexLayout
+                        Grid.Row="1">
                         <components:Button
                             x:Name="JouerBtn"
                             ButtonName="Jouer"
-                            ButtonVariant="Primary"
-                            Grid.Row="0"/>
+                            ButtonVariant="Primary" />
 
                         <components:Button
                             x:Name="ClassementBtn"
                             ButtonName="Classement"
-                            ButtonVariant="Secondary"
-                            Grid.Row="1"/>
+                            ButtonVariant="Secondary" />
 
                         <components:Button
                             x:Name="RèglesBtn"
                             ButtonName="Règles du jeu"
-                            ButtonVariant="Secondary"
-                            Grid.Row="2"/>
+                            ButtonVariant="Secondary" />
 
                         <components:Button
                             x:Name="CréditsBtn"
                             ButtonName="Crédits"
-                            ButtonVariant="Secondary"
-                            Grid.Row="3"/>
-                    </Grid>
-                </Frame>
-
+                            ButtonVariant="Secondary" />
+                    </FlexLayout>
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

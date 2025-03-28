@@ -19,7 +19,7 @@
         <ScrollView Padding="20">
 
             <FlexLayout Direction="Column"
-                        WidthRequest="500"
+                        MaximumWidthRequest="500"
                         AlignItems="Center"
                         JustifyContent="SpaceEvenly">
 
@@ -29,13 +29,9 @@
                     Aspect="AspectFit"
                     HorizontalOptions="Center" />
 
-                <BoxView Color="White"
-                         HeightRequest="1" />
-
-                <Frame HasShadow="False"
-                       CornerRadius="15"
-                       HorizontalOptions="Center"
-                       VerticalOptions="FillAndExpand">
+                <Border
+                    HorizontalOptions="Center"
+                    VerticalOptions="FillAndExpand">
 
                     <FlexLayout
                         Padding="10"
@@ -80,7 +76,7 @@
                             HorizontalTextAlignment="End"
                             VerticalTextAlignment="End" />
                     </FlexLayout>
-                </Frame>
+                </Border>
             </FlexLayout>
         </ScrollView>
     </Grid>
