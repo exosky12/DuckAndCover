@@ -1,7 +1,6 @@
 # Contexte du Jeu DuckAndCover
 
 ## 1. L’idée générale
-**DuckAndCover** est un jeu multijoueur local, conçu pour être joué sur un seul ordinateur, où les joueurs contrôlent des ## 1. L’idée générale
 
 **DuckAndCover** est un jeu multijoueur local où les joueurs incarnent des canards 🦆 dans un univers amusant et dynamique. Chaque joueur contrôle un canard dans un environnement coloré et interactif, et doit faire preuve de stratégie et de rapidité pour atteindre la victoire. Le jeu se joue sur un seul écran, ce qui permet à tous les participants de rester immergés dans l’action.
 
