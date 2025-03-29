@@ -4,15 +4,32 @@
 **DuckAndCover** est un jeu multijoueur local, conçu pour être joué sur un seul ordinateur, où les joueurs contrôlent des canards dans un environnement dynamique et amusant.
 
 
-Les moyens de gagner une partie sont simples: Il faut qu'il ne reste plus qu’une pile a un joueur soit une carte devans lui ou il faut que le nombre de joueur + le nombre de cartes dans la zone de défausses soit égale à 11.
-  
-
 Grâce à un gameplay accessible et rapide, **DuckAndCover** est idéal pour des parties entre amis ou en famille.  
 De plus, un mode avec des **bots** permet aux joueurs de s’entraîner ou de compléter les parties lorsque le nombre de participants est réduit.
 
 ---
 
-## 2. Objectifs du projet
+## 2. Règles du jeu
+
+- **Nombre de joueurs** : 2 à 7 joueurs
+- **Âge recommandé** : 7 ans et plus
+- **Durée d’une partie** : environ 20 minutes
+
+### Contenu du jeu :
+- **26 cartes de pioche**
+- **84 cartes de canard** (7 familles de 12 cartes)
+
+### Objectif du jeu :
+Finir avec le moins de points possible dans les tâches après 3 manches.
+
+### Fin d’une manche :
+Une manche se termine si :
+1. Il ne reste plus qu’une pile à un joueur, soit une carte devant lui.
+2. Le nombre de joueurs + le nombre de cartes dans la zone de défausse est égal à 11.
+
+---
+
+## 3. Objectifs du projet
 Le développement de **DuckAndCover** vise plusieurs objectifs :
 
 - **Offrir une expérience fun et accessible** : Avec des commandes simples et un gameplay immédiat, le jeu est adapté aux joueurs de tout âge.
@@ -22,7 +39,7 @@ Le développement de **DuckAndCover** vise plusieurs objectifs :
 
 ---
 
-## 3. Public visé
+## 4. Public visé
 **DuckAndCover** s’adresse à un large public :
 
 - **Les familles** : Parents et enfants peuvent jouer ensemble grâce à des mécaniques simples et amusantes.
@@ -32,7 +49,7 @@ Le développement de **DuckAndCover** vise plusieurs objectifs :
 
 ---
 
-## 4. Les fonctionnalités clés
+## 5. Les fonctionnalités clés
 - **Multijoueur local** : Jusqu’à plusieurs joueurs peuvent s’affronter sur un seul écran, en partageant le clavier.
 - **Ajout de bots IA** : Possibilité d’ajouter des adversaires contrôlés par l’ordinateur pour compléter les parties en solo ou en petit groupe.
 - **Parties rapides et dynamiques** : Un gameplay qui permet d’enchaîner plusieurs parties sans temps d’attente prolongé.
