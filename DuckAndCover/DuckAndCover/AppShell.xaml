@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Shell
+    x:Class="DuckAndCover.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:DuckAndCover.Pages"
+    FlyoutBehavior="Flyout"
+    Title="DuckAndCover">
+
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate pages:Home}"
+        Route="Home" />
+
+    <ShellContent
+        Title="Jouer"
+        ContentTemplate="{DataTemplate pages:GameMenu}"
+        Route="GameMenu" />
+
+    <ShellContent
+        Title="Crédits"
+        ContentTemplate="{DataTemplate pages:Credits}"
+        Route="Credits" />
+
+    <ShellContent
+        Title="Règles"
+        ContentTemplate="{DataTemplate pages:Rules}"
+        Route="Rules" />
+
+</Shell>

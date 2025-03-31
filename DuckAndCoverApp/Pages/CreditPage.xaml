@@ -5,15 +5,10 @@
              BackgroundColor="{StaticResource PrimaryColor}">
 
        <Grid>
-              <Grid.Background>
-                     <LinearGradientBrush StartPoint="0,0"
-                                          EndPoint="1,1">
-                            <GradientStop Color="{StaticResource GradientStart}"
-                                          Offset="0.1"/>
-                            <GradientStop Color="{StaticResource GradientEnd}"
-                                          Offset="0.9"/>
-                     </LinearGradientBrush>
-              </Grid.Background>
+              <Image
+                     Source="bg.jpg"
+                     Aspect="AspectFill"
+                     HorizontalOptions="Start"/>
 
               <ScrollView>
                      <VerticalStackLayout Spacing="25"
@@ -22,20 +17,20 @@
 
                             <Label Text="Crédits"
                                    FontSize="42"
-                                   TextColor="{StaticResource ForegroundColor}"
+                                   TextColor="Black"
                                    FontAttributes="Bold"
                                    HorizontalOptions="Center"
                                    Margin="0,0,0,20"/>
 
                             <BoxView HeightRequest="3"
                                      WidthRequest="120"
-                                     Color="White"
+                                     Color="Black"
                                      HorizontalOptions="Center"
                                      Margin="0,5"/>
 
                             <Label Text="Développé avec passion par :"
                                    FontSize="22"
-                                   TextColor="White"
+                                   TextColor="Black"
                                    FontAttributes="Italic"
                                    HorizontalOptions="Center"/>
 
@@ -43,6 +38,7 @@
                                   RowDefinitions="Auto,Auto"
                                   RowSpacing="20"
                                   ColumnSpacing="20">
+
 
                                    <Border Grid.Row="0"
                                            Grid.Column="0"
@@ -52,6 +48,15 @@
                                            StrokeDashArray="4,2"
                                            Padding="20"
                                            StrokeShape="RoundRectangle 25">
+                                          <Border.Background>
+                                                 <LinearGradientBrush StartPoint="0,0"
+                                                                      EndPoint="0,1">
+                                                        <GradientStop Color="#7FDBFF"
+                                                                      Offset="0.0"/>
+                                                        <GradientStop Color="#0074D9"
+                                                                      Offset="1.0"/>
+                                                 </LinearGradientBrush>
+                                          </Border.Background>
                                           <HorizontalStackLayout Spacing="15"
                                                                  VerticalOptions="Center"
                                                                  HorizontalOptions="Center">
@@ -78,6 +83,15 @@
                                            StrokeDashArray="4,2"
                                            Padding="20"
                                            StrokeShape="RoundRectangle 25">
+                                          <Border.Background>
+                                                 <LinearGradientBrush StartPoint="0,0"
+                                                                      EndPoint="0,1">
+                                                        <GradientStop Color="#7FDBFF"
+                                                                      Offset="0.0"/>
+                                                        <GradientStop Color="#0074D9"
+                                                                      Offset="1.0"/>
+                                                 </LinearGradientBrush>
+                                          </Border.Background>
                                           <HorizontalStackLayout Spacing="15"
                                                                  VerticalOptions="Center"
                                                                  HorizontalOptions="Center">
@@ -104,6 +118,15 @@
                                            StrokeDashArray="4,2"
                                            Padding="20"
                                            StrokeShape="RoundRectangle 25">
+                                          <Border.Background>
+                                                 <LinearGradientBrush StartPoint="0,0"
+                                                                      EndPoint="0,1">
+                                                        <GradientStop Color="#7FDBFF"
+                                                                      Offset="0.0"/>
+                                                        <GradientStop Color="#0074D9"
+                                                                      Offset="1.0"/>
+                                                 </LinearGradientBrush>
+                                          </Border.Background>
                                           <HorizontalStackLayout Spacing="15"
                                                                  VerticalOptions="Center"
                                                                  HorizontalOptions="Center">
@@ -130,6 +153,15 @@
                                            StrokeDashArray="4,2"
                                            Padding="20"
                                            StrokeShape="RoundRectangle 25">
+                                          <Border.Background>
+                                                 <LinearGradientBrush StartPoint="0,0"
+                                                                      EndPoint="0,1">
+                                                        <GradientStop Color="#7FDBFF"
+                                                                      Offset="0.0"/>
+                                                        <GradientStop Color="#0074D9"
+                                                                      Offset="1.0"/>
+                                                 </LinearGradientBrush>
+                                          </Border.Background>
                                           <HorizontalStackLayout Spacing="15"
                                                                  VerticalOptions="Center"
                                                                  HorizontalOptions="Center">
@@ -151,7 +183,7 @@
 
                             <Label Text="© 2025 - Tous droits réservés"
                                    FontSize="14"
-                                   TextColor="{StaticResource ForegroundColor}"
+                                   TextColor="Black"
                                    Opacity="0.7"
                                    HorizontalOptions="Center"
                                    Margin="0,20,0,0"/>

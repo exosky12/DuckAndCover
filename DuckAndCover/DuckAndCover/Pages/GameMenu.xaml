@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DuckAndCover.Pages.GameMenu"
+             xmlns:components="clr-namespace:DuckAndCover.Views">
+
+    <ContentPage.Content>
+        <Grid>
+            <Image
+                x:Name="BackgroundImage"
+                Source="bg.jpg"
+                Aspect="AspectFill"
+                HorizontalOptions="Start" />
+
+            <ScrollView Padding="20">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Style="{StaticResource LabelJeu}"
+                           Text="Nombre de joueurs choisis."
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+
+                    <Border BackgroundColor="White"
+                            Margin="30"
+                            HeightRequest="50"
+                            WidthRequest="300" />
+
+
+                    <HorizontalStackLayout HorizontalOptions="Start"
+                                           VerticalOptions="Center"
+                                           Margin="60">
+                        <Border BackgroundColor="White"
+                                HeightRequest="50"
+                                WidthRequest="50" />
+                        <Label Style="{StaticResource LabelJeu}"
+                               Text="Compléter avec des bots ?"
+                               VerticalOptions="Center"
+                               Margin="10,0,0,0" />
+                    </HorizontalStackLayout>
+
+                    <Label Style="{StaticResource LabelJeu}"
+                           Text="Nombre de bot choisis."
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+
+                    <Border BackgroundColor="White"
+                            Margin="30"
+                            HeightRequest="50"
+                            WidthRequest="300" />
+
+                    <Label Style="{StaticResource LabelJeu}"
+                           Text="Choix de la variante du style de jeu."
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+
+                    <Border BackgroundColor="White"
+                            Margin="30"
+                            HeightRequest="50"
+                            WidthRequest="300">
+                        <Label Text="Classique" />
+
+                    </Border>
+
+                    <components:Button
+                        x:Name="ContinuerBtn"
+                        ButtonName="Continuer" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

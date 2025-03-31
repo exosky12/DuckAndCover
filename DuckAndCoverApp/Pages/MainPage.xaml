@@ -70,7 +70,7 @@
                                            Margin="10,0" />
 
                         <components:Button x:Name="CreditsBtn"
-                                           ButtonName="Crédits"
+                                           ButtonName="Credits"
                                            ButtonVariant="Secondary"
                                            Margin="10,0" />
 
