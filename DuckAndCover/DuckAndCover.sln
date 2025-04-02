@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuckAndCover", "DuckAndCover\DuckAndCover.csproj", "{CA9107E0-34ED-4C16-B402-0460E8DD3D37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{4B30DF66-0DF4-434D-83A1-2EE5428DA0B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{AB3176CD-EEEB-4DC8-91FB-815B27F8D50F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{CA9107E0-34ED-4C16-B402-0460E8DD3D37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA9107E0-34ED-4C16-B402-0460E8DD3D37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA9107E0-34ED-4C16-B402-0460E8DD3D37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B30DF66-0DF4-434D-83A1-2EE5428DA0B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B30DF66-0DF4-434D-83A1-2EE5428DA0B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B30DF66-0DF4-434D-83A1-2EE5428DA0B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B30DF66-0DF4-434D-83A1-2EE5428DA0B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB3176CD-EEEB-4DC8-91FB-815B27F8D50F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3176CD-EEEB-4DC8-91FB-815B27F8D50F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3176CD-EEEB-4DC8-91FB-815B27F8D50F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3176CD-EEEB-4DC8-91FB-815B27F8D50F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
