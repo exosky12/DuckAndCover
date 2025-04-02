@@ -63,7 +63,7 @@
 
                     <components:Button
                         x:Name="ContinuerBtn"
-                        ButtonName="Continuer" />
+                        Name="Continuer" />
 
                 </VerticalStackLayout>
             </ScrollView>

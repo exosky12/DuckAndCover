@@ -54,20 +54,23 @@
                                     Wrap="NoWrap">
 
                             <components:Button x:Name="JouerBtn"
-                                               ButtonName="Jouer"
-                                               Margin="10,0" />
+                                               Name="Jouer"
+                                               Margin="10,0"
+                                               Clicked="PlayClicked"/>
 
                             <components:Button x:Name="ClassementBtn"
-                                               ButtonName="Classement"
+                                               Name="Classement"
                                                Margin="10,0" />
 
                             <components:Button x:Name="ReglesBtn"
-                                               ButtonName="Règles du jeu"
-                                               Margin="10,0" />
+                                               Name="Règles du jeu"
+                                               Margin="10,0"
+                                               Clicked="RulesClicked"/>
 
                             <components:Button x:Name="CreditsBtn"
-                                               ButtonName="Credits"
-                                               Margin="10,0" />
+                                               Name="Credits"
+                                               Margin="10,0"
+                                               Clicked="CreditsClicked"/>
 
                         </FlexLayout>
                     </Grid>

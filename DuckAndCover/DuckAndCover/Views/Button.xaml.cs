@@ -1,25 +1,27 @@
+using DuckAndCover.Pages;
 namespace DuckAndCover.Views
 {
-    public partial class Button : ContentView
+    public partial class Button
     {
-        public static readonly BindableProperty ButtonNameProperty =
+        public static readonly BindableProperty NameProperty =
             BindableProperty.Create(
-                nameof(ButtonName),
+                nameof(Name),
                 typeof(string),
                 typeof(Button),
                 default(string));
 
-        public string ButtonName
+        public string Name
         {
-            get => (string)GetValue(ButtonNameProperty);
-            set => SetValue(ButtonNameProperty, value);
+            get => (string)GetValue(NameProperty);
+            set => SetValue(NameProperty, value);
         }
-
+        
         public Button()
         {
             InitializeComponent();
-            // Le BindingContext doit pointer vers lui-même pour que le binding fonctionne
             BindingContext = this;
         }
+        
+        
     }
 }
