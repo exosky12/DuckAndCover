@@ -6,16 +6,15 @@
              Title="Règles">
     <ContentPage.Content>
         <Grid>
-
             <Image
                 Source="bg.jpg"
                 Aspect="AspectFill"
                 HorizontalOptions="Start" />
 
-            <ScrollView Padding="20">
+            <ScrollView Padding="10" Margin="0, 0, 0, 300">
 
                 <FlexLayout Direction="Column"
-                            MaximumWidthRequest="500"
+                            MaximumWidthRequest="800"
                             AlignItems="Center"
                             JustifyContent="SpaceEvenly">
 
@@ -26,10 +25,23 @@
                         HorizontalOptions="Center" />
 
                     <Border
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="white"
+                        StrokeThickness="8"
                         HorizontalOptions="Center"
                         VerticalOptions="FillAndExpand">
+                        
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Color="#7FDBFF"
+                                              Offset="0.0" />
+                                <GradientStop Color="#0074D9"
+                                              Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
                         <FlexLayout
-                            Padding="10"
+                            Padding="40"
                             AlignItems="Stretch"
                             HorizontalOptions="Center"
                             JustifyContent="Start"
