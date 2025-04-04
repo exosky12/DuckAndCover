@@ -14,7 +14,6 @@ namespace ConsoleApp
             Console.WriteLine($"Player Score: {player.Score}");
             player.Score = 10;
             Console.WriteLine($"Updated Player Score: {player.Score}");
-            
         }
     }
 }
