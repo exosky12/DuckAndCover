@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Plugin.Maui.Audio;
+using DuckAndCover.Views;
 
 namespace DuckAndCover;
 
@@ -19,6 +21,9 @@ public static class MauiProgram
                 fonts.AddFont("Kalam-Bold.otf", "KalamBold");
                 fonts.AddFont("ClashDisplay-Variable.ttf", "Clash");
             });
+
+        builder.Services.AddSingleton(AudioManager.Current);
+        builder.Services.AddTransient<Views.Button>();
 
 #if DEBUG
         builder.Logging.AddDebug();

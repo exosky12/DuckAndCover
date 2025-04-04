@@ -14,7 +14,8 @@
         BorderWidth="5"
         HorizontalOptions="Center"
         VerticalOptions="Center"
-        BackgroundColor="{StaticResource BackgroundColor}">
+        BackgroundColor="{StaticResource BackgroundColor}"
+        Clicked="OnClick">
 
     <Button.Shadow>
         <Shadow Brush="#F8B229" Opacity="0.5" Offset="3,3" Radius="5" />
