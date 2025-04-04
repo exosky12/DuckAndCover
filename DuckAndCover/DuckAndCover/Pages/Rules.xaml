@@ -4,85 +4,71 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCover.Pages.Rules"
              Title="Règles">
-    <ContentPage.Content>
-        <Grid>
-            <Image
-                Source="bg.jpg"
-                Aspect="AspectFill"
-                HorizontalOptions="Start" />
+    <Grid>
+        <Image
+            Source="bg.jpg"
+            Aspect="AspectFill"
+            HorizontalOptions="Start" />
 
-            <ScrollView Padding="10" Margin="0, 0, 0, 300">
+        <ScrollView Padding="10" Margin="0, 0, 0, 300">
 
-                <FlexLayout Direction="Column"
-                            MaximumWidthRequest="800"
-                            AlignItems="Center"
-                            JustifyContent="SpaceEvenly">
+            <FlexLayout Direction="Column"
+                        MaximumWidthRequest="800"
+                        AlignItems="Center"
+                        JustifyContent="SpaceEvenly">
 
-                    <Image
-                        Source="titre.png"
-                        HeightRequest="185"
-                        Aspect="AspectFit"
-                        HorizontalOptions="Center" />
+                <Image
+                    Source="titre.png"
+                    HeightRequest="185"
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center" />
 
-                    <Border
-                        StrokeShape="RoundRectangle 20"
-                        Stroke="white"
-                        StrokeThickness="8"
+                <Border
+                    Style="{StaticResource BorderStyle}">
+
+
+                    <FlexLayout
+                        Padding="40"
+                        AlignItems="Stretch"
                         HorizontalOptions="Center"
-                        VerticalOptions="FillAndExpand">
-                        
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0"
-                                                 EndPoint="0,1">
-                                <GradientStop Color="#7FDBFF"
-                                              Offset="0.0" />
-                                <GradientStop Color="#0074D9"
-                                              Offset="1.0" />
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <FlexLayout
-                            Padding="40"
-                            AlignItems="Stretch"
-                            HorizontalOptions="Center"
-                            JustifyContent="Start"
-                            Direction="Column">
-                            <Label
-                                Style="{StaticResource LabelRegle}"
-                                Text="- On tire une carte du deck sur le côté, selon le nombre chaque joueur peut soit bouger (vers un trou dans la grille ou sur les bords tant qu'il y a une carte sur un côté) sa carte qui contient le chiffre soit recouvrir une carte adjacente (pour réduire les tâches)."
-                                FontSize="28"
-                                TextColor="Black"
-                                HorizontalTextAlignment="Start"
-                                VerticalTextAlignment="Center"
-                                Margin="0,0,0,15" />
-                            <Label
-                                Style="{StaticResource LabelRegle}"
-                                Text="- Si quelqu'un est sur un espace adjacent, il peut l'aider à avancer."
-                                FontSize="28"
-                                TextColor="Black"
-                                HorizontalTextAlignment="Start"
-                                VerticalTextAlignment="Center"
-                                Margin="0,0,0,15" />
-                            <Label
-                                Style="{StaticResource LabelRegle}"
-                                Text="Si les 3 joueurs ne peuvent pas jouer, la carte est mise sur le côté."
-                                FontSize="28"
-                                TextColor="Black"
-                                HorizontalTextAlignment="Start"
-                                VerticalTextAlignment="Center"
-                                Margin="0,0,0,20" />
-                            <Label
-                                Style="{StaticResource LabelRegle}"
-                                Text="&#xf471;"
-                                FontSize="72"
-                                TextColor="Black"
-                                FontFamily="Ionicons"
-                                HorizontalTextAlignment="End"
-                                VerticalTextAlignment="End" />
-                        </FlexLayout>
-                    </Border>
-                </FlexLayout>
-            </ScrollView>
-        </Grid>
+                        JustifyContent="Start"
+                        Direction="Column">
+                        <Label
+                            Style="{StaticResource LabelRegle}"
+                            Text="- On tire une carte du deck sur le côté, selon le nombre chaque joueur peut soit bouger (vers un trou dans la grille ou sur les bords tant qu'il y a une carte sur un côté) sa carte qui contient le chiffre soit recouvrir une carte adjacente (pour réduire les tâches)."
+                            FontSize="28"
+                            TextColor="Black"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="0,0,0,15" />
+                        <Label
+                            Style="{StaticResource LabelRegle}"
+                            Text="- Si quelqu'un est sur un espace adjacent, il peut l'aider à avancer."
+                            FontSize="28"
+                            TextColor="Black"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="0,0,0,15" />
+                        <Label
+                            Style="{StaticResource LabelRegle}"
+                            Text="Si les 3 joueurs ne peuvent pas jouer, la carte est mise sur le côté."
+                            FontSize="28"
+                            TextColor="Black"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="0,0,0,20" />
+                        <Label
+                            Style="{StaticResource LabelRegle}"
+                            Text="&#xf471;"
+                            FontSize="72"
+                            TextColor="Black"
+                            FontFamily="Ionicons"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="End" />
+                    </FlexLayout>
+                </Border>
+            </FlexLayout>
+        </ScrollView>
+    </Grid>
 
-    </ContentPage.Content>
 </ContentPage>
