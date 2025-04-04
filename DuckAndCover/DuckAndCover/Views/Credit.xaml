@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="DuckAndCover.Views.Credit"
+        
+        Grid.Row="{Binding Row}"
+        Grid.Column="{Binding Column}"
+        Stroke="{StaticResource ForegroundColor}"
+        StrokeThickness="5"
+        BackgroundColor="Transparent"
+        StrokeDashArray="4,2"
+        Padding="20"
+        StrokeShape="RoundRectangle 25">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="0,1">
+                <GradientStop Color="#7FDBFF"
+                              Offset="0.0" />
+                <GradientStop Color="#0074D9"
+                              Offset="1.0" />
+            </LinearGradientBrush>
+        </Border.Background>
+        <HorizontalStackLayout Spacing="15"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center">
+            <Label Text="{Binding Emoji}"
+                   FontSize="32"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+            <VerticalStackLayout Spacing="5"
+                                 VerticalOptions="Center">
+                <Label Text="{Binding Name}"
+                       FontSize="20"
+                       TextColor="{StaticResource ForegroundColor}"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+    </Border>
