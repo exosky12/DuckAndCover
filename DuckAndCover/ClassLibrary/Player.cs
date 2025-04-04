@@ -2,26 +2,41 @@
 {
     public class Player
     {
-        string name;
-        int score;
-        // Ajouter attribut Grille
+        public Grid Grid { get; set; }
+        public string Name { get; set; }
+        public int GameScore { get; set; }
+        public int TotalScore { get; set; }
 
         public Player(string name)
         {
-            this.name = name;
-            score = 0;
+            Name = name;
+            GameScore = 0;
+            TotalScore = 0;
         }
 
-        public string Name
+        public void Cover(Grid grid)
         {
-            get { return name; }
-            set { name = value; }
+            /* TODO */
         }
 
-        public int Score
+        public void Move(Grid grid)
         {
-            get { return score; }
-            set { score = value; }
+            /* TODO */
+        }
+
+        public void MakeCardDisappear()
+        {
+            /* TODO */
+        }
+
+        public void CallCannotPlay()
+        {
+            /* TODO */
+        }
+
+        public void CallCoin()
+        {
+            /* TODO */
         }
     }
 }
