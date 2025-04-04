@@ -5,9 +5,6 @@
 
     <Color x:Key="PrimaryColor">#463F3A</Color>
     <Color x:Key="ForegroundColor">white</Color>
-    <Color x:Key="AccentColor">#FFF1C26F</Color>
-    <Color x:Key="GradientStart">#FBAB7E</Color>
-    <Color x:Key="GradientEnd">#F7CE68</Color>
 
     <Style x:Key="LabelRegle"
            TargetType="Label">
