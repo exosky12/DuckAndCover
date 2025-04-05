@@ -3,7 +3,7 @@ using Microsoft.Maui.Controls.Xaml;
 
 namespace DuckAndCover.Views
 {
-    public partial class SettingOption : ContentView
+    public partial class SettingOption: VerticalStackLayout
     {
         public SettingOption()
         {

@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentView x:Name="SettingOptionView"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DuckAndCover.Views.SettingOption">
-    <VerticalStackLayout Spacing="10">
-        <Label Text="{Binding Title, Source={x:Reference SettingOptionView}}"
+<?xml version="1.0" encoding="utf-8"?>
+
+<VerticalStackLayout
+    x:Name="SettingOptionView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="DuckAndCover.Views.SettingOption"
+    Spacing="10">
+    <Label Text="{Binding Title, Source={x:Reference SettingOptionView}}"
            Style="{StaticResource LabelJeu}"
            HorizontalOptions="Center"
-           VerticalOptions="Center"/>
-        <Border BackgroundColor="White"
+           VerticalOptions="Center" />
+    <Border BackgroundColor="White"
             Margin="30"
             HeightRequest="50"
             WidthRequest="300">
-            <ContentPresenter Content="{Binding OptionContent, Source={x:Reference SettingOptionView}}" />
-        </Border>
-    </VerticalStackLayout>
-</ContentView>
+        <ContentPresenter Content="{Binding OptionContent, Source={x:Reference SettingOptionView}}" />
+    </Border>
+</VerticalStackLayout>
