@@ -6,4 +6,9 @@ public partial class GameMenu : ContentPage
     {
         InitializeComponent();
     }
+
+    private async void ContinueClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new MenuPlayer());
+    }
 }

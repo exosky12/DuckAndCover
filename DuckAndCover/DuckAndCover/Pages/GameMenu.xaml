@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              ControlTemplate="{StaticResource BackgroundTemplate}"
@@ -9,51 +10,52 @@
 
             <components:SettingOption Title="Nombre de joueurs choisis.">
                 <components:SettingOption.OptionContent>
-                    <Label Text="Valeur choisie" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="Center"/>
+                    <Label Text="Valeur choisie"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
                 </components:SettingOption.OptionContent>
             </components:SettingOption>
 
             <components:SettingOption Title="Compléter avec des bots ?">
                 <components:SettingOption.OptionContent>
-                    <HorizontalStackLayout HorizontalOptions="Start" 
-                                 VerticalOptions="Center" 
-                                 Margin="10,0,0,0">
-                        <Border BackgroundColor="White" 
-                    HeightRequest="50" 
-                    WidthRequest="50"/>
-                        <Label Text="Oui / Non" 
-                   Style="{StaticResource LabelJeu}" 
-                   VerticalOptions="Center" 
-                   Margin="10,0,0,0"/>
+                    <HorizontalStackLayout HorizontalOptions="Start"
+                                           VerticalOptions="Center"
+                                           Margin="10,0,0,0">
+                        <Border BackgroundColor="White"
+                                HeightRequest="50"
+                                WidthRequest="50" />
+                        <Label Text="Oui / Non"
+                               Style="{StaticResource LabelJeu}"
+                               VerticalOptions="Center"
+                               Margin="10,0,0,0" />
                     </HorizontalStackLayout>
                 </components:SettingOption.OptionContent>
             </components:SettingOption>
-            
+
             <components:SettingOption Title="Nombre de bot choisis.">
                 <components:SettingOption.OptionContent>
-                    <Label Text="Valeur choisie" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="Center"/>
+                    <Label Text="Valeur choisie"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
                 </components:SettingOption.OptionContent>
             </components:SettingOption>
 
             <components:SettingOption Title="Choix de la variante du style de jeu.">
                 <components:SettingOption.OptionContent>
                     <Border BackgroundColor="White"
-                  Margin="30"
-                  HeightRequest="50"
-                  WidthRequest="300">
-                        <Label Text="Classique" 
-                   HorizontalOptions="Center" 
-                   VerticalOptions="Center"/>
+                            Margin="30"
+                            HeightRequest="50"
+                            WidthRequest="300">
+                        <Label Text="Classique"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
                     </Border>
                 </components:SettingOption.OptionContent>
             </components:SettingOption>
 
             <components:Button x:Name="ContinuerBtn"
-                         Name="Continuer"/>
+                               Clicked="ContinueClicked"
+                               Name="Continuer" />
 
         </VerticalStackLayout>
     </ScrollView>
