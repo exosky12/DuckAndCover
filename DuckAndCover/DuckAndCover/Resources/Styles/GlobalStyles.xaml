@@ -39,6 +39,16 @@
         <Setter Property="Stroke" Value="#F8B229" />
     </Style>
 
+    <ControlTemplate x:Key="BackgroundTemplate">
+        <Grid>
+            <Image Source="bg.jpg" Aspect="AspectFill" />
+            <ContentPresenter />
+        </Grid>
+    </ControlTemplate>
+    <Style TargetType="ContentPage">
+        <Setter Property="ControlTemplate" Value="{StaticResource BackgroundTemplate}" />
+    </Style>
+
     <Style x:Key="ButtonStyle" TargetType="Button">
         <Setter Property="Padding" Value="20" />
         <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
