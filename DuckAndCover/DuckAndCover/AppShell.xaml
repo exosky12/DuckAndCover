@@ -28,4 +28,10 @@
         ContentTemplate="{DataTemplate pages:Rules}"
         Route="Rules" />
 
+    <ShellContent
+    Title="MenuJoueur"
+    ContentTemplate="{DataTemplate pages:MenuPlayer}"
+    Route="MenuPlayer" />
+
+
 </Shell>
