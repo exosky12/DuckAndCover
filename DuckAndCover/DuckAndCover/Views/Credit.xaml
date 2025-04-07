@@ -8,15 +8,6 @@
         Grid.Column="{Binding Column}"
         Style="{StaticResource BorderStyle}"
         Padding="20">
-    <!-- <Border.Background> -->
-    <!--     <LinearGradientBrush StartPoint="0,0" -->
-    <!--                          EndPoint="0,1"> -->
-    <!--         <GradientStop Color="#7FDBFF" -->
-    <!--                       Offset="0.0" /> -->
-    <!--         <GradientStop Color="#0074D9" -->
-    <!--                       Offset="1.0" /> -->
-    <!--     </LinearGradientBrush> -->
-    <!-- </Border.Background> -->
     <HorizontalStackLayout Spacing="15"
                            VerticalOptions="Center"
                            HorizontalOptions="Center">

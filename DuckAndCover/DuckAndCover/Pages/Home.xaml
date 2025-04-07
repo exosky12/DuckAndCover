@@ -8,13 +8,6 @@
              Title="Accueil">
     <ContentPage.Content>
         <Grid>
-            <!-- -->
-            <!-- <components:BackButton -->
-            <!--     x:Name="BackBtn" -->
-            <!--     ButtonName="&#xf2ca;" -->
-            <!--     HorizontalOptions="Start" -->
-            <!--     VerticalOptions="Start" -->
-            <!--     Margin="10" /> -->
 
             <ScrollView Padding="20">
                 <VerticalStackLayout
