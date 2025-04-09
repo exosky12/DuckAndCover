@@ -19,7 +19,7 @@
                              VerticalOptions="Center">
             <Label Text="{Binding Name}"
                    FontSize="20"
-                   TextColor="{StaticResource ForegroundColor}"
+                   TextColor="Black"
                    FontAttributes="Bold"
                    HorizontalOptions="Center" />
         </VerticalStackLayout>

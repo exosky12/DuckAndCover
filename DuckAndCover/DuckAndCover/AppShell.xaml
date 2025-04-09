@@ -6,6 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:DuckAndCover.Pages"
     FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="False"
     Title="DuckAndCover">
 
     <ShellContent
@@ -29,9 +30,9 @@
         Route="Rules" />
 
     <ShellContent
-    Title="MenuJoueur"
-    ContentTemplate="{DataTemplate pages:MenuPlayer}"
-    Route="MenuPlayer" />
+        Title="MenuJoueur"
+        ContentTemplate="{DataTemplate pages:MenuPlayer}"
+        Route="MenuPlayer" />
 
 
 </Shell>

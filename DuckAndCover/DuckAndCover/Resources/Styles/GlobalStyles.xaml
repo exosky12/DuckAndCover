@@ -45,7 +45,7 @@
             <ContentPresenter />
         </Grid>
     </ControlTemplate>
-    
+
     <Style TargetType="ContentPage">
         <Setter Property="ControlTemplate" Value="{StaticResource BackgroundTemplate}" />
     </Style>

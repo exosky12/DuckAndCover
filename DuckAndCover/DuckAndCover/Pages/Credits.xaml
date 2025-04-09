@@ -19,20 +19,20 @@
 
                     <Label Text="Crédits"
                            FontSize="42"
-                           TextColor="Black"
+                           TextColor="black"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"
                            Margin="0,0,0,20" />
 
                     <BoxView HeightRequest="3"
                              WidthRequest="120"
-                             Color="Black"
+                             Color="black"
                              HorizontalOptions="Center"
                              Margin="0,5" />
 
                     <Label Text="Développé avec passion par :"
                            FontSize="22"
-                           TextColor="Black"
+                           TextColor="black"
                            FontAttributes="Italic"
                            HorizontalOptions="Center" />
 
@@ -41,36 +41,35 @@
                           RowSpacing="20"
                           ColumnSpacing="20">
 
-                    <components:Credit
-                        Row="0"
-                        Column="0"
-                        Emoji="🎭"
-                        Name="Merienne Jules"/>
-                    
-                    
-                    <components:Credit
-                        Row="0"
-                        Column="1"
-                        Emoji="💡"
-                        Name="Barrère Jordy"/>
+                        <components:Credit
+                            Row="0"
+                            Column="0"
+                            Emoji="🎭"
+                            Name="Merienne Jules" />
+
+
+                        <components:Credit
+                            Row="0"
+                            Column="1"
+                            Emoji="💡"
+                            Name="Barrère Jordy" />
 
                         <components:Credit
                             Row="1"
                             Column="0"
                             Emoji="⚡"
-                            Name="Barrès Julien"/>
-                    
+                            Name="Barrès Julien" />
+
                         <components:Credit
                             Row="1"
                             Column="1"
                             Emoji="🛠"
-                            Name="Ory Florentin"
-                            />
+                            Name="Ory Florentin" />
                     </Grid>
 
                     <Label Text="© 2025 - Tous droits réservés"
                            FontSize="14"
-                           TextColor="Black"
+                           TextColor="black"
                            Opacity="0.7"
                            HorizontalOptions="Center"
                            Margin="0,20,0,0" />
