@@ -4,7 +4,7 @@ namespace Model
     {
         public int Task { get; set; }
 
-        public GameCard(int task) : base(task)
+        public GameCard(int task, int num) : base(num)
         {
             Task = task;
         }
