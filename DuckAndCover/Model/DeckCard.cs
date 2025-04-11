@@ -1,17 +1,34 @@
 namespace Model
 {
+
+
+
+    public enum Bonus
+    {
+        max,
+        bis
+    }
+
     public class DeckCard : Card
     {
-        public string Bonus { get; set; }
+        public Bonus currentBonus { get; set; }
 
-        public DeckCard(string bonus) : base(0)
+        public DeckCard(Bonus bonus, int num) : base(num)
         {
-            Bonus = bonus;
+            currentBonus = bonus;
         }
 
-        public void ApplyBonus()
+        public void ApplyBonus(Card previousCard)
         {
-            /* TODO */
+            switch (currentBonus)
+            {
+                case Bonus.max:
+                    //oblige le joueur a jouer sa carte la plus haute
+                    break;
+                case Bonus.bis:
+                    //faire en sorte de recup la carte precedante pour faire un nouveau tour avec cette carte
+                    break;
+            }
         }
     }
 }

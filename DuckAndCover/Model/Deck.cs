@@ -1,3 +1,5 @@
+using System.Diagnostics.Tracing;
+
 namespace Model
 {
     public class Deck
@@ -16,7 +18,11 @@ namespace Model
 
         public void ResetDeck()
         {
-            /* TODO */
+            Index = 0;
+        }
+        public DeckCard previousCard()
+        {
+            return Cards[Index - 1];    
         }
     }
 }
