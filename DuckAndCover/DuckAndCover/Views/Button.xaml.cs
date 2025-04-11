@@ -20,12 +20,10 @@ namespace DuckAndCover.Views
 
         private readonly IAudioManager audioManager;
 
-        // Constructeur par défaut pour XAML
         public Button() : this(Plugin.Maui.Audio.AudioManager.Current)
         {
         }
 
-        // Constructeur avec injection de dépendance
         public Button(IAudioManager audioManager)
         {
             InitializeComponent();

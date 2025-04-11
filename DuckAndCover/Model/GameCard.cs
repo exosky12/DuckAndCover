@@ -1,4 +1,4 @@
-namespace ClassLibrary
+namespace Model
 {
     public class GameCard : Card
     {
