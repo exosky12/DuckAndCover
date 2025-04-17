@@ -30,7 +30,7 @@ steps:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
         from_secret: SECRET_SONAR_LOGIN
-      project_key: MyProjectKey
+      project_key: duckandcover
       coverage_exclusions: "UnitTests/**"
     commands:
       - cd DuckAndCover/
