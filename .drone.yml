@@ -1,13 +1,15 @@
 kind: pipeline
 type: docker
 name: CI
+
 trigger:
-    branch:
-        - master
-    event:
-        - push
+  branch:
+    - master
+  event:
+    - push
+
 steps:
- - name: build
+  - name: build
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui
     commands:
       - cd DuckAndCover
@@ -17,14 +19,16 @@ steps:
   - name: tests
     image: mcr.microsoft.com/dotnet/sdk:9.0
     commands:
-      - cd DuckAndCover/
+      - cd DuckAndCover
       - dotnet restore DuckAndCover.sln
       - dotnet test DuckAndCover.sln --no-restore
-    depends_on: [build]
+    depends_on:
+      - build
 
   - name: code-inspection
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet9-maui
-    secrets: [ SECRET_SONAR_LOGIN ]
+    secrets:
+      - SECRET_SONAR_LOGIN
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
@@ -32,12 +36,14 @@ steps:
       project_key: duckandcover
       coverage_exclusions: "UnitTests/**"
     commands:
-      - cd DuckAndCover/
+      - cd DuckAndCover
       - dotnet restore DuckAndCover.sln
-      - dotnet sonarscanner begin /k:$${project_key} /d:sonar.host.url=$${sonar_host} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions=$${coverage_exclusions} /d:sonar.login=$${sonar_token} 
+      - dotnet sonarscanner begin /k:${project_key} /d:sonar.host.url=${sonar_host} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions=${coverage_exclusions} /d:sonar.login=${sonar_token}
       - dotnet build DuckAndCover.sln -c Release --no-restore
       - dotnet test DuckAndCover.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
       - dotnet publish DuckAndCover.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
-      - dotnet sonarscanner end /d:sonar.login=$${sonar_token}
-    depends_on: [build,tests]
+      - dotnet sonarscanner end /d:sonar.login=${sonar_token}
+    depends_on:
+      - build
+      - tests
