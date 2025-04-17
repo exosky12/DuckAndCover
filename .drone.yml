@@ -11,6 +11,7 @@ steps:
     image: mcr.microsoft.com/dotnet/sdk:9.0
     commands:
       - cd DuckAndCover/
+      - dontet workload restore
       - dotnet restore DuckAndCover.sln
       - dotnet test DuckAndCover.sln --no-restore
       
