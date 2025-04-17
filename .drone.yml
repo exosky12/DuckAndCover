@@ -8,7 +8,7 @@ trigger:
         - push
 steps:
  - name: build
-    image: mcr.microsoft.com/dotnet/sdk:9.0
+    image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui
     commands:
       - cd DuckAndCover
       - dotnet restore DuckAndCover.sln
