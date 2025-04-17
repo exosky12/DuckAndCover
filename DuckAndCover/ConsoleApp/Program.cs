@@ -11,9 +11,9 @@ namespace ConsoleApp
 
             Player player = new Player("Daryl");
             Console.WriteLine($"Player Name: {player.Name}");
-            Console.WriteLine($"Player Score: {player.Score}");
-            player.Score = 10;
-            Console.WriteLine($"Updated Player Score: {player.Score}");
+            Console.WriteLine($"Player Score: {player.GameScore}");
+            player.GameScore = 10;
+            Console.WriteLine($"Updated Player Score: {player.GameScore}");
         }
     }
 }
