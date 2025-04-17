@@ -1,5 +1,5 @@
 ﻿using System;
-using ClassLibrary;
+using Model;
 
 namespace ConsoleApp
 {
