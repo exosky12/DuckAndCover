@@ -10,7 +10,7 @@ steps:
   - name: build
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui
     commands:
-      - cd Sources/
+      - cd DuckAndCover/
       - dotnet restore DuckAndCover.sln
       - dotnet build DuckAndCover.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release --no-restore -o $CI_PROJECT_DIR/build/release -f:net9.0-android /p:AndroidSdkDirectory=/usr/lib/android-sdk
