@@ -11,6 +11,7 @@ steps:
     image: mcr.microsoft.com/dotnet/sdk:9.0
     commands:
       - cd DuckAndCover/
+      - dotnet workload restore
       - dotnet restore DuckAndCoverWithoutMAUI.sln
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
   
