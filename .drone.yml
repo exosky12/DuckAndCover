@@ -20,7 +20,6 @@ steps:
       - cd DuckAndCover/
       - dotnet restore DuckAndCover.sln
       - dotnet test DuckAndCover.sln --no-restore
-#    depends_on: [build]
 
   - name: code-inspection
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet9-maui
@@ -40,4 +39,3 @@ steps:
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
       - dotnet publish DuckAndCover.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
       - dotnet sonarscanner end /d:sonar.login=$${sonar_token}
-   # depends_on: [build,tests]
