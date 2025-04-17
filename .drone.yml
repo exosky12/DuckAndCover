@@ -11,16 +11,16 @@ steps:
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui
     commands:
       - cd DuckAndCover/
-      - dotnet restore DuckAndCover.sln
-      - dotnet build DuckAndCover.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
+      - dotnet restore DuckAndCoverWithoutMAUI.sln
+      - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
   
   - name: tests
     image: mcr.microsoft.com/dotnet/sdk:9.0
     commands:
       - cd DuckAndCover/
       - dotnet workload restore
-      - dotnet restore DuckAndCover.sln
-      - dotnet test DuckAndCover.sln --no-restore
+      - dotnet restore DuckAndCoverWithoutMAUI.sln
+      - dotnet test DuckAndCoverWithoutMAUI.sln --no-restore
 
   - name: code-inspection
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet9-maui
@@ -33,10 +33,10 @@ steps:
       coverage_exclusions: "UnitTests/**"
     commands:
       - cd DuckAndCover/
-      - dotnet restore DuckAndCover.sln
+      - dotnet restore DuckAndCoverWithoutMAUI.sln
       - dotnet sonarscanner begin /k:$${project_key} /d:sonar.host.url=$${sonar_host} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions=$${coverage_exclusions} /d:sonar.login=$${sonar_token} 
-      - dotnet build DuckAndCover.sln -c Release --no-restore
-      - dotnet test DuckAndCover.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
+      - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore
+      - dotnet test DuckAndCoverWithoutMAUI.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
-      - dotnet publish DuckAndCover.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
+      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
       - dotnet sonarscanner end /d:sonar.login=$${sonar_token}
