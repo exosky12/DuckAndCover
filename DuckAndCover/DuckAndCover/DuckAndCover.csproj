@@ -1,7 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0-android</TargetFrameworks>
+        <TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
+
+        <!-- Dans les PropertyGroup -->
+        <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+            <TargetFrameworks>net9.0-android</TargetFrameworks>
+        </PropertyGroup>
+        <PropertyGroup Condition="'$(OS)' == 'Unix'">
+            <TargetFrameworks>net9.0-android</TargetFrameworks>
+        </PropertyGroup>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('ios'))">$(TargetFrameworks);net9.0-ios</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('maccatalyst'))">$(TargetFrameworks);net9.0-maccatalyst</TargetFrameworks>
