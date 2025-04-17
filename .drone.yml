@@ -18,7 +18,6 @@ steps:
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
     commands:
       - cd DuckAndCover/
-      - dotnet workload restore
       - dotnet restore DuckAndCoverMAUIonly.sln
       - dotnet build DuckAndCoverMAUIonly.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
   
