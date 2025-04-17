@@ -7,14 +7,6 @@ trigger:
     event:
         - push
 steps:
-  - name: tests
-    image: mcr.microsoft.com/dotnet/sdk:9.0
-    commands:
-      - cd DuckAndCover/
-      - dotnet workload restore
-      - dotnet restore DuckAndCover.sln
-      - dotnet test DuckAndCover.sln --no-restore
-      
   - name: build
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui
     commands:
@@ -22,7 +14,13 @@ steps:
       - dotnet restore DuckAndCover.sln
       - dotnet build DuckAndCover.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
   
-  
+  - name: tests
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    commands:
+      - cd DuckAndCover/
+      - dotnet workload restore
+      - dotnet restore DuckAndCover.sln
+      - dotnet test DuckAndCover.sln --no-restore
 
   - name: code-inspection
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet9-maui
