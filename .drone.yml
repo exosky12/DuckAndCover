@@ -14,6 +14,13 @@ steps:
       - dotnet restore DuckAndCoverWithoutMAUI.sln
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
   
+  - name: buildMAUI
+    image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
+    commands:
+      - cd DuckAndCover/
+      - dotnet restore DuckAndCoverMAUIonly.sln
+      - dotnet build DuckAndCoverMAUIonly.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/33.0.0
+  
   - name: tests
     image: mcr.microsoft.com/dotnet/sdk:9.0
     commands:
