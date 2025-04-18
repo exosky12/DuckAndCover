@@ -1,5 +1,6 @@
 ﻿using System;
-using Model;
+
+// using Model;
 
 namespace ConsoleApp
 {
@@ -9,11 +10,11 @@ namespace ConsoleApp
         {
             Console.WriteLine("Hello, World!");
 
-            Player player = new Player("Daryl");
-            Console.WriteLine($"Player Name: {player.Name}");
-            Console.WriteLine($"Player Score: {player.GameScore}");
-            player.GameScore = 10;
-            Console.WriteLine($"Updated Player Score: {player.GameScore}");
+            // Player player = new Player("Daryl");
+            // Console.WriteLine($"Player Name: {player.Name}");
+            // Console.WriteLine($"Player Score: {player.GameScore}");
+            // player.GameScore = 10;
+            // Console.WriteLine($"Updated Player Score: {player.GameScore}");
         }
     }
 }
