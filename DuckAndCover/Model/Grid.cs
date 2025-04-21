@@ -20,15 +20,7 @@ public class Grid
         }
     }
 
-    public GameCard GetCard(Position p)
-    {
-        return GridMatrix[p.row][p.column];
-    }
 
-    public void SetCard(Position p, GameCard newCard)
-    {
-        GridMatrix[p.row][p.column] = newCard;
-    }
 
     public (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
     {
