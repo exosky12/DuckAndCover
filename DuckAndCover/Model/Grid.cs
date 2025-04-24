@@ -5,22 +5,10 @@ public class Grid
 {
     public List<GameCard> grid;
 
-    public Grid(int rows, int columns)
+    public Grid()
     {
-        GridMatrix = new List<List<GameCard>>();
-        for (int i = 0; i < rows; i++)
-        {
-            var row = new List<GameCard>();
-            for (int j = 0; j < columns; j++)
-            {
-                var gameCard = new GameCard(i, j);
-                row.Add(gameCard);
-            }
-
-            GridMatrix.Add(row);
-        }
+        grid = GenerateGrid();
     }
-
 
     public (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
     {
@@ -43,11 +31,46 @@ public class Grid
 
     public GameCard GetCard(Position p)
     {
-        return GridMatrix[p.row][p.column];
+        foreach (var card in grid)
+        {
+            if (card.position.row == p.row && card.position.column == p.column)
+            {
+                return card;
+            }
+        }
     }
 
     public void SetCard(Position p, GameCard newCard)
     {
-        GridMatrix[p.row][p.column] = newCard;
+        newCard.position = p;
+    }
+
+    public bool IsInGrid(Position p)
+    {
+        foreach (var card in grid)
+        {
+            if (card.position.row == p.row && card.position.column == p.column)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsAdjacentToCard(Position p)
+    {
+        foreach (var card in grid)
+        {
+            var rowDiff = Math.Abs((int)card.position.row - (int)p.row);
+            var colDiff = Math.Abs((int)card.position.column - (int)p.column);
+
+            if ((rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
