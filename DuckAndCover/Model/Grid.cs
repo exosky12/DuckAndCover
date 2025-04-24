@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Grid
 {
-    public List<List<GameCard>> GridMatrix;
+    public List<GameCard> grid;
 
     public Grid(int rows, int columns)
     {
@@ -16,10 +16,10 @@ public class Grid
                 var gameCard = new GameCard(i, j);
                 row.Add(gameCard);
             }
+
             GridMatrix.Add(row);
         }
     }
-
 
 
     public (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
@@ -39,9 +39,9 @@ public class Grid
 
         return (minX, maxX, minY, maxY);
     }
-}
 
- public GameCard GetCard(Position p)
+
+    public GameCard GetCard(Position p)
     {
         return GridMatrix[p.row][p.column];
     }
@@ -50,4 +50,4 @@ public class Grid
     {
         GridMatrix[p.row][p.column] = newCard;
     }
-
+}
