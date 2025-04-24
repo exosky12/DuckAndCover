@@ -9,40 +9,36 @@ public class ClassicRules : IRules
 
     public int NbCardsInDeck => 52;
 
+
+    /* Check si y'a une carte à l'endroit de position --> si non alors retourner false, si oui --> regarder la méthode qui est appelé
+     grâce à funcName:
+     - si duck --> regarder si y'a une carte à newPosition, si oui --> retourner false, si non --> voir si on peut déplacer la carte là bas
+       en regardant si y'a des cartes adjacentes à newPosition
+     - si cover --> regarder si y'a une carte à newPosition, si non --> retourner false, si oui --> retourner true
+     */
     public bool IsValidMove(Position position, Position newPosition, Grid grid, string funcName)
     {
-        if (grid.IsInGrid(position))
+        if (!grid.IsInGrid(position)) return false; // Vérification rapide si position est valide
+
+        // Utilisation de switch pour gérer les cas de funcName
+        switch (funcName)
         {
-            if (funcName == "duck")
-            {
-                if (grid.IsInGrid(newPosition))
-                {
-                    return false;
-                }
+            case "duck":
+                // Si la nouvelle position est dans la grille et qu'il y a une carte là, retourner false
+                if (grid.IsInGrid(newPosition)) return false;
 
-                // Check if there are adjacent cards to newPosition
+                // Vérification si une carte est adjacente à la nouvelle position
                 return grid.IsAdjacentToCard(newPosition);
-            }
-            else if (funcName == "cover")
-            {
-                if (grid.IsInGrid(newPosition))
-                {
-                    return true;
-                }
 
-                return false;
-            }
+            case "cover":
+                // Si la nouvelle position est dans la grille, retourner true, sinon false
+                return grid.IsInGrid(newPosition);
+
+            default:
+                return false; // Si funcName n'est ni "duck" ni "cover", retourner false
         }
-
-        return false;
-
-        /* Check si y'a une carte à l'endroit de position --> si non alors retourner false, si oui --> regarder la méthode qui est appelé
-         grâce à funcName:
-         - si duck --> regarder si y'a une carte à newPosition, si oui --> retourner false, si non --> voir si on peut déplacer la carte là bas
-           en regardant si y'a des cartes adjacentes à newPosition
-         - si cover --> regarder si y'a une carte à newPosition, si non --> retourner false, si oui --> retourner true
-         */
     }
+
 
     public bool IsGameOver(int cardPassed, int stackCounter) => (cardPassed == 8 || stackCounter == 1);
 }

@@ -1,43 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 
+namespace Model;
+
 public class Grid
 {
-    public List<GameCard> grid;
+    public List<GameCard> GameCardsGrid;
 
     public Grid()
     {
-        grid = GenerateGrid();
+        GridGenerator gridGenerator = new GridGenerator();
+        GameCardsGrid = gridGenerator.Grid;
     }
 
     public (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
     {
-        int minX = int.MaxValue;
-        int maxX = int.MinValue;
-        int minY = int.MaxValue;
-        int maxY = int.MinValue;
+        var minX = int.MaxValue;
+        var maxX = int.MinValue;
+        var minY = int.MaxValue;
+        var maxY = int.MinValue;
 
         foreach (var pos in positions)
         {
-            if (pos.column < minX) minX = pos.column;
-            if (pos.column > maxX) maxX = pos.column;
-            if (pos.row < minY) minY = pos.row;
-            if (pos.row > maxY) maxY = pos.row;
+            if (pos.Column < minX) minX = pos.Column;
+            if (pos.Column > maxX) maxX = pos.Column;
+            if (pos.Row < minY) minY = pos.Row;
+            if (pos.Row > maxY) maxY = pos.Row;
         }
 
         return (minX, maxX, minY, maxY);
     }
 
-
     public GameCard GetCard(Position p)
     {
-        foreach (var card in grid)
+        foreach (var card in GameCardsGrid)
         {
-            if (card.position.row == p.row && card.position.column == p.column)
+            if (card.position.Row == p.Row && card.position.Column == p.Column)
             {
                 return card;
             }
         }
+        /* voir pour return jsp */
     }
 
     public void SetCard(Position p, GameCard newCard)
@@ -47,9 +50,9 @@ public class Grid
 
     public bool IsInGrid(Position p)
     {
-        foreach (var card in grid)
+        foreach (var card in GameCardsGrid)
         {
-            if (card.position.row == p.row && card.position.column == p.column)
+            if (card.position.Row == p.Row && card.position.Column == p.Column)
             {
                 return true;
             }
@@ -60,10 +63,10 @@ public class Grid
 
     public bool IsAdjacentToCard(Position p)
     {
-        foreach (var card in grid)
+        foreach (var card in GameCardsGrid)
         {
-            var rowDiff = Math.Abs((int)card.position.row - (int)p.row);
-            var colDiff = Math.Abs((int)card.position.column - (int)p.column);
+            var rowDiff = Math.Abs((int)card.position.Row - (int)p.Row);
+            var colDiff = Math.Abs((int)card.position.Column - (int)p.Column);
 
             if ((rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1))
             {

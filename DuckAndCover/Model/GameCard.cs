@@ -2,7 +2,7 @@ namespace Model;
 
 public class GameCard : Card
 {
-    private Position position;
+    public Position position;
     public int Splash { get; private set; }
 
     public GameCard(int splash, int number) : base(number)
