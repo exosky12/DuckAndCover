@@ -40,7 +40,10 @@ public class Grid
                 return card;
             }
         }
+
         /* voir pour return jsp */
+        return GameCardsGrid[0];
+        /* À changer !! */
     }
 
     public void SetCard(Position p, GameCard newCard)
