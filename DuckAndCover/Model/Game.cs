@@ -4,6 +4,8 @@ public class Game
 {
     public List<Player> Players;
 
+    public IRules Rules { get; private set; }
+
     public int PlayerCount => Players.Count;
 
     public int CardPassed { get; set; } = 0;

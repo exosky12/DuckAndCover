@@ -17,7 +17,7 @@ public class Player
 
     public void Cover(GameCard aboveCard, GameCard belowCard, Grid grid, Game game)
     {
-        if (IsValidMove(aboveCard.position, belowCard.position, grid, "cover"))
+        if (game.Rules.IsValidMove(aboveCard.position, belowCard.position, grid, "cover"))
         {
             /* ADD logic */
             aboveCard.position = belowCard.position;
@@ -32,7 +32,7 @@ public class Player
 
     public void Duck(GameCard cardToMove, Position position, Grid grid, Game game)
     {
-        if (IsValidMove(cardToMove.position, position, grid, "duck"))
+        if (game.Rules.IsValidMove(cardToMove.position, position, grid, "duck"))
         {
             /* ADD logic */
             grid.SetCard(position, cardToMove);
