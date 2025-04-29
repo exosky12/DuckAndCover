@@ -11,7 +11,7 @@ public class GridGenerator
         GenerateGrid();
     }
 
-    private void GenerateGrid()
+    private List<GameCard> GenerateGrid()
     {
         var rand = new Random();
         while (Grid.Count < NbCards)
@@ -20,6 +20,8 @@ public class GridGenerator
             Grid.Add(card);
             AllPossibleCards.Remove(card);
         }
+
+        return Grid;
     }
 }
 
