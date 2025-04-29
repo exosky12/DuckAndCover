@@ -6,6 +6,7 @@ public class Deck
 
     public Deck()
     {
-        /* TODO: Ajouter une interface IRandom qui générera nos cartes normales et cartes de deck */
+        var generator = new DeckGenerator();
+        Cards = generator.Generate();
     }
 }
