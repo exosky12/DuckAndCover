@@ -1,3 +1,5 @@
+using Model;
+
 namespace UnitTests
 {
     public class DeckGeneratorTests
@@ -7,14 +9,13 @@ namespace UnitTests
         {
             var initialCards = new List<DeckCard>
             {
-                new DeckCard(Bonus.Max,   1),
-                new DeckCard(Bonus.Max,   2),
-                new DeckCard(Bonus.Max,   3),
-                new DeckCard(Bonus.Max,   4),
+                new DeckCard(Bonus.Max, 1),
+                new DeckCard(Bonus.Max, 2),
+                new DeckCard(Bonus.Max, 3),
+                new DeckCard(Bonus.Max, 4),
             };
 
-            var seededRandom = new Random(2025);
-            var generator = new DeckGenerator(seededRandom)
+            var generator = new DeckGenerator()
             {
                 NbCards = initialCards.Count
             };

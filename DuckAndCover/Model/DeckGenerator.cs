@@ -9,7 +9,7 @@ public class DeckGenerator
 
     public int NbCards = 52;
 
-    public List<DeckCard> GenerateDeck()
+    public List<DeckCard> Generate()
     {
         var rand = new Random();
         while (Deck.Count < NbCards)
