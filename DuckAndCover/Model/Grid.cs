@@ -76,4 +76,15 @@ public class Grid
 
         return false;
     }
+
+    public void RemoveCard(Position p)
+    {
+        for (int i = 0; i < GameCardsGrid.Count; i++)
+        {
+            if (IsInGrid(p))
+            {
+                GameCardsGrid.RemoveAt(i);
+            }
+        }
+    }
 }
