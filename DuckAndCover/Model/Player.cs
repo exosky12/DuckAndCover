@@ -15,20 +15,33 @@ public class Player
         this.Name = name;
     }
 
-    public void Cover(GameCard aboveCard, GameCard belowCard)
+    public void Cover(GameCard aboveCard, GameCard belowCard, Grid grid, Game game)
     {
-        /* ADD logic */
+        if (IsValidMove(aboveCard.position, belowCard.position, grid, "cover"))
+        {
+            /* ADD logic */
+            aboveCard.position = belowCard.position;
+            grid.RemoveCard(belowCard.position);
+        }
+        else
+        {
+            /* FAIRE lien entre modèles et vues pour afficher quelque chose à l'écran comme quoi on peut pas jouer */
+            game.NextPlayer();
+        }
     }
 
-    public void Duck(GameCard cardToMove, Position position)
+    public void Duck(GameCard cardToMove, Position position, Grid grid, Game game)
     {
-        /* ADD logic */
-    }
-
-    public bool CanPlay(Game game)
-    {
-        /* Va demander aux règles si dans le cas présent le joueur à un ou plusieurs choix de jeu */
-        /* SI AUCUNES POSSIBILITÉS --> appeler NextPlayer dans game puis appeler la méthode CallCoin de Player */
+        if (IsValidMove(cardToMove.position, position, grid, "duck"))
+        {
+            /* ADD logic */
+            grid.SetCard(position, cardToMove);
+        }
+        else
+        {
+            /* FAIRE lien entre modèles et vues pour afficher quelque chose à l'écran comme quoi on peut pas jouer */
+            game.NextPlayer();
+        }
     }
 
     public void CallCoin()
