@@ -14,7 +14,7 @@ public class Player
 
     public Player(string name)
     {
-        this.GameScore = 0;
+        this.GameScore = 100;
         this.StackCounter = 0;
         this.Scores = new List<int>();
         this.Name = name;
