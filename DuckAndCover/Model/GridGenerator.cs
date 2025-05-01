@@ -11,7 +11,7 @@ public class GridGenerator : IGenerator<GameCard>
         Generate();
     }
 
-    private List<GameCard> Generate()
+    public List<GameCard> Generate()
     {
         var rand = new Random();
         while (Grid.Count < NbCards)

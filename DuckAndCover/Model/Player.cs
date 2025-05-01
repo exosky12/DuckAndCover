@@ -6,7 +6,9 @@ public class Player
 
     public int GameScore { get; set; }
 
-    public int TotalScore { get; set; }
+    public List<int> Scores { get; set; }
+
+    public int TotalScore => Scores.Sum();
 
     public int StackCounter { get; set; }
 
