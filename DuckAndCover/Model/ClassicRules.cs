@@ -18,21 +18,21 @@ public class ClassicRules : IRules
      */
     public bool IsValidMove(Position position, Position newPosition, Grid grid, string funcName)
     {
-        if (!grid.IsInGrid(position)) return false; // Vérification rapide si position est valide
+        if (!grid.IsInGrid(position)) return false; // Vérification si la position d'origine est valide
 
         // Utilisation de switch pour gérer les cas de funcName
-        switch (funcName)
+        switch (funcName.ToLower())
         {
             case "duck":
-                // Si la nouvelle position est dans la grille et qu'il y a une carte là, retourner false
-                if (grid.IsInGrid(newPosition)) return false;
+                // Si la nouvelle position est occupée, retourner false
+                if (grid.GetCard(newPosition) != null) return false;
 
                 // Vérification si une carte est adjacente à la nouvelle position
                 return grid.IsAdjacentToCard(newPosition);
 
             case "cover":
-                // Si la nouvelle position est dans la grille, retourner true, sinon false
-                return grid.IsInGrid(newPosition);
+                // Vérifier si la position de destination est occupée (nécessaire pour recouvrir)
+                return grid.IsInGrid(newPosition) && grid.GetCard(newPosition) != null;
 
             default:
                 return false; // Si funcName n'est ni "duck" ni "cover", retourner false

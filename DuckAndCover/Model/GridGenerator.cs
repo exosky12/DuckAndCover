@@ -10,9 +10,9 @@ public class GridGenerator : IGenerator<GameCard>
     {
         var positions = new List<Position>();
 
-        for (int row = 0; row < 3; row++)
+        for (int row = 0; row < 3; row++)         // 3 lignes
         {
-            for (int col = 0; col < 4; col++)
+            for (int col = 0; col < 4; col++)     // 4 colonnes
             {
                 positions.Add(new Position(row, col));
             }
@@ -28,28 +28,32 @@ public class GridGenerator : IGenerator<GameCard>
         Grid = GenerateAllCards();
         Generate();
     }
-
     public List<GameCard> Generate()
     {
         var rand = new Random();
-        var positionsCopy = new List<Position>(AllPositions); 
+        var positionsCopy = new List<Position>(AllPositions);
 
-        foreach (var card in Grid)
+        // Mélanger les cartes pour assurer une distribution aléatoire
+        var shuffledGrid = Grid.OrderBy(card => rand.Next()).ToList();  // Mélange les cartes
+
+        // Attribuer chaque carte à une position aléatoire
+        for (int i = 0; i < shuffledGrid.Count; i++)
         {
             if (positionsCopy.Count == 0)
                 break;
 
-            var index = rand.Next(positionsCopy.Count);
+            var index = rand.Next(positionsCopy.Count);  // Choisir une position aléatoire
             var position = positionsCopy[index];
-            
-            card.Position = position;
 
-            positionsCopy.RemoveAt(index);
+            shuffledGrid[i].Position = position;  // Assigner la position à la carte
+            positionsCopy.RemoveAt(index);  // Retirer la position utilisée
         }
+
+        // Mettre à jour Grid avec les cartes mélangées
+        Grid = shuffledGrid;
 
         return Grid;
     }
-
     private static List<GameCard> GenerateAllCards()
     {
         var cards = new List<GameCard>();

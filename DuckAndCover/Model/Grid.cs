@@ -12,26 +12,27 @@ public class Grid
         GridGenerator gridGenerator = new GridGenerator();
         GameCardsGrid = gridGenerator.Grid;
     }
+    
+    // public (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
+    // {
+    //     var minX = int.MaxValue;
+    //     var maxX = int.MinValue;
+    //     var minY = int.MaxValue;
+    //     var maxY = int.MinValue;
+    //
+    //     foreach (var pos in positions)
+    //     {
+    //         if (pos.Column < minX) minX = pos.Column;
+    //         if (pos.Column > maxX) maxX = pos.Column;
+    //         if (pos.Row < minY) minY = pos.Row;
+    //         if (pos.Row > maxY) maxY = pos.Row;
+    //     }
+    //
+    //     return (minX, maxX, minY, maxY);
+    // }
 
-    public (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
-    {
-        var minX = int.MaxValue;
-        var maxX = int.MinValue;
-        var minY = int.MaxValue;
-        var maxY = int.MinValue;
-
-        foreach (var pos in positions)
-        {
-            if (pos.Column < minX) minX = pos.Column;
-            if (pos.Column > maxX) maxX = pos.Column;
-            if (pos.Row < minY) minY = pos.Row;
-            if (pos.Row > maxY) maxY = pos.Row;
-        }
-
-        return (minX, maxX, minY, maxY);
-    }
-
-    public GameCard GetCard(Position p)
+  
+    public GameCard? GetCard(Position p)
     {
         foreach (var card in GameCardsGrid)
         {
@@ -41,10 +42,8 @@ public class Grid
             }
         }
 
-        /* voir pour return jsp */
-        return GameCardsGrid[0];
-        /* À changer !! */
-        /* On renverra une excpetion*/
+        // Retourne null si aucune carte n'est trouvée à cette position
+        return null;
     }
 
     public void SetCard(Position p, GameCard newCard)
@@ -91,4 +90,6 @@ public class Grid
             }
         }
     }
+    
+    
 }
