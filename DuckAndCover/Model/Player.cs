@@ -14,16 +14,19 @@ public class Player
 
     public Player(string name)
     {
+        this.GameScore = 0;
+        this.StackCounter = 0;
+        this.Scores = new List<int>();
         this.Name = name;
     }
 
     public void Cover(GameCard aboveCard, GameCard belowCard, Grid grid, Game game)
     {
-        if (game.Rules.IsValidMove(aboveCard.position, belowCard.position, grid, "cover"))
+        if (game.Rules.IsValidMove(aboveCard.Position, belowCard.Position, grid, "cover"))
         {
             /* ADD logic */
-            aboveCard.position = belowCard.position;
-            grid.RemoveCard(belowCard.position);
+            aboveCard.Position = belowCard.Position;
+            grid.RemoveCard(belowCard.Position);
         }
         else
         {
@@ -34,7 +37,7 @@ public class Player
 
     public void Duck(GameCard cardToMove, Position position, Grid grid, Game game)
     {
-        if (game.Rules.IsValidMove(cardToMove.position, position, grid, "duck"))
+        if (game.Rules.IsValidMove(cardToMove.Position, position, grid, "duck"))
         {
             /* ADD logic */
             grid.SetCard(position, cardToMove);
