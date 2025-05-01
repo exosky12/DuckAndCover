@@ -23,6 +23,7 @@ public class Game
 
     public Game(List<Player> players)
     {
+        this.Rules = new ClassicRules();
         this.Players = players;
         this.CurrentPlayer = players[0];
         this._currentPlayerIndex = 0;

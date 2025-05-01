@@ -35,7 +35,7 @@ public class Grid
     {
         foreach (var card in GameCardsGrid)
         {
-            if (card.position.Row == p.Row && card.position.Column == p.Column)
+            if (card.Position.Row == p.Row && card.Position.Column == p.Column)
             {
                 return card;
             }
@@ -49,14 +49,14 @@ public class Grid
 
     public void SetCard(Position p, GameCard newCard)
     {
-        newCard.position = p;
+        newCard.Position = p;
     }
 
     public bool IsInGrid(Position p)
     {
         foreach (var card in GameCardsGrid)
         {
-            if (card.position.Row == p.Row && card.position.Column == p.Column)
+            if (card.Position.Row == p.Row && card.Position.Column == p.Column)
             {
                 return true;
             }
@@ -69,8 +69,8 @@ public class Grid
     {
         foreach (var card in GameCardsGrid)
         {
-            var rowDiff = Math.Abs((int)card.position.Row - (int)p.Row);
-            var colDiff = Math.Abs((int)card.position.Column - (int)p.Column);
+            var rowDiff = Math.Abs((int)card.Position.Row - (int)p.Row);
+            var colDiff = Math.Abs((int)card.Position.Column - (int)p.Column);
 
             if ((rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1))
             {
