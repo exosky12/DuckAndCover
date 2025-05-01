@@ -1,6 +1,6 @@
 namespace Model;
 
-public class GridGenerator
+public class GridGenerator : IGenerator<GameCard>
 {
     public List<GameCard> Grid { get; private set; } = new List<GameCard>();
     public List<GameCard> AllPossibleCards { get; private set; } = new List<GameCard>();
@@ -8,10 +8,10 @@ public class GridGenerator
 
     public GridGenerator()
     {
-        GenerateGrid();
+        Generate();
     }
 
-    private List<GameCard> GenerateGrid()
+    private List<GameCard> Generate()
     {
         var rand = new Random();
         while (Grid.Count < NbCards)

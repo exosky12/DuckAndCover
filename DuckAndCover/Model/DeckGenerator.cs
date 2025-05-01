@@ -1,6 +1,6 @@
 namespace Model;
 
-public class DeckGenerator
+public class DeckGenerator : IGenerator<DeckCard>
 {
     public List<DeckCard> Deck { get; private set; } = new List<DeckCard>();
 
@@ -8,6 +8,11 @@ public class DeckGenerator
     public List<DeckCard> AllPossibleCards { get; private set; } = new List<DeckCard>();
 
     public int NbCards = 52;
+
+    public DeckGenerator()
+    {
+        Generate();
+    }
 
     public List<DeckCard> Generate()
     {
