@@ -49,6 +49,7 @@ public class Grid
     public void SetCard(Position p, GameCard newCard)
     {
         newCard.Position = p;
+        GameCardsGrid.Add(newCard);
     }
 
     public bool IsInGrid(Position p)
@@ -64,7 +65,7 @@ public class Grid
         return false;
     }
 
-    public bool IsAdjacentToCard(Position p)
+    public (bool isAdjacent, GameCard? adjacentCard) IsAdjacentToCard(Position p)
     {
         foreach (var card in GameCardsGrid)
         {
@@ -73,21 +74,19 @@ public class Grid
 
             if ((rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1))
             {
-                return true;
+                return (true, card);
             }
         }
 
-        return false;
+        return (false, null);
     }
 
     public void RemoveCard(Position p)
     {
-        for (int i = 0; i < GameCardsGrid.Count; i++)
+        bool cardFound = IsInGrid(p);
+        if (cardFound)
         {
-            if (IsInGrid(p))
-            {
-                GameCardsGrid.RemoveAt(i);
-            }
+            GameCardsGrid.RemoveAll(card => card.Position.Row == p.Row && card.Position.Column == p.Column);
         }
     }
     

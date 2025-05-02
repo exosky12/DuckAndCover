@@ -10,9 +10,9 @@ public class GridGenerator : IGenerator<GameCard>
     {
         var positions = new List<Position>();
 
-        for (int row = 0; row < 3; row++)         // 3 lignes
+        for (int row = 1; row <= 3; row++)         // 3 lignes
         {
-            for (int col = 0; col < 4; col++)     // 4 colonnes
+            for (int col = 1; col <= 4; col++)     // 4 colonnes
             {
                 positions.Add(new Position(row, col));
             }

@@ -9,8 +9,12 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            WriteLine("Bienvenue sur Duck&Cover\n");
-            WriteLine("Combien de joueurs ?");
+            // Couleurs et style pour le texte du maître du jeu
+            ConsoleColor gameManagerColor = ConsoleColor.Cyan;
+            
+            WriteGameMaster("Bienvenue sur Duck&Cover!");
+            WriteGameMaster("Combien de joueurs ?");
+            
             string input = ReadLine();
             int nbJoueur;
 
@@ -19,85 +23,248 @@ namespace ConsoleApp
                 List<Player> players = new List<Player>();
                 while (players.Count < nbJoueur)
                 {
-                    WriteLine($"Pseudo du joueur numéro {players.Count + 1}:");
+                    WriteGameMaster($"Pseudo du joueur numéro {players.Count + 1}:");
                     string playerName = ReadLine();
                     while (string.IsNullOrEmpty(playerName))
                     {
-                        WriteLine("Pseudo invalide, changez le pseudo.");
+                        WriteGameMaster("Pseudo invalide, changez le pseudo.");
                         playerName = ReadLine();
                     }
 
                     Player player = new Player(playerName);
                     players.Add(player);
+                    WriteGameMaster($"Joueur {playerName} ajouté avec succès!");
                 }
 
-                Player testPlayer = players[0];
-
-                DisplayGrid(testPlayer.Grid);
-
+                // Création du jeu
+                Game game = new Game(players);
                 DeckGenerator deckGenerator = new DeckGenerator();
                 deckGenerator.Generate();
+                
+                // Menu principal
+                bool exitGame = false;
+                int currentPlayerIndex = 0;
 
-                DisplayDeck(deckGenerator.Deck);
-
-                foreach (Player p in players)
+                while (!exitGame)
                 {
-                    WriteLine($"\nJoueur: {p.Name} - Score: {p.GameScore}");
+                    if (deckGenerator.Deck.Count > 0)
+                    {
+                        DeckCard currentDeckCard = deckGenerator.Deck[0];
+
+                        WriteGameMaster($"Carte actuelle du deck : {currentDeckCard.Number}");
+
+                        bool anyPlayerCanPlay = false;
+
+                        foreach (Player p in players)
+                        {
+                            if (p.HasCardWithNumber(currentDeckCard.Number)) // Tu dois implémenter cette méthode dans Player
+                            {
+                                anyPlayerCanPlay = true;
+                                break;
+                            }
+                        }
+
+                        if (!anyPlayerCanPlay)
+                        {
+                            WriteGameMaster($"Aucun joueur n'a de carte avec le numéro {currentDeckCard.Number}. Carte défaussée.");
+                            deckGenerator.Deck.RemoveAt(0);
+                            game.CardPassed++; // Assure-toi que cette propriété existe dans Game
+                            continue; // Recommencer avec la prochaine carte
+                        }
+                    }
+                    else
+                    {
+                        WriteGameMaster("Le deck est vide. La partie est terminée !");
+                        exitGame = true;
+                        break;
+                    }
+
+                    Player currentPlayer = players[currentPlayerIndex];
+                    
+                    WriteGameMaster($"\nC'est au tour de {currentPlayer.Name}");
+                    DisplayGrid(currentPlayer.Grid);
+                    WriteGameMaster("Que souhaitez-vous faire ?");
+                    WriteLine("\n1. Cover (recouvrir une carte)");
+                    WriteLine("2. Duck (déplacer une carte)");
+                    WriteLine("3. Call Coin (passer son tour)");
+                    WriteLine("4. Afficher les grilles de tous les joueurs");
+                    WriteLine("5. Afficher les scores");
+                    WriteLine("6. Quitter la partie");
+                    
+                    Write("\nVotre choix: ");
+                    string choice = ReadLine();
+
+                    switch (choice)
+                    {
+                        case "1": // Cover
+                            PerformCoverAction(currentPlayer, game, ref currentPlayerIndex, players);
+                            break;
+                        case "2": // Duck
+                            PerformDuckAction(currentPlayer, game, ref currentPlayerIndex, players);
+                            break;
+                        case "3": // Call Coin
+                            WriteGameMaster($"{currentPlayer.Name} dit : Coin ! Je n'ai pas de carte à jouer.");
+                            currentPlayer.CallCoin(game);
+                            currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+                            break;
+                        case "4": // Afficher les grilles de tous les joueurs
+                            foreach (Player p in players)
+                            {
+                                WriteGameMaster($"Grille de {p.Name}:");
+                                DisplayGrid(p.Grid);
+                            }
+                            break;
+                        case "5": // Afficher les scores
+                            DisplayPlayerScores(players);
+                            break;
+                        case "6": // Quitter
+                            exitGame = true;
+                            WriteGameMaster("Merci d'avoir joué à Duck&Cover!");
+                            break;
+                        default:
+                            WriteGameMaster("Choix invalide. Veuillez réessayer.");
+                            break;
+                    }
                 }
+            }
+            else
+            {
+                WriteGameMaster("Nombre de joueurs invalide. Veuillez redémarrer le jeu.");
+            }
+        }
 
-                GameCard card1 = testPlayer.Grid.GameCardsGrid[0];
-                GameCard card2 = testPlayer.Grid.GameCardsGrid[1];
-                Game game = new Game(players);
+        static void WriteGameMaster(string message)
+        {
+            ConsoleColor originalColor = ForegroundColor;
+            ForegroundColor = ConsoleColor.Cyan;
+            WriteLine($"\n[Maître du jeu] {message}");
+            ForegroundColor = originalColor;
+        }
 
-                WriteLine("\nTest de la fonction Cover:");
-
-                Position from = new Position(card1.Position.Row, card1.Position.Column);
-                Position to = new Position(card2.Position.Row, card2.Position.Column);
-
-                WriteLine($"Carte de numéro: {card1.Number} et de splash {card1.Splash}, " +
-                          $"de la ligne {from.Row + 1} colonne {from.Column + 1} " +
-                          $"va recouvrir la carte de numéro: {card2.Number} et de splash {card2.Splash}, " +
-                          $"de la ligne {to.Row + 1} colonne {to.Column + 1}.");
-
-                testPlayer.Cover(card1, card2, testPlayer.Grid, game);
-
-                WriteLine("\nGrille après le mouvement de couverture :");
-                DisplayGrid(testPlayer.Grid);
-
-                WriteLine("\nTest de la fonction Duck:");
-
-                GameCard duckedCard = testPlayer.Grid.GetCard(card1.Position);
-                Position oldDuckPos = new Position(duckedCard.Position.Row, duckedCard.Position.Column);
-                Position newDuckPos = new Position(3, 3);
-
-                WriteLine($"Tentative de déplacement de la carte {duckedCard.Number} (splash {duckedCard.Splash}) " +
-                          $"de la position ({oldDuckPos.Row + 1}, {oldDuckPos.Column + 1}) " +
-                          $"vers la position ({newDuckPos.Row + 1}, {newDuckPos.Column + 1}).");
-
-                testPlayer.Duck(duckedCard, newDuckPos, testPlayer.Grid, game);
-
-                GameCard movedCard = testPlayer.Grid.GetCard(newDuckPos);
-
-                if (movedCard == duckedCard)
+        static void PerformCoverAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players)
+        {
+            WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir?");
+            WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
+            string fromPosition = ReadLine();
+            
+            WriteGameMaster("Quelle carte souhaitez-vous recouvrir?");
+            WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,2");
+            string toPosition = ReadLine();
+            
+            try
+            {
+                var fromPos = ParsePosition(fromPosition);
+                var toPos = ParsePosition(toPosition);
+                
+                GameCard fromCard = player.Grid.GetCard(fromPos);
+                GameCard toCard = player.Grid.GetCard(toPos);
+                
+                if (fromCard == null || toCard == null)
                 {
-                    WriteLine("Déplacement réussi !");
+                    WriteGameMaster("Une des positions ne contient pas de carte!");
+                    return;
+                }
+                
+                WriteGameMaster($"Tentative de recouvrir la carte {toCard.Number} (splash {toCard.Splash}) " +
+                              $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
+                
+                bool success = player.Cover(fromCard, toCard, player.Grid, game);
+                
+                if (success)
+                {
+                    WriteGameMaster("Recouvrement réussi!");
+                    // Passer au joueur suivant après une action réussie
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
                 }
                 else
                 {
-                    WriteLine("Déplacement invalide, passage au joueur suivant.");
+                    WriteGameMaster("Recouvrement impossible avec ces cartes.");
                 }
+            }
+            catch (Exception e)
+            {
+                WriteGameMaster($"Erreur: {e.Message}");
+            }
+        }
+        
+        static void PerformDuckAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players)
+        {
+            WriteGameMaster("Quelle carte souhaitez-vous déplacer?");
+            WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
+            string fromPosition = ReadLine();
+            
+            WriteGameMaster("Où souhaitez-vous la déplacer?");
+            WriteGameMaster("Entrez la nouvelle position (ligne,colonne) - exemple: 2,3");
+            string toPosition = ReadLine();
+            
+            try
+            {
+                var fromPos = ParsePosition(fromPosition);
+                var toPos = ParsePosition(toPosition);
+                
+                GameCard card = player.Grid.GetCard(fromPos);
+                
+                if (card == null)
+                {
+                    WriteGameMaster("Il n'y a pas de carte à cette position!");
+                    return;
+                }
+                
+                WriteGameMaster($"Tentative de déplacement de la carte {card.Number} (splash {card.Splash}) " +
+                              $"de la position ({fromPos.Row}, {fromPos.Column}) " +
+                              $"vers la position ({toPos.Row}, {toPos.Column}).");
+                
+                bool success = player.Duck(card, toPos, player.Grid, game);
+                
+                if (success)
+                {
+                    WriteGameMaster("Déplacement réussi!");
+                    // Passer au joueur suivant après une action réussie
+                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+                }
+                else
+                {
+                    WriteGameMaster("Déplacement impossible vers cette position.");
+                }
+            }
+            catch (Exception e)
+            {
+                WriteGameMaster($"Erreur: {e.Message}");
+            }
+        }
+        
+        static Position ParsePosition(string input)
+        {
+            string[] parts = input.Split(',');
+            if (parts.Length != 2)
+                throw new ArgumentException("Format de position invalide. Utilisez le format: ligne,colonne");
+                
+            if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
+                throw new ArgumentException("Les valeurs de ligne et colonne doivent être numériques");
+                
+            return new Position(row, col);
+        }
 
-                WriteLine("\nGrille après le mouvement Duck:");
-                DisplayGrid(testPlayer.Grid);
-
-                WriteLine("\nTest de la fonction CallCoin:");
-                testPlayer.CallCoin();
+        static void DisplayPlayerScores(List<Player> players)
+        {
+            WriteGameMaster("\nScores actuels:");
+            foreach (Player p in players)
+            {
+                WriteLine($"  {p.Name}: {p.GameScore} points");
             }
         }
 
         static void DisplayGrid(Grid grid)
         {
-            WriteLine("\n================== Grille de jeu ==================");
+            WriteLine("\n╔════════════════════ GRILLE DE JEU ════════════════════╗");
+            
+            // Si la grille est vide, afficher un message
+            if (grid.GameCardsGrid.Count == 0)
+            {
+                WriteLine("│                Grille actuellement vide                 │");
+                WriteLine("╚══════════════════════════════════════════════════════╝");
+                return;
+            }
 
             var positions = new List<Position>();
             foreach (var card in grid.GameCardsGrid)
@@ -105,25 +272,26 @@ namespace ConsoleApp
 
             var (minX, maxX, minY, maxY) = GetBounds(positions);
 
+            // Afficher les indices de colonnes
             Write("    ");
             for (int col = minX; col <= maxX; col++)
             {
-                Write($"  {col + 1,-2}   ");
+                Write($"   {col}    ");
             }
-
             WriteLine();
 
+            // Ligne de séparation supérieure
             Write("    ");
             for (int col = minX; col <= maxX; col++)
             {
-                Write("-------");
+                Write("────────");
             }
-
             WriteLine();
 
             for (int row = minY; row <= maxY; row++)
             {
-                Write($" {row + 1,-2} |");
+                // Afficher l'indice de ligne
+                Write($" {row} │");
 
                 for (int col = minX; col <= maxX; col++)
                 {
@@ -133,58 +301,58 @@ namespace ConsoleApp
                         SetSplashColor(card.Splash);
                         Write($" {card.Number:D2}-{card.Splash,-4}");
                         ResetColor();
-                        Write("|");
+                        Write("│");
                     }
                     else
                     {
-                        Write($"        |");
+                        Write($"        │");
                     }
                 }
 
                 WriteLine();
 
+                // Ligne de séparation
                 Write("    ");
                 for (int col = minX; col <= maxX; col++)
                 {
-                    Write("-------");
+                    Write("────────");
                 }
-
                 WriteLine();
             }
+            
+            WriteLine("╚══════════════════════════════════════════════════════╝");
         }
 
         static void SetSplashColor(int splash)
         {
-            if (splash <= 0)
+            if (splash == 0)
             {
                 ForegroundColor = ConsoleColor.White;
             }
-            else if (splash < 20)
+            else if (splash == 1)
             {
                 ForegroundColor = ConsoleColor.Yellow;
             }
-            else if (splash < 40)
+            else if (splash == 2)
             {
                 ForegroundColor = ConsoleColor.DarkYellow;
             }
-            else if (splash < 60)
+            else if (splash == 3)
             {
                 ForegroundColor = ConsoleColor.Red;
             }
-            else if (splash < 80)
+            else if (splash == 4)
             {
                 ForegroundColor = ConsoleColor.DarkRed;
             }
             else
             {
                 ForegroundColor = ConsoleColor.Magenta;
-                BackgroundColor = ConsoleColor.DarkRed;
             }
         }
 
         static (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
         {
-            // Même implémentation que dans le code original...
             var minX = int.MaxValue;
             var maxX = int.MinValue;
             var minY = int.MaxValue;
@@ -198,14 +366,30 @@ namespace ConsoleApp
                 if (pos.Row > maxY) maxY = pos.Row;
             }
 
+            // Si aucune carte, définir des valeurs par défaut
+            if (minX == int.MaxValue)
+            {
+                minX = 0;
+                maxX = 0;
+                minY = 0;
+                maxY = 0;
+            }
+
             return (minX, maxX, minY, maxY);
         }
 
         static void DisplayDeck(List<DeckCard> deck)
         {
-            WriteLine("\n==================== Deck de cartes ====================");
-            foreach (var card in deck)
+            WriteLine("\n╔════════════════════ DECK DE CARTES ════════════════════╗");
+            
+            int cardsPerRow = 8;
+            for (int i = 0; i < deck.Count; i++)
             {
+                var card = deck[i];
+                
+                if (i % cardsPerRow == 0 && i > 0)
+                    WriteLine();
+                
                 string cardDisplay = card.Bonus == Bonus.Max ? "MAX" :
                     card.Bonus == Bonus.Again ? "AGAIN" :
                     $"{card.Number:D2}";
@@ -223,11 +407,11 @@ namespace ConsoleApp
                     ForegroundColor = ConsoleColor.Gray;
                 }
 
-                Write($"| {cardDisplay,-6} ");
+                Write($"│ {cardDisplay,-6} ");
                 ResetColor();
             }
 
-            WriteLine("\n----------------------------------------------------------");
+            WriteLine("\n╚══════════════════════════════════════════════════════╝");
         }
     }
 }
