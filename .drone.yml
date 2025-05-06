@@ -19,7 +19,7 @@ steps:
     commands:
       - cd DuckAndCover/
       # Installer les workloads nécessaires avant la restauration
-      - dotnet workload install microsoft-ios-sdk
+      - dotnet workload install ios
       - dotnet restore DuckAndCoverMAUIonly.sln
       - dotnet build DuckAndCoverMAUIonly.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
   
