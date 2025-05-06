@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run MAUI (MacCatalyst)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-maccatalyst",
+      "program": "${workspaceFolder}/bin/Debug/net9.0-maccatalyst/DuckAndCover.app/Contents/MacOS/DuckAndCover",
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false
+    }
+  ]
+}
