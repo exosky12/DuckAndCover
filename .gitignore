@@ -405,3 +405,9 @@ FodyWeavers.xsd
 .DS_Store
 ./vscode/*
 .idea/*
+
+
+
+# CONFIG CSPROJ
+
+*.local.csproj
