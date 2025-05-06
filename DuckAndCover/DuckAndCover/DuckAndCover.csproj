@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Déclaration des frameworks ciblés -->
     <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('ios'))">$(TargetFrameworks);net9.0-ios</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('maccatalyst'))">$(TargetFrameworks);net9.0-maccatalyst</TargetFrameworks>
 
-    <!-- Sortie de l'application -->
     <OutputType>Exe</OutputType>
     <RootNamespace>DuckAndCover</RootNamespace>
     <UseMaui>true</UseMaui>
@@ -12,29 +13,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <!-- Informations d'application -->
     <ApplicationTitle>DuckAndCover</ApplicationTitle>
     <ApplicationId>com.companyname.duckandcover</ApplicationId>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <WindowsPackageType>None</WindowsPackageType>
 
-    <!-- Versions minimum des plateformes -->
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-
-    <!-- Conditions pour MacCatalyst et Android -->
-    <UseMacCatalyst Condition="'$(OS)' == 'Darwin'">true</UseMacCatalyst>
-    <UseAndroid Condition="'$(OS)' == 'Unix'">true</UseAndroid>
-
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Icône, splash, images -->
     <MauiIcon Include="Resources\AppIcon\appicon.svg" />
     <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
     <MauiImage Include="Resources\Images\*" />
@@ -43,14 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Packages -->
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
     <PackageReference Include="Plugin.Maui.Audio" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <!-- XAML pages -->
     <MauiXaml Update="Pages\Home.xaml" SubType="Designer" />
     <MauiXaml Update="Pages\Credits.xaml" SubType="Designer" />
     <MauiXaml Update="Pages\MenuPlayer.xaml" Generator="MSBuild:Compile" />
@@ -59,7 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Code-behind -->
     <Compile Update="Pages\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
       <SubType>Code</SubType>
