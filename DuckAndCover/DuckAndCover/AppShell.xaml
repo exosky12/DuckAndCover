@@ -8,6 +8,8 @@
     FlyoutBehavior="Flyout"
     Shell.NavBarIsVisible="False"
     Title="DuckAndCover">
+    
+    <!-- Test -->
 
     <ShellContent
         Title="Home"
