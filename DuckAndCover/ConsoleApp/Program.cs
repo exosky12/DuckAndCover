@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Model;
 using static System.Console;
 
+
 namespace ConsoleApp
 {
     class Program
@@ -82,14 +83,9 @@ namespace ConsoleApp
                     Player currentPlayer = players[currentPlayerIndex];
                     
                     WriteGameMaster($"\nC'est au tour de {currentPlayer.Name}");
-                    DisplayGrid(currentPlayer.Grid);
+                    Utils.DisplayGrid(currentPlayer);
                     WriteGameMaster("Que souhaitez-vous faire ?");
-                    WriteLine("\n1. Cover (recouvrir une carte)");
-                    WriteLine("2. Duck (déplacer une carte)");
-                    WriteLine("3. Call Coin (passer son tour)");
-                    WriteLine("4. Afficher les grilles de tous les joueurs");
-                    WriteLine("5. Afficher les scores");
-                    WriteLine("6. Quitter la partie");
+                    Utils.DisplayMenu();
                     
                     Write("\nVotre choix: ");
                     string choice = ReadLine();
@@ -108,14 +104,14 @@ namespace ConsoleApp
                             currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
                             break;
                         case "4": // Afficher les grilles de tous les joueurs
-                            foreach (Player p in players)
+                            foreach (Player player in players)
                             {
-                                WriteGameMaster($"Grille de {p.Name}:");
-                                DisplayGrid(p.Grid);
+                                WriteGameMaster($"Grille de {player.Name}:");
+                                Utils.DisplayGrid(player);
                             }
                             break;
                         case "5": // Afficher les scores
-                            DisplayPlayerScores(players);
+                            Utils.DisplayPlayerScores(players);
                             break;
                         case "6": // Quitter
                             exitGame = true;
@@ -153,8 +149,8 @@ namespace ConsoleApp
             
             try
             {
-                var fromPos = ParsePosition(fromPosition);
-                var toPos = ParsePosition(toPosition);
+                var fromPos = Utils.ParsePosition(fromPosition);
+                var toPos = Utils.ParsePosition(toPosition);
                 
                 GameCard fromCard = player.Grid.GetCard(fromPos);
                 GameCard toCard = player.Grid.GetCard(toPos);
@@ -199,8 +195,8 @@ namespace ConsoleApp
             
             try
             {
-                var fromPos = ParsePosition(fromPosition);
-                var toPos = ParsePosition(toPosition);
+                var fromPos = Utils.ParsePosition(fromPosition);
+                var toPos = Utils.ParsePosition(toPosition);
                 
                 GameCard card = player.Grid.GetCard(fromPos);
                 
@@ -233,185 +229,7 @@ namespace ConsoleApp
             }
         }
         
-        static Position ParsePosition(string input)
-        {
-            string[] parts = input.Split(',');
-            if (parts.Length != 2)
-                throw new ArgumentException("Format de position invalide. Utilisez le format: ligne,colonne");
-                
-            if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
-                throw new ArgumentException("Les valeurs de ligne et colonne doivent être numériques");
-                
-            return new Position(row, col);
-        }
 
-        static void DisplayPlayerScores(List<Player> players)
-        {
-            WriteGameMaster("\nScores actuels:");
-            foreach (Player p in players)
-            {
-                WriteLine($"  {p.Name}: {p.GameScore} points");
-            }
-        }
-
-        static void DisplayGrid(Grid grid)
-        {
-            WriteLine("\n╔════════════════════ GRILLE DE JEU ════════════════════╗");
-            
-            // Si la grille est vide, afficher un message
-            if (grid.GameCardsGrid.Count == 0)
-            {
-                WriteLine("│                Grille actuellement vide                 │");
-                WriteLine("╚══════════════════════════════════════════════════════╝");
-                return;
-            }
-
-            var positions = new List<Position>();
-            foreach (var card in grid.GameCardsGrid)
-                positions.Add(card.Position);
-
-            var (minX, maxX, minY, maxY) = GetBounds(positions);
-
-            // Afficher les indices de colonnes
-            Write("    ");
-            for (int col = minX; col <= maxX; col++)
-            {
-                Write($"   {col}    ");
-            }
-            WriteLine();
-
-            // Ligne de séparation supérieure
-            Write("    ");
-            for (int col = minX; col <= maxX; col++)
-            {
-                Write("────────");
-            }
-            WriteLine();
-
-            for (int row = minY; row <= maxY; row++)
-            {
-                // Afficher l'indice de ligne
-                Write($" {row} │");
-
-                for (int col = minX; col <= maxX; col++)
-                {
-                    var card = grid.GetCard(new Position(row, col));
-                    if (card != null)
-                    {
-                        SetSplashColor(card.Splash);
-                        Write($" {card.Number:D2}-{card.Splash,-4}");
-                        ResetColor();
-                        Write("│");
-                    }
-                    else
-                    {
-                        Write($"        │");
-                    }
-                }
-
-                WriteLine();
-
-                // Ligne de séparation
-                Write("    ");
-                for (int col = minX; col <= maxX; col++)
-                {
-                    Write("────────");
-                }
-                WriteLine();
-            }
-            
-            WriteLine("╚══════════════════════════════════════════════════════╝");
-        }
-
-        static void SetSplashColor(int splash)
-        {
-            if (splash == 0)
-            {
-                ForegroundColor = ConsoleColor.White;
-            }
-            else if (splash == 1)
-            {
-                ForegroundColor = ConsoleColor.Yellow;
-            }
-            else if (splash == 2)
-            {
-                ForegroundColor = ConsoleColor.DarkYellow;
-            }
-            else if (splash == 3)
-            {
-                ForegroundColor = ConsoleColor.Red;
-            }
-            else if (splash == 4)
-            {
-                ForegroundColor = ConsoleColor.DarkRed;
-            }
-            else
-            {
-                ForegroundColor = ConsoleColor.Magenta;
-            }
-        }
-
-        static (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
-        {
-            var minX = int.MaxValue;
-            var maxX = int.MinValue;
-            var minY = int.MaxValue;
-            var maxY = int.MinValue;
-
-            foreach (var pos in positions)
-            {
-                if (pos.Column < minX) minX = pos.Column;
-                if (pos.Column > maxX) maxX = pos.Column;
-                if (pos.Row < minY) minY = pos.Row;
-                if (pos.Row > maxY) maxY = pos.Row;
-            }
-
-            // Si aucune carte, définir des valeurs par défaut
-            if (minX == int.MaxValue)
-            {
-                minX = 0;
-                maxX = 0;
-                minY = 0;
-                maxY = 0;
-            }
-
-            return (minX, maxX, minY, maxY);
-        }
-
-        static void DisplayDeck(List<DeckCard> deck)
-        {
-            WriteLine("\n╔════════════════════ DECK DE CARTES ════════════════════╗");
-            
-            int cardsPerRow = 8;
-            for (int i = 0; i < deck.Count; i++)
-            {
-                var card = deck[i];
-                
-                if (i % cardsPerRow == 0 && i > 0)
-                    WriteLine();
-                
-                string cardDisplay = card.Bonus == Bonus.Max ? "MAX" :
-                    card.Bonus == Bonus.Again ? "AGAIN" :
-                    $"{card.Number:D2}";
-
-                if (card.Bonus == Bonus.Max)
-                {
-                    ForegroundColor = ConsoleColor.Blue;
-                }
-                else if (card.Bonus == Bonus.Again)
-                {
-                    ForegroundColor = ConsoleColor.Green;
-                }
-                else
-                {
-                    ForegroundColor = ConsoleColor.Gray;
-                }
-
-                Write($"│ {cardDisplay,-6} ");
-                ResetColor();
-            }
-
-            WriteLine("\n╚══════════════════════════════════════════════════════╝");
-        }
+        
     }
 }
