@@ -9,10 +9,19 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            // Couleurs et style pour le texte du maître du jeu
+            string Title = @"
+______            _     ___            _ _____                     
+|  _  \          | |   / _ \          | /  __ \                    
+| | | |_   _  ___| | _/ /_\ \_ __   __| | /  \/ _____   _____ _ __ 
+| | | | | | |/ __| |/ /  _  | '_ \ / _` | |    / _ \ \ / / _ \ '__|
+| |/ /| |_| | (__|   <| | | | | | | (_| | \__/\ (_) \ V /  __/ |   
+|___/  \__,_|\___|_|\_\_| |_/_| |_|\__,_|\____/\___/ \_/ \___|_|   
+                                                                   
+                                                                   
+";
             ConsoleColor gameManagerColor = ConsoleColor.Cyan;
             
-            WriteGameMaster("Bienvenue sur Duck&Cover!");
+            WriteGameMaster(Title);
             WriteGameMaster("Combien de joueurs ?");
             
             string input = ReadLine();
@@ -50,6 +59,8 @@ namespace ConsoleApp
                     if (deckGenerator.Deck.Count > 0)
                     {
                         DeckCard currentDeckCard = deckGenerator.Deck[0];
+                        deckGenerator.Deck.RemoveAt(0);
+                        WriteLine($"///////////{currentDeckCard}//////////////////////////////////////////////////////////////");
 
                         WriteGameMaster($"Carte actuelle du deck : {currentDeckCard.Number}");
 
@@ -80,7 +91,8 @@ namespace ConsoleApp
                     }
 
                     Player currentPlayer = players[currentPlayerIndex];
-                    
+                    DeckCard currentdeckCard = deckGenerator.Deck[0];
+
                     WriteGameMaster($"\nC'est au tour de {currentPlayer.Name}");
                     DisplayGrid(currentPlayer.Grid);
                     WriteGameMaster("Que souhaitez-vous faire ?");
@@ -97,7 +109,7 @@ namespace ConsoleApp
                     switch (choice)
                     {
                         case "1": // Cover
-                            PerformCoverAction(currentPlayer, game, ref currentPlayerIndex, players);
+                            PerformCoverAction(currentPlayer, game, ref currentPlayerIndex, players, currentdeckCard);
                             break;
                         case "2": // Duck
                             PerformDuckAction(currentPlayer, game, ref currentPlayerIndex, players);
@@ -141,7 +153,7 @@ namespace ConsoleApp
             ForegroundColor = originalColor;
         }
 
-        static void PerformCoverAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players)
+        static void PerformCoverAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players,DeckCard currentDeckCard)
         {
             WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir?");
             WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
@@ -155,10 +167,15 @@ namespace ConsoleApp
             {
                 var fromPos = ParsePosition(fromPosition);
                 var toPos = ParsePosition(toPosition);
-                
+
                 GameCard fromCard = player.Grid.GetCard(fromPos);
                 GameCard toCard = player.Grid.GetCard(toPos);
-                
+                if (!game.Rules.isTheSameCard(fromCard,currentDeckCard))
+                {
+                    WriteGameMaster("Impossible de jouer cette carte car ce n'est pas la carte actuelle");
+                    return;
+                }
+
                 if (fromCard == null || toCard == null)
                 {
                     WriteGameMaster("Une des positions ne contient pas de carte!");
@@ -169,6 +186,8 @@ namespace ConsoleApp
                               $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
                 
                 bool success = player.Cover(fromCard, toCard, player.Grid, game);
+
+                
                 
                 if (success)
                 {
@@ -305,7 +324,7 @@ namespace ConsoleApp
                     }
                     else
                     {
-                        Write($"        │");
+                        Write($"       │");
                     }
                 }
 

@@ -11,4 +11,6 @@ public interface IRules
     bool IsValidMove(Position position, Position newPosition, Grid grid, string funcName);
 
     bool IsGameOver(int cardPassed, int stackCounter);
+
+    bool isTheSameCard(GameCard currentCard, DeckCard currentDeckCard);
 }
