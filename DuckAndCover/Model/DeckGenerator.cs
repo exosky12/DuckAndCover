@@ -34,11 +34,14 @@ public class DeckGenerator : IGenerator<DeckCard>
     public List<DeckCard> Generate()
     {
         var rand = new Random();
-        while (Deck.Count < AllPossibleCards.Count)
+
+        while (Deck.Count < 52 && AllPossibleCards.Count > 0)
         {
-            var card = AllPossibleCards[rand.Next(1, AllPossibleCards.Count)];
+            int index = rand.Next(AllPossibleCards.Count);
+            var card = AllPossibleCards[index];
+
             Deck.Add(card);
-            AllPossibleCards.Remove(card);
+            AllPossibleCards.RemoveAt(index);
         }
 
         return Deck;

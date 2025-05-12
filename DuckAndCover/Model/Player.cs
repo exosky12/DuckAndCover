@@ -6,6 +6,8 @@ public class Player
 
     public int GameScore { get; set; }
 
+    public bool HasPassed { get; set; }
+
     public List<int> Scores { get; set; }
 
     public int TotalScore => Scores.Sum();
@@ -18,6 +20,7 @@ public class Player
         this.StackCounter = 0;
         this.Scores = new List<int>();
         this.Name = name;
+        this.HasPassed = false;
     }
     
     public Grid Grid { get; set; } = new Grid();
@@ -66,7 +69,7 @@ public class Player
         }
     }
     public void CallCoin(Game game)
-    {
+    {   
         game.NextPlayer();
         /* FAIRE lien entre modèles et vues pour afficher quelque chose à l'écran comme quoi on peut pas jouer donc on dit "coin" */
     }
