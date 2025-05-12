@@ -15,15 +15,15 @@ ______            _     ___            _ _____
 | | | |_   _  ___| | _/ /_\ \_ __   __| | /  \/ _____   _____ _ __ 
 | | | | | | |/ __| |/ /  _  | '_ \ / _` | |    / _ \ \ / / _ \ '__|
 | |/ /| |_| | (__|   <| | | | | | | (_| | \__/\ (_) \ V /  __/ |   
-|___/  \__,_|\___|_|\_\_| |_/_| |_|\__,_|\____/\___/ \_/ \___|_|   
+|___/  \__,_|\___|_|\_\_| |_|_| |_|\__,_|\____/\___/ \_/ \___|_|   
                                                                    
                                                                    
 ";
             ConsoleColor gameManagerColor = ConsoleColor.Cyan;
-            
+
             WriteGameMaster(Title);
             WriteGameMaster("Combien de joueurs ?");
-            
+
             string input = ReadLine();
             int nbJoueur;
 
@@ -45,53 +45,60 @@ ______            _     ___            _ _____
                     WriteGameMaster($"Joueur {playerName} ajouté avec succès!");
                 }
 
-                // Création du jeu
                 Game game = new Game(players);
                 DeckGenerator deckGenerator = new DeckGenerator();
                 deckGenerator.Generate();
-                
-                // Menu principal
+
                 bool exitGame = false;
                 int currentPlayerIndex = 0;
+                int? lastNumber = null;
 
                 while (!exitGame)
                 {
-                    if (deckGenerator.Deck.Count > 0)
-                    {
-                        DeckCard currentDeckCard = deckGenerator.Deck[0];
-                        deckGenerator.Deck.RemoveAt(0);
-                        WriteLine($"///////////{currentDeckCard}//////////////////////////////////////////////////////////////");
-
-                        WriteGameMaster($"Carte actuelle du deck : {currentDeckCard.Number}");
-
-                        bool anyPlayerCanPlay = false;
-
-                        foreach (Player p in players)
-                        {
-                            if (p.HasCardWithNumber(currentDeckCard.Number)) // Tu dois implémenter cette méthode dans Player
-                            {
-                                anyPlayerCanPlay = true;
-                                break;
-                            }
-                        }
-
-                        if (!anyPlayerCanPlay)
-                        {
-                            WriteGameMaster($"Aucun joueur n'a de carte avec le numéro {currentDeckCard.Number}. Carte défaussée.");
-                            deckGenerator.Deck.RemoveAt(0);
-                            game.CardPassed++; // Assure-toi que cette propriété existe dans Game
-                            continue; // Recommencer avec la prochaine carte
-                        }
-                    }
-                    else
+                    if (deckGenerator.Deck.Count == 0)
                     {
                         WriteGameMaster("Le deck est vide. La partie est terminée !");
                         exitGame = true;
                         break;
                     }
 
+                    DeckCard currentDeckCard = deckGenerator.Deck[0];
                     Player currentPlayer = players[currentPlayerIndex];
-                    DeckCard currentdeckCard = deckGenerator.Deck[0];
+
+                    if (currentDeckCard.Bonus == Bonus.Again && lastNumber.HasValue)
+                    {
+                        currentDeckCard.Number = lastNumber.Value;
+                        WriteGameMaster($"Carte Again active ! Le numéro utilisé est {currentDeckCard.Number}");
+                    }
+                    else if (currentDeckCard.Bonus == Bonus.Max)
+                    {
+                        int maxNumber = currentPlayer.Grid.GameCardsGrid.Max(c => c.Number);
+                        currentDeckCard.Number = maxNumber;
+                        WriteGameMaster($"Carte MAX ! Le numéro utilisé est {maxNumber} (le plus grand de la grille de {currentPlayer.Name})");
+                    }
+                    else
+                    {
+                        lastNumber = currentDeckCard.Number;
+                        WriteGameMaster($"Carte actuelle du deck : {(currentDeckCard.Number == 0 ? currentDeckCard.Bonus.ToString() : currentDeckCard.Number.ToString())}");
+                    }
+
+                    bool allPassed = players.All(p => p.HasPassed);
+                    if (allPassed)
+                    {
+                        WriteGameMaster("Tous les joueurs ont passé leur tour. Carte défaussée.");
+                        deckGenerator.Deck.RemoveAt(0);
+                        foreach (var p in players)
+                            p.HasPassed = false;
+                        continue;
+                    }
+
+                    if (game.Rules.IsGameOver(game.CardPassed, players[currentPlayerIndex].StackCounter))
+                    {
+                        WriteGameMaster("La partie est terminée !");
+                        DisplayPlayerScores(players);
+                        exitGame = true;
+                        break;
+                    }
 
                     WriteGameMaster($"\nC'est au tour de {currentPlayer.Name}");
                     DisplayGrid(currentPlayer.Grid);
@@ -102,36 +109,41 @@ ______            _     ___            _ _____
                     WriteLine("4. Afficher les grilles de tous les joueurs");
                     WriteLine("5. Afficher les scores");
                     WriteLine("6. Quitter la partie");
-                    
+                    WriteLine("7. Afficher tout le deck");
+
                     Write("\nVotre choix: ");
                     string choice = ReadLine();
 
                     switch (choice)
                     {
-                        case "1": // Cover
-                            PerformCoverAction(currentPlayer, game, ref currentPlayerIndex, players, currentdeckCard);
+                        case "1":
+                            PerformCoverAction(currentPlayer, game, ref currentPlayerIndex, players, currentDeckCard);
                             break;
-                        case "2": // Duck
+                        case "2":
                             PerformDuckAction(currentPlayer, game, ref currentPlayerIndex, players);
                             break;
-                        case "3": // Call Coin
+                        case "3":
                             WriteGameMaster($"{currentPlayer.Name} dit : Coin ! Je n'ai pas de carte à jouer.");
                             currentPlayer.CallCoin(game);
+                            currentPlayer.HasPassed = true;
                             currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
                             break;
-                        case "4": // Afficher les grilles de tous les joueurs
+                        case "4":
                             foreach (Player p in players)
                             {
                                 WriteGameMaster($"Grille de {p.Name}:");
                                 DisplayGrid(p.Grid);
                             }
                             break;
-                        case "5": // Afficher les scores
+                        case "5":
                             DisplayPlayerScores(players);
                             break;
-                        case "6": // Quitter
+                        case "6":
                             exitGame = true;
                             WriteGameMaster("Merci d'avoir joué à Duck&Cover!");
+                            break;
+                        case "7":
+                            DisplayFullDeck(deckGenerator.Deck);
                             break;
                         default:
                             WriteGameMaster("Choix invalide. Veuillez réessayer.");
@@ -144,6 +156,53 @@ ______            _     ___            _ _____
                 WriteGameMaster("Nombre de joueurs invalide. Veuillez redémarrer le jeu.");
             }
         }
+
+
+        static void DisplayFullDeck(List<DeckCard> deck)
+        {
+            WriteLine("\n╔═══════════════════════════ DECK COMPLET ═══════════════════════════╗");
+
+            if (deck.Count == 0)
+            {
+                WriteLine("║                         Le deck est vide.                        ║");
+                WriteLine("╚══════════════════════════════════════════════════════════════════╝");
+                return;
+            }
+
+            int count = 0;
+            foreach (var card in deck)
+            {
+                string cardText = card.Bonus switch
+                {
+                    Bonus.Max => "MAX",
+                    Bonus.Again => "AGAIN",
+                    _ => card.Number.ToString("D2")
+                };
+
+                // Couleurs par bonus
+                switch (card.Bonus)
+                {
+                    case Bonus.Max:
+                        ForegroundColor = ConsoleColor.Blue;
+                        break;
+                    case Bonus.Again:
+                        ForegroundColor = ConsoleColor.Green;
+                        break;
+                    default:
+                        ForegroundColor = ConsoleColor.Gray;
+                        break;
+                }
+
+                Write($"| {cardText,-6} ");
+                ResetColor();
+
+                count++;
+                if (count % 6 == 0) WriteLine(); // Nouvelle ligne tous les 6
+            }
+
+            WriteLine("\n╚══════════════════════════════════════════════════════════════════╝");
+        }
+
 
         static void WriteGameMaster(string message)
         {
