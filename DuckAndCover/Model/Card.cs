@@ -2,7 +2,7 @@ namespace Model;
 
 public abstract class Card
 {
-    public int Number { get; private set; }
+    public int Number { get; set; }
 
     protected Card(int number)
     {
