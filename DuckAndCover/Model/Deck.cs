@@ -2,7 +2,8 @@ namespace Model;
 
 public class Deck
 {
-    public List<DeckCard> Cards;
+    public List<DeckCard> Cards { get; private set; }
+
 
     public Deck()
     {

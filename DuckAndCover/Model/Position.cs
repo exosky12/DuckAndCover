@@ -1,6 +1,6 @@
 namespace Model;
 
-public class Position
+public sealed class Position
 {
     public int Row { get; private set; }
     public int Column { get; private set; }

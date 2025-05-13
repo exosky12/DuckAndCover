@@ -51,13 +51,13 @@ public class PlayerTests
 
         Assert.Equal(player1, game.CurrentPlayer);
 
-        player1.CallCoin(game);
+        Player.CallCoin(game);
         Assert.Equal(player2, game.CurrentPlayer);
 
-        player2.CallCoin(game);
+        Player.CallCoin(game);
         Assert.Equal(player3, game.CurrentPlayer);
 
-        player3.CallCoin(game);
+        Player.CallCoin(game);
         Assert.Equal(player1, game.CurrentPlayer); 
     }
 }
