@@ -59,13 +59,12 @@ public class Player
         
             grid.SetCard(newPos, card);
             return true;
-            // Carte déplacée avec succès
         }
         else
         {
             game.NextPlayer();
             return false;
-            // Aucune carte adjacente à la nouvelle position, mouvement invalide.
+
         }
     }
     public void CallCoin(Game game)
