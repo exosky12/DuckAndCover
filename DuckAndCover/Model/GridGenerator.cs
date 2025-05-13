@@ -1,26 +1,11 @@
+using System.Security.Cryptography;
+
 namespace Model;
 
 public class GridGenerator : IGenerator<GameCard>
 {
     public List<GameCard> Grid { get; private set; }
-
     public List<Position> AllPositions { get; private set; } = InitializePositions();
-
-    private static List<Position> InitializePositions()
-    {
-        var positions = new List<Position>();
-
-        for (int row = 1; row <= 3; row++)         // 3 lignes
-        {
-            for (int col = 1; col <= 4; col++)     // 4 colonnes
-            {
-                positions.Add(new Position(row, col));
-            }
-        }
-
-        return positions;
-    }
-
     public int NbCards { get; private set; } = 12;
 
     public GridGenerator()
@@ -28,32 +13,38 @@ public class GridGenerator : IGenerator<GameCard>
         Grid = GenerateAllCards();
         Generate();
     }
+
     public List<GameCard> Generate()
     {
-        var rand = new Random();
         var positionsCopy = new List<Position>(AllPositions);
+        var shuffledGrid = Grid.OrderBy(_ => RandomNumberGenerator.GetInt32(int.MaxValue)).ToList(); // Mélange sécurisé
 
-        // Mélanger les cartes pour assurer une distribution aléatoire
-        var shuffledGrid = Grid.OrderBy(card => rand.Next()).ToList();  // Mélange les cartes
-
-        // Attribuer chaque carte à une position aléatoire
-        for (int i = 0; i < shuffledGrid.Count; i++)
+        for (int i = 0; i < shuffledGrid.Count && positionsCopy.Count > 0; i++)
         {
-            if (positionsCopy.Count == 0)
-                break;
-
-            var index = rand.Next(positionsCopy.Count);  // Choisir une position aléatoire
+            int index = RandomNumberGenerator.GetInt32(positionsCopy.Count);
             var position = positionsCopy[index];
 
-            shuffledGrid[i].Position = position;  // Assigner la position à la carte
-            positionsCopy.RemoveAt(index);  // Retirer la position utilisée
+            shuffledGrid[i].Position = position;
+            positionsCopy.RemoveAt(index);
         }
 
-        // Mettre à jour Grid avec les cartes mélangées
         Grid = shuffledGrid;
-
         return Grid;
     }
+
+    private static List<Position> InitializePositions()
+    {
+        var positions = new List<Position>();
+        for (int row = 1; row <= 3; row++)         // 3 lignes
+        {
+            for (int col = 1; col <= 4; col++)     // 4 colonnes
+            {
+                positions.Add(new Position(row, col));
+            }
+        }
+        return positions;
+    }
+
     private static List<GameCard> GenerateAllCards()
     {
         var cards = new List<GameCard>();
