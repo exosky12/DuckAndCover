@@ -35,7 +35,7 @@ public class DeckGenerator : IGenerator<DeckCard>
     {
         var rand = new Random();
 
-        while (Deck.Count < 52 && AllPossibleCards.Count > 0)
+        while (AllPossibleCards.Count > 0)
         {
             int index = rand.Next(AllPossibleCards.Count);
             var card = AllPossibleCards[index];

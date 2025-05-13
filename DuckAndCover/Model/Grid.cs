@@ -42,12 +42,15 @@ public class Grid
             }
         }
 
-        // Retourne null si aucune carte n'est trouvée à cette position
         return null;
     }
 
     public void SetCard(Position p, GameCard newCard)
     {
+        if (IsInGrid(p))
+        {
+            RemoveCard(p);
+        }
         newCard.Position = p;
         GameCardsGrid.Add(newCard);
     }
