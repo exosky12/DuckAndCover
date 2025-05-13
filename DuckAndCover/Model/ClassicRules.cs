@@ -7,7 +7,7 @@ public class ClassicRules : IRules
     public string Description =>
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris";
 
-    public int NbCardsInDeck => 52;
+    public int NbCardsInDeck => 24;
 
 
     /* Check si y'a une carte à l'endroit de position --> si non alors retourner false, si oui --> regarder la méthode qui est appelé
