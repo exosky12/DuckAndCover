@@ -133,10 +133,8 @@ public static class Utils
                 
             if (i % cardsPerRow == 0 && i > 0)
                 WriteLine();
-                
-            string cardDisplay = card.Bonus == Bonus.Max ? "MAX" :
-                card.Bonus == Bonus.Again ? "AGAIN" :
-                $"{card.Number:D2}";
+
+            string cardDisplay = DisplayCard(card);
 
             if (card.Bonus == Bonus.Max)
             {
@@ -156,6 +154,14 @@ public static class Utils
         }
 
         DisplayBottomSeparator();
+    }
+
+    public static string DisplayCard(DeckCard card)
+    {
+        string cardDisplay = card.Bonus == Bonus.Max ? "MAX" :
+            card.Bonus == Bonus.Again ? "AGAIN" :
+            $"{card.Number:D2}";
+        return cardDisplay;
     }
     
     public static void DisplayPlayerScores(List<Player> players)
@@ -178,52 +184,6 @@ public static class Utils
         return new Position(row, col);
     }
     
-    /* TO DEBUG
-    static void DisplayFullDeck(List<DeckCard> deck)
-    {
-        WriteLine("\n╔═══════════════════════════ DECK COMPLET ═══════════════════════════╗");
-
-        if (deck.Count == 0)
-        {
-            WriteLine("║                         Le deck est vide.                        ║");
-            WriteLine("╚══════════════════════════════════════════════════════════════════╝");
-            return;
-        }
-
-        int count = 0;
-        foreach (var card in deck)
-        {
-            string cardText = card.Bonus switch
-            {
-                Bonus.Max => "MAX",
-                Bonus.Again => "AGAIN",
-                _ => card.Number.ToString("D2")
-            };
-
-            // Couleurs par bonus
-            switch (card.Bonus)
-            {
-                case Bonus.Max:
-                    ForegroundColor = ConsoleColor.Blue;
-                    break;
-                case Bonus.Again:
-                    ForegroundColor = ConsoleColor.Green;
-                    break;
-                default:
-                    ForegroundColor = ConsoleColor.Gray;
-                    break;
-            }
-
-            Write($"| {cardText,-6} ");
-            ResetColor();
-
-            count++;
-            if (count % 6 == 0) WriteLine(); // Nouvelle ligne tous les 6
-        }
-
-        WriteLine("\n╚══════════════════════════════════════════════════════════════════╝");
-    }
-    */
     
     public static void WriteGameMaster(string message)
     {

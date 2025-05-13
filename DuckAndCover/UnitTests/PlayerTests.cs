@@ -1,4 +1,5 @@
 ﻿using Model;
+namespace UnitTests;
 
 public class PlayerTests
 {
