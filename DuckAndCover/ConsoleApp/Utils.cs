@@ -158,11 +158,24 @@ public static class Utils
 
     public static string DisplayCard(DeckCard card)
     {
-        string cardDisplay = card.Bonus == Bonus.Max ? "MAX" :
-            card.Bonus == Bonus.Again ? "AGAIN" :
-            $"{card.Number:D2}";
+        string cardDisplay;
+
+        if (card.Bonus == Bonus.Max)
+        {
+            cardDisplay = "MAX";
+        }
+        else if (card.Bonus == Bonus.Again)
+        {
+            cardDisplay = "AGAIN";
+        }
+        else
+        {
+            cardDisplay = $"{card.Number:D2}";
+        }
+
         return cardDisplay;
     }
+
     
     public static void DisplayPlayerScores(List<Player> players)
     {
