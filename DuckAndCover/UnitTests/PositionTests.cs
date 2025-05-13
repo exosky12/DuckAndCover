@@ -52,7 +52,6 @@ public class PositionTests
         Position pos1 = new Position(1, 2);
         Position pos2 = new Position(1, 2);
 
-        // Vérifie que deux positions égales ont le même hash code
         Assert.Equal(pos1.GetHashCode(), pos2.GetHashCode());
     }
 

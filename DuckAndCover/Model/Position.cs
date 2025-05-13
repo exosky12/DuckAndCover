@@ -11,14 +11,13 @@ public sealed class Position : IEquatable<Position>
         this.Column = column;
     }
 
-    // Implémentation de la méthode Equals de IEquatable<Position>
+    
     public bool Equals(Position? other)
     {
         if (other is null) return false;
         return Row == other.Row && Column == other.Column;
     }
 
-    // Redéfinition de Equals (non générique) pour gérer les objets de type object
     public override bool Equals(object? obj)
     {
         return Equals(obj as Position);
