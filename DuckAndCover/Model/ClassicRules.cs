@@ -28,8 +28,8 @@ public class ClassicRules : IRules
                 if (grid.GetCard(newPosition) != null) return false;
 
                 // Vérification si une carte est adjacente à la nouvelle position
-                var (isAdjacent, adjacentCard) = grid.IsAdjacentToCard(newPosition);
-                return isAdjacent;
+                var result = grid.IsAdjacentToCard(newPosition);
+                return result.isAdjacent;
 
             case "cover":
                 // Vérifier si la position de destination est occupée (nécessaire pour recouvrir)

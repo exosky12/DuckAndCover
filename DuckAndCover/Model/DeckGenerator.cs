@@ -45,7 +45,7 @@ public class DeckGenerator : IGenerator<DeckCard>
         return Deck;
     }
 
-    private int GetSecureRandomIndex(int max)
+    private static int GetSecureRandomIndex(int max)
     {
         return RandomNumberGenerator.GetInt32(max);
     }

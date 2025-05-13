@@ -26,7 +26,7 @@ public class GridTest
             positions.Add(card.Position);
         }));
 
-        var bounds = grid.GetBounds(positions);
+        var bounds = Grid.GetBounds(positions);
         
         Assert.Equal(1, bounds.minX);
         Assert.Equal(4, bounds.maxX);

@@ -2,8 +2,8 @@ namespace Model;
 
 public class GameCard : Card
 {
-    public Position Position;
-    public int Splash { get; set; }
+    public Position Position { get; set; }
+    public int Splash { get; }
 
     public GameCard(int splash, int number) : base(number)
     {
