@@ -1,9 +1,10 @@
+using System.Security.Cryptography;
+
 namespace Model;
 
 public class DeckGenerator : IGenerator<DeckCard>
 {
     public List<DeckCard> Deck { get; private set; } = new List<DeckCard>();
-
     public List<DeckCard> AllPossibleCards { get; private set; } = InitializeDeck();
 
     private static List<DeckCard> InitializeDeck()
@@ -19,12 +20,10 @@ public class DeckGenerator : IGenerator<DeckCard>
         }
 
         cards.Add(new DeckCard(Bonus.Max, 0));
-
         cards.Add(new DeckCard(Bonus.Again, 0));
 
         return cards;
     }
-    
 
     public DeckGenerator()
     {
@@ -33,17 +32,21 @@ public class DeckGenerator : IGenerator<DeckCard>
 
     public List<DeckCard> Generate()
     {
-        var rand = new Random();
+        Deck.Clear();
+        List<DeckCard> copy = new List<DeckCard>(AllPossibleCards);
 
-        while (AllPossibleCards.Count > 0)
+        while (copy.Count > 0)
         {
-            int index = rand.Next(AllPossibleCards.Count);
-            var card = AllPossibleCards[index];
-
-            Deck.Add(card);
-            AllPossibleCards.RemoveAt(index);
+            int index = GetSecureRandomIndex(copy.Count);
+            Deck.Add(copy[index]);
+            copy.RemoveAt(index);
         }
 
         return Deck;
+    }
+
+    private int GetSecureRandomIndex(int max)
+    {
+        return RandomNumberGenerator.GetInt32(max);
     }
 }
