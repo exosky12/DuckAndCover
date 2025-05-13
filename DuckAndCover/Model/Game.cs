@@ -16,12 +16,6 @@ public class Game
 
     private int _currentPlayerIndex;
 
-    /*
-    public void SaveScores()
-    {
-    
-    }
-    */
     public Game(List<Player> players)
     {
         this.Rules = new ClassicRules();
