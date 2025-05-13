@@ -87,6 +87,7 @@ ______            _     ___            _ _____
                     {
                         Utils.WriteGameMaster("Tous les joueurs ont passé leur tour. Carte défaussée.");
                         deckGenerator.Deck.RemoveAt(0);
+                        game.CardPassed++;
                         foreach (var p in players)
                             p.HasPassed = false;
                         continue;
@@ -187,7 +188,6 @@ ______            _     ___            _ _____
                 if (success)
                 {
                     Utils.WriteGameMaster("Recouvrement réussi!");
-                    // Passer au joueur suivant après une action réussie
                     currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
                 }
                 else
