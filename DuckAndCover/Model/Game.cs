@@ -2,25 +2,26 @@ namespace Model;
 
 public class Game
 {
-    public List<Player> Players;
-
+    private List<Player> Players { get; }
+    
     public IRules Rules { get; private set; }
 
     public int PlayerCount => Players.Count;
 
-    public int CardPassed { get; set; } = 0;
+    public int CardPassed { get; set; }
 
     public Player CurrentPlayer { get; set; }
 
     public Deck Deck { get; set; } = new Deck();
 
-    private int _currentPlayerIndex = 0;
+    private int _currentPlayerIndex;
 
+    /*
     public void SaveScores()
     {
-        /* TODO */
+    
     }
-
+    */
     public Game(List<Player> players)
     {
         this.Rules = new ClassicRules();

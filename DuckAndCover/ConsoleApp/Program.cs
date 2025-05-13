@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Model;
+﻿using Model;
 using static System.Console;
 
 namespace ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             ShowTitle();
             int nbJoueur = AskNumberOfPlayers();
@@ -43,7 +41,7 @@ ______            _     ___            _ _____
         static int AskNumberOfPlayers()
         {
             Utils.WriteGameMaster("Combien de joueurs ?");
-            if (int.TryParse(ReadLine(), out int nbJoueur)) return nbJoueur;
+            if (int.TryParse(ReadLine()!, out int nbJoueur)) return nbJoueur;
             return -1;
         }
 
@@ -53,11 +51,11 @@ ______            _     ___            _ _____
             while (players.Count < count)
             {
                 Utils.WriteGameMaster($"Pseudo du joueur numéro {players.Count + 1}:");
-                string name = ReadLine();
+                string name = ReadLine()!;
                 while (string.IsNullOrWhiteSpace(name))
                 {
                     Utils.WriteGameMaster("Pseudo invalide, changez le pseudo.");
-                    name = ReadLine();
+                    name = ReadLine()!;
                 }
 
                 players.Add(new Player(name));
@@ -99,7 +97,7 @@ ______            _     ___            _ _____
                 }
 
                 PromptPlayerTurn(currentPlayer);
-                string choice = ReadLine();
+                string choice = ReadLine()!;
                 exitGame = HandlePlayerChoice(choice, currentPlayer, game, ref currentPlayerIndex, players, card);
             }
         }
@@ -163,7 +161,7 @@ ______            _     ___            _ _____
                     break;
                 case "3":
                     Utils.WriteGameMaster($"{player.Name} dit : Coin !");
-                    player.CallCoin(game);
+                    Player.CallCoin(game);
                     player.HasPassed = true;
                     index = (index + 1) % players.Count;
                     break;
@@ -193,35 +191,37 @@ ______            _     ___            _ _____
         {
             Utils.WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir?");
             Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
-            string fromPosition = ReadLine();
+            string fromPosition = ReadLine()!;
 
             Utils.WriteGameMaster("Quelle carte souhaitez-vous recouvrir?");
             Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,2");
-            string toPosition = ReadLine();
+            string toPosition = ReadLine()!;
 
             try
             {
                 var fromPos = Utils.ParsePosition(fromPosition);
                 var toPos = Utils.ParsePosition(toPosition);
 
-                GameCard fromCard = player.Grid.GetCard(fromPos);
-                GameCard toCard = player.Grid.GetCard(toPos);
+                GameCard? fromCard = player.Grid.GetCard(fromPos);
+                GameCard? toCard = player.Grid.GetCard(toPos);
+                
+                if (fromCard == null || toCard == null)
+                {
+                    Utils.WriteGameMaster("Une des positions ne contient pas de carte!");
+                    return;
+                }
+                
                 if (!game.Rules.isTheSameCard(fromCard, currentDeckCard))
                 {
                     Utils.WriteGameMaster("Impossible de jouer cette carte car ce n'est pas la carte actuelle");
                     return;
                 }
 
-                if (fromCard == null || toCard == null)
-                {
-                    Utils.WriteGameMaster("Une des positions ne contient pas de carte!");
-                    return;
-                }
 
                 Utils.WriteGameMaster($"Tentative de recouvrir la carte {toCard.Number} (splash {toCard.Splash}) " +
                                       $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
 
-                bool success = player.Cover(fromCard, toCard, player.Grid, game);
+                bool success = Player.Cover(fromCard, toCard, player.Grid, game);
 
 
                 if (success)
@@ -244,18 +244,18 @@ ______            _     ___            _ _____
         {
             Utils.WriteGameMaster("Quelle carte souhaitez-vous déplacer?");
             Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
-            string fromPosition = ReadLine();
+            string fromPosition = ReadLine()!;
 
             Utils.WriteGameMaster("Où souhaitez-vous la déplacer?");
             Utils.WriteGameMaster("Entrez la nouvelle position (ligne,colonne) - exemple: 2,3");
-            string toPosition = ReadLine();
+            string toPosition = ReadLine()!;
 
             try
             {
                 var fromPos = Utils.ParsePosition(fromPosition);
                 var toPos = Utils.ParsePosition(toPosition);
 
-                GameCard card = player.Grid.GetCard(fromPos);
+                GameCard? card = player.Grid.GetCard(fromPos);
 
                 if (card == null)
                 {
@@ -267,7 +267,7 @@ ______            _     ___            _ _____
                                       $"de la position ({fromPos.Row}, {fromPos.Column}) " +
                                       $"vers la position ({toPos.Row}, {toPos.Column}).");
 
-                bool success = player.Duck(card, toPos, player.Grid, game);
+                bool success = Player.Duck(card, toPos, player.Grid, game);
 
                 if (success)
                 {

@@ -40,7 +40,7 @@ public static class Utils
             foreach (var card in player.Grid.GameCardsGrid)
                 positions.Add(card.Position);
 
-            var (minX, maxX, minY, maxY) = player.Grid.GetBounds(positions);
+            var (minX, maxX, minY, maxY) = Grid.GetBounds(positions);
 
             // Afficher les indices de colonnes
             Write("    ");
@@ -178,6 +178,7 @@ public static class Utils
         return new Position(row, col);
     }
     
+    /* TO DEBUG
     static void DisplayFullDeck(List<DeckCard> deck)
     {
         WriteLine("\n╔═══════════════════════════ DECK COMPLET ═══════════════════════════╗");
@@ -222,6 +223,7 @@ public static class Utils
 
         WriteLine("\n╚══════════════════════════════════════════════════════════════════╝");
     }
+    */
     
     public static void WriteGameMaster(string message)
     {

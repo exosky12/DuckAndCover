@@ -25,7 +25,7 @@ public class Player
     
     public Grid Grid { get; set; } = new Grid();
 
-    public bool Cover(GameCard aboveCard, GameCard belowCard, Grid grid, Game game)
+    public static bool Cover(GameCard aboveCard, GameCard belowCard, Grid grid, Game game)
     {
         if (game.Rules.IsValidMove(aboveCard.Position, belowCard.Position, grid, "cover"))
         {
@@ -49,9 +49,9 @@ public class Player
     }
 
     
-    public bool Duck(GameCard card, Position newPos, Grid grid, Game game)
+    public static bool Duck(GameCard card, Position newPos, Grid grid, Game game)
     {
-        var (isAdjacent, adjacentCard) = Grid.IsAdjacentToCard(newPos);
+        var (isAdjacent, adjacentCard) = grid.IsAdjacentToCard(newPos);
     
         if (isAdjacent && card != adjacentCard)
         {
@@ -60,14 +60,11 @@ public class Player
             grid.SetCard(newPos, card);
             return true;
         }
-        else
-        {
-            game.NextPlayer();
-            return false;
 
-        }
+        game.NextPlayer();
+        return false;
     }
-    public void CallCoin(Game game)
+    public static void CallCoin(Game game)
     {   
         game.NextPlayer();
         /* FAIRE lien entre modèles et vues pour afficher quelque chose à l'écran comme quoi on peut pas jouer donc on dit "coin" */
