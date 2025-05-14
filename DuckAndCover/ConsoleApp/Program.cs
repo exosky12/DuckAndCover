@@ -1,8 +1,11 @@
 ﻿using Model;
 using static System.Console;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ConsoleApp
 {
+
+    [ExcludeFromCodeCoverage]
     static class Program
     {
         static void Main()

@@ -1,7 +1,9 @@
 using static System.Console;
 using Model;
 namespace ConsoleApp;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 public static class Utils
 {
     public static void DisplayMenu()
