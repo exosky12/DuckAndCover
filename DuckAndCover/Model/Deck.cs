@@ -9,5 +9,11 @@ public class Deck
     {
         var generator = new DeckGenerator();
         Cards = generator.Generate();
+        if(Cards[0].Bonus == Bonus.Again)
+        {
+            DeckCard tmp = Cards[0];
+            Cards.RemoveAt(0);
+            Cards.Add(tmp);
+        }
     }
 }
