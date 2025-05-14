@@ -9,7 +9,6 @@ public class PlayerTests
         Player player = new Player("Alice");
 
         Assert.Equal("Alice", player.Name);
-        Assert.Equal(0, player.GameScore);
         Assert.False(player.HasPassed);
         Assert.Empty(player.Scores);
         Assert.Equal(0, player.TotalScore);
@@ -52,13 +51,13 @@ public class PlayerTests
 
         Assert.Equal(player1, game.CurrentPlayer);
 
-        Player.CallCoin(game);
+        player1.CallCoin(game, player1.Grid);
         Assert.Equal(player2, game.CurrentPlayer);
 
-        Player.CallCoin(game);
+        player2.CallCoin(game, player2.Grid);
         Assert.Equal(player3, game.CurrentPlayer);
 
-        Player.CallCoin(game);
+        player3.CallCoin(game, player3.Grid);
         Assert.Equal(player1, game.CurrentPlayer); 
     }
 
@@ -74,7 +73,7 @@ public class PlayerTests
         grid.GameCardsGrid.Add(aboveCard);
         grid.GameCardsGrid.Add(belowCard);
 
-        bool result = Player.Cover(aboveCard, belowCard, grid, game);
+        bool result = player.Cover(aboveCard, belowCard, grid, game);
 
         Assert.True(result);
         Assert.Equal(new Position(1, 2), aboveCard.Position);
@@ -91,7 +90,7 @@ public class PlayerTests
         grid.GameCardsGrid.Add(card);
         Position newPos = new Position(1, 2);
         
-        bool result = Player.Duck(card, newPos, grid, game);
+        bool result = player.Duck(card, newPos, grid, game);
         
         Assert.True(result);
         Assert.Equal(newPos, card.Position);
@@ -108,7 +107,7 @@ public class PlayerTests
         grid.GameCardsGrid.Add(card);
         Position newPos = new Position(6, 6);
         
-        bool result = Player.Duck(card, newPos, grid, game);
+        bool result = player.Duck(card, newPos, grid, game);
         
         Assert.False(result);
         Assert.Equal(new Position(1, 1), card.Position);

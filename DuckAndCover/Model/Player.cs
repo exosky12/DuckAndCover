@@ -4,28 +4,27 @@ public class Player
 {
     public string Name { get; init; }
 
-    public int GameScore { get; set; }
-
     public bool HasPassed { get; set; }
+    public bool HasPlayed { get; set; }
 
-    public List<int> Scores { get; set; }
+    public List<int> Scores { get; }
 
     public int TotalScore => Scores.Sum();
 
-    public int StackCounter { get; set; }
+    public int StackCounter { get; private set; }
 
     public Player(string name)
     {
-        this.GameScore = 0;
         this.StackCounter = 0;
         this.Scores = new List<int>();
         this.Name = name;
         this.HasPassed = false;
+        this.HasPlayed = false;
     }
     
-    public Grid Grid { get; set; } = new Grid();
+    public Grid Grid { get; } = new Grid();
 
-    public static bool Cover(GameCard aboveCard, GameCard belowCard, Grid grid, Game game)
+    public bool Cover(GameCard aboveCard, GameCard belowCard, Grid grid, Game game)
     {
         if (game.Rules.IsValidMove(aboveCard.Position, belowCard.Position, grid, "cover"))
         {
@@ -39,17 +38,18 @@ public class Player
                 grid.GameCardsGrid.RemoveAt(aboveIndex > belowIndex ? aboveIndex + 1 : aboveIndex);
             }
 
+            game.NextPlayer();
+            StackCounter = grid.GameCardsGrid.Count;
             return true;
         }
         else
         {
-            game.NextPlayer();
             return false;
         }
     }
 
     
-    public static bool Duck(GameCard card, Position newPos, Grid grid, Game game)
+    public bool Duck(GameCard card, Position newPos, Grid grid, Game game)
     {
         var (isAdjacent, adjacentCard) = grid.IsAdjacentToCard(newPos);
     
@@ -58,15 +58,17 @@ public class Player
             grid.RemoveCard(card.Position);
         
             grid.SetCard(newPos, card);
+            game.NextPlayer();
+            StackCounter = grid.GameCardsGrid.Count;
             return true;
         }
 
-        game.NextPlayer();
         return false;
     }
-    public static void CallCoin(Game game)
+    public void CallCoin(Game game, Grid grid)
     {   
         game.NextPlayer();
+        StackCounter = grid.GameCardsGrid.Count;
         /* FAIRE lien entre modèles et vues pour afficher quelque chose à l'écran comme quoi on peut pas jouer donc on dit "coin" */
     }
     public bool HasCardWithNumber(int number)
