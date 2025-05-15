@@ -4,6 +4,8 @@
 [![Code Smells](https://codefirst.iut.uca.fr/sonar/api/project_badges/measure?project=duckandcover&metric=code_smells&token=a7dbad6f649e952877676172600f50902c89e244)](https://codefirst.iut.uca.fr/sonar/dashboard?id=duckandcover)
 [![Maintainability Rating](https://codefirst.iut.uca.fr/sonar/api/project_badges/measure?project=duckandcover&metric=sqale_rating&token=a7dbad6f649e952877676172600f50902c89e244)](https://codefirst.iut.uca.fr/sonar/dashboard?id=duckandcover)
 
+[![Security Rating](https://codefirst.iut.uca.fr/sonar/api/project_badges/measure?project=duckandcover&metric=security_rating&token=a7dbad6f649e952877676172600f50902c89e244)](https://codefirst.iut.uca.fr/sonar/dashboard?id=duckandcover)
+
 # 🦆 DuckAndCover 🎮
 
 ## 🎯 Présentation
