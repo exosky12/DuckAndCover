@@ -3,7 +3,7 @@ namespace Models.Game
     public class Player
     {
         public string Name { get; init; }
-        public bool HasPassed { get; set; }
+        public bool HasSkipped { get; set; }
         public bool HasPlayed { get; set; }
 
         public List<int> Scores { get; }
@@ -17,7 +17,7 @@ namespace Models.Game
             this.StackCounter = 0;
             this.Scores = new List<int>();
             this.Name = name;
-            this.HasPassed = false;
+            this.HasSkipped = false;
             this.HasPlayed = false;
         }
 

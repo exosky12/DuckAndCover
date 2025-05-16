@@ -7,7 +7,6 @@ namespace Models.Game
     {
         public List<DeckCard> Cards { get; private set; }
 
-
         public Deck()
         {
             var generator = new DeckGenerator();

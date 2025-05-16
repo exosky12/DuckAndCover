@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Models.Game;
+using Models.Events;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ConsoleApp
@@ -18,13 +19,21 @@ namespace ConsoleApp
 
             List<Player> players = Utils.InitializePlayers(nbJoueur);
             Game game = new Game(players);
-            Deck deck = game.Deck;
             
-            game.OnPlayerChanged += player => Utils.PromptPlayerTurn(player, game.Deck.Cards[0], game);
-            game.OnGameOver += () => Utils.EndGame(players, game);
+            
+            game.PlayerChanged += (sender, args) =>
+            {
+                string choice = Utils.PromptPlayerTurn(args.CurrentPlayer, args.DeckCard, game);
+                game.SubmitChoice(choice);
+            };
 
-            game.NotifyPlayerChanged();
-            Utils.RunGameLoop(players, game, deck);
+
+            game.GameIsOver += (sender, args) =>
+            {
+                Utils.EndGame(game.Players, game);
+            };
+
+            game.GameLoop();
         }
 
         static void ShowTitle()

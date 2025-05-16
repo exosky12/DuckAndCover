@@ -1,8 +1,8 @@
 using static System.Console;
-using Model;
-using Model.Exceptions;
-using Model.Enums;
 using System.Diagnostics.CodeAnalysis;
+using Models.Game;
+using Models.Exceptions;
+using Models.Enums;
 
 namespace ConsoleApp;
 
@@ -174,7 +174,7 @@ public static class Utils
         ForegroundColor = originalColor;
     }
 
-    public static void PromptPlayerTurn(Player player, DeckCard card, Game game)
+    public static string PromptPlayerTurn(Player player, DeckCard card, Game game)
     {
         Clear();
         WriteGameMaster($"\nC'est au tour de {player.Name}");
@@ -184,8 +184,9 @@ public static class Utils
         ProcessCardEffect(card, player, game);
 
         Write("\nVotre choix: ");
-        
+        return ReadLine() ?? "";
     }
+
 
     public static int AskNumberOfPlayers()
     {
@@ -219,24 +220,28 @@ public static class Utils
         bool exitGame = false;
         while (!exitGame)
         {
+            
             if (deck.Cards.Count == 0)
             {
                 WriteGameMaster("Le deck est vide. La partie est terminée !");
                 break;
             }
 
-            DeckCard card = deck.Cards[0];
             Player currentPlayer = game.CurrentPlayer;
 
             game.CheckGameOverCondition();
 
-            if (game.Rules.IsGameOver(game.CardPassed, currentPlayer.StackCounter))
+            if (game.Rules.IsGameOver(game.CardsSkipped, currentPlayer.StackCounter))
             {
                 break;
             }
 
+            if (game.AllPlayersPlayed())
+                game.NextDeckCard();
+            
             string choice = ReadLine()!;
-            exitGame = HandlePlayerChoice(choice, currentPlayer, game, players, card);
+            exitGame = HandlePlayerChoice(choice, currentPlayer, game, players, game.CurrentDeckCard);
+            
         }
     }
 
@@ -265,14 +270,14 @@ public static class Utils
 
     public static void HandleAllPlayed(Deck deck, Game game, List<Player> players)
     {
-        if(players.All(p => p.HasPassed))
+        if(players.All(p => p.HasSkipped))
         {
             WriteGameMaster("Tous les joueurs ont passé leur tour. Carte défaussée.");
-            game.CardPassed++;
+            game.CardsSkipped++;
         }
         else WriteGameMaster("Tous les joueurs ont joué. Carte retirée du deck.");
         game.Deck.Cards.RemoveAt(0);
-        players.ForEach(p => p.HasPassed = false);
+        players.ForEach(p => p.HasSkipped = false);
         players.ForEach(p => p.HasPlayed = false);
     }
 
@@ -294,19 +299,16 @@ public static class Utils
             case "1":
                 PerformCoverAction(player, game);
                 player.HasPlayed = true;
-                game.NotifyPlayerChanged();
                 break;
             case "2":
                 PerformDuckAction(player, game);
                 player.HasPlayed = true;
-                game.NotifyPlayerChanged();
                 break;
             case "3":
                 WriteGameMaster($"{player.Name} dit : Coin !");
                 game.CallCoin(player);
-                player.HasPassed = true;
+                player.HasSkipped = true;
                 player.HasPlayed = true;
-                game.NotifyPlayerChanged();
                 break;
             case "4":
                 players.ForEach(p =>

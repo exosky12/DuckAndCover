@@ -1,89 +1,120 @@
 using Models.Exceptions;
 using Models.Interfaces;
 using Models.Rules;
+using Models.Events;
+using System.Threading;
 
 namespace Models.Game
 {
     public class Game
     {
-        private List<Player> Players { get; }
-
+        public List<Player> Players { get; }
         public IRules Rules { get; }
-
         public int PlayerCount => Players.Count;
-
-        public int CardPassed { get; set; }
-
+        public int CardsSkipped { get; set; }
         public Player CurrentPlayer { get; set; }
-
         public Deck Deck { get; } = new Deck();
-
-        private DeckCard _currentDeckCard;
-
-        private int _currentPlayerIndex;
-
+        public DeckCard CurrentDeckCard { get; set; }
         public int? LastNumber { get; set; }
 
-        public event Action? OnGameOver;
+        private int _currentPlayerIndex;
+        private string? _pendingChoice;
+        private readonly AutoResetEvent _choiceSubmitted = new AutoResetEvent(false);
 
-        public void CheckGameOverCondition()
-        {
-            if (Rules.IsGameOver(CardPassed, CurrentPlayer.StackCounter))
-            {
-                OnGameOver?.Invoke();
-            }
-        }
+        public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
+        public event EventHandler<PlayerChooseEventArgs>? PlayerChoose;
+        public event EventHandler<GameIsOverEventArgs>? GameIsOver;
 
-        public event Action<Player>? OnPlayerChanged;
-
-        public void NotifyPlayerChanged()
-        {
-            OnPlayerChanged?.Invoke(CurrentPlayer);
-        }
+        protected virtual void OnPlayerChanged(PlayerChangedEventArgs args) => PlayerChanged?.Invoke(this, args);
+        protected virtual void OnPlayerChoose(PlayerChooseEventArgs args) => PlayerChoose?.Invoke(this, args);
+        protected virtual void OnGameIsOver(GameIsOverEventArgs args) => GameIsOver?.Invoke(this, args);
 
         public Game(List<Player> players)
         {
             this.Rules = new ClassicRules();
             this.Players = players;
-            this._currentDeckCard = Deck.Cards.FirstOrDefault()!;
+            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
+            this._currentPlayerIndex = 0;
+            this.CurrentPlayer = players[_currentPlayerIndex];
         }
 
         public void NextPlayer()
         {
-            if (CurrentPlayer == null)
-            {
-                _currentPlayerIndex = 0;
-                CurrentPlayer = Players[_currentPlayerIndex];
-                OnPlayerChanged?.Invoke(CurrentPlayer);
-            }
-
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
-            OnPlayerChanged?.Invoke(CurrentPlayer);
+        }
+
+        public void SubmitChoice(string choice)
+        {
+            _pendingChoice = choice;
+            _choiceSubmitted.Set();
+        }
+
+        public void GameLoop()
+        {
+            bool isOver = false;
+
+            while (!isOver)
+            {
+                _pendingChoice = null;
+                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
+
+                _choiceSubmitted.WaitOne();
+                HandlePlayerChoice(CurrentPlayer, _pendingChoice!);
+
+                if (AllPlayersPlayed())
+                {
+                    NextDeckCard();
+                    Players.ForEach(p =>
+                    {
+                        p.HasPlayed = false;
+                        p.HasSkipped = false;
+                    });
+                }
+
+                isOver = CheckGameOverCondition();
+
+                NextPlayer();
+            }
+        }
+
+
+        public void HandlePlayerChoice(Player player, string choice)
+        {
+            OnPlayerChoose(new PlayerChooseEventArgs(choice));
+
+            switch (choice)
+            {
+                case "1":
+                    // À implémenter dans l'UI : demander les positions
+                    break;
+                case "2":
+                    // À implémenter dans l'UI : demander les positions
+                    break;
+                case "3":
+                    CallCoin(player);
+                    CheckAllPlayersSkipped();
+                    break;
+                
+                default:
+                    break;
+            }
         }
 
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
             try
             {
-                Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", _currentDeckCard);
+                Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", CurrentDeckCard);
                 GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
                 GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!;
-                List<GameCard> gameCardsGrid = player.Grid.GameCardsGrid;
+                List<GameCard> grid = player.Grid.GameCardsGrid;
 
-                int cardToMoveIndex = gameCardsGrid.FindIndex(c =>
-                    c.Position.Row == cardToMove.Position.Row && c.Position.Column == cardToMove.Position.Column);
-                int cardToCoverIndex = gameCardsGrid.FindIndex(c =>
-                    c.Position.Row == cardToCover.Position.Row && c.Position.Column == cardToCover.Position.Column);
+                grid.Remove(cardToCover);
+                cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
 
-                if (cardToMoveIndex >= 0 && cardToCoverIndex >= 0)
-                {
-                    cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
-                    gameCardsGrid.Remove(cardToCover);
-                }
-
-                NextPlayer();
-                player.StackCounter = gameCardsGrid.Count;
+                player.StackCounter = grid.Count;
+                player.HasPlayed = true;
             }
             catch (Error e)
             {
@@ -95,12 +126,14 @@ namespace Models.Game
         {
             try
             {
-                Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", _currentDeckCard);
+                Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", CurrentDeckCard);
                 GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
+
                 player.Grid.RemoveCard(cardToMove.Position);
                 player.Grid.SetCard(duckPosition, cardToMove);
-                NextPlayer();
+
                 player.StackCounter = player.Grid.GameCardsGrid.Count;
+                player.HasPlayed = true;
             }
             catch (Error e)
             {
@@ -110,38 +143,59 @@ namespace Models.Game
 
         public void CallCoin(Player player)
         {
-            NextPlayer();
             player.StackCounter = player.Grid.GameCardsGrid.Count;
-            /* FAIRE lien entre modèles et vues pour afficher quelque chose à l'écran comme quoi on peut pas jouer donc on dit "coin" */
+            player.HasPlayed = true;
+            player.HasSkipped = true;
+        }
+        
+        public DeckCard NextDeckCard()
+        {
+            if (Deck.Cards.Count == 0)
+                throw new InvalidOperationException("No more cards in the deck.");
+
+            Deck.Cards.RemoveAt(0);
+
+            if (Deck.Cards.Count == 0)
+                CurrentDeckCard = null!;
+            else
+                CurrentDeckCard = Deck.Cards.First();
+
+            return CurrentDeckCard!;
         }
 
-        public void GameLoop()
+
+        public bool CheckGameOverCondition()
         {
-            bool exitGame = false;
-            while (!exitGame)
+            if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter))
             {
-                CheckGameOverCondition();
-                NextPlayer();
+                OnGameIsOver(new GameIsOverEventArgs(true));
+                return true;
             }
-        }
 
-        public void HandlePlayerChoice()
-        {
-            throw new NotImplementedException();
+            return false;
         }
 
         public void Save()
         {
             foreach (var player in Players)
             {
-                int score = 0;
-                foreach (var card in player.Grid.GameCardsGrid)
-                {
-                    score += card.Splash;
-                }
-
+                int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
                 player.Scores.Add(score);
             }
         }
+
+        public bool AllPlayersPlayed()
+        {
+            return Players.All(p => p.HasPlayed);
+        }
+        
+        public void CheckAllPlayersSkipped()
+        {
+            if (Players.All(p => p.HasSkipped))
+            {
+                CardsSkipped++;
+            }
+        }
+
     }
 }
