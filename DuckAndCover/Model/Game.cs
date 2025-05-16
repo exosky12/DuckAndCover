@@ -62,4 +62,21 @@ public class Game
             player.Scores.Add(score);
         }
     }
+
+    public void DoDuck(Player player, Position fromPosition, Position toPosition)
+    {
+        GameCard? cardToMove = player.Grid.GetCard(fromPosition);
+        GameCard? cardToCover = player.Grid.GetCard(toPosition);
+
+        try
+        {
+            Rules.IsValidMove(fromPosition, toPosition, player.Grid, "duck", _currentDeckCard);
+            player.Duck(cardToMove, toPosition, player.Grid, this);
+        }
+        catch (Exception e)
+        {
+            /*throw */
+        }
+
+    }
 }
