@@ -1,6 +1,7 @@
 using static System.Console;
 using Model;
 using Model.Exceptions;
+using Model.Enums;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ConsoleApp;
@@ -155,10 +156,12 @@ public static class Utils
     {
         string[] parts = input.Split(',');
         if (parts.Length != 2)
-            throw new ArgumentException("Format de position invalide. Utilisez le format: ligne,colonne");
+            //"Format de position invalide. Utilisez le format: ligne,colonne"
+            throw new Error(1);
 
         if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
-            throw new ArgumentException("Les valeurs de ligne et colonne doivent être numériques");
+            // Les valeurs de ligne et colonne doivent être numériques
+            throw new Error(1);
 
         return new Position(row, col);
     }
@@ -282,7 +285,6 @@ public static class Utils
 
     public static bool HandlePlayerChoice(string choice, Player player, Game game, List<Player> players, DeckCard card)
     {
-        
         if (AllPlayersPlayed(players))
         {
             HandleAllPlayed(game.Deck, game, players);
@@ -290,18 +292,18 @@ public static class Utils
         switch (choice)
         {
             case "1":
-                PerformCoverAction(player, game, players, card);
+                PerformCoverAction(player, game);
                 player.HasPlayed = true;
                 game.NotifyPlayerChanged();
                 break;
             case "2":
-                PerformDuckAction(player, game, players);
+                PerformDuckAction(player, game);
                 player.HasPlayed = true;
                 game.NotifyPlayerChanged();
                 break;
             case "3":
                 WriteGameMaster($"{player.Name} dit : Coin !");
-                player.CallCoin(game, player.Grid);
+                game.CallCoin(player);
                 player.HasPassed = true;
                 player.HasPlayed = true;
                 game.NotifyPlayerChanged();
@@ -371,8 +373,8 @@ public static class Utils
         }
         catch (Error e)
         {
-            ErrorHandler errorHandler = new ErrorHandler();
-            string errorMessage = errorHandler.Handle(e);
+            ErrorHandler errorHandler = new ErrorHandler(e.ErrorCode);
+            string errorMessage = errorHandler.Handle();
             WriteGameMaster($"Erreur: {errorMessage}");
         }
     }

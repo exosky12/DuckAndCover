@@ -1,4 +1,4 @@
-namespace Model.Exceptions
+namespace Models.Exceptions
 {
     public class Error : Exception
     {
