@@ -1,4 +1,5 @@
 namespace Model;
+using Model.Exceptions;
 
 public class ClassicRules : IRules
 {
@@ -16,27 +17,34 @@ public class ClassicRules : IRules
        en regardant si y'a des cartes adjacentes à newPosition
      - si cover --> regarder si y'a une carte à newPosition, si non --> retourner false, si oui --> retourner true
      */
-    public bool IsValidMove(Position position, Position newPosition, Grid grid, string funcName)
+    public void TryValidMove(Position position, Position newPosition, Grid grid, string funcName, DeckCard currentDeckCard)
     {
-        if (!grid.IsInGrid(position)) return false; // Vérification si la position d'origine est valide
-
-        // Utilisation de switch pour gérer les cas de funcName
+        GameCard? card = grid.GetCard(position);
+        if (card == null)
+            throw new Error("No card at this position");
+        
+        if(card.Number != currentDeckCard.Number)
+            throw new Error("Card number does not match the deck card number");
+        
         switch (funcName.ToLower())
         {
             case "duck":
-                // Si la nouvelle position est occupée, retourner false
-                if (grid.GetCard(newPosition) != null) return false;
-
-                // Vérification si une carte est adjacente à la nouvelle position
-                var result = grid.IsAdjacentToCard(newPosition);
-                return result.isAdjacent;
-
+                GameCard? cardToDuck = grid.GetCard(newPosition);
+                if(cardToDuck != null)
+                    throw new Error("Card already exists at this position");
+                if(grid.IsAdjacentToCard(cardToDuck!.Position) == (false, null))
+                    throw new Error("No adjacent card to move to this position");
+                
             case "cover":
-                // Vérifier si la position de destination est occupée (nécessaire pour recouvrir)
-                return grid.IsInGrid(newPosition) && grid.GetCard(newPosition) != null;
+                GameCard? cardToCover = grid.GetCard(newPosition);
+                if(cardToCover == null)
+                    throw new Error("No card at this position");
+                
+                if(!grid.IsAdjacentToCard(cardToCover))
+                    throw new Error("Card to cover is not adjacent to the card to move");
 
             default:
-                return false; // Si funcName n'est ni "duck" ni "cover", retourner false
+                throw new Error("Invalid function name");
         }
     }
 

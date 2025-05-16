@@ -8,7 +8,7 @@ public interface IRules
 
     int NbCardsInDeck { get; }
 
-    bool IsValidMove(Position position, Position newPosition, Grid grid, string funcName);
+    void TryValidMove(Position position, Position newPosition, Grid grid, string funcName, DeckCard currentDeckCard);
 
     bool IsGameOver(int cardPassed, int stackCounter);
 
