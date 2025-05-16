@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Models</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Events\" />
+        <Folder Include="Enums\" />
+        <Folder Include="Interfaces\" />
+        <Folder Include="Exceptions\" />
+        <Folder Include="Game\" />
+        <Folder Include="Rules\" />
+    </ItemGroup>
+
+</Project>

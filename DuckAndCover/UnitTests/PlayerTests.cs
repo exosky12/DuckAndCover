@@ -1,4 +1,5 @@
 ﻿using Model;
+using Model.Exceptions;
 namespace UnitTests;
 
 public class PlayerTests
@@ -51,13 +52,13 @@ public class PlayerTests
 
         Assert.Equal(player1, game.CurrentPlayer);
 
-        player1.CallCoin(game, player1.Grid);
+        game.CallCoin(player1);
         Assert.Equal(player2, game.CurrentPlayer);
 
-        player2.CallCoin(game, player2.Grid);
+        game.CallCoin(player2);
         Assert.Equal(player3, game.CurrentPlayer);
 
-        player3.CallCoin(game, player3.Grid);
+        game.CallCoin(player3);
         Assert.Equal(player1, game.CurrentPlayer); 
     }
 
@@ -67,17 +68,25 @@ public class PlayerTests
         Player player = new Player("Bob");
         Game game = new Game(new List<Player> { player });
         Grid grid = player.Grid;
-        GameCard aboveCard = new GameCard(5, 1) { Position = new Position(1, 1) };
-        GameCard belowCard = new GameCard(5, 2) { Position = new Position(1, 2) };
+        GameCard cardToMove = new GameCard(5, 1) { Position = new Position(1, 1) };
+        GameCard cardToCover = new GameCard(5, 2) { Position = new Position(1, 2) };
 
-        grid.GameCardsGrid.Add(aboveCard);
-        grid.GameCardsGrid.Add(belowCard);
+        grid.GameCardsGrid.Add(cardToMove);
+        grid.GameCardsGrid.Add(cardToCover);
 
-        bool result = player.Cover(aboveCard, belowCard, grid, game);
+        try 
+        {
+            game.DoCover(player, cardToMove.Position, cardToCover.Position);
+        }
+        catch (Error e)
+        {
+            Assert.IsType(e);
+        }
+        game.DoCover(player, cardToMove.Position, cardToCover.Position);
 
-        Assert.True(result);
-        Assert.Equal(new Position(1, 2), aboveCard.Position);
-        Assert.Contains(aboveCard, grid.GameCardsGrid);
+
+        Assert.Equal(new Position(1, 2), cardToMove.Position);
+        Assert.Contains(cardToMove, grid.GameCardsGrid);
     }
 
     [Fact]

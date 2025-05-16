@@ -1,5 +1,7 @@
 using static System.Console;
 using Model;
+using Model.Exceptions;
+using Model.Enums;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ConsoleApp;
@@ -154,10 +156,12 @@ public static class Utils
     {
         string[] parts = input.Split(',');
         if (parts.Length != 2)
-            throw new ArgumentException("Format de position invalide. Utilisez le format: ligne,colonne");
+            //"Format de position invalide. Utilisez le format: ligne,colonne"
+            throw new Error(1);
 
         if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
-            throw new ArgumentException("Les valeurs de ligne et colonne doivent être numériques");
+            // Les valeurs de ligne et colonne doivent être numériques
+            throw new Error(1);
 
         return new Position(row, col);
     }
@@ -281,7 +285,6 @@ public static class Utils
 
     public static bool HandlePlayerChoice(string choice, Player player, Game game, List<Player> players, DeckCard card)
     {
-        
         if (AllPlayersPlayed(players))
         {
             HandleAllPlayed(game.Deck, game, players);
@@ -289,18 +292,18 @@ public static class Utils
         switch (choice)
         {
             case "1":
-                PerformCoverAction(player, game, players, card);
+                PerformCoverAction(player, game);
                 player.HasPlayed = true;
                 game.NotifyPlayerChanged();
                 break;
             case "2":
-                PerformDuckAction(player, game, players);
+                PerformDuckAction(player, game);
                 player.HasPlayed = true;
                 game.NotifyPlayerChanged();
                 break;
             case "3":
                 WriteGameMaster($"{player.Name} dit : Coin !");
-                player.CallCoin(game, player.Grid);
+                game.CallCoin(player);
                 player.HasPassed = true;
                 player.HasPlayed = true;
                 game.NotifyPlayerChanged();
@@ -326,7 +329,7 @@ public static class Utils
         return false;
     }
 
-    public static void PerformCoverAction(Player player, Game game, List<Player> players, DeckCard currentDeckCard)
+    private static void PerformCoverAction(Player player, Game game)
     {
         WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir?");
         WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
@@ -338,42 +341,45 @@ public static class Utils
 
         try
         {
-            var fromPos = ParsePosition(fromPosition);
-            var toPos = ParsePosition(toPosition);
-
-            GameCard? fromCard = player.Grid.GetCard(fromPos);
-            GameCard? toCard = player.Grid.GetCard(toPos);
-
-            if (fromCard == null || toCard == null)
-            {
-                WriteGameMaster("Une des positions ne contient pas de carte!");
-                return;
-            }
-
-            if (!game.Rules.isTheSameCard(fromCard, currentDeckCard))
-            {
-                WriteGameMaster("Impossible de jouer cette carte car ce n'est pas la carte actuelle");
-                return;
-            }
-
-            WriteGameMaster($"Tentative de recouvrir la carte {toCard.Number} (splash {toCard.Splash}) " +
-                            $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
-
-            bool success = player.Cover(fromCard, toCard, player.Grid, game);
-
-            if (success)
-            {
-                WriteGameMaster("Recouvrement réussi!");
-            }
-            else WriteGameMaster("Recouvrement impossible avec ces cartes.");
+            game.DoCover(player, ParsePosition(fromPosition), ParsePosition(toPosition));
+            // var fromPos = ParsePosition(fromPosition);
+            // var toPos = ParsePosition(toPosition);
+            //
+            // GameCard? fromCard = player.Grid.GetCard(fromPos);
+            // GameCard? toCard = player.Grid.GetCard(toPos);
+            //
+            // if (fromCard == null || toCard == null)
+            // {
+            //     WriteGameMaster("Une des positions ne contient pas de carte!");
+            //     return;
+            // }
+            //
+            // if (!game.Rules.isTheSameCard(fromCard, currentDeckCard))
+            // {
+            //     WriteGameMaster("Impossible de jouer cette carte car ce n'est pas la carte actuelle");
+            //     return;
+            // }
+            //
+            // WriteGameMaster($"Tentative de recouvrir la carte {toCard.Number} (splash {toCard.Splash}) " +
+            //                 $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
+            //
+            // bool success = player.Cover(fromCard, toCard, player.Grid, game);
+            //
+            // if (success)
+            // {
+            //     WriteGameMaster("Recouvrement réussi!");
+            // }
+            // else WriteGameMaster("Recouvrement impossible avec ces cartes.");
         }
-        catch (Exception e)
+        catch (Error e)
         {
-            WriteGameMaster($"Erreur: {e.Message}");
+            ErrorHandler errorHandler = new ErrorHandler(e.ErrorCode);
+            string errorMessage = errorHandler.Handle();
+            WriteGameMaster($"Erreur: {errorMessage}");
         }
     }
 
-    public static void PerformDuckAction(Player player, Game game, List<Player> players)
+    private static void PerformDuckAction(Player player, Game game)
     {
         WriteGameMaster("Quelle carte souhaitez-vous déplacer?");
         WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
@@ -384,31 +390,34 @@ public static class Utils
         string toPosition = ReadLine()!;
         try
         {
-            var fromPos = ParsePosition(fromPosition);
-            var toPos = ParsePosition(toPosition);
-
-            GameCard? cardToMove = player.Grid.GetCard(fromPos);
-
-            if (cardToMove == null)
-            {
-                WriteGameMaster("Aucune carte à déplacer à cette position.");
-                return;
-            }
-
-            bool success = player.Duck(cardToMove, toPos, player.Grid, game);
-
-            if (success)
-            {
-                WriteGameMaster("Déplacement effectué avec succès.");
-            }
-            else
-            {
-                WriteGameMaster("Déplacement impossible.");
-            }
+            game.DoDuck(player, ParsePosition(fromPosition), ParsePosition(toPosition));
+            // var fromPos = ParsePosition(fromPosition);
+            // var toPos = ParsePosition(toPosition);
+            //
+            // GameCard? cardToMove = player.Grid.GetCard(fromPos);
+            //
+            // if (cardToMove == null)
+            // {
+            //     WriteGameMaster("Aucune carte à déplacer à cette position.");
+            //     return;
+            // }
+            //
+            // bool success = player.Duck(cardToMove, toPos, player.Grid, game);
+            //
+            // if (success)
+            // {
+            //     WriteGameMaster("Déplacement effectué avec succès.");
+            // }
+            // else
+            // {
+            //     WriteGameMaster("Déplacement impossible.");
+            // }
         }
-        catch (Exception e)
+        catch (Error e)
         {
-            WriteGameMaster($"Erreur: {e.Message}");
+            ErrorHandler errorHandler = new ErrorHandler(e.ErrorCode);
+            string errorMessage = errorHandler.Handle();
+            WriteGameMaster($"Erreur: {errorMessage}");
         }
     }
 }
