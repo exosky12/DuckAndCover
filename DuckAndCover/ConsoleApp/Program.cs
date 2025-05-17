@@ -55,7 +55,7 @@ namespace ConsoleApp
                     }
                     else
                     {
-           
+
                         game = CreateNewGame();
                     }
                 }
@@ -79,19 +79,19 @@ namespace ConsoleApp
             game.PlayerChooseCover += (s, e) =>
             {
                 Utils.WriteGameMaster("Quelle carte souhaitez‑vous utiliser pour recouvrir?");
-                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,1");
+                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,1");
                 var src = ReadLine()!;
                 Utils.WriteGameMaster("Quelle carte souhaitez‑vous recouvrir?");
-                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,2");
+                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,2");
                 var dst = ReadLine()!;
                 game.HandlePlayerChooseCover(e.Player, Utils.ParsePosition(src), Utils.ParsePosition(dst));
             };
             game.PlayerChooseDuck += (s, e) =>
             {
                 Utils.WriteGameMaster("Quelle carte souhaitez‑vous déplacer?");
-                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,1");
+                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,1");
                 var src = ReadLine()!;
-                Utils.WriteGameMaster("Où souhaitez‑vous la déplacer? (ligne,colonne) — ex : 2,3");
+                Utils.WriteGameMaster("Où souhaitez‑vous la déplacer? (ligne,colonne) — ex : 2,3");
                 var dst = ReadLine()!;
                 game.HandlePlayerChooseDuck(e.Player, Utils.ParsePosition(src), Utils.ParsePosition(dst));
             };
