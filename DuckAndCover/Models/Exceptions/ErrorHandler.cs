@@ -22,7 +22,7 @@ namespace Models.Exceptions
                 ErrorCodes.PositionsMustBeIntegers => "Les positions doivent être des entiers.",
                 ErrorCodes.CardAlreadyExists => "Une carte existe déjà à cette position. Duck impossible.",
                 ErrorCodes.CardsAreNotAdjacent => "Les cartes ne sont pas adjacentes. Cover impossible",
-                _ => "Une erreur inconnue est survenue."
+                ErrorCodes.UnknownError => "Une erreur inconnue s'est produite."
             };
         }
     }
