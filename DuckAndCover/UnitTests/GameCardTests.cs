@@ -1,4 +1,4 @@
-using Model;
+using Models.Game;
 namespace UnitTests;
 
 public class GameCardTests

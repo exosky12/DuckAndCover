@@ -1,6 +1,8 @@
 using static System.Console;
-using Model;
 using System.Diagnostics.CodeAnalysis;
+using Models.Game;
+using Models.Exceptions;
+using Models.Enums;
 
 namespace ConsoleApp;
 
@@ -25,6 +27,90 @@ public static class Utils
     public static void DisplayBottomSeparator()
     {
         WriteLine("\n╚══════════════════════════════════════════════════════╝");
+    }
+
+    public static void SetSplashColor(int splash)
+    {
+        ForegroundColor = splash switch
+        {
+            0 => ConsoleColor.White,
+            1 => ConsoleColor.Yellow,
+            2 => ConsoleColor.DarkYellow,
+            3 => ConsoleColor.Red,
+            4 => ConsoleColor.DarkRed,
+            _ => ConsoleColor.Magenta
+        };
+    }
+
+    public static string DisplayCard(DeckCard card) => card.Bonus switch
+    {
+        Bonus.Max => "MAX",
+        Bonus.Again => "AGAIN",
+        _ => $"{card.Number:D2}"
+    };
+
+
+    public static void DisplayPlayerScores(List<Player> players)
+    {
+        foreach (Player p in players)
+        {
+            WriteLine($"  {p.Name}: {p.TotalScore} points");
+        }
+    }
+
+    public static Position ParsePosition(string input)
+    {
+        string[] parts = input.Split(',');
+        if (parts.Length != 2)
+            throw new Error(ErrorCodes.WrongPositionFormat);
+
+        if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
+            throw new Error(ErrorCodes.PositionsMustBeIntegers);
+
+        return new Position(row, col);
+    }
+
+    public static void WriteGameMaster(string message)
+    {
+        ConsoleColor originalColor = ForegroundColor;
+        ForegroundColor = ConsoleColor.Cyan;
+        WriteLine($"\n[Maître du jeu] {message}");
+        ForegroundColor = originalColor;
+    }
+    
+    public static void WriteError(string message)
+    {
+        ConsoleColor originalColor = ForegroundColor;
+        ForegroundColor = ConsoleColor.Red;
+        WriteLine($"\n[ERREUR] {message}");
+        ForegroundColor = originalColor;
+    }
+    
+    public static void ShowTitle()
+    { 
+        string title = @"
+        ______            _     ___            _ _____                     
+        |  _  \          | |   / _ \          | /  __ \                    
+        | | | |_   _  ___| | _/ /_\ \_ __   __| | /  \/ _____   _____ _ __ 
+        | | | | | | |/ __| |/ /  _  | '_ \ / _` | |    / _ \ \ / / _ \ '__|
+        | |/ /| |_| | (__|   <| | | | | | | (_| | \__/\ (_) \ V /  __/ |   
+        |___/  \__,_|\___|_|\_\_| |_|_| |_|\__,_|\____/\___/ \_/ \___|_|   
+                                                                           
+                                                                           
+        ";
+        WriteGameMaster(title);
+    }
+
+    public static string PromptPlayerTurn(Player player, DeckCard card, Game game)
+    {
+        WriteGameMaster($"\nC'est au tour de {player.Name}");
+        DisplayGrid(player);
+        DisplayMenu();
+        WriteGameMaster("Que souhaitez-vous faire ?");
+        ProcessCardEffect(card, player, game);
+
+        Write("\nVotre choix: ");
+        return ReadLine() ?? "";
     }
 
     public static void DisplayGrid(Player player)
@@ -94,95 +180,6 @@ public static class Utils
         DisplayBottomSeparator();
     }
 
-    public static void SetSplashColor(int splash)
-    {
-        if (splash == 0)
-        {
-            ForegroundColor = ConsoleColor.White;
-        }
-        else if (splash == 1)
-        {
-            ForegroundColor = ConsoleColor.Yellow;
-        }
-        else if (splash == 2)
-        {
-            ForegroundColor = ConsoleColor.DarkYellow;
-        }
-        else if (splash == 3)
-        {
-            ForegroundColor = ConsoleColor.Red;
-        }
-        else if (splash == 4)
-        {
-            ForegroundColor = ConsoleColor.DarkRed;
-        }
-        else
-        {
-            ForegroundColor = ConsoleColor.Magenta;
-        }
-    }
-
-    public static string DisplayCard(DeckCard card)
-    {
-        string cardDisplay;
-
-        if (card.Bonus == Bonus.Max)
-        {
-            cardDisplay = "MAX";
-        }
-        else if (card.Bonus == Bonus.Again)
-        {
-            cardDisplay = "AGAIN";
-        }
-        else
-        {
-            cardDisplay = $"{card.Number:D2}";
-        }
-
-        return cardDisplay;
-    }
-
-    public static void DisplayPlayerScores(List<Player> players)
-    {
-        foreach (Player p in players)
-        {
-            WriteLine($"  {p.Name}: {p.TotalScore} points");
-        }
-    }
-
-    public static Position ParsePosition(string input)
-    {
-        string[] parts = input.Split(',');
-        if (parts.Length != 2)
-            throw new ArgumentException("Format de position invalide. Utilisez le format: ligne,colonne");
-
-        if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
-            throw new ArgumentException("Les valeurs de ligne et colonne doivent être numériques");
-
-        return new Position(row, col);
-    }
-
-    public static void WriteGameMaster(string message)
-    {
-        ConsoleColor originalColor = ForegroundColor;
-        ForegroundColor = ConsoleColor.Cyan;
-        WriteLine($"\n[Maître du jeu] {message}");
-        ForegroundColor = originalColor;
-    }
-
-    public static void PromptPlayerTurn(Player player, DeckCard card, Game game)
-    {
-        Clear();
-        WriteGameMaster($"\nC'est au tour de {player.Name}");
-        DisplayGrid(player);
-        DisplayMenu();
-        WriteGameMaster("Que souhaitez-vous faire ?");
-        ProcessCardEffect(card, player, game);
-
-        Write("\nVotre choix: ");
-        
-    }
-
     public static int AskNumberOfPlayers()
     {
         WriteGameMaster("Combien de joueurs ?");
@@ -210,32 +207,6 @@ public static class Utils
         return players;
     }
 
-    public static void RunGameLoop(List<Player> players, Game game, Deck deck)
-    {
-        bool exitGame = false;
-        while (!exitGame)
-        {
-            if (deck.Cards.Count == 0)
-            {
-                WriteGameMaster("Le deck est vide. La partie est terminée !");
-                break;
-            }
-
-            DeckCard card = deck.Cards[0];
-            Player currentPlayer = game.CurrentPlayer;
-
-            game.CheckGameOverCondition();
-
-            if (game.Rules.IsGameOver(game.CardPassed, currentPlayer.StackCounter))
-            {
-                break;
-            }
-
-            string choice = ReadLine()!;
-            exitGame = HandlePlayerChoice(choice, currentPlayer, game, players, card);
-        }
-    }
-
     public static void ProcessCardEffect(DeckCard card, Player player, Game game)
     {
         switch (card.Bonus)
@@ -257,158 +228,11 @@ public static class Utils
         }
     }
 
-    public static bool AllPlayersPlayed(List<Player> players) => players.All(p => p.HasPlayed);
-
-    public static void HandleAllPlayed(Deck deck, Game game, List<Player> players)
-    {
-        if(players.All(p => p.HasPassed))
-        {
-            WriteGameMaster("Tous les joueurs ont passé leur tour. Carte défaussée.");
-            game.CardPassed++;
-        }
-        else WriteGameMaster("Tous les joueurs ont joué. Carte retirée du deck.");
-        game.Deck.Cards.RemoveAt(0);
-        players.ForEach(p => p.HasPassed = false);
-        players.ForEach(p => p.HasPlayed = false);
-    }
-
     public static void EndGame(List<Player> players, Game game)
     {
         WriteGameMaster("La partie est terminée !");
         game.Save();
         DisplayPlayerScores(players);
     }
-
-    public static bool HandlePlayerChoice(string choice, Player player, Game game, List<Player> players, DeckCard card)
-    {
-        
-        if (AllPlayersPlayed(players))
-        {
-            HandleAllPlayed(game.Deck, game, players);
-        }
-        switch (choice)
-        {
-            case "1":
-                PerformCoverAction(player, game, players, card);
-                player.HasPlayed = true;
-                game.NotifyPlayerChanged();
-                break;
-            case "2":
-                PerformDuckAction(player, game, players);
-                player.HasPlayed = true;
-                game.NotifyPlayerChanged();
-                break;
-            case "3":
-                WriteGameMaster($"{player.Name} dit : Coin !");
-                player.CallCoin(game, player.Grid);
-                player.HasPassed = true;
-                player.HasPlayed = true;
-                game.NotifyPlayerChanged();
-                break;
-            case "4":
-                players.ForEach(p =>
-                {
-                    WriteGameMaster($"Grille de {p.Name}:");
-                    DisplayGrid(p);
-                });
-                break;
-            case "5":
-                DisplayPlayerScores(players);
-                break;
-            case "6":
-                WriteGameMaster("Merci d'avoir joué à Duck&Cover!");
-                return true;
-            default:
-                WriteGameMaster("Choix invalide. Veuillez réessayer.");
-                break;
-        }
-
-        return false;
-    }
-
-    public static void PerformCoverAction(Player player, Game game, List<Player> players, DeckCard currentDeckCard)
-    {
-        WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir?");
-        WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
-        string fromPosition = ReadLine()!;
-
-        WriteGameMaster("Quelle carte souhaitez-vous recouvrir?");
-        WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,2");
-        string toPosition = ReadLine()!;
-
-        try
-        {
-            var fromPos = ParsePosition(fromPosition);
-            var toPos = ParsePosition(toPosition);
-
-            GameCard? fromCard = player.Grid.GetCard(fromPos);
-            GameCard? toCard = player.Grid.GetCard(toPos);
-
-            if (fromCard == null || toCard == null)
-            {
-                WriteGameMaster("Une des positions ne contient pas de carte!");
-                return;
-            }
-
-            if (!game.Rules.isTheSameCard(fromCard, currentDeckCard))
-            {
-                WriteGameMaster("Impossible de jouer cette carte car ce n'est pas la carte actuelle");
-                return;
-            }
-
-            WriteGameMaster($"Tentative de recouvrir la carte {toCard.Number} (splash {toCard.Splash}) " +
-                            $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
-
-            bool success = player.Cover(fromCard, toCard, player.Grid, game);
-
-            if (success)
-            {
-                WriteGameMaster("Recouvrement réussi!");
-            }
-            else WriteGameMaster("Recouvrement impossible avec ces cartes.");
-        }
-        catch (Exception e)
-        {
-            WriteGameMaster($"Erreur: {e.Message}");
-        }
-    }
-
-    public static void PerformDuckAction(Player player, Game game, List<Player> players)
-    {
-        WriteGameMaster("Quelle carte souhaitez-vous déplacer?");
-        WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
-        string fromPosition = ReadLine()!;
-
-        WriteGameMaster("Où souhaitez-vous la déplacer?");
-        WriteGameMaster("Entrez la nouvelle position (ligne,colonne) - exemple: 2,3");
-        string toPosition = ReadLine()!;
-        try
-        {
-            var fromPos = ParsePosition(fromPosition);
-            var toPos = ParsePosition(toPosition);
-
-            GameCard? cardToMove = player.Grid.GetCard(fromPos);
-
-            if (cardToMove == null)
-            {
-                WriteGameMaster("Aucune carte à déplacer à cette position.");
-                return;
-            }
-
-            bool success = player.Duck(cardToMove, toPos, player.Grid, game);
-
-            if (success)
-            {
-                WriteGameMaster("Déplacement effectué avec succès.");
-            }
-            else
-            {
-                WriteGameMaster("Déplacement impossible.");
-            }
-        }
-        catch (Exception e)
-        {
-            WriteGameMaster($"Erreur: {e.Message}");
-        }
-    }
 }
+

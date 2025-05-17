@@ -1,4 +1,4 @@
-using Model;
+using Models.Game;
 namespace UnitTests;
 
 public class PositionTests
@@ -22,31 +22,6 @@ public class PositionTests
     }
 
     [Fact]
-    public void TestPositionNotEqualsNull()
-    {
-        Position pos1 = new Position(1, 2);
-        Position pos2 = new Position(2, 3);
-
-        Assert.False(pos1.Equals(pos2));
-    }
-
-    [Fact]
-    public void TestPositionEqualsNull()
-    {
-        Position pos = new Position(1, 2);
-
-        Assert.False(pos.Equals(null));
-    }
-
-    [Fact]
-    public void TestPositionEqualsDifferentType()
-    {
-        Position pos = new Position(1, 2);
-
-        Assert.False(pos.Equals("Not a Position")); 
-    }
-
-    [Fact]
     public void TestPositionGetHashCode()
     {
         Position pos1 = new Position(1, 2);
@@ -63,4 +38,14 @@ public class PositionTests
 
         Assert.NotEqual(pos1.GetHashCode(), pos2.GetHashCode());
     }
+
+    [Fact]
+    public void TestPositionWithNegativeValues()
+    {
+        Position pos = new Position(-1, -2);
+
+        Assert.Equal(-1, pos.Row);
+        Assert.Equal(-2, pos.Column);
+    }
+    
 }

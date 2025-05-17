@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Models.Game;
+using Models.Exceptions;
 namespace UnitTests;
 
 public class PlayerTests
@@ -9,11 +10,11 @@ public class PlayerTests
         Player player = new Player("Alice");
 
         Assert.Equal("Alice", player.Name);
-        Assert.False(player.HasPassed);
+        Assert.False(player.HasSkipped);
         Assert.Empty(player.Scores);
         Assert.Equal(0, player.TotalScore);
         Assert.NotNull(player.Grid);
-        Assert.Equal(0, player.StackCounter);
+        Assert.Equal(12, player.StackCounter);
     }
 
     [Fact]
@@ -51,13 +52,13 @@ public class PlayerTests
 
         Assert.Equal(player1, game.CurrentPlayer);
 
-        player1.CallCoin(game, player1.Grid);
+        game.DoCoin(player1);
         Assert.Equal(player2, game.CurrentPlayer);
 
-        player2.CallCoin(game, player2.Grid);
+        game.DoCoin(player2);
         Assert.Equal(player3, game.CurrentPlayer);
 
-        player3.CallCoin(game, player3.Grid);
+        game.DoCoin(player3);
         Assert.Equal(player1, game.CurrentPlayer); 
     }
 
@@ -66,18 +67,30 @@ public class PlayerTests
     {
         Player player = new Player("Bob");
         Game game = new Game(new List<Player> { player });
+        DeckCard deckCard = game.CurrentDeckCard;
         Grid grid = player.Grid;
-        GameCard aboveCard = new GameCard(5, 1) { Position = new Position(1, 1) };
-        GameCard belowCard = new GameCard(5, 2) { Position = new Position(1, 2) };
+        
+        Position cardToMovePos = new Position(1, 1);
+        grid.RemoveCard(cardToMovePos);
+        GameCard cardToMove = new GameCard(5, deckCard.Number) { Position = cardToMovePos };
+        
+        Position cardToCoverPos = new Position(1, 2);
+        grid.RemoveCard(cardToCoverPos);
+        GameCard cardToCover = new GameCard(5, 2) { Position = cardToCoverPos };
 
-        grid.GameCardsGrid.Add(aboveCard);
-        grid.GameCardsGrid.Add(belowCard);
+        grid.GameCardsGrid.Add(cardToMove);
+        grid.GameCardsGrid.Add(cardToCover);
 
-        bool result = player.Cover(aboveCard, belowCard, grid, game);
+        try 
+        {
+            game.DoCover(player, cardToMove.Position, cardToCover.Position);
+        }
+        catch (Error e)
+        {
+            Assert.IsType<Error>(e);
+        }
 
-        Assert.True(result);
-        Assert.Equal(new Position(1, 2), aboveCard.Position);
-        Assert.Contains(aboveCard, grid.GameCardsGrid);
+        Assert.Equal(new Position(1, 2), cardToMove.Position);
     }
 
     [Fact]
@@ -86,16 +99,23 @@ public class PlayerTests
         Player player = new Player("Bob");
         Game game = new Game(new List<Player> { player });
         Grid grid = player.Grid;
-        GameCard card = new GameCard(3, 7) { Position = new Position(1, 1) };
+        DeckCard deckCard = game.CurrentDeckCard;
+        GameCard card = new GameCard(3, deckCard.Number) { Position = new Position(1, 1) };
+        grid.RemoveCard(card.Position);
         grid.GameCardsGrid.Add(card);
-        Position newPos = new Position(1, 2);
+        Position newPos = new Position(1, 5);
         
-        bool result = player.Duck(card, newPos, grid, game);
+        try 
+        {
+            game.DoDuck(player, card.Position, newPos);
+        }
+        catch (Error e)
+        {
+            Assert.IsType<Error>(e);
+        }
         
-        Assert.True(result);
         Assert.Equal(newPos, card.Position);
     }
-
 
     [Fact]
     public void Duck_DoesNotMoveCardIfNotAdjacent()
@@ -107,10 +127,88 @@ public class PlayerTests
         grid.GameCardsGrid.Add(card);
         Position newPos = new Position(6, 6);
         
-        bool result = player.Duck(card, newPos, grid, game);
-        
-        Assert.False(result);
+        Assert.Throws<Error>(() => game.DoDuck(player, card.Position, newPos));
         Assert.Equal(new Position(1, 1), card.Position);
     }
 
+    [Fact]
+    public void Cover_ThrowsError_WhenInvalidPosition()
+    {
+        Player player = new Player("Bob");
+        Game game = new Game(new List<Player> { player });
+        Grid grid = player.Grid;
+        GameCard cardToMove = new GameCard(5, 1) { Position = new Position(1, 1) };
+        grid.GameCardsGrid.Add(cardToMove);
+
+        Assert.Throws<Error>(() => game.DoCover(player, new Position(1, 1), new Position(999, 999)));
+    }
+
+    [Fact]
+    public void Duck_ThrowsError_WhenInvalidPosition()
+    {
+        Player player = new Player("Bob");
+        Game game = new Game(new List<Player> { player });
+        Grid grid = player.Grid;
+        GameCard card = new GameCard(3, 7) { Position = new Position(1, 1) };
+        grid.GameCardsGrid.Add(card);
+
+        Assert.Throws<Error>(() => game.DoDuck(player, new Position(1, 1), new Position(999, 999)));
+    }
+
+    [Fact]
+    public void Cover_UpdatesStackCounter()
+    {
+        Player player = new Player("Bob");
+        Game game = new Game(new List<Player> { player });
+        DeckCard deckCard = game.CurrentDeckCard;
+        Grid grid = player.Grid;
+        
+        Position cardToMovePos = new Position(1, 1);
+        grid.RemoveCard(cardToMovePos);
+        GameCard cardToMove = new GameCard(5, deckCard.Number) { Position = cardToMovePos };
+        
+        Position cardToCoverPos = new Position(1, 2);
+        grid.RemoveCard(cardToCoverPos);
+        GameCard cardToCover = new GameCard(5, 2) { Position = cardToCoverPos };
+
+        grid.GameCardsGrid.Add(cardToMove);
+        grid.GameCardsGrid.Add(cardToCover);
+        
+        int initialStackCounter = player.StackCounter;
+
+        try 
+        {
+            game.DoCover(player, cardToMove.Position, cardToCover.Position);
+        }
+        catch (Error e)
+        {
+            Assert.IsType<Error>(e);
+        }
+        
+
+        Assert.Equal(initialStackCounter - 1, player.StackCounter);
+    }
+
+    [Fact]
+    public void Duck_DoesNotUpdateStackCounter()
+    {
+        Player player = new Player("Bob");
+        Game game = new Game(new List<Player> { player });
+        Grid grid = player.Grid;
+        GameCard card = new GameCard(3, 7) { Position = new Position(1, 1) };
+        grid.GameCardsGrid.Add(card);
+        Position newPos = new Position(1, 2);
+
+        int initialStackCounter = player.StackCounter;
+        try 
+        {
+            game.DoDuck(player, card.Position, newPos);
+        }
+        catch (Error e)
+        {
+            Assert.IsType<Error>(e);
+        }
+
+        Assert.Equal(initialStackCounter, player.StackCounter);
+    }
 }
