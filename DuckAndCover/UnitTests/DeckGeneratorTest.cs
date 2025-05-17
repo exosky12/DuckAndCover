@@ -71,9 +71,9 @@ namespace UnitTests
 
             // Vérifie que le deck contient toutes les cartes par défaut
             Assert.Equal(26, deck.Count); // 24 cartes normales + 2 cartes bonus
-            Assert.Equal(2, deck.Count(card => card.Bonus == Bonus.Max));
+            Assert.Equal(1, deck.Count(card => card.Bonus == Bonus.Max));
             Assert.Equal(1, deck.Count(card => card.Bonus == Bonus.Again));
-            Assert.Equal(23, deck.Count(card => card.Bonus == Bonus.None));
+            Assert.Equal(24, deck.Count(card => card.Bonus == Bonus.None));
         }
     }
 }
