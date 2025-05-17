@@ -23,7 +23,11 @@ namespace Models.Exceptions
                 ErrorCodes.CardAlreadyExists => "Une carte existe déjà à cette position. Duck impossible.",
                 ErrorCodes.CardsAreNotAdjacent => "Les cartes ne sont pas adjacentes. Cover impossible",
                 ErrorCodes.DeckEmpty => "Le deck est vide. Impossible de tirer une carte.",
+                ErrorCodes.GameIdNotFound => "La partie est introuvable.",
+                
+
                 ErrorCodes.UnknownError => "Une erreur inconnue s'est produite."
+                
             };
         }
     }

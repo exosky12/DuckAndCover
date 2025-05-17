@@ -12,6 +12,7 @@ namespace Models.Enums
         InvalidChoice = 1008,
         CardsAreNotAdjacent = 1009,
         UnknownError = 1010,
-        DeckEmpty = 1011
+        DeckEmpty = 1011,
+        GameIdNotFound = 1012,
     }
 }
