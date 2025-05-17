@@ -11,6 +11,7 @@ namespace Models.Enums
         CardAlreadyExists = 1007,
         InvalidChoice = 1008,
         CardsAreNotAdjacent = 1009,
-        UnknownError = 1010
+        UnknownError = 1010,
+        DeckEmpty = 1011
     }
 }

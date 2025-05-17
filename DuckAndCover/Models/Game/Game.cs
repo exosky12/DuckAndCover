@@ -13,7 +13,7 @@ namespace Models.Game
         public int CardsSkipped { get; set; }
         public Player CurrentPlayer { get; set; }
         public Deck Deck { get; } = new Deck();
-        public bool Quit { get; set; } = false;
+        public bool Quit { get; set; }
         public DeckCard CurrentDeckCard { get; set; }
         public int? LastNumber { get; set; }
 
@@ -42,6 +42,7 @@ namespace Models.Game
         public Game(List<Player> players)
         {
             this.Rules = new ClassicRules();
+            this.Quit = false;
             this.Players = players;
             this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
             this._currentPlayerIndex = 0;
@@ -216,7 +217,7 @@ namespace Models.Game
         public DeckCard NextDeckCard()
         {
             if (Deck.Cards.Count == 0)
-                throw new InvalidOperationException("No more cards in the deck.");
+                throw new Error(ErrorCodes.DeckEmpty);
 
             Deck.Cards.RemoveAt(0);
 
