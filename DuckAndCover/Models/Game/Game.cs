@@ -20,8 +20,8 @@ namespace Models.Game
 
         private readonly Guid _id;
 
-        public Guid Id => _id;
 
+        public string Id { get; } = Guid.NewGuid().ToString("N").Substring(0, 5);  
 
         public static event EventHandler<GameStartedEventArgs>? GameStarted;
         public static event EventHandler<GameResumedEventArgs>? GameResumed;
@@ -62,10 +62,10 @@ namespace Models.Game
             this.CurrentPlayer = players[_currentPlayerIndex];
         }
 
-        public Game(Guid id, List<Player> players,
-                    int currentPlayerIndex, int cardsSkipped, bool isFinished)
+        public Game(string id, List<Player> players, int currentPlayerIndex, int cardsSkipped, bool isFinished)
+            : this(players)
         {
-            this._id = id;
+            Id = id;
             this.Rules = new ClassicRules();
             this.Players = players;
             this._currentPlayerIndex = currentPlayerIndex;
