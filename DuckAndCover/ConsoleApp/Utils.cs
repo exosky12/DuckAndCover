@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Models.Game;
 using Models.Exceptions;
 using Models.Enums;
+using DataPersistence;
 
 namespace ConsoleApp;
 
@@ -99,6 +100,73 @@ public static class Utils
                                                                            
         ";
         WriteGameMaster(title);
+    }
+
+    public static void ChargingGame(){
+        // Charge le stub
+        IDataPersistence persistence = new Stub();
+        var (stubPlayers, stubGames) = persistence.LoadData();
+
+        Write("Souhaitez-vous reprendre une partie en cours ? (O/N) ");
+        var answer = ReadLine()?.Trim().ToUpperInvariant();
+
+        Game game;
+        if (answer == "O")
+        {
+            var inProgress = stubGames.Where(g => !g.IsFinished).ToList();
+            if (!inProgress.Any())
+            {
+                WriteLine("Aucune partie en cours disponible.");
+                game = CreateNewGame();
+            }
+            else
+            {
+                WriteLine("Parties disponibles (Code 5 — Joueurs) :");
+                foreach (var g in inProgress)
+                {
+                    var code5 = g.Id.ToString().Substring(0, 5);
+                    WriteLine($"{code5} — {string.Join(", ", g.Players.Select(p => p.Name))}");
+                }
+
+                // Saisie du code à 5 caractères
+                Write("Entrez les 5 premiers caractères du code de la partie : ");
+                var codeInput = ReadLine()?.Trim() ?? "";
+
+                // Recherche de la partie correspondante
+                var resumed = inProgress
+                    .FirstOrDefault(g => g.Id.ToString().StartsWith(codeInput, StringComparison.OrdinalIgnoreCase));
+
+                if (resumed != null)
+                {
+                    game = resumed;
+                    Game.RaiseGameResumed(game);
+                }
+                else
+                {
+
+                    game = CreateNewGame();
+                }
+            }
+        }
+        else
+        {
+            game = CreateNewGame();
+        }
+
+    }
+
+    private static Game CreateNewGame()
+    {
+        int count = Utils.AskNumberOfPlayers();
+        if (count <= 0)
+        {
+            Utils.WriteGameMaster("Nombre de joueurs invalide. Veuillez relancer le jeu.");
+            Environment.Exit(0);
+        }
+        var newPlayers = Utils.InitializePlayers(count);
+        var newGame = new Game(newPlayers);
+        Game.RaiseGameStarted(newGame);
+        return newGame;
     }
 
     public static string PromptPlayerTurn(Player player, DeckCard card, Game game)

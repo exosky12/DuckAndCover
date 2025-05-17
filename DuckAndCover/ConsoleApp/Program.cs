@@ -1,7 +1,12 @@
-﻿using Models.Game;
-using Models.Exceptions;
-using static System.Console;
+﻿// File: ConsoleApp/Program.cs
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Models.Game;
+using Models.Exceptions;
+using DataPersistence;
+using static System.Console;
 
 namespace ConsoleApp
 {
@@ -11,92 +16,129 @@ namespace ConsoleApp
         static void Main()
         {
             Utils.ShowTitle();
-            int nbJoueur = Utils.AskNumberOfPlayers();
-            if (nbJoueur <= 0)
+
+            // Charge le stub
+            IDataPersistence persistence = new Stub();
+            var (stubPlayers, stubGames) = persistence.LoadData();
+
+            Write("Souhaitez-vous reprendre une partie en cours ? (O/N) ");
+            var answer = ReadLine()?.Trim().ToUpperInvariant();
+
+            Game game;
+            if (answer == "O")
             {
-                Utils.WriteGameMaster("Nombre de joueurs invalide. Veuillez redémarrer le jeu.");
-                return;
+                var inProgress = stubGames.Where(g => !g.IsFinished).ToList();
+                if (!inProgress.Any())
+                {
+                    WriteLine("Aucune partie en cours disponible.");
+                    game = CreateNewGame();
+                }
+                else
+                {
+                    WriteLine("Parties disponibles (Code 5 — Joueurs) :");
+                    foreach (var g in inProgress)
+                    {
+                        var code5 = g.Id.ToString().Substring(0, 5);
+                        WriteLine($"{code5} — {string.Join(", ", g.Players.Select(p => p.Name))}");
+                    }
+
+                    Write("Entrez les 5 premiers caractères du code de la partie : ");
+                    var codeInput = ReadLine()?.Trim() ?? "";
+
+                    var resumed = inProgress
+                        .FirstOrDefault(g => g.Id.ToString().StartsWith(codeInput, StringComparison.OrdinalIgnoreCase));
+
+                    if (resumed != null)
+                    {
+                        game = resumed;
+                        Game.RaiseGameResumed(game);
+                    }
+                    else
+                    {
+
+                        game = CreateNewGame();
+                    }
+                }
+            }
+            else
+            {
+                game = CreateNewGame();
             }
 
-            List<Player> players = Utils.InitializePlayers(nbJoueur);
-            Game game = new Game(players);
-            
-            game.PlayerChanged += (sender, args) =>
+            game.PlayerChanged += (s, e) =>
             {
-                string choice = Utils.PromptPlayerTurn(args.CurrentPlayer, args.DeckCard, sender as Game);
-                game.HandlePlayerChoice(args.CurrentPlayer, choice);
+                var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.DeckCard, game);
+                game.SubmitChoice(choice);
             };
-
-            game.DisplayMenuNeeded += (sender, args) =>
+            game.DisplayMenuNeeded += (s, e) =>
             {
-                string choice = Utils.PromptPlayerTurn(args.CurrentPlayer, args.DeckCard, sender as Game);
-                game.HandlePlayerChoice(args.CurrentPlayer, choice);
+                var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.DeckCard, game);
+                game.SubmitChoice(choice);
             };
-
-            game.PlayerChooseCoin += (sender, args) => { Utils.WriteGameMaster($"{args.Player.Name} a fait coin !"); };
-
-            game.PlayerChooseCover += (sender, args) =>
+            game.PlayerChooseCoin += (s, e) => Utils.WriteGameMaster($"{e.Player.Name} a fait coin !");
+            game.PlayerChooseCover += (s, e) =>
             {
-                Utils.WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir?");
-                Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
-                string cardToMovePosition = ReadLine()!;
-
-                Utils.WriteGameMaster("Quelle carte souhaitez-vous recouvrir?");
-                Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,2");
-                string cardToCover = ReadLine()!;
-
-                game.HandlePlayerChooseCover(args.Player, Utils.ParsePosition(cardToMovePosition),
-                    Utils.ParsePosition(cardToCover));
+                Utils.WriteGameMaster("Quelle carte souhaitez‑vous utiliser pour recouvrir?");
+                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,1");
+                var src = ReadLine()!;
+                Utils.WriteGameMaster("Quelle carte souhaitez‑vous recouvrir?");
+                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,2");
+                var dst = ReadLine()!;
+                game.HandlePlayerChooseCover(e.Player, Utils.ParsePosition(src), Utils.ParsePosition(dst));
             };
-
-            game.PlayerChooseDuck += (sender, args) =>
+            game.PlayerChooseDuck += (s, e) =>
             {
-                Utils.WriteGameMaster("Quelle carte souhaitez-vous déplacer?");
-                Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
-                string cardToMovePosition = ReadLine()!;
-
-                Utils.WriteGameMaster("Où souhaitez-vous la déplacer?");
-                Utils.WriteGameMaster("Entrez la nouvelle position (ligne,colonne) - exemple: 2,3");
-                string duckPosition = ReadLine()!;
-
-                game.HandlePlayerChooseDuck(args.Player, Utils.ParsePosition(cardToMovePosition),
-                    Utils.ParsePosition(duckPosition));
+                Utils.WriteGameMaster("Quelle carte souhaitez‑vous déplacer?");
+                Utils.WriteGameMaster("Entrez la position (ligne,colonne) — ex : 1,1");
+                var src = ReadLine()!;
+                Utils.WriteGameMaster("Où souhaitez‑vous la déplacer? (ligne,colonne) — ex : 2,3");
+                var dst = ReadLine()!;
+                game.HandlePlayerChooseDuck(e.Player, Utils.ParsePosition(src), Utils.ParsePosition(dst));
             };
-            
-
-            game.PlayerChooseShowPlayersGrid += (sender, args) =>
+            game.PlayerChooseShowPlayersGrid += (s, e) =>
             {
-                Utils.WriteGameMaster("Voici la grille des joueurs :");
-                foreach (var player in args.Players)
+                Utils.WriteGameMaster("Voici les grilles des joueurs :");
+                foreach (var p in e.Players)
                 {
-                    Utils.WriteGameMaster($"Grille de {player.Name} :");
-                    Utils.DisplayGrid(player);
+                    Utils.WriteGameMaster($"Grille de {p.Name} :");
+                    Utils.DisplayGrid(p);
                 }
             };
-
-            game.PlayerChooseShowScores += (sender, args) =>
+            game.PlayerChooseShowScores += (s, e) => Utils.DisplayPlayerScores(e.Players);
+            game.PlayerChooseQuit += (s, e) =>
             {
-                Utils.WriteGameMaster("Voici les scores des joueurs :");
-                Utils.DisplayPlayerScores(args.Players);
-            };
-
-            game.PlayerChooseQuit += (sender, args) =>
-            {
-                Utils.WriteGameMaster($"{args.Player.Name} a quitté la partie.");
+                Utils.WriteGameMaster($"{e.Player.Name} a quitté la partie.");
                 game.Quit = true;
             };
-
-            game.GameIsOver += (sender, args) => { Utils.EndGame(game.Players, sender as Game); };
-            
-            game.ErrorOccurred += (sender, args) =>
+            game.GameIsOver += (s, e) =>
             {
-                var errorHandler = new ErrorHandler(args.Error);
-                Utils.WriteError(errorHandler.Handle());
+                game.IsFinished = true;
+                Utils.EndGame(game.Players, game);
+            };
+            game.ErrorOccurred += (s, e) =>
+            {
+                var handler = new ErrorHandler(e.Error);
+                Utils.WriteError(handler.Handle());
                 WriteLine("Appuyez sur une touche pour continuer...");
                 ReadKey(true);
             };
-            
+
+            // 3) Lancement de la boucle de jeu
             game.GameLoop();
+        }
+
+        private static Game CreateNewGame()
+        {
+            int count = Utils.AskNumberOfPlayers();
+            if (count <= 0)
+            {
+                Utils.WriteGameMaster("Nombre de joueurs invalide. Veuillez relancer le jeu.");
+                Environment.Exit(0);
+            }
+            var newPlayers = Utils.InitializePlayers(count);
+            var newGame = new Game(newPlayers);
+            Game.RaiseGameStarted(newGame);
+            return newGame;
         }
     }
 }

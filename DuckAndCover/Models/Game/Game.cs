@@ -14,8 +14,20 @@ namespace Models.Game
         public Player CurrentPlayer { get; set; }
         public Deck Deck { get; } = new Deck();
         public bool Quit { get; set; }
+        public bool IsFinished { get; set; } = false;  
         public DeckCard CurrentDeckCard { get; set; }
         public int? LastNumber { get; set; }
+
+        private readonly Guid _id;
+
+        public Guid Id => _id;
+
+
+        public static event EventHandler<GameStartedEventArgs>? GameStarted;
+        public static event EventHandler<GameResumedEventArgs>? GameResumed;
+
+        public static void RaiseGameStarted(Game game) => GameStarted?.Invoke(null, new GameStartedEventArgs(game));
+        public static void RaiseGameResumed(Game game) => GameResumed?.Invoke(null, new GameResumedEventArgs(game));
 
         private int _currentPlayerIndex;
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
@@ -42,11 +54,25 @@ namespace Models.Game
         public Game(List<Player> players)
         {
             this.Rules = new ClassicRules();
+            this._id = new Guid();
             this.Quit = false;
             this.Players = players;
             this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
             this._currentPlayerIndex = 0;
             this.CurrentPlayer = players[_currentPlayerIndex];
+        }
+
+        public Game(Guid id, List<Player> players,
+                    int currentPlayerIndex, int cardsSkipped, bool isFinished)
+        {
+            this._id = id;
+            this.Rules = new ClassicRules();
+            this.Players = players;
+            this._currentPlayerIndex = currentPlayerIndex;
+            this.CurrentPlayer = players[_currentPlayerIndex];
+            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
+            this.CardsSkipped = cardsSkipped;
+            this.IsFinished = isFinished;
         }
 
         public void NextPlayer()
