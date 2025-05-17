@@ -20,7 +20,10 @@ namespace Models.Exceptions
                 ErrorCodes.InvalidFunctionName => "Le nom de la fonction est invalide.",
                 ErrorCodes.WrongPositionFormat => "Le format de la position est incorrect. Il doit ressembler à 'ligne,colonne'.",
                 ErrorCodes.PositionsMustBeIntegers => "Les positions doivent être des entiers.",
-                _ => "Une erreur inconnue est survenue."
+                ErrorCodes.CardAlreadyExists => "Une carte existe déjà à cette position. Duck impossible.",
+                ErrorCodes.CardsAreNotAdjacent => "Les cartes ne sont pas adjacentes. Cover impossible",
+                ErrorCodes.DeckEmpty => "Le deck est vide. Impossible de tirer une carte.",
+                ErrorCodes.UnknownError => "Une erreur inconnue s'est produite."
             };
         }
     }

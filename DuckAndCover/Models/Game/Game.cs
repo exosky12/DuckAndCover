@@ -2,6 +2,7 @@ using Models.Exceptions;
 using Models.Interfaces;
 using Models.Rules;
 using Models.Events;
+using Models.Enums;
 
 namespace Models.Game
 {
@@ -12,13 +13,11 @@ namespace Models.Game
         public int CardsSkipped { get; set; }
         public Player CurrentPlayer { get; set; }
         public Deck Deck { get; } = new Deck();
-        public bool Quit { get; set; } = false;
+        public bool Quit { get; set; }
         public DeckCard CurrentDeckCard { get; set; }
         public int? LastNumber { get; set; }
 
         private int _currentPlayerIndex;
-        private string? _pendingChoice;
-        private readonly AutoResetEvent _choiceSubmitted = new AutoResetEvent(false);
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -43,6 +42,7 @@ namespace Models.Game
         public Game(List<Player> players)
         {
             this.Rules = new ClassicRules();
+            this.Quit = false;
             this.Players = players;
             this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
             this._currentPlayerIndex = 0;
@@ -54,13 +54,6 @@ namespace Models.Game
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
-
-        public void SubmitChoice(string choice)
-        {
-            _pendingChoice = choice;
-            _choiceSubmitted.Set();
-        }
-
         public void GameLoop()
         {
             bool isOver = false;
@@ -69,13 +62,7 @@ namespace Models.Game
             {
                 try
                 {
-                    _pendingChoice = null;
-
                     OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
-
-                    _choiceSubmitted.WaitOne();
-
-                    HandlePlayerChoice(CurrentPlayer, _pendingChoice!);
 
                     if (AllPlayersPlayed())
                     {
@@ -98,30 +85,39 @@ namespace Models.Game
         
         public void HandlePlayerChoice(Player player, string choice)
         {
-            switch (choice)
+            try
             {
-                case "1":
-                    OnPlayerChooseCover(new PlayerChooseCoverEventArgs(CurrentPlayer));
-                    break;
-                case "2":
-                    OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(CurrentPlayer));
-                    break;
-                case "3":
-                    OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
-                    DoCoin(player);
-                    CheckAllPlayersSkipped();
-                    break;
-                case "4":
-                    OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
-                    OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
-                    break;
-                case "5":
-                    OnPlayerChooseShowScores(new PlayerChooseShowScoresEventArgs(Players));
-                    OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
-                    break;
-                case "6":
-                    OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(CurrentPlayer, this));
-                    break;
+                switch (choice)
+                {
+                    case "1":
+                        OnPlayerChooseCover(new PlayerChooseCoverEventArgs(CurrentPlayer));
+                        break;
+                    case "2":
+                        OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(CurrentPlayer));
+                        break;
+                    case "3":
+                        OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
+                        DoCoin(player);
+                        CheckAllPlayersSkipped();
+                        break;
+                    case "4":
+                        OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
+                        OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
+                        break;
+                    case "5":
+                        OnPlayerChooseShowScores(new PlayerChooseShowScoresEventArgs(Players));
+                        OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
+                        break;
+                    case "6":
+                        OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(CurrentPlayer, this));
+                        break;
+                    default:
+                        throw new Error(ErrorCodes.InvalidChoice);
+                }
+            }
+            catch (Error e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
         }
 
@@ -221,7 +217,7 @@ namespace Models.Game
         public DeckCard NextDeckCard()
         {
             if (Deck.Cards.Count == 0)
-                throw new InvalidOperationException("No more cards in the deck.");
+                throw new Error(ErrorCodes.DeckEmpty);
 
             Deck.Cards.RemoveAt(0);
 

@@ -1,5 +1,5 @@
-using Model;
-using Model.Enums;
+using Models.Game;
+using Models.Enums;
 namespace UnitTests;
 
 public class DeckCardTests
@@ -26,5 +26,4 @@ public class DeckCardTests
         Assert.Equal(number, card.Number);
         Assert.Equal(bonus, card.Bonus);
     }
-    
 }
