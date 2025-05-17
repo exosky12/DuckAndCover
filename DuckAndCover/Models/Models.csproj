@@ -10,7 +10,6 @@
     <ItemGroup>
         <Folder Include="Interfaces\" />
         <Folder Include="Exceptions\" />
-        <Folder Include="Game\" />
         <Folder Include="Rules\" />
     </ItemGroup>
 

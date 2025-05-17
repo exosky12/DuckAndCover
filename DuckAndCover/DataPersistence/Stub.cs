@@ -75,7 +75,6 @@ namespace DataPersistence
 
             var jules1 = new Player("Jules1", 9, new List<int> { 4, 7, 2 }, false, false, julesGrid1);
 
-            // 6) Partie « crazy »
             var crazyGame = new Game(
                 Guid.Parse("5051e963-7f97-4c11-8154-556c7af9794f"),
                 new List<Player> { jordy1, jules1 },

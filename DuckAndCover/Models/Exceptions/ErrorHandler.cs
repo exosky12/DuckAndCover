@@ -20,7 +20,7 @@ namespace Models.Exceptions
                 ErrorCodes.InvalidFunctionName => "Le nom de la fonction est invalide.",
                 ErrorCodes.WrongPositionFormat => "Le format de la position est incorrect. Il doit ressembler à 'ligne,colonne'.",
                 ErrorCodes.PositionsMustBeIntegers => "Les positions doivent être des entiers.",
-                _ => "Une erreur inconnue est survenue."
+                ErrorCodes.BadGameNumber => "Le numéro de la partie est incorrect.",
             };
         }
     }

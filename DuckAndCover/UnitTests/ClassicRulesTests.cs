@@ -1,5 +1,6 @@
-using Model;
-using Model.Enums;
+using Models.Game;
+using Models.Enums;
+using Models.Rules;
 
 namespace UnitTests;
 
