@@ -29,6 +29,69 @@ public static class Utils
         WriteLine("\n╚══════════════════════════════════════════════════════╝");
     }
 
+    public static void SetSplashColor(int splash)
+    {
+        ForegroundColor = splash switch
+        {
+            0 => ConsoleColor.White,
+            1 => ConsoleColor.Yellow,
+            2 => ConsoleColor.DarkYellow,
+            3 => ConsoleColor.Red,
+            4 => ConsoleColor.DarkRed,
+            _ => ConsoleColor.Magenta
+        };
+    }
+
+    public static string DisplayCard(DeckCard card) => card.Bonus switch
+    {
+        Bonus.Max => "MAX",
+        Bonus.Again => "AGAIN",
+        _ => $"{card.Number:D2}"
+    };
+
+
+    public static void DisplayPlayerScores(List<Player> players)
+    {
+        foreach (Player p in players)
+        {
+            WriteLine($"  {p.Name}: {p.TotalScore} points");
+        }
+    }
+
+    public static Position ParsePosition(string input)
+    {
+        string[] parts = input.Split(',');
+        if (parts.Length != 2)
+            //"Format de position invalide. Utilisez le format: ligne,colonne"
+            throw new Error(1);
+
+        if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
+            // Les valeurs de ligne et colonne doivent être numériques
+            throw new Error(1);
+
+        return new Position(row, col);
+    }
+
+    public static void WriteGameMaster(string message)
+    {
+        ConsoleColor originalColor = ForegroundColor;
+        ForegroundColor = ConsoleColor.Cyan;
+        WriteLine($"\n[Maître du jeu] {message}");
+        ForegroundColor = originalColor;
+    }
+
+    public static string PromptPlayerTurn(Player player, DeckCard card, Game game)
+    {
+        WriteGameMaster($"\nC'est au tour de {player.Name}");
+        DisplayGrid(player);
+        DisplayMenu();
+        WriteGameMaster("Que souhaitez-vous faire ?");
+        ProcessCardEffect(card, player, game);
+
+        Write("\nVotre choix: ");
+        return ReadLine() ?? "";
+    }
+
     public static void DisplayGrid(Player player)
     {
         DisplayTopSeparator("GRILLE DE JEU");
@@ -96,98 +159,6 @@ public static class Utils
         DisplayBottomSeparator();
     }
 
-    public static void SetSplashColor(int splash)
-    {
-        if (splash == 0)
-        {
-            ForegroundColor = ConsoleColor.White;
-        }
-        else if (splash == 1)
-        {
-            ForegroundColor = ConsoleColor.Yellow;
-        }
-        else if (splash == 2)
-        {
-            ForegroundColor = ConsoleColor.DarkYellow;
-        }
-        else if (splash == 3)
-        {
-            ForegroundColor = ConsoleColor.Red;
-        }
-        else if (splash == 4)
-        {
-            ForegroundColor = ConsoleColor.DarkRed;
-        }
-        else
-        {
-            ForegroundColor = ConsoleColor.Magenta;
-        }
-    }
-
-    public static string DisplayCard(DeckCard card)
-    {
-        string cardDisplay;
-
-        if (card.Bonus == Bonus.Max)
-        {
-            cardDisplay = "MAX";
-        }
-        else if (card.Bonus == Bonus.Again)
-        {
-            cardDisplay = "AGAIN";
-        }
-        else
-        {
-            cardDisplay = $"{card.Number:D2}";
-        }
-
-        return cardDisplay;
-    }
-
-    public static void DisplayPlayerScores(List<Player> players)
-    {
-        foreach (Player p in players)
-        {
-            WriteLine($"  {p.Name}: {p.TotalScore} points");
-        }
-    }
-
-    public static Position ParsePosition(string input)
-    {
-        string[] parts = input.Split(',');
-        if (parts.Length != 2)
-            //"Format de position invalide. Utilisez le format: ligne,colonne"
-            throw new Error(1);
-
-        if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
-            // Les valeurs de ligne et colonne doivent être numériques
-            throw new Error(1);
-
-        return new Position(row, col);
-    }
-
-    public static void WriteGameMaster(string message)
-    {
-        ConsoleColor originalColor = ForegroundColor;
-        ForegroundColor = ConsoleColor.Cyan;
-        WriteLine($"\n[Maître du jeu] {message}");
-        ForegroundColor = originalColor;
-    }
-
-    public static string PromptPlayerTurn(Player player, DeckCard card, Game game)
-    {
-        Clear();
-        WriteGameMaster($"\nC'est au tour de {player.Name}");
-        DisplayGrid(player);
-        DisplayMenu();
-        WriteGameMaster("Que souhaitez-vous faire ?");
-        ProcessCardEffect(card, player, game);
-
-        Write("\nVotre choix: ");
-        return ReadLine() ?? "";
-    }
-
-
     public static int AskNumberOfPlayers()
     {
         WriteGameMaster("Combien de joueurs ?");
@@ -213,36 +184,6 @@ public static class Utils
         }
 
         return players;
-    }
-
-    public static void RunGameLoop(List<Player> players, Game game, Deck deck)
-    {
-        bool exitGame = false;
-        while (!exitGame)
-        {
-            
-            if (deck.Cards.Count == 0)
-            {
-                WriteGameMaster("Le deck est vide. La partie est terminée !");
-                break;
-            }
-
-            Player currentPlayer = game.CurrentPlayer;
-
-            game.CheckGameOverCondition();
-
-            if (game.Rules.IsGameOver(game.CardsSkipped, currentPlayer.StackCounter))
-            {
-                break;
-            }
-
-            if (game.AllPlayersPlayed())
-                game.NextDeckCard();
-            
-            string choice = ReadLine()!;
-            exitGame = HandlePlayerChoice(choice, currentPlayer, game, players, game.CurrentDeckCard);
-            
-        }
     }
 
     public static void ProcessCardEffect(DeckCard card, Player player, Game game)
@@ -306,7 +247,7 @@ public static class Utils
                 break;
             case "3":
                 WriteGameMaster($"{player.Name} dit : Coin !");
-                game.CallCoin(player);
+                game.DoCoin(player);
                 player.HasSkipped = true;
                 player.HasPlayed = true;
                 break;
@@ -423,3 +364,4 @@ public static class Utils
         }
     }
 }
+

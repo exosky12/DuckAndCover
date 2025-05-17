@@ -12,7 +12,7 @@ namespace Models.Interfaces
 
         public void TryValidMove(Position position, Position newPosition, Grid grid, string funcName, DeckCard currentDeckCard);
 
-        bool IsGameOver(int cardPassed, int stackCounter);
+        bool IsGameOver(int cardPassed, int stackCounter, bool quit);
 
         bool isTheSameCard(GameCard currentCard, DeckCard currentDeckCard);
     }

@@ -56,7 +56,7 @@ namespace Models.Rules
         }
 
 
-        public bool IsGameOver(int cardPassed, int stackCounter) => (cardPassed == 8 || stackCounter == 1);
+        public bool IsGameOver(int cardPassed, int stackCounter, bool quit) => cardPassed == 8 || stackCounter == 1 || quit;
 
         public bool isTheSameCard(GameCard currentCard, DeckCard currentDeckCard)
         {

@@ -2,7 +2,6 @@ using Models.Exceptions;
 using Models.Interfaces;
 using Models.Rules;
 using Models.Events;
-using System.Threading;
 
 namespace Models.Game
 {
@@ -10,24 +9,34 @@ namespace Models.Game
     {
         public List<Player> Players { get; }
         public IRules Rules { get; }
-        public int PlayerCount => Players.Count;
         public int CardsSkipped { get; set; }
         public Player CurrentPlayer { get; set; }
         public Deck Deck { get; } = new Deck();
+        public bool Quit { get; set; } = false;
         public DeckCard CurrentDeckCard { get; set; }
         public int? LastNumber { get; set; }
 
         private int _currentPlayerIndex;
         private string? _pendingChoice;
         private readonly AutoResetEvent _choiceSubmitted = new AutoResetEvent(false);
-
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
-        public event EventHandler<PlayerChooseEventArgs>? PlayerChoose;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
-
+        public event EventHandler<PlayerChooseCoinEventArgs>? PlayerChooseCoin;
+        public event EventHandler<PlayerChooseDuckEventArgs>? PlayerChooseDuck;
+        public event EventHandler<PlayerChooseShowPlayersGridEventArgs>? PlayerChooseShowPlayersGrid;
+        public event EventHandler<PlayerChooseQuitEventArgs>? PlayerChooseQuit;
+        public event EventHandler<PlayerChooseCoverEventArgs>? PlayerChooseCover;
+        public event EventHandler<PlayerChooseShowScoresEventArgs>? PlayerChooseShowScores;
+        public event EventHandler<DisplayMenuNeededEventArgs>? DisplayMenuNeeded;
         protected virtual void OnPlayerChanged(PlayerChangedEventArgs args) => PlayerChanged?.Invoke(this, args);
-        protected virtual void OnPlayerChoose(PlayerChooseEventArgs args) => PlayerChoose?.Invoke(this, args);
         protected virtual void OnGameIsOver(GameIsOverEventArgs args) => GameIsOver?.Invoke(this, args);
+        protected virtual void OnPlayerChooseCoin(PlayerChooseCoinEventArgs args) => PlayerChooseCoin?.Invoke(this, args);
+        protected virtual void OnPlayerChooseDuck(PlayerChooseDuckEventArgs args) => PlayerChooseDuck?.Invoke(this, args);
+        protected virtual void OnDisplayMenuNeeded(DisplayMenuNeededEventArgs args) => DisplayMenuNeeded?.Invoke(this, args);
+        protected virtual void OnPlayerChooseQuit(PlayerChooseQuitEventArgs args) => PlayerChooseQuit?.Invoke(this, args);
+        protected virtual void OnPlayerChooseShowScores(PlayerChooseShowScoresEventArgs args) => PlayerChooseShowScores?.Invoke(this, args);
+        protected virtual void OnPlayerChooseShowPlayersGrid(PlayerChooseShowPlayersGridEventArgs args) => PlayerChooseShowPlayersGrid?.Invoke(this, args);
+        protected virtual void OnPlayerChooseCover(PlayerChooseCoverEventArgs args) => PlayerChooseCover?.Invoke(this, args);
 
         public Game(List<Player> players)
         {
@@ -57,9 +66,11 @@ namespace Models.Game
             while (!isOver)
             {
                 _pendingChoice = null;
+
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
 
                 _choiceSubmitted.WaitOne();
+
                 HandlePlayerChoice(CurrentPlayer, _pendingChoice!);
 
                 if (AllPlayersPlayed())
@@ -73,34 +84,78 @@ namespace Models.Game
                 }
 
                 isOver = CheckGameOverCondition();
-
-                NextPlayer();
             }
         }
-
-
+        
         public void HandlePlayerChoice(Player player, string choice)
         {
-            OnPlayerChoose(new PlayerChooseEventArgs(choice));
-
             switch (choice)
             {
                 case "1":
-                    // À implémenter dans l'UI : demander les positions
+                    OnPlayerChooseCover(new PlayerChooseCoverEventArgs(CurrentPlayer));
                     break;
                 case "2":
-                    // À implémenter dans l'UI : demander les positions
+                    OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(CurrentPlayer));
                     break;
                 case "3":
-                    CallCoin(player);
+                    OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
+                    DoCoin(player);
                     CheckAllPlayersSkipped();
                     break;
-                
-                default:
+                case "4":
+                    OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
+                    OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
+                    break;
+                case "5":
+                    OnPlayerChooseShowScores(new PlayerChooseShowScoresEventArgs(Players));
+                    OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
+                    break;
+                case "6":
+                    OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(CurrentPlayer, this));
                     break;
             }
         }
 
+        public void HandlePlayerChooseCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
+        {
+            try
+            {
+                DoCover(player, cardToMovePosition, cardToCoverPosition);
+            }
+            catch (Error e)
+            {
+                throw new Error(e.ErrorCode);
+            }
+        }
+        
+        public void TriggerGameOver()
+        {
+            OnGameIsOver(new GameIsOverEventArgs(true));
+        }   
+        
+        public void HandlePlayerChooseDuck(Player player, Position cardToMovePosition, Position duckPosition)
+        {
+            try
+            {
+                DoDuck(player, cardToMovePosition, duckPosition);
+            }
+            catch (Error e)
+            {
+                throw new Error(e.ErrorCode);
+            }
+        }
+        
+        public bool CheckGameOverCondition()
+        {
+            if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
+            {
+                OnGameIsOver(new GameIsOverEventArgs(true));
+                return true;
+            }
+
+            return false;
+        }
+        
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
             try
@@ -115,6 +170,8 @@ namespace Models.Game
 
                 player.StackCounter = grid.Count;
                 player.HasPlayed = true;
+                
+                NextPlayer();
             }
             catch (Error e)
             {
@@ -134,6 +191,8 @@ namespace Models.Game
 
                 player.StackCounter = player.Grid.GameCardsGrid.Count;
                 player.HasPlayed = true;
+            
+                NextPlayer();
             }
             catch (Error e)
             {
@@ -141,11 +200,13 @@ namespace Models.Game
             }
         }
 
-        public void CallCoin(Player player)
+        public void DoCoin(Player player)
         {
             player.StackCounter = player.Grid.GameCardsGrid.Count;
             player.HasPlayed = true;
             player.HasSkipped = true;
+            
+            NextPlayer();
         }
         
         public DeckCard NextDeckCard()
@@ -161,18 +222,6 @@ namespace Models.Game
                 CurrentDeckCard = Deck.Cards.First();
 
             return CurrentDeckCard!;
-        }
-
-
-        public bool CheckGameOverCondition()
-        {
-            if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter))
-            {
-                OnGameIsOver(new GameIsOverEventArgs(true));
-                return true;
-            }
-
-            return false;
         }
 
         public void Save()
