@@ -78,6 +78,20 @@ namespace Models.Game
 
             return (false, null);
         }
+        
+        public bool AreAdjacentCards(Position p1, Position p2)
+        {
+            var card1 = GetCard(p1);
+            var card2 = GetCard(p2);
+
+            if (card1 == null || card2 == null)
+                return false;
+
+            var rowDiff = Math.Abs(card1.Position.Row - card2.Position.Row);
+            var colDiff = Math.Abs(card1.Position.Column - card2.Position.Column);
+
+            return (rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1);
+        }
 
         public void RemoveCard(Position p)
         {

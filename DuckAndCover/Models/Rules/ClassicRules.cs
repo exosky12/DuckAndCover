@@ -35,20 +35,18 @@ namespace Models.Rules
                 case "duck":
                     GameCard? cardToDuck = grid.GetCard(newPosition);
                     if (cardToDuck != null)
-                        throw new Error(ErrorCodes.CardNotFound);
-                    if (grid.IsAdjacentToCard(cardToDuck!.Position) == (false, null))
+                        throw new Error(ErrorCodes.CardAlreadyExists);
+                    
+                    if (grid.IsAdjacentToCard(newPosition) == (false, null))
                         throw new Error(ErrorCodes.AdjacentCardNotFound);
-
                     return;
 
                 case "cover":
                     GameCard? cardToCover = grid.GetCard(newPosition);
                     if (cardToCover == null)
                         throw new Error(ErrorCodes.CardNotFound);
-
-                    if (grid.IsAdjacentToCard(cardToCover.Position) == (false, null))
-                        throw new Error(ErrorCodes.AdjacentCardNotFound);
-
+                    if (!grid.AreAdjacentCards(position, newPosition))
+                        throw new Error(ErrorCodes.CardsAreNotAdjacent);
                     return;
 
                 default:

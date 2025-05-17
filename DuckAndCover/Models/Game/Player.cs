@@ -14,7 +14,7 @@ namespace Models.Game
 
         public Player(string name)
         {
-            this.StackCounter = 0;
+            this.StackCounter = 12;
             this.Scores = new List<int>();
             this.Name = name;
             this.HasSkipped = false;

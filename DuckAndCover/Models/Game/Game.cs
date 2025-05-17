@@ -2,6 +2,7 @@ using Models.Exceptions;
 using Models.Interfaces;
 using Models.Rules;
 using Models.Events;
+using Models.Enums;
 
 namespace Models.Game
 {
@@ -98,30 +99,39 @@ namespace Models.Game
         
         public void HandlePlayerChoice(Player player, string choice)
         {
-            switch (choice)
+            try
             {
-                case "1":
-                    OnPlayerChooseCover(new PlayerChooseCoverEventArgs(CurrentPlayer));
-                    break;
-                case "2":
-                    OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(CurrentPlayer));
-                    break;
-                case "3":
-                    OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
-                    DoCoin(player);
-                    CheckAllPlayersSkipped();
-                    break;
-                case "4":
-                    OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
-                    OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
-                    break;
-                case "5":
-                    OnPlayerChooseShowScores(new PlayerChooseShowScoresEventArgs(Players));
-                    OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
-                    break;
-                case "6":
-                    OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(CurrentPlayer, this));
-                    break;
+                switch (choice)
+                {
+                    case "1":
+                        OnPlayerChooseCover(new PlayerChooseCoverEventArgs(CurrentPlayer));
+                        break;
+                    case "2":
+                        OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(CurrentPlayer));
+                        break;
+                    case "3":
+                        OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
+                        DoCoin(player);
+                        CheckAllPlayersSkipped();
+                        break;
+                    case "4":
+                        OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
+                        OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
+                        break;
+                    case "5":
+                        OnPlayerChooseShowScores(new PlayerChooseShowScoresEventArgs(Players));
+                        OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
+                        break;
+                    case "6":
+                        OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(CurrentPlayer, this));
+                        break;
+                    default:
+                        throw new Error(ErrorCodes.InvalidChoice);
+                }
+            }
+            catch (Error e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
         }
 
