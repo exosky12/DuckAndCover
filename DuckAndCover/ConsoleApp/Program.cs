@@ -62,6 +62,7 @@ namespace ConsoleApp
                 game.HandlePlayerChooseDuck(args.Player, Utils.ParsePosition(cardToMovePosition),
                     Utils.ParsePosition(duckPosition));
             };
+            
 
             game.PlayerChooseShowPlayersGrid += (sender, args) =>
             {
