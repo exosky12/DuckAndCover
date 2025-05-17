@@ -1,5 +1,6 @@
 using Models.Exceptions;
 using Models.Interfaces;
+using Models.Enums;
 using Models.Game;
 
 namespace Models.Rules
@@ -24,34 +25,34 @@ namespace Models.Rules
         {
             GameCard? card = grid.GetCard(position);
             if (card == null)
-                throw new Error(1);
+                throw new Error(ErrorCodes.CardNotFound);
 
             if (card.Number != currentDeckCard.Number)
-                throw new Error(1);
+                throw new Error(ErrorCodes.CardNumberNotEqualToDeckCardNumber);
 
             switch (funcName.ToLower())
             {
                 case "duck":
                     GameCard? cardToDuck = grid.GetCard(newPosition);
                     if (cardToDuck != null)
-                        throw new Error(1);
+                        throw new Error(ErrorCodes.CardNotFound);
                     if (grid.IsAdjacentToCard(cardToDuck!.Position) == (false, null))
-                        throw new Error(1);
+                        throw new Error(ErrorCodes.AdjacentCardNotFound);
 
                     return;
 
                 case "cover":
                     GameCard? cardToCover = grid.GetCard(newPosition);
                     if (cardToCover == null)
-                        throw new Error(1);
+                        throw new Error(ErrorCodes.CardNotFound);
 
                     if (grid.IsAdjacentToCard(cardToCover.Position) == (false, null))
-                        throw new Error(1);
+                        throw new Error(ErrorCodes.AdjacentCardNotFound);
 
                     return;
 
                 default:
-                    throw new Error(1);
+                    throw new Error(ErrorCodes.InvalidFunctionName);
             }
         }
 

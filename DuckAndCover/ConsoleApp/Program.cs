@@ -1,4 +1,5 @@
 ﻿using Models.Game;
+using Models.Exceptions;
 using static System.Console;
 using System.Diagnostics.CodeAnalysis;
 
@@ -9,7 +10,7 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            ShowTitle();
+            Utils.ShowTitle();
             int nbJoueur = Utils.AskNumberOfPlayers();
             if (nbJoueur <= 0)
             {
@@ -19,8 +20,7 @@ namespace ConsoleApp
 
             List<Player> players = Utils.InitializePlayers(nbJoueur);
             Game game = new Game(players);
-
-
+            
             game.PlayerChanged += (sender, args) =>
             {
                 string choice = Utils.PromptPlayerTurn(args.CurrentPlayer, args.DeckCard, sender as Game);
@@ -32,7 +32,6 @@ namespace ConsoleApp
                 string choice = Utils.PromptPlayerTurn(args.CurrentPlayer, args.DeckCard, sender as Game);
                 game.SubmitChoice(choice);
             };
-
 
             game.PlayerChooseCoin += (sender, args) => { Utils.WriteGameMaster($"{args.Player.Name} a fait coin !"); };
 
@@ -87,23 +86,16 @@ namespace ConsoleApp
             };
 
             game.GameIsOver += (sender, args) => { Utils.EndGame(game.Players, sender as Game); };
-
+            
+            game.ErrorOccurred += (sender, args) =>
+            {
+                var errorHandler = new ErrorHandler(args.Error);
+                Utils.WriteError(errorHandler.Handle());
+                WriteLine("Appuyez sur une touche pour continuer...");
+                ReadKey(true);
+            };
+            
             game.GameLoop();
-        }
-
-        static void ShowTitle()
-        {
-            string title = @"
-______            _     ___            _ _____                     
-|  _  \          | |   / _ \          | /  __ \                    
-| | | |_   _  ___| | _/ /_\ \_ __   __| | /  \/ _____   _____ _ __ 
-| | | | | | |/ __| |/ /  _  | '_ \ / _` | |    / _ \ \ / / _ \ '__|
-| |/ /| |_| | (__|   <| | | | | | | (_| | \__/\ (_) \ V /  __/ |   
-|___/  \__,_|\___|_|\_\_| |_|_| |_|\__,_|\____/\___/ \_/ \___|_|   
-                                                                   
-                                                                   
-";
-            Utils.WriteGameMaster(title);
         }
     }
 }

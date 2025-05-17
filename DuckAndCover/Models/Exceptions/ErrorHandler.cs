@@ -1,26 +1,26 @@
+using Models.Enums;
 namespace Models.Exceptions
 {
     public class ErrorHandler
     {
-        private readonly int _ErrorCode;
+        private readonly Error _error;
 
-        public ErrorHandler(int errorCode)
+        public ErrorHandler(Error error)
         {
-            _ErrorCode = errorCode;
+            _error = error;
         }
 
         public string Handle()
         {
-            return _ErrorCode switch
+            return _error.ErrorCode switch
             {
-                1 => "Erreur : La carte ne peut pas être jouée.",
-                2 => "Erreur : La carte ne peut pas être recouverte.",
-                3 => "Erreur : La carte ne peut pas être déplacée.",
-                4 => "Erreur : Le joueur n'a pas de carte à jouer.",
-                5 => "Erreur : Le joueur a déjà joué.",
-                6 => "Erreur : Le joueur a déjà passé son tour.",
-                7 => "Erreur : Le joueur n'a pas de carte à recouvrir.",
-                _ => "Erreur inconnue."
+                ErrorCodes.CardNotFound => "La carte est introuvable à la position donnée.",
+                ErrorCodes.AdjacentCardNotFound => "Aucune carte adjacente. Vous devez donner une position avec au moins une carte adjacente.",
+                ErrorCodes.CardNumberNotEqualToDeckCardNumber => "Le numéro de la carte ne correspond pas à celui attendu dans le deck.",
+                ErrorCodes.InvalidFunctionName => "Le nom de la fonction est invalide.",
+                ErrorCodes.WrongPositionFormat => "Le format de la position est incorrect. Il doit ressembler à 'ligne,colonne'.",
+                ErrorCodes.PositionsMustBeIntegers => "Les positions doivent être des entiers.",
+                _ => "Une erreur inconnue est survenue."
             };
         }
     }

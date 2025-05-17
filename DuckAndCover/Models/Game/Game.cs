@@ -21,6 +21,7 @@ namespace Models.Game
         private readonly AutoResetEvent _choiceSubmitted = new AutoResetEvent(false);
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
+        public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
         public event EventHandler<PlayerChooseCoinEventArgs>? PlayerChooseCoin;
         public event EventHandler<PlayerChooseDuckEventArgs>? PlayerChooseDuck;
         public event EventHandler<PlayerChooseShowPlayersGridEventArgs>? PlayerChooseShowPlayersGrid;
@@ -29,6 +30,7 @@ namespace Models.Game
         public event EventHandler<PlayerChooseShowScoresEventArgs>? PlayerChooseShowScores;
         public event EventHandler<DisplayMenuNeededEventArgs>? DisplayMenuNeeded;
         protected virtual void OnPlayerChanged(PlayerChangedEventArgs args) => PlayerChanged?.Invoke(this, args);
+        protected virtual void OnErrorOccurred(ErrorOccurredEventArgs args) => ErrorOccurred?.Invoke(this, args);
         protected virtual void OnGameIsOver(GameIsOverEventArgs args) => GameIsOver?.Invoke(this, args);
         protected virtual void OnPlayerChooseCoin(PlayerChooseCoinEventArgs args) => PlayerChooseCoin?.Invoke(this, args);
         protected virtual void OnPlayerChooseDuck(PlayerChooseDuckEventArgs args) => PlayerChooseDuck?.Invoke(this, args);
@@ -65,25 +67,32 @@ namespace Models.Game
 
             while (!isOver)
             {
-                _pendingChoice = null;
-
-                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
-
-                _choiceSubmitted.WaitOne();
-
-                HandlePlayerChoice(CurrentPlayer, _pendingChoice!);
-
-                if (AllPlayersPlayed())
+                try
                 {
-                    NextDeckCard();
-                    Players.ForEach(p =>
-                    {
-                        p.HasPlayed = false;
-                        p.HasSkipped = false;
-                    });
-                }
+                    _pendingChoice = null;
 
-                isOver = CheckGameOverCondition();
+                    OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
+
+                    _choiceSubmitted.WaitOne();
+
+                    HandlePlayerChoice(CurrentPlayer, _pendingChoice!);
+
+                    if (AllPlayersPlayed())
+                    {
+                        NextDeckCard();
+                        Players.ForEach(p =>
+                        {
+                            p.HasPlayed = false;
+                            p.HasSkipped = false;
+                        });
+                    }
+
+                    isOver = CheckGameOverCondition();
+                }
+                catch (Error e)
+                {
+                    OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                }
             }
         }
         
