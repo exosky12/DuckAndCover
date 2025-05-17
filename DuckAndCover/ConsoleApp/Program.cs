@@ -24,13 +24,13 @@ namespace ConsoleApp
             game.PlayerChanged += (sender, args) =>
             {
                 string choice = Utils.PromptPlayerTurn(args.CurrentPlayer, args.DeckCard, sender as Game);
-                game.SubmitChoice(choice);
+                game.HandlePlayerChoice(args.CurrentPlayer, choice);
             };
 
             game.DisplayMenuNeeded += (sender, args) =>
             {
                 string choice = Utils.PromptPlayerTurn(args.CurrentPlayer, args.DeckCard, sender as Game);
-                game.SubmitChoice(choice);
+                game.HandlePlayerChoice(args.CurrentPlayer, choice);
             };
 
             game.PlayerChooseCoin += (sender, args) => { Utils.WriteGameMaster($"{args.Player.Name} a fait coin !"); };

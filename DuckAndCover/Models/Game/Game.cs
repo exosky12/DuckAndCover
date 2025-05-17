@@ -18,8 +18,6 @@ namespace Models.Game
         public int? LastNumber { get; set; }
 
         private int _currentPlayerIndex;
-        private string? _pendingChoice;
-        private readonly AutoResetEvent _choiceSubmitted = new AutoResetEvent(false);
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -55,13 +53,6 @@ namespace Models.Game
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
-
-        public void SubmitChoice(string choice)
-        {
-            _pendingChoice = choice;
-            _choiceSubmitted.Set();
-        }
-
         public void GameLoop()
         {
             bool isOver = false;
@@ -70,13 +61,7 @@ namespace Models.Game
             {
                 try
                 {
-                    _pendingChoice = null;
-
                     OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
-
-                    _choiceSubmitted.WaitOne();
-
-                    HandlePlayerChoice(CurrentPlayer, _pendingChoice!);
 
                     if (AllPlayersPlayed())
                     {
