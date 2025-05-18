@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuckAndCover", "DuckAndCover\DuckAndCover.csproj", "{CA9107E0-34ED-4C16-B402-0460E8DD3D37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{4B30DF66-0DF4-434D-83A1-2EE5428DA0B0}"
@@ -7,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{AB3176CD-EEEB-4DC8-91FB-815B27F8D50F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{B44E5760-1B3D-4E78-8D47-F3B5AF22DCEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataPersistence", "DataPersistence\DataPersistence.csproj", "{E4F9D1E3-BA43-4E23-91AB-52FA37FB7A1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +35,15 @@ Global
 		{B44E5760-1B3D-4E78-8D47-F3B5AF22DCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B44E5760-1B3D-4E78-8D47-F3B5AF22DCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B44E5760-1B3D-4E78-8D47-F3B5AF22DCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4F9D1E3-BA43-4E23-91AB-52FA37FB7A1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4F9D1E3-BA43-4E23-91AB-52FA37FB7A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4F9D1E3-BA43-4E23-91AB-52FA37FB7A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4F9D1E3-BA43-4E23-91AB-52FA37FB7A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38C3BC8D-1B62-417B-AB21-1ABE70E5C5BA}
 	EndGlobalSection
 EndGlobal

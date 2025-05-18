@@ -22,7 +22,10 @@ namespace Models.Exceptions
                 ErrorCodes.PositionsMustBeIntegers => "Les positions doivent être des entiers.",
                 ErrorCodes.CardAlreadyExists => "Une carte existe déjà à cette position. Duck impossible.",
                 ErrorCodes.CardsAreNotAdjacent => "Les cartes ne sont pas adjacentes. Cover impossible",
-                _ => "Une erreur inconnue est survenue."
+                ErrorCodes.DeckEmpty => "Le deck est vide. Impossible de tirer une carte.",
+                ErrorCodes.GameIdNotFound => "La partie est introuvable.",
+                ErrorCodes.InvalidChoice => "Choix invalide. Veuillez réessayer.",
+                ErrorCodes.UnknownError => "Une erreur inconnue s'est produite."
             };
         }
     }
