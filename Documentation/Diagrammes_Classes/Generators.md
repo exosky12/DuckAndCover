@@ -13,8 +13,12 @@ skinparam namespaceSeparator none
 
 namespace Models {
 
-    interface IGenerator<T> <<interface>> {
-        + Generate() : List<T>
+    interface IGameCardGenerator <<interface>> {
+        + Generate() : List<GameCard>
+    }
+
+    interface IDeckCardGenerator <<interface>> {
+        + Generate() : List<DeckCard>
     }
 
     class GridGenerator {
@@ -38,8 +42,8 @@ namespace Models {
     }
 
     ' Relations
-    GridGenerator ..|> IGenerator<GameCard>
-    DeckGenerator ..|> IGenerator<DeckCard>
+    GridGenerator ..|> IGameCardGenerator
+    DeckGenerator ..|> IDeckCardGenerator
 
 }
 
