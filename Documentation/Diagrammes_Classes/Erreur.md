@@ -63,15 +63,3 @@ legend right
     |<#FFA500>| Enumération |
 endlegend
 @enduml
-
-    ' Relations
-    Error --> ErrorCodes
-
-}
-
-legend right
-    |= Type |= Couleur |
-    |<#D6EAF8>| Classe |
-    |<#FFA500>| Enumération |
-endlegend
-@enduml
