@@ -24,8 +24,9 @@ namespace Models.Game
         public static event EventHandler<GameStartedEventArgs>? GameStarted;
         public static event EventHandler<GameResumedEventArgs>? GameResumed;
 
-        public static void RaiseGameStarted(Game game) => GameStarted?.Invoke(null, new GameStartedEventArgs(game));
+         public static void RaiseGameStarted(Game game) => GameStarted?.Invoke(null, new GameStartedEventArgs(game));
         public static void RaiseGameResumed(Game game) => GameResumed?.Invoke(null, new GameResumedEventArgs(game));
+
 
         private int _currentPlayerIndex;
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;

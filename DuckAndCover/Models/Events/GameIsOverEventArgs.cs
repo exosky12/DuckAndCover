@@ -1,5 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Models.Events
+
 {
+    [ExcludeFromCodeCoverage]
     public class GameIsOverEventArgs
     {
         private bool _gameIsOver;

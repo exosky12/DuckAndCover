@@ -1,12 +1,10 @@
-﻿// File: Models/Events/StatesOfGamesEventArgs.cs
-using System;
+﻿using System;
 using GameModel = Models.Game.Game;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Models.Events
 {
-    /// <summary>
-    /// Event args for when a new game is started.
-    /// </summary>
+    [ExcludeFromCodeCoverage]
     public class GameStartedEventArgs : EventArgs
     {
         public GameModel Game { get; }
@@ -14,9 +12,7 @@ namespace Models.Events
         public GameStartedEventArgs(GameModel game) => Game = game;
     }
 
-    /// <summary>
-    /// Event args for when an existing game is resumed.
-    /// </summary>
+    [ExcludeFromCodeCoverage]
     public class GameResumedEventArgs : EventArgs
     {
         public GameModel Game { get; }
