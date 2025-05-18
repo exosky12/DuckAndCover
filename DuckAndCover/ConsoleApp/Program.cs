@@ -19,7 +19,7 @@ namespace ConsoleApp
         {
             Utils.ShowTitle();
 
-            var stub = new Stub(); // ou IDataPersistence persistence = new Stub();
+            var stub = new Stub();
             var (_, stubGames) = stub.LoadData();
 
             Game game = GetGameFromUserChoice(stubGames);
