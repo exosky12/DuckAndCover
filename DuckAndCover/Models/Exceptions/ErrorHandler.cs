@@ -1,8 +1,10 @@
 using Models.Enums;
 namespace Models.Exceptions
+using System.Diagnostics.CodeAnalysis;
 {
     public class ErrorHandler
     {
+        [ExcludeFromCodeCoverage]
         private readonly Error _error;
 
         public ErrorHandler(Error error)
