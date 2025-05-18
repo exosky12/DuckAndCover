@@ -1,7 +1,9 @@
 using Models.Game;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Models.Events
 {
+    [ExcludeFromCodeCoverage]
     public class PlayerChangedEventArgs : EventArgs
     {
         public Player CurrentPlayer { get; }
