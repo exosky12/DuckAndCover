@@ -19,6 +19,15 @@ namespace Models {
         + Error(errorCode : ErrorCodes, message : string = "") : void
     }
 
+    class ErrorHandler {
+        + +/+ Error : Error
+        + +/+ Message : string
+
+        + ErrorHandler(error : Error)
+        + HandleError() : void
+        + GetErrorMessage() : string
+    }
+
     enum ErrorCodes <<enum>> {
         InvalidChoice
         WrongPositionFormat
@@ -41,6 +50,19 @@ namespace Models {
         InvalidId
         InvalidState
     }
+
+    ' Relations
+    Error --> ErrorCodes
+    ErrorHandler --> Error
+
+}
+
+legend right
+    |= Type |= Couleur |
+    |<#D6EAF8>| Classe |
+    |<#FFA500>| Enumération |
+endlegend
+@enduml
 
     ' Relations
     Error --> ErrorCodes
