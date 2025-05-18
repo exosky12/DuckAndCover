@@ -1,12 +1,9 @@
-﻿// File: Models/Events/StatesOfGamesEventArgs.cs
-using System;
+﻿using System;
 using GameModel = Models.Game.Game;
 
 namespace Models.Events
 {
-    /// <summary>
-    /// Event args for when a new game is started.
-    /// </summary>
+    [ExcludeFromCodeCoverage]
     public class GameStartedEventArgs : EventArgs
     {
         public GameModel Game { get; }
