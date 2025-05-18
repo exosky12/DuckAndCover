@@ -218,6 +218,82 @@ public class GameTests
             var ex = Assert.Throws<Error>(() => game.NextDeckCard());
             Assert.Equal(ErrorCodes.DeckEmpty, ex.ErrorCode);
         }
+        private Game SetupSimpleGame()
+        {
+            var player1 = new Player("Test", 0, new List<int>(), false, false, new Grid());
+            var player2 = new Player("Bot", 0, new List<int>(), false, false, new Grid());
+            return new Game(new List<Player> { player1, player2 });
+        }
+
+        [Fact]
+        public void HandlePlayerChooseCover_Throws_WhenInvalid()
+        {
+            var game = SetupSimpleGame();
+            var player = game.CurrentPlayer;
+
+            var from = new Position(0, 0); // a priori invalide
+            var to = new Position(4, 4);   // a priori invalide
+
+            Assert.Throws<Error>(() => game.HandlePlayerChooseCover(player, from, to));
+        }
+
+        [Fact]
+        public void HandlePlayerChooseDuck_Throws_WhenInvalid()
+        {
+            var game = SetupSimpleGame();
+            var player = game.CurrentPlayer;
+
+            var from = new Position(0, 0); // position invalide
+            var to = new Position(3, 3);   // aussi
+
+            Assert.Throws<Error>(() => game.HandlePlayerChooseDuck(player, from, to));
+        }
+
+        [Fact]
+        public void TriggerGameOver_RaisesGameIsOverEvent()
+        {
+            var game = SetupSimpleGame();
+            bool triggered = false;
+
+            game.GameIsOver += (s, e) => triggered = true;
+
+            game.TriggerGameOver();
+
+            Assert.True(triggered);
+        }
+
+        [Fact]
+        public void CheckGameOverCondition_ReturnsTrue_AndRaisesEvent()
+        {
+            var game = SetupSimpleGame();
+            bool eventRaised = false;
+
+            game.GameIsOver += (s, e) => eventRaised = true;
+
+            // Forcer une situation de fin de partie selon les règles
+            game.CardsSkipped = 99;
+            game.CurrentPlayer.StackCounter = 0;
+            game.Quit = false;
+
+            var result = game.CheckGameOverCondition();
+
+            Assert.True(result);
+            Assert.True(eventRaised);
+        }
+
+        [Fact]
+        public void CheckGameOverCondition_ReturnsFalse_WhenNotOver()
+        {
+            var game = SetupSimpleGame();
+
+            game.CardsSkipped = 0;
+            game.CurrentPlayer.StackCounter = 5;
+            game.Quit = false;
+
+            var result = game.CheckGameOverCondition();
+
+            Assert.False(result);
+        }
 
     [Fact]
     public void PlayerChooseCoin_HandlesCoinCorrectly()
