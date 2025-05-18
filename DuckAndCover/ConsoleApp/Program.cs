@@ -24,76 +24,97 @@ namespace ConsoleApp
             var (_, stubGames) = persistence.LoadData();
 
             // 2) Demander reprise ou nouvelle partie
-            Write("Souhaitez-vous reprendre une partie en cours ? (O/N) ");
-            var answer = ReadLine()?.Trim().ToUpperInvariant();
-
             Game game = null;
+            bool validChoice = false;
 
-            switch (answer)
+            while (!validChoice)
             {
-                case "O":
-                    try
-                    {
-                        // Lister toutes les parties non terminées
-                        var inProgress = stubGames.Where(g => !g.IsFinished).ToList();
-                        if (!inProgress.Any())
+                Write("Souhaitez-vous reprendre une partie en cours ? (O/N) ");
+                var answer = ReadLine()?.Trim().ToUpperInvariant();
+
+                switch (answer)
+                {
+                    case "O":
+                        try
                         {
-                            WriteLine("Aucune partie en cours disponible.");
-                            game = Utils.CreateNewGame();
-                        }
-                        else
-                        {
-                            WriteLine("Parties disponibles (Code – Joueurs) :");
-                            foreach (var g in inProgress)
-                                WriteLine($"{g.Id} – {string.Join(", ", g.Players.Select(p => p.Name))}");
-
-                            // Saisie du code (5 caractères)
-                            Write("Entrez le code de la partie à reprendre : ");
-                            var codeInput = (ReadLine() ?? "")
-                                                .Trim()
-                                                .ToUpperInvariant();
-
-                            // Recherche exacte
-                            var resumed = inProgress
-                                .FirstOrDefault(g => string.Equals(g.Id, codeInput, StringComparison.OrdinalIgnoreCase));
-
-                            if (resumed != null)
+                            // Lister toutes les parties non terminées
+                            var inProgress = stubGames.Where(g => !g.IsFinished).ToList();
+                            if (!inProgress.Any())
                             {
-                                game = resumed;
-                                Game.RaiseGameResumed(game);
+                                WriteLine("Aucune partie en cours disponible.");
+                                game = Utils.CreateNewGame();
+                                validChoice = true;
                             }
                             else
                             {
-                                throw new Error(ErrorCodes.GameIdNotFound);
+                                bool validId = false;
+                                while (!validId)
+                                {
+                                    WriteLine("Parties disponibles (Code – Joueurs) :");
+                                    foreach (var g in inProgress)
+                                        WriteLine($"{g.Id} – {string.Join(", ", g.Players.Select(p => p.Name))}");
+
+                                    // Saisie du code (5 caractères)
+                                    Write("Entrez le code de la partie à reprendre : ");
+                                    var codeInput = (ReadLine() ?? "")
+                                                        .Trim()
+                                                        .ToUpperInvariant();
+
+                                    // Recherche exacte
+                                    var resumed = inProgress
+                                        .FirstOrDefault(g => string.Equals(g.Id, codeInput, StringComparison.OrdinalIgnoreCase));
+
+                                    if (resumed != null)
+                                    {
+                                        game = resumed;
+                                        Game.RaiseGameResumed(game);
+                                        validId = true;
+                                        validChoice = true;
+                                    }
+                                    else
+                                    {
+                                        var errorHandler = new ErrorHandler(new Error(ErrorCodes.GameIdNotFound));
+                                        Utils.WriteError(errorHandler.Handle());
+                                        WriteLine("Appuyez sur une touche pour continuer...");
+                                        ReadKey(true);
+                                    }
+                                }
                             }
                         }
-                    }
-                    catch (Error e)
-                    {
-                        // Erreur de reprise -> message + nouvelle partie
-                        var errorHandler = new ErrorHandler(e);
-                        Utils.WriteError(errorHandler.Handle());
-                        WriteLine("Appuyez sur une touche pour continuer...");
-                        ReadKey(true);
+                        catch (Error e)
+                        {
+                            // Erreur de reprise -> message + nouvelle partie
+                            var errorHandler = new ErrorHandler(e);
+                            Utils.WriteError(errorHandler.Handle());
+                            WriteLine("Appuyez sur une touche pour continuer...");
+                            ReadKey(true);
+                            game = Utils.CreateNewGame();
+                            validChoice = true;
+                        }
+                        break;
+
+                    case "N":
+                        // Nouvelle partie
                         game = Utils.CreateNewGame();
-                    }
-                    break;
+                        validChoice = true;
+                        break;
 
-                case "N":
-                    // Nouvelle partie
-                    game = Utils.CreateNewGame();
-                    break;
-
-                default:
-                    // Choix invalide -> message + nouvelle partie
-                    var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
-                    Utils.WriteError(handler.Handle());
-                    WriteLine("Appuyez sur une touche pour continuer...");
-                    ReadKey(true);
-                    game = Utils.CreateNewGame();
-                    break;
+                    default:
+                        // Choix invalide -> message + redemander
+                        try
+                        {
+                            throw new Error(ErrorCodes.InvalidChoice);
+                        }
+                        catch (Error e)
+                        {
+                            var handler = new ErrorHandler(e);
+                            Utils.WriteError(handler.Handle());
+                            WriteLine("Appuyez sur une touche pour continuer...");
+                            ReadKey(true);
+                        }
+                        break;
+                }
             }
-
             // 3) Souscrire aux événements de la partie
             game.PlayerChanged += (s, e) =>
             {
@@ -120,7 +141,7 @@ namespace ConsoleApp
             };
             game.PlayerChooseDuck += (s, e) =>
             {
-                Utils.WriteGameMaster("Quelle carte déplacer ? (ligne,colonne) – ex : 1,1");
+                Utils.WriteGameMaster("Quelle carte déplacer? (ligne,colonne) – ex : 1,1");
                 var src = ReadLine()!;
                 Utils.WriteGameMaster("Destination (ligne,colonne) – ex : 2,3");
                 var dst = ReadLine()!;
@@ -151,8 +172,8 @@ namespace ConsoleApp
             };
             game.ErrorOccurred += (s, e) =>
             {
-                var handler = new ErrorHandler(e.Error);
-                Utils.WriteError(handler.Handle());
+                var errorHandler = new ErrorHandler(e.Error);
+                Utils.WriteError(errorHandler.Handle());
                 WriteLine("Appuyez sur une touche pour continuer...");
                 ReadKey(true);
             };
