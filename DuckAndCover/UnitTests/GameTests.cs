@@ -20,6 +20,33 @@ public class GameTests
         Assert.IsType<ClassicRules>(game.Rules);
         Assert.NotNull(game.Deck);
     }
+
+    [Fact]
+        public void GameConstructor_WithAllParameters_InitializesCorrectly()
+        {
+
+            var players = new List<Player>
+            {
+                new Player("Alice"),
+                new Player("Bob")
+            };
+            string id = "ABCDE";
+            int currentPlayerIndex = 1;
+            int cardsSkipped = 2;
+            bool isFinished = true;
+
+            var game = new Game(id, players, currentPlayerIndex, cardsSkipped, isFinished);
+
+            Assert.Equal(id, game.Id);
+            Assert.Equal(players, game.Players);
+            Assert.Equal(players[currentPlayerIndex], game.CurrentPlayer);
+            Assert.Equal(cardsSkipped, game.CardsSkipped);
+            Assert.True(game.IsFinished);
+            Assert.NotNull(game.CurrentDeckCard);
+            Assert.IsType<ClassicRules>(game.Rules);
+            Assert.NotNull(game.Deck);
+        }
+    }
     
     [Fact]
     public void TestNextPlayer()
