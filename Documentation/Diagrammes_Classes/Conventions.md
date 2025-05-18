@@ -14,7 +14,7 @@ note right of Convention
   == Conventions de nommage des propriétés ==
   `+/+` : Getter public, Setter public  
   `+/-` : Getter public, Setter privé  
-  `+/ #` : Getter public, Setter init  
+  `+/%` : Getter public, Setter init  
   `-/-` : Getter privé, Setter privé  
 
   `+` devant le type : propriété ou méthode publique  
