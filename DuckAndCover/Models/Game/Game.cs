@@ -22,9 +22,6 @@ namespace Models.Game
         public string Id { get; }
 
 
-        public static void RaiseGameStarted(Game game) => GameStarted?.Invoke(null, new GameStartedEventArgs(game));
-        public static void RaiseGameResumed(Game game) => GameResumed?.Invoke(null, new GameResumedEventArgs(game));
-
         private int _currentPlayerIndex;
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
