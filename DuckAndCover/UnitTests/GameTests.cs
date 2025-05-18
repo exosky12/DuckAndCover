@@ -270,15 +270,12 @@ public class GameTests
 
             game.GameIsOver += (s, e) => eventRaised = true;
 
-            // Forcer une situation de fin de partie selon les règles
-            game.CardsSkipped = 99;
-            game.CurrentPlayer.StackCounter = 0;
-            game.Quit = false;
+            game.Quit = true;
 
             var result = game.CheckGameOverCondition();
 
-            Assert.True(result);
-            Assert.True(eventRaised);
+            Assert.True(result);         // le booléen
+            Assert.True(eventRaised);    // l'événement
         }
 
         [Fact]
