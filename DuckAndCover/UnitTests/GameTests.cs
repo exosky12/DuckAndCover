@@ -1,5 +1,7 @@
 using Models.Game;
 using Models.Rules;
+using Models.Exceptions;
+using Models.Enums;
 namespace UnitTests;
 
 public class GameTests
@@ -175,43 +177,46 @@ public class GameTests
         Assert.True(quitHandled);
     }
     [Fact]
-        public void NextDeckCard_RemovesTopCardAndUpdatesCurrentDeckCard()
+        public void NextDeckCard_RemovesCardAndUpdatesCurrent()
         {
             // Arrange
             var players = new List<Player>
             {
-                new Player("Alice", 0, new List<int>(), false, false, new Grid()),
-                new Player("Bob", 0, new List<int>(), false, false, new Grid())
+                new Player("Player1", 0, new List<int>(), false, false, new Grid()),
+                new Player("Player2", 0, new List<int>(), false, false, new Grid())
             };
 
             var game = new Game(players);
-            var initialCount = game.Deck.Cards.Count;
-            var firstCard = game.Deck.Cards[0];
-            var secondCard = game.Deck.Cards[1];
+            var initialDeckCount = game.Deck.Cards.Count;
+            var initialFirstCard = game.Deck.Cards[0];
+            var expectedNextCard = game.Deck.Cards[1];
 
             // Act
-            var returnedCard = game.NextDeckCard();
+            var next = game.NextDeckCard();
 
             // Assert
-            Assert.Equal(secondCard, returnedCard);
-            Assert.Equal(secondCard, game.CurrentDeckCard);
-            Assert.Equal(initialCount - 1, game.Deck.Cards.Count);
-            Assert.DoesNotContain(firstCard, game.Deck.Cards);
+            Assert.Equal(expectedNextCard, next);
+            Assert.Equal(expectedNextCard, game.CurrentDeckCard);
+            Assert.Equal(initialDeckCount - 1, game.Deck.Cards.Count);
+            Assert.DoesNotContain(initialFirstCard, game.Deck.Cards);
         }
 
         [Fact]
-        public void NextDeckCard_ThrowsError_WhenDeckIsEmpty()
+        public void NextDeckCard_Throws_WhenDeckIsEmpty()
         {
             // Arrange
             var players = new List<Player>
             {
-                new Player("Alice", 0, new List<int>(), false, false, new Grid())
+                new Player("Player1", 0, new List<int>(), false, false, new Grid()),
+                new Player("Player2", 0, new List<int>(), false, false, new Grid())
             };
+
             var game = new Game(players);
             game.Deck.Cards.Clear(); // vider le deck
 
             // Act & Assert
-            Assert.Throws<Error>(() => game.NextDeckCard());
+            var ex = Assert.Throws<Error>(() => game.NextDeckCard());
+            Assert.Equal(ErrorCodes.DeckEmpty, ex.ErrorCode);
         }
 
     [Fact]
