@@ -1,3 +1,4 @@
+```plantuml
 @startuml
 ' Style général
 skinparam packageStyle rectangle
