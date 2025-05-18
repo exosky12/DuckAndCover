@@ -17,23 +17,23 @@ namespace DataPersistence
             var jordy = new Player("Jordy", 11, new List<int> { 5, 6, 3 }, false, true, jordyGrid);
 
             var jules = new Player("Jules", 12, new List<int> { 4, 7, 2 }, false, false, new Grid());
-            
+
             var onGoingGame = new Game(
-                id:                  "7051E",
-                players:             new List<Player> { jordy, jules },
-                currentPlayerIndex:  1,
-                cardsSkipped:        0,
-                isFinished:          false
+                id: "7051E",
+                players: new List<Player> { jordy, jules },
+                currentPlayerIndex: 1,
+                cardsSkipped: 0,
+                isFinished: false
             );
-            
-            var jordy2 = new Player("Jordy2",  1, new List<int> { 5, 6, 3 }, false, true,  new Grid());
-            var jules2 = new Player("Jules2",  3, new List<int> { 4, 7, 2 }, false, false, new Grid());
+
+            var jordy2 = new Player("Jordy2", 1, new List<int> { 5, 6, 3 }, false, true, new Grid());
+            var jules2 = new Player("Jules2", 3, new List<int> { 4, 7, 2 }, false, false, new Grid());
             var finishedGame = new Game(
-                id:                  "9051e",
-                players:             new List<Player> { jordy2, jules2 },
-                currentPlayerIndex:  0,
-                cardsSkipped:        8,
-                isFinished:          true
+                id: "9051e",
+                players: new List<Player> { jordy2, jules2 },
+                currentPlayerIndex: 0,
+                cardsSkipped: 8,
+                isFinished: true
             );
 
             // 4) Jordy1 : nouvelle grille avec 3 déplacements
@@ -70,16 +70,16 @@ namespace DataPersistence
 
             // 6) Partie “crazy” (Code 5051E)
             var crazyGame = new Game(
-                id:                  "5051e",
-                players:             new List<Player> { jordy1, jules1 },
-                currentPlayerIndex:  1,
-                cardsSkipped:        3,
-                isFinished:          false
+                id: "5051e",
+                players: new List<Player> { jordy1, jules1 },
+                currentPlayerIndex: 1,
+                cardsSkipped: 3,
+                isFinished: false
             );
 
             // 7) Retour
             var players = new List<Player> { jordy, jules, jordy2, jules2, jordy1, jules1 };
-            var games   = new List<Game>   { onGoingGame, finishedGame, crazyGame };
+            var games = new List<Game> { onGoingGame, finishedGame, crazyGame };
             return (players, games);
         }
 

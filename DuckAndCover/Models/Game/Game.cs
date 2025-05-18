@@ -14,14 +14,12 @@ namespace Models.Game
         public Player CurrentPlayer { get; set; }
         public Deck Deck { get; } = new Deck();
         public bool Quit { get; set; }
-        public bool IsFinished { get; set; } = false;  
+        public bool IsFinished { get; set; }  
         public DeckCard CurrentDeckCard { get; set; }
         public int? LastNumber { get; set; }
 
-        private readonly Guid _id;
-
-
-        public string Id { get; } = Guid.NewGuid().ToString("N").Substring(0, 5);  
+        private readonly string _id;
+        public string Id { get; }
 
         public static event EventHandler<GameStartedEventArgs>? GameStarted;
         public static event EventHandler<GameResumedEventArgs>? GameResumed;
@@ -54,8 +52,10 @@ namespace Models.Game
         public Game(List<Player> players)
         {
             this.Rules = new ClassicRules();
-            this._id = new Guid();
+            this._id = Guid.NewGuid().ToString("N").Substring(0, 5);
+            this.Id = _id;
             this.Quit = false;
+            this.IsFinished = false;
             this.Players = players;
             this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
             this._currentPlayerIndex = 0;
@@ -65,7 +65,8 @@ namespace Models.Game
         public Game(string id, List<Player> players, int currentPlayerIndex, int cardsSkipped, bool isFinished)
             : this(players)
         {
-            Id = id;
+            this._id = id;
+            this.Id = _id;
             this.Rules = new ClassicRules();
             this.Players = players;
             this._currentPlayerIndex = currentPlayerIndex;

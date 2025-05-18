@@ -24,7 +24,7 @@ namespace ConsoleApp
             var (_, stubGames) = persistence.LoadData();
 
             // 2) Demander reprise ou nouvelle partie
-            Game game = null;
+            Game? game = null;
             bool validChoice = false;
 
             while (!validChoice)
@@ -115,6 +115,12 @@ namespace ConsoleApp
                         break;
                 }
             }
+
+            if (game == null)
+            {
+                throw new Error(ErrorCodes.UnknownError);
+            }
+
             // 3) Souscrire aux événements de la partie
             game.PlayerChanged += (s, e) =>
             {
