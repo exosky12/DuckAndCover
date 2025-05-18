@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Models.Game;
 using Models.Exceptions;
 using Models.Enums;
+using DataPersistence;
 
 namespace ConsoleApp;
 
@@ -100,7 +101,6 @@ public static class Utils
         ";
         WriteGameMaster(title);
     }
-
     public static string PromptPlayerTurn(Player player, DeckCard card, Game game)
     {
         WriteGameMaster($"\nC'est au tour de {player.Name}");
@@ -179,6 +179,7 @@ public static class Utils
 
         DisplayBottomSeparator();
     }
+    
 
     public static int AskNumberOfPlayers()
     {
@@ -234,5 +235,21 @@ public static class Utils
         game.Save();
         DisplayPlayerScores(players);
     }
+
+    public static Game CreateNewGame()
+    {
+        int count = AskNumberOfPlayers();
+        if (count <= 0)
+        {
+            WriteGameMaster("Nombre de joueurs invalide. Veuillez relancer le jeu.");
+            Environment.Exit(0);
+        }
+
+        var newPlayers = InitializePlayers(count);
+        var newGame = new Game(newPlayers);
+        Game.RaiseGameStarted(newGame);
+        return newGame;
+    }
 }
+
 

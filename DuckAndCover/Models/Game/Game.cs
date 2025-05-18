@@ -13,13 +13,21 @@ namespace Models.Game
         public int CardsSkipped { get; set; }
         public Player CurrentPlayer { get; set; }
         public Deck Deck { get; } = new Deck();
-        public bool Quit { get; set; } = false;
+        public bool Quit { get; set; }
+        public bool IsFinished { get; set; }  
         public DeckCard CurrentDeckCard { get; set; }
         public int? LastNumber { get; set; }
 
+        private readonly string _id;
+        public string Id { get; }
+
+        public static event EventHandler<GameStartedEventArgs>? GameStarted;
+        public static event EventHandler<GameResumedEventArgs>? GameResumed;
+
+        public static void RaiseGameStarted(Game game) => GameStarted?.Invoke(null, new GameStartedEventArgs(game));
+        public static void RaiseGameResumed(Game game) => GameResumed?.Invoke(null, new GameResumedEventArgs(game));
+
         private int _currentPlayerIndex;
-        private string? _pendingChoice;
-        private readonly AutoResetEvent _choiceSubmitted = new AutoResetEvent(false);
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -44,10 +52,28 @@ namespace Models.Game
         public Game(List<Player> players)
         {
             this.Rules = new ClassicRules();
+            this._id = Guid.NewGuid().ToString("N").Substring(0, 5);
+            this.Id = _id;
+            this.Quit = false;
+            this.IsFinished = false;
             this.Players = players;
             this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
             this._currentPlayerIndex = 0;
             this.CurrentPlayer = players[_currentPlayerIndex];
+        }
+
+        public Game(string id, List<Player> players, int currentPlayerIndex, int cardsSkipped, bool isFinished)
+            : this(players)
+        {
+            this._id = id;
+            this.Id = _id;
+            this.Rules = new ClassicRules();
+            this.Players = players;
+            this._currentPlayerIndex = currentPlayerIndex;
+            this.CurrentPlayer = players[_currentPlayerIndex];
+            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
+            this.CardsSkipped = cardsSkipped;
+            this.IsFinished = isFinished;
         }
 
         public void NextPlayer()
@@ -55,13 +81,6 @@ namespace Models.Game
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
-
-        public void SubmitChoice(string choice)
-        {
-            _pendingChoice = choice;
-            _choiceSubmitted.Set();
-        }
-
         public void GameLoop()
         {
             bool isOver = false;
@@ -70,13 +89,7 @@ namespace Models.Game
             {
                 try
                 {
-                    _pendingChoice = null;
-
                     OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
-
-                    _choiceSubmitted.WaitOne();
-
-                    HandlePlayerChoice(CurrentPlayer, _pendingChoice!);
 
                     if (AllPlayersPlayed())
                     {
@@ -231,7 +244,7 @@ namespace Models.Game
         public DeckCard NextDeckCard()
         {
             if (Deck.Cards.Count == 0)
-                throw new InvalidOperationException("No more cards in the deck.");
+                throw new Error(ErrorCodes.DeckEmpty);
 
             Deck.Cards.RemoveAt(0);
 

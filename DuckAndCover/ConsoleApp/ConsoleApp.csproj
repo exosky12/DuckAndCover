@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Models\Models.csproj" />
+		<ProjectReference Include="..\DataPersistence\DataPersistence.csproj" />
     </ItemGroup>
 
 </Project>
