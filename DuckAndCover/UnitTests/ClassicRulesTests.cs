@@ -37,7 +37,7 @@ public class ClassicRulesTests
     public void Duck_ValidMove_IfEmptyAndAdjacent()
     {
         var grid = new Grid();
-        var card = grid.GetCard(new Position(1, 1));
+        var card = grid.GetCard(new Position(1, 1))!;
         var newPos = new Position(1, 5);
 
         var rules = new ClassicRules();
