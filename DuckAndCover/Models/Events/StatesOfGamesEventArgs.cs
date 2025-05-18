@@ -1,5 +1,6 @@
 ﻿using System;
 using GameModel = Models.Game.Game;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Models.Events
 {
