@@ -1,5 +1,7 @@
-namespace Models.Events
 using System.Diagnostics.CodeAnalysis;
+
+namespace Models.Events
+
 {
     [ExcludeFromCodeCoverage]
     public class GameIsOverEventArgs
