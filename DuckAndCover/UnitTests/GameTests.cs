@@ -46,7 +46,7 @@ public class GameTests
             Assert.IsType<ClassicRules>(game.Rules);
             Assert.NotNull(game.Deck);
         }
-    }
+
     
     [Fact]
     public void TestNextPlayer()
