@@ -12,9 +12,7 @@ namespace Models.Events
         public GameStartedEventArgs(GameModel game) => Game = game;
     }
 
-    /// <summary>
-    /// Event args for when an existing game is resumed.
-    /// </summary>
+    [ExcludeFromCodeCoverage]
     public class GameResumedEventArgs : EventArgs
     {
         public GameModel Game { get; }
