@@ -174,6 +174,48 @@ public class GameTests
         
         Assert.True(quitHandled);
     }
+    [Fact]
+        public void NextDeckCard_RemovesCardAndUpdatesCurrent()
+        {
+
+            var players = new List<Player>
+            {
+                new Player("Player1"),
+                new Player("Player2")
+            };
+
+            var game = new Game(players);
+            var initialDeckCount = game.Deck.Cards.Count;
+            var initialFirstCard = game.Deck.Cards[0];
+            var expectedNextCard = game.Deck.Cards[1];
+
+            // Act
+            var next = game.NextDeckCard();
+
+            // Assert
+            Assert.Equal(expectedNextCard, next);
+            Assert.Equal(expectedNextCard, game.CurrentDeckCard);
+            Assert.Equal(initialDeckCount - 1, game.Deck.Cards.Count);
+            Assert.DoesNotContain(initialFirstCard, game.Deck.Cards);
+        }
+
+        [Fact]
+        public void NextDeckCard_Throws_WhenDeckIsEmpty()
+        {
+            // Arrange
+            var players = new List<Player>
+            {
+                new Player("Player1"),
+                new Player("Player2")
+            };
+
+            var game = new Game(players);
+            game.Deck.Cards.Clear(); // vider le deck
+
+            // Act & Assert
+            var ex = Assert.Throws<Error>(() => game.NextDeckCard());
+            Assert.Equal(ErrorCodes.DeckEmpty, ex.ErrorCode);
+        }
 
     [Fact]
     public void PlayerChooseCoin_HandlesCoinCorrectly()
