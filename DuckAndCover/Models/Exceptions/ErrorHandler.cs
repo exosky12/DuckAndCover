@@ -1,6 +1,7 @@
 using Models.Enums;
-namespace Models.Exceptions
 using System.Diagnostics.CodeAnalysis;
+namespace Models.Exceptions
+
 {
     [ExcludeFromCodeCoverage]
     public class ErrorHandler
