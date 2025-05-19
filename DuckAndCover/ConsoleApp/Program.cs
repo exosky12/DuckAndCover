@@ -20,7 +20,7 @@ namespace ConsoleApp
             Utils.ShowTitle();
 
             var stub = new Stub();
-            var (_, stubGames) = stub.LoadData();
+            var (stubPlayers, stubGames) = stub.LoadData();
 
             Game game = GetGameFromUserChoice(stubGames);
 
@@ -33,6 +33,7 @@ namespace ConsoleApp
 
         private static Game GetGameFromUserChoice(List<Game> stubGames)
         {
+            Game? game = null;
             while (true)
             {
                 Write("Souhaitez-vous reprendre une partie en cours ? (O/N) ");
@@ -40,8 +41,12 @@ namespace ConsoleApp
 
                 switch (answer)
                 {
-                    case "O": return ResumeGame(stubGames);
-                    case "N": return Utils.CreateNewGame();
+                    case "O":
+                        ResumeGame(stubGames, out game);
+                        return game;
+                    case "N":
+                        Utils.CreateNewGame();
+                        return game;
                     default:
                         var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
                         Utils.WriteError(handler.Handle());
@@ -52,14 +57,15 @@ namespace ConsoleApp
             }
         }
 
-        private static Game ResumeGame(List<Game> stubGames)
+        private static void ResumeGame(List<Game> stubGames, out Game game)
         {
             var inProgress = stubGames.Where(g => !g.IsFinished).ToList();
 
             if (inProgress.Count == 0)
             {
                 WriteLine("Aucune partie en cours disponible.");
-                return Utils.CreateNewGame();
+                game = Utils.CreateNewGame();
+                return;
             }
 
             while (true)
@@ -76,8 +82,8 @@ namespace ConsoleApp
 
                 if (resumed != null)
                 {
-                    Game.RaiseGameResumed(resumed);
-                    return resumed;
+                    game = resumed;
+                    return;
                 }
 
                 var handler = new ErrorHandler(new Error(ErrorCodes.GameIdNotFound));

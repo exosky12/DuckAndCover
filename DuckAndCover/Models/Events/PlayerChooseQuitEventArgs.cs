@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Models.Game;
 using GameModel = Models.Game.Game;
     
 namespace Models.Events
 {
+    [ExcludeFromCodeCoverage]
     public class PlayerChooseQuitEventArgs : EventArgs
     {
         public Player Player { get; private set; }

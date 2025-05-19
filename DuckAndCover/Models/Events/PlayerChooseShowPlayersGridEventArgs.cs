@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Models.Game;
     
 namespace Models.Events
 {
+    [ExcludeFromCodeCoverage]
     public class PlayerChooseShowPlayersGridEventArgs : EventArgs
     {
         public List<Player> Players { get; private set; }

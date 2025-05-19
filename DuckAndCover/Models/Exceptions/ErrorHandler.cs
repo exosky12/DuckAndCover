@@ -29,7 +29,8 @@ namespace Models.Exceptions
                 ErrorCodes.DeckEmpty => "Le deck est vide. Impossible de tirer une carte.",
                 ErrorCodes.GameIdNotFound => "La partie est introuvable.",
                 ErrorCodes.InvalidChoice => "Choix invalide. Veuillez réessayer.",
-                ErrorCodes.UnknownError => "Une erreur inconnue s'est produite."
+                ErrorCodes.UnknownError => "Une erreur inconnue s'est produite.",
+                _ => "Code d'erreur non reconnu."
             };
         }
     }
