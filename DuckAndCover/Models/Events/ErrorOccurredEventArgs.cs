@@ -1,12 +1,16 @@
+using System.Diagnostics.CodeAnalysis;
 using Models.Exceptions;
-namespace Models.Events;
 
-public class ErrorOccurredEventArgs
+namespace Models.Events
 {
-    public Error Error { get; }
-
-    public ErrorOccurredEventArgs(Error error)
+    [ExcludeFromCodeCoverage]
+    public class ErrorOccurredEventArgs
     {
-        Error = error;
+        public Error Error { get; }
+
+        public ErrorOccurredEventArgs(Error error)
+        {
+            Error = error;
+        }
     }
 }

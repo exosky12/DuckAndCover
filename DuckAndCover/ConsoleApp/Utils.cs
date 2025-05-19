@@ -247,7 +247,6 @@ public static class Utils
 
         var newPlayers = InitializePlayers(count);
         var newGame = new Game(newPlayers);
-        Game.RaiseGameStarted(newGame);
         return newGame;
     }
 }
