@@ -1,5 +1,7 @@
 using Models.Game;
 using Models.Rules;
+using Models.Exceptions;
+using Models.Enums;
 namespace UnitTests;
 
 public class GameTests
@@ -20,6 +22,33 @@ public class GameTests
         Assert.IsType<ClassicRules>(game.Rules);
         Assert.NotNull(game.Deck);
     }
+
+    [Fact]
+        public void GameConstructor_WithAllParameters_InitializesCorrectly()
+        {
+
+            var players = new List<Player>
+            {
+                new Player("Alice"),
+                new Player("Bob")
+            };
+            string id = "ABCDE";
+            int currentPlayerIndex = 1;
+            int cardsSkipped = 2;
+            bool isFinished = true;
+
+            var game = new Game(id, players, currentPlayerIndex, cardsSkipped, isFinished);
+
+            Assert.Equal(id, game.Id);
+            Assert.Equal(players, game.Players);
+            Assert.Equal(players[currentPlayerIndex], game.CurrentPlayer);
+            Assert.Equal(cardsSkipped, game.CardsSkipped);
+            Assert.True(game.IsFinished);
+            Assert.NotNull(game.CurrentDeckCard);
+            Assert.IsType<ClassicRules>(game.Rules);
+            Assert.NotNull(game.Deck);
+        }
+
     
     [Fact]
     public void TestNextPlayer()
@@ -147,6 +176,121 @@ public class GameTests
         
         Assert.True(quitHandled);
     }
+    [Fact]
+        public void NextDeckCard_RemovesCardAndUpdatesCurrent()
+        {
+            // Arrange
+            var players = new List<Player>
+            {
+                new Player("Player1", 0, new List<int>(), false, false, new Grid()),
+                new Player("Player2", 0, new List<int>(), false, false, new Grid())
+            };
+
+            var game = new Game(players);
+            var initialDeckCount = game.Deck.Cards.Count;
+            var initialFirstCard = game.Deck.Cards[0];
+            var expectedNextCard = game.Deck.Cards[1];
+
+            // Act
+            var next = game.NextDeckCard();
+
+            // Assert
+            Assert.Equal(expectedNextCard, next);
+            Assert.Equal(expectedNextCard, game.CurrentDeckCard);
+            Assert.Equal(initialDeckCount - 1, game.Deck.Cards.Count);
+            Assert.DoesNotContain(initialFirstCard, game.Deck.Cards);
+        }
+
+        [Fact]
+        public void NextDeckCard_Throws_WhenDeckIsEmpty()
+        {
+            // Arrange
+            var players = new List<Player>
+            {
+                new Player("Player1", 0, new List<int>(), false, false, new Grid()),
+                new Player("Player2", 0, new List<int>(), false, false, new Grid())
+            };
+
+            var game = new Game(players);
+            game.Deck.Cards.Clear(); // vider le deck
+
+            // Act & Assert
+            var ex = Assert.Throws<Error>(() => game.NextDeckCard());
+            Assert.Equal(ErrorCodes.DeckEmpty, ex.ErrorCode);
+        }
+        private Game SetupSimpleGame()
+        {
+            var player1 = new Player("Test", 0, new List<int>(), false, false, new Grid());
+            var player2 = new Player("Bot", 0, new List<int>(), false, false, new Grid());
+            return new Game(new List<Player> { player1, player2 });
+        }
+
+        [Fact]
+        public void HandlePlayerChooseCover_Throws_WhenInvalid()
+        {
+            var game = SetupSimpleGame();
+            var player = game.CurrentPlayer;
+
+            var from = new Position(0, 0); // a priori invalide
+            var to = new Position(4, 4);   // a priori invalide
+
+            Assert.Throws<Error>(() => game.HandlePlayerChooseCover(player, from, to));
+        }
+
+        [Fact]
+        public void HandlePlayerChooseDuck_Throws_WhenInvalid()
+        {
+            var game = SetupSimpleGame();
+            var player = game.CurrentPlayer;
+
+            var from = new Position(0, 0); // position invalide
+            var to = new Position(3, 3);   // aussi
+
+            Assert.Throws<Error>(() => game.HandlePlayerChooseDuck(player, from, to));
+        }
+
+        [Fact]
+        public void TriggerGameOver_RaisesGameIsOverEvent()
+        {
+            var game = SetupSimpleGame();
+            bool triggered = false;
+
+            game.GameIsOver += (s, e) => triggered = true;
+
+            game.TriggerGameOver();
+
+            Assert.True(triggered);
+        }
+
+        [Fact]
+        public void CheckGameOverCondition_ReturnsTrue_AndRaisesEvent()
+        {
+            var game = SetupSimpleGame();
+            bool eventRaised = false;
+
+            game.GameIsOver += (s, e) => eventRaised = true;
+
+            game.Quit = true;
+
+            var result = game.CheckGameOverCondition();
+
+            Assert.True(result);         // le booléen
+            Assert.True(eventRaised);    // l'événement
+        }
+
+        [Fact]
+        public void CheckGameOverCondition_ReturnsFalse_WhenNotOver()
+        {
+            var game = SetupSimpleGame();
+
+            game.CardsSkipped = 0;
+            game.CurrentPlayer.StackCounter = 5;
+            game.Quit = false;
+
+            var result = game.CheckGameOverCondition();
+
+            Assert.False(result);
+        }
 
     [Fact]
     public void PlayerChooseCoin_HandlesCoinCorrectly()

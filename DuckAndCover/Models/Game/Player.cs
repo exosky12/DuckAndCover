@@ -19,7 +19,6 @@ namespace Models.Game
         [DataMember]
         public int StackCounter { get; set; }
 
-        private readonly Guid _id = Guid.NewGuid();
 
 
 
