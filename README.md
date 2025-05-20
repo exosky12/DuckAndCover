@@ -34,4 +34,6 @@ Le jeu propose un mode multijoueur local ainsi qu'une IA 🤖 pour compléter le
 ### ▶️ Exécution
 à definir
 
-
+### © Crédits
+- BARRÈRE Jordy
+- MERIENNE Jules
