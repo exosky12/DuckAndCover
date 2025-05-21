@@ -1,4 +1,3 @@
-using DuckAndCover.Pages;
 using Plugin.Maui.Audio;
 
 namespace DuckAndCover.Views

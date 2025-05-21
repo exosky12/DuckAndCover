@@ -32,12 +32,6 @@
     </Style>
 
 
-    <Style x:Key="BorderStyle" TargetType="Border">
-        <Setter Property="StrokeThickness" Value="5" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 20,20,20,20" />
-        <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
-        <Setter Property="Stroke" Value="#F8B229" />
-    </Style>
 
     <ControlTemplate x:Key="BackgroundTemplate">
         <Grid>
@@ -62,4 +56,26 @@
         <Setter Property="VerticalOptions" Value="Center" />
         <Setter Property="BorderWidth" Value="2" />
     </Style>
+        
+        <Style x:Key="SectionTitleStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="#333333" />
+                <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+            
+        <Style x:Key="InputEntryStyle" TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="HeightRequest" Value="55" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="Margin" Value="0,0,0,12" />
+                <Setter Property="PlaceholderColor" Value="#AAAAAA" />
+                <Setter Property="TextColor" Value="#333333" />
+        </Style>
+            
+        <Style x:Key="SectionContainerStyle" TargetType="StackLayout">
+                <Setter Property="Spacing" Value="4" />
+                <Setter Property="Margin" Value="0,12,0,12" />
+                <Setter Property="WidthRequest" Value="500" />
+        </Style>
 </ResourceDictionary>

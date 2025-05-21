@@ -274,8 +274,8 @@ public class GameTests
 
             var result = game.CheckGameOverCondition();
 
-            Assert.True(result);         // le booléen
-            Assert.True(eventRaised);    // l'événement
+            Assert.True(result);
+            Assert.True(eventRaised);
         }
 
         [Fact]
