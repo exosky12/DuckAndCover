@@ -8,8 +8,6 @@
     FlyoutBehavior="Flyout"
     Shell.NavBarIsVisible="False"
     Title="DuckAndCover">
-    
-    <!-- Test2 -->
 
     <ShellContent
         Title="Home"
@@ -36,10 +34,6 @@
         ContentTemplate="{DataTemplate pages:MenuPlayer}"
         Route="MenuPlayer" />
 
-    <ShellContent
-        Title="TestGame"
-        ContentTemplate="{DataTemplate pages:TestGame}"
-        Route="TestGame" />
 
 
 </Shell>

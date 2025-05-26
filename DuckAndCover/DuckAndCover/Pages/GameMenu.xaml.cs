@@ -31,6 +31,12 @@ public partial class GameMenu : ContentPage
             UseBots = BotSwitch.IsToggled,
             BotCount = BotSwitch.IsToggled ? botCount : 0,
         };
+        
+        if (playerCount < 1)
+        {
+            await DisplayAlert("Erreur", "Le nombre de joueurs doit être supérieur à 0.", "OK");
+            return;
+        }
 
         await Navigation.PushAsync(new MenuPlayer(dto));
     }

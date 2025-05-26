@@ -2,15 +2,19 @@ using System.Runtime.Serialization;
 
 namespace Models.Game
 {
+    [DataContract]
     public class Player
     {
 
         [DataMember]
         public string Name { get; init; }
+        
         [DataMember]
         public bool HasSkipped { get; set; }
+        
         [DataMember]
         public bool HasPlayed { get; set; }
+        
         [DataMember]
         public List<int> Scores { get; }
 
@@ -20,7 +24,8 @@ namespace Models.Game
         public int StackCounter { get; set; }
 
 
-
+        [DataMember]
+        public Grid Grid { get; } = new Grid();
 
         public Player(string name)
         {
@@ -40,10 +45,7 @@ namespace Models.Game
             this.HasPlayed=played;
             this.Grid = grid;
         }
-
-
-
-        public Grid Grid { get; } = new Grid();
+        
 
 
         public bool HasCardWithNumber(int number)

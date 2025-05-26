@@ -22,6 +22,7 @@ public partial class MenuPlayer : ContentPage
             {
                 Placeholder = $"Nom du joueur {i + 1}"
             };
+            entry.Style = (Style)Application.Current.Resources["InputEntryStyle"];
             PlayerInputsLayout.Children.Add(entry);
         }
     }

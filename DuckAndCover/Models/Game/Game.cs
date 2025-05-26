@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Models.Exceptions;
 using Models.Interfaces;
 using Models.Rules;
@@ -6,20 +7,40 @@ using Models.Enums;
 
 namespace Models.Game
 {
+    [DataContract]
     public class Game
     {
-        public List<Player> Players { get; }
-        public IRules Rules { get; }
-        public int CardsSkipped { get; set; }
-        public Player CurrentPlayer { get; set; }
-        public Deck Deck { get; } = new Deck();
-        public bool Quit { get; set; }
-        public bool IsFinished { get; set; }  
-        public DeckCard CurrentDeckCard { get; set; }
-        public int? LastNumber { get; set; }
+        
+        [DataMember]
         public string Id { get; }
-
+        
+        [DataMember]
+        public List<Player> Players { get; }
+        
+        public IRules Rules { get; }
+        
+        [DataMember]
+        public int CardsSkipped { get; set; }
+        
+        public Player CurrentPlayer { get; set; }
+        
+        [DataMember]
         private int _currentPlayerIndex;
+        
+        [DataMember]
+        public Deck Deck { get; } = new Deck();
+        
+        public bool Quit { get; set; }
+        
+        [DataMember]
+        public bool IsFinished { get; set; }  
+        
+        public DeckCard CurrentDeckCard { get; private set; }
+        
+        [DataMember]
+        public int? LastNumber { get; set; }
+
+        
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -53,17 +74,19 @@ namespace Models.Game
             this.CurrentPlayer = players[_currentPlayerIndex];
         }
 
-        public Game(string id, List<Player> players, int currentPlayerIndex, int cardsSkipped, bool isFinished)
+        public Game(string id, List<Player> players, int currentPlayerIndex, int cardsSkipped, bool isFinished, Deck deck, int? lastNumber)
             : this(players)
         {
             this.Id = id;
             this.Rules = new ClassicRules();
             this.Players = players;
+            this.Deck = deck;
             this._currentPlayerIndex = currentPlayerIndex;
             this.CurrentPlayer = players[_currentPlayerIndex];
             this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
             this.CardsSkipped = cardsSkipped;
             this.IsFinished = isFinished;
+            this.LastNumber = lastNumber;
         }
 
         public void NextPlayer()

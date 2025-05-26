@@ -5,32 +5,6 @@
              ControlTemplate="{StaticResource BackgroundTemplate}"
              xmlns:components="clr-namespace:DuckAndCover.Views">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="SectionTitleStyle" TargetType="Label">
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="#333333" />
-                <Setter Property="Margin" Value="0,0,0,8" />
-            </Style>
-            
-            <Style x:Key="InputEntryStyle" TargetType="Entry">
-                <Setter Property="BackgroundColor" Value="White" />
-                <Setter Property="HeightRequest" Value="55" />
-                <Setter Property="FontSize" Value="16" />
-                <Setter Property="Margin" Value="0,0,0,12" />
-                <Setter Property="PlaceholderColor" Value="#AAAAAA" />
-                <Setter Property="TextColor" Value="#333333" />
-            </Style>
-            
-            <Style x:Key="SectionContainerStyle" TargetType="StackLayout">
-                <Setter Property="Spacing" Value="4" />
-                <Setter Property="Margin" Value="0,12,0,12" />
-                <Setter Property="WidthRequest" Value="500" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
     <Grid Padding="20" RowDefinitions="Auto,*,Auto">
         <Label Text="Configuration de la partie" 
                FontSize="24" 
@@ -53,7 +27,6 @@
                        Margin="12"
                        HasShadow="True">
                     <StackLayout Spacing="24">
-                        <!-- Player Count Section -->
                         <StackLayout Style="{StaticResource SectionContainerStyle}">
                             <Label Text="Nombre de joueurs"
                                    Style="{StaticResource SectionTitleStyle}" />
@@ -63,13 +36,12 @@
                                    Style="{StaticResource InputEntryStyle}" />
                         </StackLayout>
 
-                        <!-- Bot Toggle Section -->
                         <StackLayout Style="{StaticResource SectionContainerStyle}">
                             <Label Text="Compléter avec des bots ?"
                                    Style="{StaticResource SectionTitleStyle}" />
                             <Grid ColumnDefinitions="Auto,*">
                                 <Switch x:Name="BotSwitch"
-                                        IsToggled="True"
+                                        IsToggled="False"
                                         OnColor="#4CAF50"
                                         ThumbColor="White"
                                         Toggled="BotSwitch_Toggled" />
@@ -81,7 +53,6 @@
                             </Grid>
                         </StackLayout>
 
-                        <!-- Bot Count Section -->
                         <StackLayout Style="{StaticResource SectionContainerStyle}"
                                      x:Name="BotCountSection"
                                      IsVisible="True">

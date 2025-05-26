@@ -4,9 +4,9 @@ namespace DataPersistence
 {
     public class DataToPersist
     {
-        public ObservableCollection<Player> Players { get; set; }
+        public required ObservableCollection<Player> Players { get; set; }
 
-        public ObservableCollection<Game> Games { get; set; }
+        public required ObservableCollection<Game> Games { get; set; }
 
 
     }

@@ -1,13 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Models.Game;
 using Models.Interfaces;
+using System.Collections.ObjectModel;
+
 
 namespace DataPersistence
 {
     [ExcludeFromCodeCoverage]
     public class Stub : IDataPersistence
     {
-        public (List<Player>, List<Game>) LoadData()
+        public (ObservableCollection<Player> players, ObservableCollection<Game> games) LoadData()
         {
             // 1) Joueurs initiaux et un unique déplacement sur jordyGrid
             var jordyGrid = new Grid();
@@ -23,7 +25,9 @@ namespace DataPersistence
                 players: new List<Player> { jordy, jules },
                 currentPlayerIndex: 1,
                 cardsSkipped: 0,
-                isFinished: false
+                isFinished: false,
+                deck: new Deck(),
+                lastNumber: null
             );
 
             var jordy2 = new Player("Jordy2", 1, new List<int> { 5, 6, 3 }, false, true, new Grid());
@@ -33,7 +37,9 @@ namespace DataPersistence
                 players: new List<Player> { jordy2, jules2 },
                 currentPlayerIndex: 0,
                 cardsSkipped: 8,
-                isFinished: true
+                isFinished: true,
+                deck: new Deck(),
+                lastNumber: 1
             );
 
             // 4) Jordy1 : nouvelle grille avec 3 déplacements
@@ -74,7 +80,9 @@ namespace DataPersistence
                 players: new List<Player> { jordy1, jules1 },
                 currentPlayerIndex: 1,
                 cardsSkipped: 3,
-                isFinished: false
+                isFinished: false,
+                deck: new Deck(),
+                lastNumber: 2
             );
 
             // 7) Retour
@@ -83,7 +91,7 @@ namespace DataPersistence
             return (players, games);
         }
 
-        public void SaveData(List<Player> players, List<Game> games)
+        public void SaveData(ObservableCollection<Player> players, ObservableCollection<Game> games)
         {
             // No-op stub : pas de persistance
         }
