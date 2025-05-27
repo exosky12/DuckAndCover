@@ -6,17 +6,31 @@ namespace DuckAndCover
 {
     public partial class App : Application
     {
-        // public IDataPersistence? DataManager { get; set; } = new Stub();
-        // public string FileName { get; set; } = "DuckAndCover.json";
-        //
-        // public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");
-        //
-        // public Game GameManager { get; private set; }
+        public string FileName { get; set; } = "DuckAndCover_data.json";
+        
+        public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");
+        
+        public Game GameManager { get; private set; }
         public App()
         {
             InitializeComponent();
             
-            // GameManager = new Game(new PersistenceJSON());
+            GameManager = new Game(new Stub());
+
+            if (!Directory.Exists(FilePath))
+            {
+                Directory.CreateDirectory(FilePath);
+            }
+            string fullPath = Path.Combine(FilePath, FileName);
+            if(File.Exists(fullPath))
+                GameManager.LoadData();
+
+            MainPage = new AppShell();
+
+            MainPage.Disappearing += (s, a) => GameManager.Save();
+
+            
+
 
         }
 

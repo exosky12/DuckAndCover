@@ -5,18 +5,43 @@ using Models.Interfaces;
 using Models.Rules;
 using Models.Events;
 using Models.Enums;
+using System.ComponentModel;
 
 namespace Models.Game
 {
     [DataContract]
-    public class Game
+    public class Game: INotifyPropertyChanged
     {
         [DataMember]
         public string Id { get; }
-        
+
         [DataMember]
-        public List<Player> Players { get; }
-        
+        private ObservableCollection<Player> _players;
+
+        public ObservableCollection<Player> Players
+        {
+            get => _players;
+            set
+            {
+                _players = value;
+                OnPropertyChanged(nameof(Players));
+            }
+        }
+
+        [DataMember]
+        private ObservableCollection<Game> _games;
+
+        public ObservableCollection<Game> Games
+        {
+            get => _games;
+            set
+            {
+                _games = value;
+                OnPropertyChanged(nameof(Games));
+            }
+        }
+
+
         public IRules Rules { get; }
         
         [DataMember]
@@ -34,11 +59,16 @@ namespace Models.Game
         
         [DataMember]
         public bool IsFinished { get; set; }  
+
+        [DataMember]
+        public bool LastGameFinishStatus { get; private set; }
         
         public DeckCard CurrentDeckCard { get; private set; }
         
         [DataMember]
         public int? LastNumber { get; set; }
+
+        public IDataPersistence DataManager { get; set; }
 
         
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
@@ -51,6 +81,8 @@ namespace Models.Game
         public event EventHandler<PlayerChooseCoverEventArgs>? PlayerChooseCover;
         public event EventHandler<PlayerChooseShowScoresEventArgs>? PlayerChooseShowScores;
         public event EventHandler<DisplayMenuNeededEventArgs>? DisplayMenuNeeded;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         protected virtual void OnPlayerChanged(PlayerChangedEventArgs args) => PlayerChanged?.Invoke(this, args);
         protected virtual void OnErrorOccurred(ErrorOccurredEventArgs args) => ErrorOccurred?.Invoke(this, args);
         protected virtual void OnGameIsOver(GameIsOverEventArgs args) => GameIsOver?.Invoke(this, args);
@@ -62,43 +94,71 @@ namespace Models.Game
         protected virtual void OnPlayerChooseShowPlayersGrid(PlayerChooseShowPlayersGridEventArgs args) => PlayerChooseShowPlayersGrid?.Invoke(this, args);
         protected virtual void OnPlayerChooseCover(PlayerChooseCoverEventArgs args) => PlayerChooseCover?.Invoke(this, args);
 
-        public Game(List<Player> players)
+       
+
+        public void LoadData()
         {
-            this.Rules = new ClassicRules();
-            this.Id = Guid.NewGuid().ToString("N").Substring(0, 5);
-            this.Quit = false;
-            this.IsFinished = false;
-            this.Players = players;
-            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
-            this._currentPlayerIndex = 0;
-            this.CurrentPlayer = players[_currentPlayerIndex];
+            var data = DataManager.LoadData();
+            foreach (var player in data.Item1)
+            {
+                this.Players.Add(player);
+            }
+            foreach (var game in data.Item2)
+            {
+                if (game.IsFinished) LastGameFinishStatus = true;
+                    
+                this.Games.Add(game);
+
+            }
         }
 
-        public Game(string id, List<Player> players, int currentPlayerIndex, int cardsSkipped, bool isFinished, Deck deck, int? lastNumber)
-            : this(players)
-        {
-            this.Id = id;
-            this.Rules = new ClassicRules();
-            this.Players = players;
-            this.Deck = deck;
-            this._currentPlayerIndex = currentPlayerIndex;
-            this.CurrentPlayer = players[_currentPlayerIndex];
-            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
-            this.CardsSkipped = cardsSkipped;
-            this.IsFinished = isFinished;
-            this.LastNumber = lastNumber;
+        public void Save(){
+            SaveScores();
+            DataManager.SaveData(Players, Games);
         }
-        
+
+        public Game(IDataPersistence dataManager)
+        {
+            this.DataManager = dataManager;
+
+            Players = new ObservableCollection<Player>();
+            Games = new ObservableCollection<Game>();
+            this.Quit = false;
+            this.IsFinished = false;
+            this.Players = Players;
+            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
+            this._currentPlayerIndex = 0;
+            this.CurrentPlayer = Players.First();
+        }
+
         public Game(ObservableCollection<Player> players)
         {
             this.Rules = new ClassicRules();
             this.Id = Guid.NewGuid().ToString("N").Substring(0, 5);
             this.Quit = false;
             this.IsFinished = false;
-            this.Players = players.ToList();
+            this.Players = players;
             this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
             this._currentPlayerIndex = 0;
             this.CurrentPlayer = players.First();
+        }
+
+        public Game (ObservableCollection<Player> players, string id, int currentPlayerIndex , int cardsSkipped, bool isFinished,Deck deck,int? lastNumber)
+        {
+            this.Id = id;
+            this.Players = players;
+            this.Deck = deck;
+            this._currentPlayerIndex = currentPlayerIndex;
+            this.CurrentPlayer = players[_currentPlayerIndex]; 
+            this.CardsSkipped = cardsSkipped;
+            this.IsFinished = isFinished;
+            this.LastNumber = lastNumber;
+        }
+
+
+        public virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void NextPlayer()
@@ -119,7 +179,7 @@ namespace Models.Game
                     if (AllPlayersPlayed())
                     {
                         NextDeckCard();
-                        Players.ForEach(p =>
+                        Players.ToList().ForEach(p =>
                         {
                             p.HasPlayed = false;
                             p.HasSkipped = false;
@@ -281,7 +341,7 @@ namespace Models.Game
             return CurrentDeckCard!;
         }
 
-        public void Save()
+        public void SaveScores()
         {
             foreach (var player in Players)
             {

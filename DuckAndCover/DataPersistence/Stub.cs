@@ -91,7 +91,7 @@ namespace DataPersistence
             // Partie en cours (7051E)
             var onGoingGame = new Game(
                 id: "7051E",
-                players: new List<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
+                players: new ObservableCollection<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
                 currentPlayerIndex: 1,
                 cardsSkipped: 0,
                 isFinished: false,
@@ -103,7 +103,7 @@ namespace DataPersistence
             // Partie terminée (9051e)
             var finishedGame = new Game(
                 id: "9051e",
-                players: new List<Player> { allPlayers[2], allPlayers[3] }, // Jordy2, Jules2
+                players: new ObservableCollection<Player> { allPlayers[2], allPlayers[3] }, // Jordy2, Jules2
                 currentPlayerIndex: 0,
                 cardsSkipped: 8,
                 isFinished: true,
@@ -115,7 +115,7 @@ namespace DataPersistence
             // Partie "crazy" (5051e)
             var crazyGame = new Game(
                 id: "5051e",
-                players: new List<Player> { allPlayers[4], allPlayers[5] }, // Jordy1, Jules1
+                players: new ObservableCollection<Player> { allPlayers[4], allPlayers[5] }, // Jordy1, Jules1
                 currentPlayerIndex: 1,
                 cardsSkipped: 3,
                 isFinished: false,

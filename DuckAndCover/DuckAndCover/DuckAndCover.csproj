@@ -4,7 +4,7 @@
     <!-- Déclaration des frameworks ciblés -->
     
     <TargetFrameworks></TargetFrameworks>
-    <TargetFrameworks>net9.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="'$(IncludeAndroid)' == 'true'">net9.0-android</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('ios'))">$(TargetFrameworks);net9.0-ios</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('maccatalyst'))">$(TargetFrameworks);net9.0-maccatalyst</TargetFrameworks>
@@ -53,6 +53,11 @@
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
     <PackageReference Include="Plugin.Maui.Audio" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataPersistence\DataPersistence.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
