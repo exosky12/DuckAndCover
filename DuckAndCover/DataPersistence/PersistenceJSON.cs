@@ -10,7 +10,7 @@ namespace DataPersistence
 {
     public class PersistenceJSON : IDataPersistence
     {
-        public string FileName { get; set; } = "duckAndCover.json";
+        public string FileName { get; set; } = "duckAndCover_data.json";
         public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");
         
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
@@ -22,16 +22,15 @@ namespace DataPersistence
             {
                 data = jsonSerializer.ReadObject(s) as DataToPersist;
             }
-            return (data.Players, data.Games);
+            return (data.Players ?? new ObservableCollection<Player>(),
+                data.Games ?? new ObservableCollection<Game>());
+
         }
         
         public void SaveData(ObservableCollection<Player> players, ObservableCollection<Game> games)
         {
             if (!Directory.Exists(FilePath))
             {
-                Debug.WriteLine("Directory created");
-                Debug.WriteLine(Directory.GetDirectoryRoot(FilePath));
-                Debug.WriteLine(FilePath);
                 Directory.CreateDirectory(FilePath);
             }
 
