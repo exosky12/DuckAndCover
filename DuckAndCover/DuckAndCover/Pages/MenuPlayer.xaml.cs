@@ -1,10 +1,13 @@
 using DTOs;
+using Models.Interfaces;
 
 namespace DuckAndCover.Pages;
 
 public partial class MenuPlayer : ContentPage
 {
     private readonly GameSettingsDTO _gameSettings;
+    
+    // public IDataPersistence? DataManager => (App.Current)?.DataManager as App;
 
     public MenuPlayer(GameSettingsDTO gameSettings)
     {
@@ -25,5 +28,10 @@ public partial class MenuPlayer : ContentPage
             entry.Style = (Style)Application.Current.Resources["InputEntryStyle"];
             PlayerInputsLayout.Children.Add(entry);
         }
+    }
+    
+    public async void PlayClicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException("La logique de démarrage du jeu n'est pas implémentée.");
     }
 }

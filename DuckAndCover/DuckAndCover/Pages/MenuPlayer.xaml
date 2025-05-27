@@ -1,19 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCover.Pages.MenuPlayer"
-                xmlns:components="clr-namespace:DuckAndCover.Views"
+             xmlns:components="clr-namespace:DuckAndCover.Views"
              ControlTemplate="{StaticResource BackgroundTemplate}">
 
-    <ScrollView Padding="10" Margin="0, 0, 0, 300">
-        <VerticalStackLayout x:Name="PlayerInputsLayout"
-                             Spacing="20"
-                             Padding="20"
-                             MaximumWidthRequest="800"/>
-        
+    <Grid>
+        <ScrollView Padding="10" Margin="0, 0, 0, 300">
+            <VerticalStackLayout x:Name="PlayerInputsLayout"
+                                 Spacing="20"
+                                 Padding="20"
+                                 MaximumWidthRequest="800"/>
+        </ScrollView>
+
         <components:Button x:Name="PlayBtn"
                            Name="Jouer"
-                           Margin="10,0"
+                           Margin="10"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
                            Clicked="PlayClicked" />
-    </ScrollView>
+    </Grid>
 </ContentPage>

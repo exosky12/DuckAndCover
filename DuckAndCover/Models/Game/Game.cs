@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using Models.Exceptions;
 using Models.Interfaces;
@@ -10,7 +11,6 @@ namespace Models.Game
     [DataContract]
     public class Game
     {
-        
         [DataMember]
         public string Id { get; }
         
@@ -87,6 +87,18 @@ namespace Models.Game
             this.CardsSkipped = cardsSkipped;
             this.IsFinished = isFinished;
             this.LastNumber = lastNumber;
+        }
+        
+        public Game(ObservableCollection<Player> players)
+        {
+            this.Rules = new ClassicRules();
+            this.Id = Guid.NewGuid().ToString("N").Substring(0, 5);
+            this.Quit = false;
+            this.IsFinished = false;
+            this.Players = players.ToList();
+            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
+            this._currentPlayerIndex = 0;
+            this.CurrentPlayer = players.First();
         }
 
         public void NextPlayer()

@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Runtime.Serialization.Json;
-using System.IO;
-using System.Xml.Serialization;
 using System.Collections.ObjectModel;
-using System.Text.Json;
 using Models.Game;
 using Models.Interfaces;
 
@@ -19,6 +11,7 @@ namespace DataPersistence
     public class PersistenceJSON : IDataPersistence
     {
         public string FileName { get; set; } = "duckAndCover.json";
+        public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");
         
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {

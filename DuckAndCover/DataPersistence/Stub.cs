@@ -9,89 +9,179 @@ namespace DataPersistence
     [ExcludeFromCodeCoverage]
     public class Stub : IDataPersistence
     {
-        public (ObservableCollection<Player> players, ObservableCollection<Game> games) LoadData()
+        public ReadOnlyObservableCollection<Player> Players { get; private set; }
+        private readonly ObservableCollection<Player> _players = new ObservableCollection<Player>();
+        
+        public ReadOnlyObservableCollection<Game> Games { get; private set; }
+        private readonly ObservableCollection<Game> _games = new ObservableCollection<Game>();
+        
+        
+        public Stub()
         {
-            // 1) Joueurs initiaux et un unique déplacement sur jordyGrid
-            var jordyGrid = new Grid();
-            var cardToMove = jordyGrid.GetCard(new Position(1, 1));
-            jordyGrid.RemoveCard(new Position(1, 1));
-            jordyGrid.SetCard(new Position(1, 2), cardToMove);
+            Players = new ReadOnlyObservableCollection<Player>(_players);
+            Games = new ReadOnlyObservableCollection<Game>(_games);
+            LoadPlayers();
+            LoadGames();
+        }
+        
+        public void LoadPlayers()
+        {
+            var loadedPlayers = GeneratePlayers();
+            foreach (var player in loadedPlayers)
+            {
+                _players.Add(player);
+            }
+        }
+
+        public void LoadGames()
+        {
+            var loadedGames = GenerateGames();
+            foreach (var game in loadedGames)
+            {
+                _games.Add(game);
+            }
+        }
+
+        public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
+        {
+            var _players = GeneratePlayers();
+            var _games = GenerateGames();
+            return (new ObservableCollection<Player>(_players), new ObservableCollection<Game>(_games));
+        }
+
+        private List<Player> GeneratePlayers()
+        {
+            var _players = new List<Player>();
+
+            // Jordy avec grille modifiée (1 déplacement)
+            var jordyGrid = CreateJordyGrid();
             var jordy = new Player("Jordy", 11, new List<int> { 5, 6, 3 }, false, true, jordyGrid);
+            _players.Add(jordy);
 
+            // Jules avec grille standard
             var jules = new Player("Jules", 12, new List<int> { 4, 7, 2 }, false, false, new Grid());
+            _players.Add(jules);
 
+            // Jordy2 avec grille standard
+            var jordy2 = new Player("Jordy2", 1, new List<int> { 5, 6, 3 }, false, true, new Grid());
+            _players.Add(jordy2);
+
+            // Jules2 avec grille standard
+            var jules2 = new Player("Jules2", 3, new List<int> { 4, 7, 2 }, false, false, new Grid());
+            _players.Add(jules2);
+
+            // Jordy1 avec grille modifiée (3 déplacements)
+            var jordy1Grid = CreateJordy1Grid();
+            var jordy1 = new Player("Jordy1", 9, new List<int> { 5, 6, 3 }, false, true, jordy1Grid);
+            _players.Add(jordy1);
+
+            // Jules1 avec grille modifiée (3 déplacements)
+            var jules1Grid = CreateJules1Grid();
+            var jules1 = new Player("Jules1", 9, new List<int> { 4, 7, 2 }, false, false, jules1Grid);
+            _players.Add(jules1);
+
+            return _players;
+        }
+
+        private List<Game> GenerateGames()
+        {
+            var _games = new List<Game>();
+            var allPlayers = GeneratePlayers();
+
+            // Partie en cours (7051E)
             var onGoingGame = new Game(
                 id: "7051E",
-                players: new List<Player> { jordy, jules },
+                players: new List<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
                 currentPlayerIndex: 1,
                 cardsSkipped: 0,
                 isFinished: false,
                 deck: new Deck(),
                 lastNumber: null
             );
+            _games.Add(onGoingGame);
 
-            var jordy2 = new Player("Jordy2", 1, new List<int> { 5, 6, 3 }, false, true, new Grid());
-            var jules2 = new Player("Jules2", 3, new List<int> { 4, 7, 2 }, false, false, new Grid());
+            // Partie terminée (9051e)
             var finishedGame = new Game(
                 id: "9051e",
-                players: new List<Player> { jordy2, jules2 },
+                players: new List<Player> { allPlayers[2], allPlayers[3] }, // Jordy2, Jules2
                 currentPlayerIndex: 0,
                 cardsSkipped: 8,
                 isFinished: true,
                 deck: new Deck(),
                 lastNumber: 1
             );
+            _games.Add(finishedGame);
 
-            // 4) Jordy1 : nouvelle grille avec 3 déplacements
-            var jordyGrid1 = new Grid();
-            // A) (1,1) -> (2,1)
-            var cardA = jordyGrid1.GetCard(new Position(1, 1));
-            jordyGrid1.RemoveCard(new Position(1, 1));
-            jordyGrid1.SetCard(new Position(2, 1), cardA);
-            // B) (1,2) -> (1,3)
-            var cardB = jordyGrid1.GetCard(new Position(1, 2));
-            jordyGrid1.RemoveCard(new Position(1, 2));
-            jordyGrid1.SetCard(new Position(1, 3), cardB);
-            // C) (2,3) -> (0,0)
-            var cardC = jordyGrid1.GetCard(new Position(2, 3));
-            jordyGrid1.RemoveCard(new Position(2, 3));
-            jordyGrid1.SetCard(new Position(0, 0), cardC);
-            var jordy1 = new Player("Jordy1", 9, new List<int> { 5, 6, 3 }, false, true, jordyGrid1);
-
-            // 5) Jules1 : nouvelle grille avec 3 déplacements
-            var julesGrid1 = new Grid();
-            // D) (2,1) -> (3,1)
-            var cardD = julesGrid1.GetCard(new Position(2, 1));
-            julesGrid1.RemoveCard(new Position(2, 1));
-            julesGrid1.SetCard(new Position(3, 1), cardD);
-            // E) (3,2) -> (3,3)
-            var cardE = julesGrid1.GetCard(new Position(3, 2));
-            julesGrid1.RemoveCard(new Position(3, 2));
-            julesGrid1.SetCard(new Position(3, 3), cardE);
-            // F) (1,4) -> (1,2)
-            var cardF = julesGrid1.GetCard(new Position(1, 4));
-            julesGrid1.RemoveCard(new Position(1, 4));
-            julesGrid1.SetCard(new Position(1, 2), cardF);
-            var jules1 = new Player("Jules1", 9, new List<int> { 4, 7, 2 }, false, false, julesGrid1);
-
-            // 6) Partie “crazy” (Code 5051E)
+            // Partie "crazy" (5051e)
             var crazyGame = new Game(
                 id: "5051e",
-                players: new List<Player> { jordy1, jules1 },
+                players: new List<Player> { allPlayers[4], allPlayers[5] }, // Jordy1, Jules1
                 currentPlayerIndex: 1,
                 cardsSkipped: 3,
                 isFinished: false,
                 deck: new Deck(),
                 lastNumber: 2
             );
+            _games.Add(crazyGame);
 
-            // 7) Retour
-            var players = new List<Player> { jordy, jules, jordy2, jules2, jordy1, jules1 };
-            var games = new List<Game> { onGoingGame, finishedGame, crazyGame };
-            return (players, games);
+            return _games;
         }
 
-        public void SaveData(ObservableCollection<Player> players, ObservableCollection<Game> games)
+        private Grid CreateJordyGrid()
+        {
+            var grid = new Grid();
+            // Déplacement unique : (1,1) -> (1,2)
+            var cardToMove = grid.GetCard(new Position(1, 1));
+            grid.RemoveCard(new Position(1, 1));
+            grid.SetCard(new Position(1, 2), cardToMove);
+            return grid;
+        }
+
+        private Grid CreateJordy1Grid()
+        {
+            var grid = new Grid();
+            
+            // A) (1,1) -> (2,1)
+            var cardA = grid.GetCard(new Position(1, 1));
+            grid.RemoveCard(new Position(1, 1));
+            grid.SetCard(new Position(2, 1), cardA);
+            
+            // B) (1,2) -> (1,3)
+            var cardB = grid.GetCard(new Position(1, 2));
+            grid.RemoveCard(new Position(1, 2));
+            grid.SetCard(new Position(1, 3), cardB);
+            
+            // C) (2,3) -> (0,0)
+            var cardC = grid.GetCard(new Position(2, 3));
+            grid.RemoveCard(new Position(2, 3));
+            grid.SetCard(new Position(0, 0), cardC);
+            
+            return grid;
+        }
+
+        private Grid CreateJules1Grid()
+        {
+            var grid = new Grid();
+            
+            // D) (2,1) -> (3,1)
+            var cardD = grid.GetCard(new Position(2, 1));
+            grid.RemoveCard(new Position(2, 1));
+            grid.SetCard(new Position(3, 1), cardD);
+            
+            // E) (3,2) -> (3,3)
+            var cardE = grid.GetCard(new Position(3, 2));
+            grid.RemoveCard(new Position(3, 2));
+            grid.SetCard(new Position(3, 3), cardE);
+            
+            // F) (1,4) -> (1,2)
+            var cardF = grid.GetCard(new Position(1, 4));
+            grid.RemoveCard(new Position(1, 4));
+            grid.SetCard(new Position(1, 2), cardF);
+            
+            return grid;
+        }
+
+        public void SaveData(ObservableCollection<Player> _players, ObservableCollection<Game> _games)
         {
             // No-op stub : pas de persistance
         }

@@ -37,7 +37,7 @@ public class GameTests
             int cardsSkipped = 2;
             bool isFinished = true;
 
-            var game = new Game(id, players, currentPlayerIndex, cardsSkipped, isFinished);
+            var game = new Game(id, players, currentPlayerIndex, cardsSkipped, isFinished, new Deck(), null);
 
             Assert.Equal(id, game.Id);
             Assert.Equal(players, game.Players);
