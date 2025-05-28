@@ -3,8 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using Models.Game;
 using Models.Exceptions;
 using Models.Enums;
-using DataPersistence;
 using System.Collections.ObjectModel;
+using Models.Interfaces;
+using Models.Rules;
 
 namespace ConsoleApp;
 
@@ -79,7 +80,7 @@ public static class Utils
         WriteLine($"\n[Maître du jeu] {message}");
         ForegroundColor = originalColor;
     }
-    
+
     public static void WriteError(string message)
     {
         ConsoleColor originalColor = ForegroundColor;
@@ -87,9 +88,9 @@ public static class Utils
         WriteLine($"\n[ERREUR] {message}");
         ForegroundColor = originalColor;
     }
-    
+
     public static void ShowTitle()
-    { 
+    {
         string title = @"
         ______            _     ___            _ _____                     
         |  _  \          | |   / _ \          | /  __ \                    
@@ -102,6 +103,7 @@ public static class Utils
         ";
         WriteGameMaster(title);
     }
+
     public static string PromptPlayerTurn(Player player, DeckCard card, Game game)
     {
         WriteGameMaster($"\nC'est au tour de {player.Name}");
@@ -180,7 +182,7 @@ public static class Utils
 
         DisplayBottomSeparator();
     }
-    
+
 
     public static int AskNumberOfPlayers()
     {
@@ -233,7 +235,6 @@ public static class Utils
     public static void EndGame(ObservableCollection<Player> players, Game game)
     {
         WriteGameMaster("La partie est terminée !");
-        game.Save();
         DisplayPlayerScores(players);
     }
 
@@ -247,9 +248,15 @@ public static class Utils
         }
 
         var newPlayers = InitializePlayers(count);
-        var newGame = new Game(newPlayers);
+        IRules rules = new ClassicRules();
+        var newGame = new Game(rules);
+        Deck deck = new Deck();
+        newGame.InitializeGame(
+            Guid.NewGuid().ToString("N").Substring(0, 5),
+            newPlayers,
+            deck,
+            deck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
+            );
         return newGame;
     }
 }
-
-

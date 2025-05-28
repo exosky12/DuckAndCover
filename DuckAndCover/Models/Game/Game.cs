@@ -12,21 +12,24 @@ namespace Models.Game
     [DataContract]
     public class Game : INotifyPropertyChanged
     {
-        [DataMember] public string Id { get; }
+        [DataMember] public string Id { get; set; } = string.Empty;
 
-        [DataMember] private ObservableCollection<Player> _players;
+        [DataMember] private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
 
-        public ObservableCollection<Player> Players
+        public ObservableCollection<Player> AllPlayers
         {
-            get => _players;
+            get => _allPlayers;
             set
             {
-                _players = value;
-                OnPropertyChanged(nameof(Players));
+                _allPlayers = value;
+                OnPropertyChanged(nameof(AllPlayers));
             }
         }
-
-        [DataMember] private ObservableCollection<Game> _games;
+        
+        public List<Player> Players { get; set; } = new List<Player>();
+        
+        
+        [DataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
 
         public ObservableCollection<Game> Games
         {
@@ -37,17 +40,16 @@ namespace Models.Game
                 OnPropertyChanged(nameof(Games));
             }
         }
-
-
-        public IRules Rules { get; }
+        
+        public IRules Rules { get; set; }
 
         [DataMember] public int CardsSkipped { get; set; }
 
-        public Player CurrentPlayer { get; set; }
+        public Player CurrentPlayer { get; set; } = new Player("Default", 0, new List<int>(), false, false, new Grid());
 
         [DataMember] private int _currentPlayerIndex;
 
-        [DataMember] public Deck Deck { get; } = new Deck();
+        [DataMember] public Deck Deck { get; set; } = new Deck();
 
         public bool Quit { get; set; }
 
@@ -55,11 +57,10 @@ namespace Models.Game
 
         [DataMember] public bool LastGameFinishStatus { get; private set; }
 
-        public DeckCard CurrentDeckCard { get; private set; }
+        public DeckCard CurrentDeckCard { get; private set; } = new DeckCard(Bonus.None, 0);
 
         [DataMember] public int? LastNumber { get; set; }
 
-        public IDataPersistence DataManager { get; set; }
 
 
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
@@ -99,62 +100,23 @@ namespace Models.Game
         protected virtual void OnPlayerChooseCover(PlayerChooseCoverEventArgs args) =>
             PlayerChooseCover?.Invoke(this, args);
 
-
-        public void LoadData()
+        public Game(IRules rules)
         {
-            var data = DataManager.LoadData();
-            foreach (var player in data.Item1)
-            {
-                this.Players.Add(player);
-            }
-
-            foreach (var game in data.Item2)
-            {
-                if (game.IsFinished) LastGameFinishStatus = true;
-
-                this.Games.Add(game);
-            }
+            this.Rules = rules;
         }
-
-        public void Save()
-        {
-            SaveScores();
-            DataManager.SaveData(Players, Games);
-        }
-
-        public Game(IDataPersistence dataManager, ObservableCollection<Player>? players)
-        {
-            this.DataManager = dataManager;
-            (ObservableCollection<Player> loadedPlayers, ObservableCollection<Game> loadedGames) = DataManager.LoadData();
-            this._players = loadedPlayers;
-            this._games = loadedGames;
-            this.Id = Guid.NewGuid().ToString("N").Substring(0, 5);
-            Players = new ObservableCollection<Player>();
-            Games = new ObservableCollection<Game>();
-            this.Quit = false;
-            this.IsFinished = false;
-            this.Players = players ?? new ObservableCollection<Player>();
-            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
-            this._currentPlayerIndex = 0;
-            this.CurrentPlayer = Players.First();
-            this.Rules = new ClassicRules();
-        }
-
-        public Game(string id, ObservableCollection<Player> players, int currentPlayerIndex, int cardsSkipped,
-            bool isFinished, Deck deck, int? lastNumber)
+        
+        public void InitializeGame(string id, ObservableCollection<Player> players, Deck deck, DeckCard currentDeckCard, int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
         {
             this.Id = id;
             this.Players = players;
             this.Deck = deck;
             this._currentPlayerIndex = currentPlayerIndex;
             this.CurrentPlayer = players[_currentPlayerIndex];
-            this.CurrentDeckCard = deck.Cards.FirstOrDefault()!; 
+            this.CurrentDeckCard = currentDeckCard;
             this.CardsSkipped = cardsSkipped;
             this.IsFinished = isFinished;
             this.LastNumber = lastNumber;
-            this.Rules = new ClassicRules();
         }
-
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

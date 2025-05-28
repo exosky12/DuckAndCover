@@ -2,12 +2,15 @@
 using Models.Game;
 using Models.Interfaces;
 using System.Collections.ObjectModel;
+using Models.Enums;
+using Models.Exceptions;
+using Models.Rules;
 
 
 namespace DataPersistence
 {
     [ExcludeFromCodeCoverage]
-    public class Stub : IDataPersistence
+    public class FakePersistency : IDataPersistence
     {
         public ReadOnlyObservableCollection<Player> Players { get; private set; }
         private readonly ObservableCollection<Player> _players = new ObservableCollection<Player>();
@@ -16,7 +19,7 @@ namespace DataPersistence
         private readonly ObservableCollection<Game> _games = new ObservableCollection<Game>();
         
         
-        public Stub()
+        public FakePersistency()
         {
             Players = new ReadOnlyObservableCollection<Player>(_players);
             Games = new ReadOnlyObservableCollection<Game>(_games);
@@ -89,39 +92,43 @@ namespace DataPersistence
             var allPlayers = GeneratePlayers();
 
             // Partie en cours (7051E)
-            var onGoingGame = new Game(
+            var onGoingGame = new Game(new ClassicRules());
+            Deck onGoingDeck = new Deck();
+            onGoingGame.InitializeGame(
                 id: "7051E",
                 players: new ObservableCollection<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
-                currentPlayerIndex: 1,
-                cardsSkipped: 0,
-                isFinished: false,
-                deck: new Deck(),
-                lastNumber: null
+                deck: onGoingDeck,
+                currentPlayerIndex: 0,
+                currentDeckCard: onGoingDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
             );
             games.Add(onGoingGame);
 
             // Partie terminée (9051e)
-            var finishedGame = new Game(
+            var finishedGame = new Game(new ClassicRules());
+            Deck finishedDeck = new Deck();
+            
+            finishedGame.InitializeGame(
                 id: "9051e",
-                players: new ObservableCollection<Player> { allPlayers[2], allPlayers[3] }, // Jordy2, Jules2
+                players: new ObservableCollection<Player> { allPlayers[2], allPlayers[3] }, // Jordy, Jules
+                deck: finishedDeck,
                 currentPlayerIndex: 0,
+                currentDeckCard: finishedDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty),
                 cardsSkipped: 8,
-                isFinished: true,
-                deck: new Deck(),
-                lastNumber: 1
+                lastNumber: 1,
+                isFinished: true
             );
             games.Add(finishedGame);
 
+            var crazyGame = new Game(new ClassicRules());
             Deck crazyDeck = new Deck();
-            crazyDeck.Cards.RemoveRange(0, 3);
-            // Partie "crazy" (5051e)
-            var crazyGame = new Game(
+            
+            crazyGame.InitializeGame(
                 id: "5051e",
                 players: new ObservableCollection<Player> { allPlayers[4], allPlayers[5] }, // Jordy1, Jules1
+                deck: crazyDeck,
+                currentDeckCard: crazyDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty),
                 currentPlayerIndex: 1,
                 cardsSkipped: 3,
-                isFinished: false,
-                deck: crazyDeck,
                 lastNumber: 2
             );
             games.Add(crazyGame);

@@ -8,7 +8,7 @@ using Models.Interfaces;
 
 namespace DataPersistence
 {
-    public class PersistenceJSON : IDataPersistence
+    public class JsonPersistency : IDataPersistence
     {
         public string FileName { get; set; } = "duckAndCover_data.json";
         public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");

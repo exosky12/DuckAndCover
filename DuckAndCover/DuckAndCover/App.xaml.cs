@@ -1,6 +1,8 @@
 ﻿using Models.Game;
 using DataPersistence;
 using Models.Interfaces;
+using Models.Rules;
+using System.Collections.ObjectModel;
 
 namespace DuckAndCover
 {
@@ -15,23 +17,22 @@ namespace DuckAndCover
         {
             InitializeComponent();
             
-            GameManager = new Game(new Stub());
+            GameManager = new Game(new ClassicRules());
 
             if (!Directory.Exists(FilePath))
             {
                 Directory.CreateDirectory(FilePath);
             }
             string fullPath = Path.Combine(FilePath, FileName);
-            if(File.Exists(fullPath))
-                GameManager.LoadData();
+            if (File.Exists(fullPath))
+            {
+                IDataPersistence dataPersistence = new JsonPersistency();
+                (ObservableCollection<Player> players, ObservableCollection<Game> games) = dataPersistence.LoadData();
+                GameManager.Players = players;
+                GameManager.Games = games;
+            }
 
             MainPage = new AppShell();
-
-            MainPage.Disappearing += (s, a) => GameManager.Save();
-
-            
-
-
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

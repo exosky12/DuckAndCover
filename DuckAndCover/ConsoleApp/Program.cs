@@ -15,7 +15,7 @@ namespace ConsoleApp
         {
             Utils.ShowTitle();
 
-            var stub = new Stub();
+            var stub = new FakePersistency();
             var (stubPlayers, stubGames) = stub.LoadData();
             
             Game game = GetGameFromUserChoice(stubGames);
