@@ -238,7 +238,7 @@ public static class Utils
         DisplayPlayerScores(players);
     }
 
-    public static Game CreateNewGame()
+    public static Game CreateNewGame(int choice)
     {
         int count = AskNumberOfPlayers();
         if (count <= 0)
@@ -248,15 +248,32 @@ public static class Utils
         }
 
         var newPlayers = InitializePlayers(count);
-        IRules rules = new ClassicRules();
-        var newGame = new Game(rules);
+        Game game = null;
+
+        switch (choice) 
+        {
+            case 1: 
+                return new Game(new ClassicRules());
+            
+            case 2: 
+                return new Game(new InsaneRules());
+
+            case 3:
+                return new Game(new BlitzRules());
+
+            default:
+                var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                break;
+        }
+
+
         Deck deck = new Deck();
-        newGame.InitializeGame(
+        game.InitializeGame(
             Guid.NewGuid().ToString("N").Substring(0, 5),
             newPlayers,
             deck,
             deck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
             );
-        return newGame;
+        return game;
     }
 }
