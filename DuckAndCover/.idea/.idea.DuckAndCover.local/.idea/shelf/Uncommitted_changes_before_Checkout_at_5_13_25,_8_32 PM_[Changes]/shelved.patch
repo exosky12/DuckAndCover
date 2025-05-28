@@ -1,0 +1,440 @@
+Index: ConsoleApp/Program.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System;\nusing System.Collections.Generic;\nusing Model;\nusing static System.Console;\n\nnamespace ConsoleApp\n{\n    class Program\n    {\n        static void Main(string[] args)\n{\n    ShowTitle();\n    int nbJoueur = AskNumberOfPlayers();\n    if (nbJoueur <= 0)\n    {\n        Utils.WriteGameMaster(\"Nombre de joueurs invalide. Veuillez redémarrer le jeu.\");\n        return;\n    }\n\n    List<Player> players = InitializePlayers(nbJoueur);\n    Game game = new Game(players);\n    DeckGenerator deckGenerator = new DeckGenerator();\n    deckGenerator.Generate();\n\n    RunGameLoop(players, game, deckGenerator);\n}\n\nstatic void ShowTitle()\n{\n    string title = @\"...\"; // titre inchangé\n    Utils.WriteGameMaster(title);\n}\n\nstatic int AskNumberOfPlayers()\n{\n    Utils.WriteGameMaster(\"Combien de joueurs ?\");\n    if (int.TryParse(ReadLine(), out int nbJoueur)) return nbJoueur;\n    return -1;\n}\n\nstatic List<Player> InitializePlayers(int count)\n{\n    var players = new List<Player>();\n    while (players.Count < count)\n    {\n        Utils.WriteGameMaster($\"Pseudo du joueur numéro {players.Count + 1}:\");\n        string name = ReadLine();\n        while (string.IsNullOrWhiteSpace(name))\n        {\n            Utils.WriteGameMaster(\"Pseudo invalide, changez le pseudo.\");\n            name = ReadLine();\n        }\n        players.Add(new Player(name));\n        Utils.WriteGameMaster($\"Joueur {name} ajouté avec succès!\");\n    }\n    return players;\n}\n\nstatic void RunGameLoop(List<Player> players, Game game, DeckGenerator deckGenerator)\n{\n    bool exitGame = false;\n    int currentPlayerIndex = 0;\n    int? lastNumber = null;\n\n    while (!exitGame)\n    {\n        if (deckGenerator.Deck.Count == 0)\n        {\n            Utils.WriteGameMaster(\"Le deck est vide. La partie est terminée !\");\n            break;\n        }\n\n        DeckCard card = deckGenerator.Deck[0];\n        Player currentPlayer = players[currentPlayerIndex];\n\n        ProcessCardEffect(card, currentPlayer, ref lastNumber);\n        \n        if (AllPlayersPassed(players))\n        {\n            HandleAllPassed(deckGenerator, game, players);\n            continue;\n        }\n\n        if (game.Rules.IsGameOver(game.CardPassed, currentPlayer.StackCounter))\n        {\n            EndGame(players);\n            break;\n        }\n\n        PromptPlayerTurn(currentPlayer);\n        string choice = ReadLine();\n        exitGame = HandlePlayerChoice(choice, currentPlayer, game, ref currentPlayerIndex, players, card);\n    }\n}\n\nstatic void ProcessCardEffect(DeckCard card, Player player, ref int? lastNumber)\n{\n    switch (card.Bonus)\n    {\n        case Bonus.Again when lastNumber.HasValue:\n            card.Number = lastNumber.Value;\n            Utils.WriteGameMaster($\"Carte Again active ! Le numéro utilisé est {card.Number}\");\n            break;\n        case Bonus.Max:\n            int max = player.Grid.GameCardsGrid.Max(c => c.Number);\n            card.Number = max;\n            Utils.WriteGameMaster($\"Carte MAX ! Numéro utilisé : {max} (grille de {player.Name})\");\n            break;\n        default:\n            lastNumber = card.Number;\n            string msg = card.Number == 0 ? card.Bonus.ToString() : card.Number.ToString();\n            Utils.WriteGameMaster($\"Carte actuelle du deck : {msg}\");\n            break;\n    }\n}\n\nstatic bool AllPlayersPassed(List<Player> players) => players.All(p => p.HasPassed);\n\nstatic void HandleAllPassed(DeckGenerator deckGenerator, Game game, List<Player> players)\n{\n    Utils.WriteGameMaster(\"Tous les joueurs ont passé leur tour. Carte défaussée.\");\n    deckGenerator.Deck.RemoveAt(0);\n    game.CardPassed++;\n    players.ForEach(p => p.HasPassed = false);\n}\n\nstatic void EndGame(List<Player> players)\n{\n    Utils.WriteGameMaster(\"La partie est terminée !\");\n    Utils.DisplayPlayerScores(players);\n}\n\nstatic void PromptPlayerTurn(Player player)\n{\n    Utils.WriteGameMaster($\"\\nC'est au tour de {player.Name}\");\n    Utils.DisplayGrid(player);\n    Utils.WriteGameMaster(\"Que souhaitez-vous faire ?\");\n    Utils.DisplayMenu();\n    Write(\"\\nVotre choix: \");\n}\n\nstatic bool HandlePlayerChoice(string choice, Player player, Game game, ref int index, List<Player> players, DeckCard card)\n{\n    switch (choice)\n    {\n        case \"1\":\n            PerformCoverAction(player, game, ref index, players, card);\n            break;\n        case \"2\":\n            PerformDuckAction(player, game, ref index, players);\n            break;\n        case \"3\":\n            Utils.WriteGameMaster($\"{player.Name} dit : Coin !\");\n            player.CallCoin(game);\n            player.HasPassed = true;\n            index = (index + 1) % players.Count;\n            break;\n        case \"4\":\n            players.ForEach(p =>\n            {\n                Utils.WriteGameMaster($\"Grille de {p.Name}:\");\n                Utils.DisplayGrid(p);\n            });\n            break;\n        case \"5\":\n            Utils.DisplayPlayerScores(players);\n            break;\n        case \"6\":\n            Utils.WriteGameMaster(\"Merci d'avoir joué à Duck&Cover!\");\n            return true;\n        default:\n            Utils.WriteGameMaster(\"Choix invalide. Veuillez réessayer.\");\n            break;\n    }\n    return false;\n}\n static void PerformCoverAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players,DeckCard currentDeckCard)\n        {\n            Utils.WriteGameMaster(\"Quelle carte souhaitez-vous utiliser pour recouvrir?\");\n            Utils.WriteGameMaster(\"Entrez la position (ligne,colonne) - exemple: 1,1\");\n            string fromPosition = ReadLine();\n            \n            Utils.WriteGameMaster(\"Quelle carte souhaitez-vous recouvrir?\");\n            Utils.WriteGameMaster(\"Entrez la position (ligne,colonne) - exemple: 1,2\");\n            string toPosition = ReadLine();\n            \n            try\n            {\n                var fromPos = Utils.ParsePosition(fromPosition);\n                var toPos = Utils.ParsePosition(toPosition);\n\n                GameCard fromCard = player.Grid.GetCard(fromPos);\n                GameCard toCard = player.Grid.GetCard(toPos);\n                if (!game.Rules.isTheSameCard(fromCard,currentDeckCard))\n                {\n                    Utils.WriteGameMaster(\"Impossible de jouer cette carte car ce n'est pas la carte actuelle\");\n                    return;\n                }\n\n                if (fromCard == null || toCard == null)\n                {\n                    Utils.WriteGameMaster(\"Une des positions ne contient pas de carte!\");\n                    return;\n                }\n                \n                Utils.WriteGameMaster($\"Tentative de recouvrir la carte {toCard.Number} (splash {toCard.Splash}) \" +\n                              $\"avec la carte {fromCard.Number} (splash {fromCard.Splash})\");\n                \n                bool success = player.Cover(fromCard, toCard, player.Grid, game);\n\n                \n                \n                if (success)\n                {\n                    Utils.WriteGameMaster(\"Recouvrement réussi!\");\n                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;\n                }\n                else\n                {\n                    Utils.WriteGameMaster(\"Recouvrement impossible avec ces cartes.\");\n                }\n            }\n            catch (Exception e)\n            {\n                Utils.WriteGameMaster($\"Erreur: {e.Message}\");\n            }\n        }\n        \n        static void PerformDuckAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players)\n        {\n            Utils.WriteGameMaster(\"Quelle carte souhaitez-vous déplacer?\");\n            Utils.WriteGameMaster(\"Entrez la position (ligne,colonne) - exemple: 1,1\");\n            string fromPosition = ReadLine();\n            \n            Utils.WriteGameMaster(\"Où souhaitez-vous la déplacer?\");\n            Utils.WriteGameMaster(\"Entrez la nouvelle position (ligne,colonne) - exemple: 2,3\");\n            string toPosition = ReadLine();\n            \n            try\n            {\n                var fromPos = Utils.ParsePosition(fromPosition);\n                var toPos = Utils.ParsePosition(toPosition);\n                \n                GameCard card = player.Grid.GetCard(fromPos);\n                \n                if (card == null)\n                {\n                    Utils.WriteGameMaster(\"Il n'y a pas de carte à cette position!\");\n                    return;\n                }\n                \n                Utils.WriteGameMaster($\"Tentative de déplacement de la carte {card.Number} (splash {card.Splash}) \" +\n                              $\"de la position ({fromPos.Row}, {fromPos.Column}) \" +\n                              $\"vers la position ({toPos.Row}, {toPos.Column}).\");\n                \n                bool success = player.Duck(card, toPos, player.Grid, game);\n                \n                if (success)\n                {\n                    Utils.WriteGameMaster(\"Déplacement réussi!\");\n                    // Passer au joueur suivant après une action réussie\n                    currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;\n                }\n                else\n                {\n                    Utils.WriteGameMaster(\"Déplacement impossible vers cette position.\");\n                }\n            }\n            catch (Exception e)\n            {\n                Utils.WriteGameMaster($\"Erreur: {e.Message}\");\n            }\n        }\n   \n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ConsoleApp/Program.cs b/ConsoleApp/Program.cs
+--- a/ConsoleApp/Program.cs	(revision b7fb95eff72aa9df692493c5a8ca7c08bbe6cf4a)
++++ b/ConsoleApp/Program.cs	(date 1747161126342)
+@@ -1,5 +1,3 @@
+-using System;
+-using System.Collections.Generic;
+ using Model;
+ using static System.Console;
+ 
+@@ -8,182 +6,188 @@
+     class Program
+     {
+         static void Main(string[] args)
+-{
+-    ShowTitle();
+-    int nbJoueur = AskNumberOfPlayers();
+-    if (nbJoueur <= 0)
+-    {
+-        Utils.WriteGameMaster("Nombre de joueurs invalide. Veuillez redémarrer le jeu.");
+-        return;
+-    }
++        {
++            ShowTitle();
++            int nbJoueur = AskNumberOfPlayers();
++            if (nbJoueur <= 0)
++            {
++                Utils.WriteGameMaster("Nombre de joueurs invalide. Veuillez redémarrer le jeu.");
++                return;
++            }
+ 
+-    List<Player> players = InitializePlayers(nbJoueur);
+-    Game game = new Game(players);
+-    DeckGenerator deckGenerator = new DeckGenerator();
+-    deckGenerator.Generate();
++            List<Player> players = InitializePlayers(nbJoueur);
++            Game game = new Game(players);
++            DeckGenerator deckGenerator = new DeckGenerator();
++            deckGenerator.Generate();
+ 
+-    RunGameLoop(players, game, deckGenerator);
+-}
++            RunGameLoop(players, game, deckGenerator);
++        }
+ 
+-static void ShowTitle()
+-{
+-    string title = @"..."; // titre inchangé
+-    Utils.WriteGameMaster(title);
+-}
++        static void ShowTitle()
++        {
++            string title = @"..."; // titre inchangé
++            Utils.WriteGameMaster(title);
++        }
+ 
+-static int AskNumberOfPlayers()
+-{
+-    Utils.WriteGameMaster("Combien de joueurs ?");
+-    if (int.TryParse(ReadLine(), out int nbJoueur)) return nbJoueur;
+-    return -1;
+-}
++        static int AskNumberOfPlayers()
++        {
++            Utils.WriteGameMaster("Combien de joueurs ?");
++            if (int.TryParse(ReadLine(), out int nbJoueur)) return nbJoueur;
++            return -1;
++        }
+ 
+-static List<Player> InitializePlayers(int count)
+-{
+-    var players = new List<Player>();
+-    while (players.Count < count)
+-    {
+-        Utils.WriteGameMaster($"Pseudo du joueur numéro {players.Count + 1}:");
+-        string name = ReadLine();
+-        while (string.IsNullOrWhiteSpace(name))
+-        {
+-            Utils.WriteGameMaster("Pseudo invalide, changez le pseudo.");
+-            name = ReadLine();
+-        }
+-        players.Add(new Player(name));
+-        Utils.WriteGameMaster($"Joueur {name} ajouté avec succès!");
+-    }
+-    return players;
+-}
++        static List<Player> InitializePlayers(int count)
++        {
++            var players = new List<Player>();
++            while (players.Count < count)
++            {
++                Utils.WriteGameMaster($"Pseudo du joueur numéro {players.Count + 1}:");
++                string name = ReadLine();
++                while (string.IsNullOrWhiteSpace(name))
++                {
++                    Utils.WriteGameMaster("Pseudo invalide, changez le pseudo.");
++                    name = ReadLine();
++                }
++
++                players.Add(new Player(name));
++                Utils.WriteGameMaster($"Joueur {name} ajouté avec succès!");
++            }
++
++            return players;
++        }
+ 
+-static void RunGameLoop(List<Player> players, Game game, DeckGenerator deckGenerator)
+-{
+-    bool exitGame = false;
+-    int currentPlayerIndex = 0;
+-    int? lastNumber = null;
++        static void RunGameLoop(List<Player> players, Game game, DeckGenerator deckGenerator)
++        {
++            bool exitGame = false;
++            int currentPlayerIndex = 0;
++            int? lastNumber = null;
+ 
+-    while (!exitGame)
+-    {
+-        if (deckGenerator.Deck.Count == 0)
+-        {
+-            Utils.WriteGameMaster("Le deck est vide. La partie est terminée !");
+-            break;
+-        }
++            while (!exitGame)
++            {
++                if (deckGenerator.Deck.Count == 0)
++                {
++                    Utils.WriteGameMaster("Le deck est vide. La partie est terminée !");
++                    break;
++                }
+ 
+-        DeckCard card = deckGenerator.Deck[0];
+-        Player currentPlayer = players[currentPlayerIndex];
++                DeckCard card = deckGenerator.Deck[0];
++                Player currentPlayer = players[currentPlayerIndex];
+ 
+-        ProcessCardEffect(card, currentPlayer, ref lastNumber);
+-        
+-        if (AllPlayersPassed(players))
+-        {
+-            HandleAllPassed(deckGenerator, game, players);
+-            continue;
+-        }
++                ProcessCardEffect(card, currentPlayer, ref lastNumber);
++
++                if (AllPlayersPassed(players))
++                {
++                    HandleAllPassed(deckGenerator, game, players);
++                    continue;
++                }
+ 
+-        if (game.Rules.IsGameOver(game.CardPassed, currentPlayer.StackCounter))
+-        {
+-            EndGame(players);
+-            break;
+-        }
++                if (game.Rules.IsGameOver(game.CardPassed, currentPlayer.StackCounter))
++                {
++                    EndGame(players);
++                    break;
++                }
+ 
+-        PromptPlayerTurn(currentPlayer);
+-        string choice = ReadLine();
+-        exitGame = HandlePlayerChoice(choice, currentPlayer, game, ref currentPlayerIndex, players, card);
+-    }
+-}
++                PromptPlayerTurn(currentPlayer);
++                string choice = ReadLine();
++                exitGame = HandlePlayerChoice(choice, currentPlayer, game, ref currentPlayerIndex, players, card);
++            }
++        }
+ 
+-static void ProcessCardEffect(DeckCard card, Player player, ref int? lastNumber)
+-{
+-    switch (card.Bonus)
+-    {
+-        case Bonus.Again when lastNumber.HasValue:
+-            card.Number = lastNumber.Value;
+-            Utils.WriteGameMaster($"Carte Again active ! Le numéro utilisé est {card.Number}");
+-            break;
+-        case Bonus.Max:
+-            int max = player.Grid.GameCardsGrid.Max(c => c.Number);
+-            card.Number = max;
+-            Utils.WriteGameMaster($"Carte MAX ! Numéro utilisé : {max} (grille de {player.Name})");
+-            break;
+-        default:
+-            lastNumber = card.Number;
+-            string msg = card.Number == 0 ? card.Bonus.ToString() : card.Number.ToString();
+-            Utils.WriteGameMaster($"Carte actuelle du deck : {msg}");
+-            break;
+-    }
+-}
++        static void ProcessCardEffect(DeckCard card, Player player, ref int? lastNumber)
++        {
++            switch (card.Bonus)
++            {
++                case Bonus.Again when lastNumber.HasValue:
++                    card.Number = lastNumber.Value;
++                    Utils.WriteGameMaster($"Carte Again active ! Le numéro utilisé est {card.Number}");
++                    break;
++                case Bonus.Max:
++                    int max = player.Grid.GameCardsGrid.Max(c => c.Number);
++                    card.Number = max;
++                    Utils.WriteGameMaster($"Carte MAX ! Numéro utilisé : {max} (grille de {player.Name})");
++                    break;
++                default:
++                    lastNumber = card.Number;
++                    string msg = card.Number == 0 ? card.Bonus.ToString() : card.Number.ToString();
++                    Utils.WriteGameMaster($"Carte actuelle du deck : {msg}");
++                    break;
++            }
++        }
+ 
+-static bool AllPlayersPassed(List<Player> players) => players.All(p => p.HasPassed);
++        static bool AllPlayersPassed(List<Player> players) => players.All(p => p.HasPassed);
+ 
+-static void HandleAllPassed(DeckGenerator deckGenerator, Game game, List<Player> players)
+-{
+-    Utils.WriteGameMaster("Tous les joueurs ont passé leur tour. Carte défaussée.");
+-    deckGenerator.Deck.RemoveAt(0);
+-    game.CardPassed++;
+-    players.ForEach(p => p.HasPassed = false);
+-}
++        static void HandleAllPassed(DeckGenerator deckGenerator, Game game, List<Player> players)
++        {
++            Utils.WriteGameMaster("Tous les joueurs ont passé leur tour. Carte défaussée.");
++            deckGenerator.Deck.RemoveAt(0);
++            game.CardPassed++;
++            players.ForEach(p => p.HasPassed = false);
++        }
+ 
+-static void EndGame(List<Player> players)
+-{
+-    Utils.WriteGameMaster("La partie est terminée !");
+-    Utils.DisplayPlayerScores(players);
+-}
++        static void EndGame(List<Player> players)
++        {
++            Utils.WriteGameMaster("La partie est terminée !");
++            Utils.DisplayPlayerScores(players);
++        }
+ 
+-static void PromptPlayerTurn(Player player)
+-{
+-    Utils.WriteGameMaster($"\nC'est au tour de {player.Name}");
+-    Utils.DisplayGrid(player);
+-    Utils.WriteGameMaster("Que souhaitez-vous faire ?");
+-    Utils.DisplayMenu();
+-    Write("\nVotre choix: ");
+-}
++        static void PromptPlayerTurn(Player player)
++        {
++            Utils.WriteGameMaster($"\nC'est au tour de {player.Name}");
++            Utils.DisplayGrid(player);
++            Utils.WriteGameMaster("Que souhaitez-vous faire ?");
++            Utils.DisplayMenu();
++            Write("\nVotre choix: ");
++        }
+ 
+-static bool HandlePlayerChoice(string choice, Player player, Game game, ref int index, List<Player> players, DeckCard card)
+-{
+-    switch (choice)
+-    {
+-        case "1":
+-            PerformCoverAction(player, game, ref index, players, card);
+-            break;
+-        case "2":
+-            PerformDuckAction(player, game, ref index, players);
+-            break;
+-        case "3":
+-            Utils.WriteGameMaster($"{player.Name} dit : Coin !");
+-            player.CallCoin(game);
+-            player.HasPassed = true;
+-            index = (index + 1) % players.Count;
+-            break;
+-        case "4":
+-            players.ForEach(p =>
+-            {
+-                Utils.WriteGameMaster($"Grille de {p.Name}:");
+-                Utils.DisplayGrid(p);
+-            });
+-            break;
+-        case "5":
+-            Utils.DisplayPlayerScores(players);
+-            break;
+-        case "6":
+-            Utils.WriteGameMaster("Merci d'avoir joué à Duck&Cover!");
+-            return true;
+-        default:
+-            Utils.WriteGameMaster("Choix invalide. Veuillez réessayer.");
+-            break;
+-    }
+-    return false;
+-}
+- static void PerformCoverAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players,DeckCard currentDeckCard)
++        static bool HandlePlayerChoice(string choice, Player player, Game game, ref int index, List<Player> players,
++            DeckCard card)
++        {
++            switch (choice)
++            {
++                case "1":
++                    PerformCoverAction(player, game, ref index, players, card);
++                    break;
++                case "2":
++                    PerformDuckAction(player, game, ref index, players);
++                    break;
++                case "3":
++                    Utils.WriteGameMaster($"{player.Name} dit : Coin !");
++                    player.CallCoin(game);
++                    player.HasPassed = true;
++                    index = (index + 1) % players.Count;
++                    break;
++                case "4":
++                    players.ForEach(p =>
++                    {
++                        Utils.WriteGameMaster($"Grille de {p.Name}:");
++                        Utils.DisplayGrid(p);
++                    });
++                    break;
++                case "5":
++                    Utils.DisplayPlayerScores(players);
++                    break;
++                case "6":
++                    Utils.WriteGameMaster("Merci d'avoir joué à Duck&Cover!");
++                    return true;
++                default:
++                    Utils.WriteGameMaster("Choix invalide. Veuillez réessayer.");
++                    break;
++            }
++
++            return false;
++        }
++
++        static void PerformCoverAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players,
++            DeckCard currentDeckCard)
+         {
+             Utils.WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir?");
+             Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
+             string fromPosition = ReadLine();
+-            
++
+             Utils.WriteGameMaster("Quelle carte souhaitez-vous recouvrir?");
+             Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,2");
+             string toPosition = ReadLine();
+-            
++
+             try
+             {
+                 var fromPos = Utils.ParsePosition(fromPosition);
+@@ -191,7 +195,7 @@
+ 
+                 GameCard fromCard = player.Grid.GetCard(fromPos);
+                 GameCard toCard = player.Grid.GetCard(toPos);
+-                if (!game.Rules.isTheSameCard(fromCard,currentDeckCard))
++                if (!game.Rules.isTheSameCard(fromCard, currentDeckCard))
+                 {
+                     Utils.WriteGameMaster("Impossible de jouer cette carte car ce n'est pas la carte actuelle");
+                     return;
+@@ -202,14 +206,13 @@
+                     Utils.WriteGameMaster("Une des positions ne contient pas de carte!");
+                     return;
+                 }
+-                
++
+                 Utils.WriteGameMaster($"Tentative de recouvrir la carte {toCard.Number} (splash {toCard.Splash}) " +
+-                              $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
+-                
++                                      $"avec la carte {fromCard.Number} (splash {fromCard.Splash})");
++
+                 bool success = player.Cover(fromCard, toCard, player.Grid, game);
+ 
+-                
+-                
++
+                 if (success)
+                 {
+                     Utils.WriteGameMaster("Recouvrement réussi!");
+@@ -225,36 +228,36 @@
+                 Utils.WriteGameMaster($"Erreur: {e.Message}");
+             }
+         }
+-        
++
+         static void PerformDuckAction(Player player, Game game, ref int currentPlayerIndex, List<Player> players)
+         {
+             Utils.WriteGameMaster("Quelle carte souhaitez-vous déplacer?");
+             Utils.WriteGameMaster("Entrez la position (ligne,colonne) - exemple: 1,1");
+             string fromPosition = ReadLine();
+-            
++
+             Utils.WriteGameMaster("Où souhaitez-vous la déplacer?");
+             Utils.WriteGameMaster("Entrez la nouvelle position (ligne,colonne) - exemple: 2,3");
+             string toPosition = ReadLine();
+-            
++
+             try
+             {
+                 var fromPos = Utils.ParsePosition(fromPosition);
+                 var toPos = Utils.ParsePosition(toPosition);
+-                
++
+                 GameCard card = player.Grid.GetCard(fromPos);
+-                
++
+                 if (card == null)
+                 {
+                     Utils.WriteGameMaster("Il n'y a pas de carte à cette position!");
+                     return;
+                 }
+-                
++
+                 Utils.WriteGameMaster($"Tentative de déplacement de la carte {card.Number} (splash {card.Splash}) " +
+-                              $"de la position ({fromPos.Row}, {fromPos.Column}) " +
+-                              $"vers la position ({toPos.Row}, {toPos.Column}).");
+-                
++                                      $"de la position ({fromPos.Row}, {fromPos.Column}) " +
++                                      $"vers la position ({toPos.Row}, {toPos.Column}).");
++
+                 bool success = player.Duck(card, toPos, player.Grid, game);
+-                
++
+                 if (success)
+                 {
+                     Utils.WriteGameMaster("Déplacement réussi!");
+@@ -271,6 +274,5 @@
+                 Utils.WriteGameMaster($"Erreur: {e.Message}");
+             }
+         }
+-   
+     }
+ }
+\ No newline at end of file
