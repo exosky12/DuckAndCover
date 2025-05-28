@@ -5,6 +5,7 @@
              x:Class="DuckAndCover.Pages.Credits"
              xmlns:components="clr-namespace:DuckAndCover.Views"
              Title="Crédits">
+    
     <ContentPage.Content>
         <Grid>
             <Image

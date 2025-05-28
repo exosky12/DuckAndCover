@@ -72,6 +72,13 @@
                 <Setter Property="PlaceholderColor" Value="#AAAAAA" />
                 <Setter Property="TextColor" Value="#333333" />
         </Style>
+        
+        <Style x:Key="BorderStyle" TargetType="Border">
+                <Setter Property="StrokeThickness" Value="5" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 20,20,20,20" />
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
+                <Setter Property="Stroke" Value="#F8B229" />
+        </Style>
             
         <Style x:Key="SectionContainerStyle" TargetType="StackLayout">
                 <Setter Property="Spacing" Value="4" />

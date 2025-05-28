@@ -96,7 +96,7 @@ namespace DataPersistence
             Deck onGoingDeck = new Deck();
             onGoingGame.InitializeGame(
                 id: "7051E",
-                players: new ObservableCollection<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
+                players: new List<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
                 deck: onGoingDeck,
                 currentPlayerIndex: 0,
                 currentDeckCard: onGoingDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
@@ -109,7 +109,7 @@ namespace DataPersistence
             
             finishedGame.InitializeGame(
                 id: "9051e",
-                players: new ObservableCollection<Player> { allPlayers[2], allPlayers[3] }, // Jordy, Jules
+                players: new List<Player> { allPlayers[2], allPlayers[3] }, // Jordy, Jules
                 deck: finishedDeck,
                 currentPlayerIndex: 0,
                 currentDeckCard: finishedDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty),
@@ -124,7 +124,7 @@ namespace DataPersistence
             
             crazyGame.InitializeGame(
                 id: "5051e",
-                players: new ObservableCollection<Player> { allPlayers[4], allPlayers[5] }, // Jordy1, Jules1
+                players: new List<Player> { allPlayers[4], allPlayers[5] }, // Jordy1, Jules1
                 deck: crazyDeck,
                 currentDeckCard: crazyDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty),
                 currentPlayerIndex: 1,

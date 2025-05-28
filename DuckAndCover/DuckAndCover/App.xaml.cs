@@ -28,11 +28,10 @@ namespace DuckAndCover
             {
                 IDataPersistence dataPersistence = new JsonPersistency();
                 (ObservableCollection<Player> players, ObservableCollection<Game> games) = dataPersistence.LoadData();
-                GameManager.Players = players;
+                GameManager.AllPlayers = players;
                 GameManager.Games = games;
             }
 
-            MainPage = new AppShell();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

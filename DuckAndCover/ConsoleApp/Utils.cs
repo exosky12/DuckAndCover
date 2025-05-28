@@ -53,7 +53,7 @@ public static class Utils
     };
 
 
-    public static void DisplayPlayerScores(ObservableCollection<Player> players)
+    public static void DisplayPlayerScores(List<Player> players)
     {
         foreach (Player p in players)
         {
@@ -191,9 +191,9 @@ public static class Utils
         return -1;
     }
 
-    public static ObservableCollection<Player> InitializePlayers(int count)
+    public static List<Player> InitializePlayers(int count)
     {
-        var players = new ObservableCollection<Player>();
+        var players = new List<Player>();
         while (players.Count < count)
         {
             WriteGameMaster($"Pseudo du joueur numéro {players.Count + 1}:");
@@ -232,7 +232,7 @@ public static class Utils
         }
     }
 
-    public static void EndGame(ObservableCollection<Player> players, Game game)
+    public static void EndGame(List<Player> players, Game game)
     {
         WriteGameMaster("La partie est terminée !");
         DisplayPlayerScores(players);

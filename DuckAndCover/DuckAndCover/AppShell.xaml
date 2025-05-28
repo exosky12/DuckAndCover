@@ -33,7 +33,5 @@
         Title="MenuJoueur"
         ContentTemplate="{DataTemplate pages:MenuPlayer}"
         Route="MenuPlayer" />
-
-
-
+    
 </Shell>

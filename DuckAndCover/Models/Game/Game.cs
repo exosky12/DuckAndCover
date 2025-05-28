@@ -28,7 +28,6 @@ namespace Models.Game
         
         public List<Player> Players { get; set; } = new List<Player>();
         
-        
         [DataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
 
         public ObservableCollection<Game> Games
@@ -105,7 +104,7 @@ namespace Models.Game
             this.Rules = rules;
         }
         
-        public void InitializeGame(string id, ObservableCollection<Player> players, Deck deck, DeckCard currentDeckCard, int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
+        public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard, int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
         {
             this.Id = id;
             this.Players = players;

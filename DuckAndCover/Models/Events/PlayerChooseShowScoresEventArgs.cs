@@ -7,9 +7,9 @@ namespace Models.Events
     [ExcludeFromCodeCoverage]
     public class PlayerChooseShowScoresEventArgs : EventArgs
     {
-        public ObservableCollection<Player> Players { get; private set; }
+        public List<Player> Players { get; private set; }
         
-        public PlayerChooseShowScoresEventArgs(ObservableCollection<Player> players )
+        public PlayerChooseShowScoresEventArgs(List<Player> players )
         {
             this.Players = players;
         }

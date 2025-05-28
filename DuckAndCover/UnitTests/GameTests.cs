@@ -11,7 +11,7 @@ public class GameTests
     [Fact]
     public void TestGameConstructor()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Player 1"),
             new Player("Player 2")
@@ -35,7 +35,7 @@ public class GameTests
     [Fact]
     public void GameConstructor_WithAllParameters_InitializesCorrectly()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Alice"),
             new Player("Bob")
@@ -72,7 +72,7 @@ public class GameTests
     [Fact]
     public void TestNextPlayer()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Player 1"),
             new Player("Player 2"),
@@ -98,7 +98,7 @@ public class GameTests
     [Fact]
     public void TestCardsSkipped()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Player 1"),
             new Player("Player 2")
@@ -115,7 +115,7 @@ public class GameTests
     [Fact]
     public void ErrorOccurred_HandlesErrorCorrectly()
     {
-        var players = new ObservableCollection<Player> { new Player("Test") };
+        var players = new List<Player> { new Player("Test") };
         var game = new Game(new ClassicRules());
         game.Players = players;
 
@@ -133,7 +133,7 @@ public class GameTests
     [Fact]
     public void DisplayMenuNeeded_TriggersCorrectly()
     {
-        var players = new ObservableCollection<Player> { new Player("Test") };
+        var players = new List<Player> { new Player("Test") };
         var game = new Game(new ClassicRules());
         game.Players = players;
 
@@ -152,7 +152,7 @@ public class GameTests
     [Fact]
     public void PlayerChooseShowPlayersGrid_DisplaysAllGrids()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Player1"),
             new Player("Player2")
@@ -174,7 +174,7 @@ public class GameTests
     [Fact]
     public void PlayerChooseShowScores_DisplaysScores()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Player1"),
             new Player("Player2")
@@ -196,7 +196,7 @@ public class GameTests
     [Fact]
     public void PlayerChooseQuit_HandlesQuitCorrectly()
     {
-        var players = new ObservableCollection<Player> { new Player("Test") };
+        var players = new List<Player> { new Player("Test") };
         var game = new Game(new ClassicRules());
         game.Players = players;
 
@@ -214,7 +214,7 @@ public class GameTests
     [Fact]
     public void NextDeckCard_RemovesCardAndUpdatesCurrent()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Player1", 0, new List<int>(), false, false, new Grid()),
             new Player("Player2", 0, new List<int>(), false, false, new Grid())
@@ -238,7 +238,7 @@ public class GameTests
     [Fact]
     public void NextDeckCard_Throws_WhenDeckIsEmpty()
     {
-        var players = new ObservableCollection<Player>
+        var players = new List<Player>
         {
             new Player("Player1", 0, new List<int>(), false, false, new Grid()),
             new Player("Player2", 0, new List<int>(), false, false, new Grid())
@@ -257,7 +257,7 @@ public class GameTests
         var player1 = new Player("Test", 0, new List<int>(), false, false, new Grid());
         var player2 = new Player("Bot", 0, new List<int>(), false, false, new Grid());
         var game = new Game(new ClassicRules());
-        game.Players = new ObservableCollection<Player> { player1, player2 };
+        game.Players = new List<Player> { player1, player2 };
         return game;
     }
 
@@ -329,7 +329,7 @@ public class GameTests
     [Fact]
     public void PlayerChooseCoin_HandlesCoinCorrectly()
     {
-        var players = new ObservableCollection<Player> { new Player("Test") };
+        var players = new List<Player> { new Player("Test") };
         var game = new Game(new ClassicRules());
         game.Players = players;
 
