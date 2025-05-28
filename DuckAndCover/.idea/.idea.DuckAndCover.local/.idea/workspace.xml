@@ -57,6 +57,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/68b06b8592b1287fd78f3ee68566d6a38d6e2f45b9a9e6ebd4d0e9972f7c29/Object.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/90e467c62b863bbc99f92cdbd4cba1b397b849b92623c9ae176fe135c6c6f2d/ObservableCollection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/local/share/dotnet/packs/Microsoft.iOS.Sdk.net9.0_18.4/18.4.9288/tools/msbuild/Xamarin.Shared.targets" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/local/share/dotnet/sdk/9.0.202/Microsoft.Common.CurrentVersion.targets" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/local/share/dotnet/sdk/9.0.202/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/local/share/dotnet/sdk/9.0.202/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -97,7 +98,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "master",
     "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -235,15 +236,7 @@
       <workItem from="1747980371082" duration="1420000" />
       <workItem from="1748121666811" duration="227000" />
       <workItem from="1748263052553" duration="6022000" />
-      <workItem from="1748345242506" duration="23546000" />
-    </task>
-    <task id="LOCAL-00002" summary="refactor">
-      <option name="closed" value="true" />
-      <created>1746599124216</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1746599124216</updated>
+      <workItem from="1748345242506" duration="24223000" />
     </task>
     <task id="LOCAL-00003" summary="test">
       <option name="closed" value="true" />
@@ -629,7 +622,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748443680439</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="chrore:         &lt;TargetFrameworks&gt;net9.0-android&lt;/TargetFrameworks&gt;&#10; in DTO csproj">
+      <option name="closed" value="true" />
+      <created>1748444974619</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1748444974619</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -690,7 +691,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(Player Model): HasPlayed property, update stackCounter" />
     <MESSAGE value="feat(Console App)" />
     <MESSAGE value="feat(STUB): WIP" />
     <MESSAGE value="feat(Game actions): DoCover, DoDuck" />
@@ -715,7 +715,8 @@
     <MESSAGE value="fix errors" />
     <MESSAGE value=" ;" />
     <MESSAGE value="feat(Fake and Json Persistance): Job done !" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Fake and Json Persistance): Job done !" />
+    <MESSAGE value="chrore:         &lt;TargetFrameworks&gt;net9.0-android&lt;/TargetFrameworks&gt;&#10; in DTO csproj" />
+    <option name="LAST_COMMIT_MESSAGE" value="chrore:         &lt;TargetFrameworks&gt;net9.0-android&lt;/TargetFrameworks&gt;&#10; in DTO csproj" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
