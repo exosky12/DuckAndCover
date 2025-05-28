@@ -5,7 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Models</RootNamespace>
+        <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
+    
+    
 
     <ItemGroup>
         <Folder Include="Exceptions\" />

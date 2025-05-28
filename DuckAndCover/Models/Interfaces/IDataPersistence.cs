@@ -1,11 +1,12 @@
 ﻿using Models.Game;
 using GameModel = Models.Game.Game;
+using System.Collections.ObjectModel;
 namespace Models.Interfaces
 {
     public interface IDataPersistence
     {
-        (List<Player>, List<GameModel>) LoadData();
+        (ObservableCollection<Player>, ObservableCollection<GameModel>) LoadData();
 
-        void SaveData(List<Player> players, List<GameModel> games);
+        void SaveData(ObservableCollection<Player> players, ObservableCollection<GameModel> games);
     }
 }

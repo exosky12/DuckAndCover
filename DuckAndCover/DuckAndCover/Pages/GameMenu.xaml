@@ -1,62 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             ControlTemplate="{StaticResource BackgroundTemplate}"
              x:Class="DuckAndCover.Pages.GameMenu"
+             ControlTemplate="{StaticResource BackgroundTemplate}"
              xmlns:components="clr-namespace:DuckAndCover.Views">
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
 
-            <components:SettingOption Title="Nombre de joueurs choisis.">
-                <components:SettingOption.OptionContent>
-                    <Label Text="Valeur choisie"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center" />
-                </components:SettingOption.OptionContent>
-            </components:SettingOption>
+    <Grid Padding="20" RowDefinitions="Auto,*,Auto">
+        <Label Text="Configuration de la partie" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center"
+               Margin="0,20,0,30"
+               TextColor="#222222"
+               Grid.Row="0" />
+               
+        <ScrollView Grid.Row="1" Margin="0,0,0,20">
+            <FlexLayout Direction="Column"
+                      MaximumWidthRequest="800"
+                      AlignItems="Center"
+                      JustifyContent="SpaceEvenly">
 
-            <components:SettingOption Title="Compléter avec des bots ?">
-                <components:SettingOption.OptionContent>
-                    <HorizontalStackLayout HorizontalOptions="Start"
-                                           VerticalOptions="Center"
-                                           Margin="10,0,0,0">
-                        <Border BackgroundColor="White"
-                                HeightRequest="50"
-                                WidthRequest="50" />
-                        <Label Text="Oui / Non"
-                               Style="{StaticResource LabelJeu}"
-                               VerticalOptions="Center"
-                               Margin="10,0,0,0" />
-                    </HorizontalStackLayout>
-                </components:SettingOption.OptionContent>
-            </components:SettingOption>
+                <Frame BackgroundColor="#F5F5F5" 
+                       BorderColor="#DDDDDD"
+                       CornerRadius="12"
+                       Padding="24" 
+                       Margin="12"
+                       HasShadow="True">
+                    <StackLayout Spacing="24">
+                        <StackLayout Style="{StaticResource SectionContainerStyle}">
+                            <Label Text="Nombre de joueurs"
+                                   Style="{StaticResource SectionTitleStyle}" />
+                            <Entry x:Name="PlayerCountEntry"
+                                   Placeholder="Ex: 3"
+                                   Keyboard="Numeric"
+                                   Style="{StaticResource InputEntryStyle}" />
+                        </StackLayout>
 
-            <components:SettingOption Title="Nombre de bot choisis.">
-                <components:SettingOption.OptionContent>
-                    <Label Text="Valeur choisie"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center" />
-                </components:SettingOption.OptionContent>
-            </components:SettingOption>
+                        <StackLayout Style="{StaticResource SectionContainerStyle}">
+                            <Label Text="Compléter avec des bots ?"
+                                   Style="{StaticResource SectionTitleStyle}" />
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Switch x:Name="BotSwitch"
+                                        IsToggled="False"
+                                        OnColor="#4CAF50"
+                                        ThumbColor="White"
+                                        Toggled="BotSwitch_Toggled" />
+                                <Label Grid.Column="1" 
+                                       Text="Activer les joueurs IA"
+                                       VerticalOptions="Center"
+                                       Margin="12,0,0,0"
+                                       TextColor="#666666" />
+                            </Grid>
+                        </StackLayout>
 
-            <components:SettingOption Title="Choix de la variante du style de jeu.">
-                <components:SettingOption.OptionContent>
-                    <Border BackgroundColor="White"
-                            Margin="30"
-                            HeightRequest="50"
-                            WidthRequest="300">
-                        <Label Text="Classique"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center" />
-                    </Border>
-                </components:SettingOption.OptionContent>
-            </components:SettingOption>
-
-            <components:Button x:Name="ContinuerBtn"
-                               Clicked="ContinueClicked"
-                               Name="Continuer" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+                        <StackLayout Style="{StaticResource SectionContainerStyle}"
+                                     x:Name="BotCountSection"
+                                     IsVisible="True">
+                            <Label Text="Nombre de bots"
+                                   Style="{StaticResource SectionTitleStyle}"
+                                   x:Name="BotCountLabel" />
+                            <Entry x:Name="BotCountEntry"
+                                   Placeholder="Ex: 1"
+                                   Keyboard="Numeric"
+                                   Style="{StaticResource InputEntryStyle}" />
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <components:Button x:Name="ContinueBtn"
+                                   Name="Continuer"
+                                   Margin="10,0"
+                                   Clicked="ContinueClicked" />
+            </FlexLayout>
+            
+        </ScrollView>
+        
+        
+    </Grid>
 </ContentPage>

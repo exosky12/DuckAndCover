@@ -1,25 +1,67 @@
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using Models.Exceptions;
 using Models.Interfaces;
 using Models.Rules;
 using Models.Events;
 using Models.Enums;
+using System.ComponentModel;
 
 namespace Models.Game
 {
-    public class Game
+    [DataContract]
+    public class Game : INotifyPropertyChanged
     {
-        public List<Player> Players { get; }
-        public IRules Rules { get; }
-        public int CardsSkipped { get; set; }
-        public Player CurrentPlayer { get; set; }
-        public Deck Deck { get; } = new Deck();
-        public bool Quit { get; set; }
-        public bool IsFinished { get; set; }  
-        public DeckCard CurrentDeckCard { get; set; }
-        public int? LastNumber { get; set; }
-        public string Id { get; }
+        [DataMember] public string Id { get; set; } = string.Empty;
 
-        private int _currentPlayerIndex;
+        [DataMember] private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
+
+        public ObservableCollection<Player> AllPlayers
+        {
+            get => _allPlayers;
+            set
+            {
+                _allPlayers = value;
+                OnPropertyChanged(nameof(AllPlayers));
+            }
+        }
+        
+        public List<Player> Players { get; set; } = new List<Player>();
+        
+        [DataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
+
+        public ObservableCollection<Game> Games
+        {
+            get => _games;
+            set
+            {
+                _games = value;
+                OnPropertyChanged(nameof(Games));
+            }
+        }
+        
+        public IRules Rules { get; set; }
+
+        [DataMember] public int CardsSkipped { get; set; }
+
+        public Player CurrentPlayer { get; set; } = new Player("Default", 0, new List<int>(), false, false, new Grid());
+
+        [DataMember] private int _currentPlayerIndex;
+
+        [DataMember] public Deck Deck { get; set; } = new Deck();
+
+        public bool Quit { get; set; }
+
+        [DataMember] public bool IsFinished { get; set; }
+
+        [DataMember] public bool LastGameFinishStatus { get; private set; }
+
+        public DeckCard CurrentDeckCard { get; private set; } = new DeckCard(Bonus.None, 0);
+
+        [DataMember] public int? LastNumber { get; set; }
+
+
+
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -30,40 +72,54 @@ namespace Models.Game
         public event EventHandler<PlayerChooseCoverEventArgs>? PlayerChooseCover;
         public event EventHandler<PlayerChooseShowScoresEventArgs>? PlayerChooseShowScores;
         public event EventHandler<DisplayMenuNeededEventArgs>? DisplayMenuNeeded;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         protected virtual void OnPlayerChanged(PlayerChangedEventArgs args) => PlayerChanged?.Invoke(this, args);
         protected virtual void OnErrorOccurred(ErrorOccurredEventArgs args) => ErrorOccurred?.Invoke(this, args);
         protected virtual void OnGameIsOver(GameIsOverEventArgs args) => GameIsOver?.Invoke(this, args);
-        protected virtual void OnPlayerChooseCoin(PlayerChooseCoinEventArgs args) => PlayerChooseCoin?.Invoke(this, args);
-        protected virtual void OnPlayerChooseDuck(PlayerChooseDuckEventArgs args) => PlayerChooseDuck?.Invoke(this, args);
-        protected virtual void OnDisplayMenuNeeded(DisplayMenuNeededEventArgs args) => DisplayMenuNeeded?.Invoke(this, args);
-        protected virtual void OnPlayerChooseQuit(PlayerChooseQuitEventArgs args) => PlayerChooseQuit?.Invoke(this, args);
-        protected virtual void OnPlayerChooseShowScores(PlayerChooseShowScoresEventArgs args) => PlayerChooseShowScores?.Invoke(this, args);
-        protected virtual void OnPlayerChooseShowPlayersGrid(PlayerChooseShowPlayersGridEventArgs args) => PlayerChooseShowPlayersGrid?.Invoke(this, args);
-        protected virtual void OnPlayerChooseCover(PlayerChooseCoverEventArgs args) => PlayerChooseCover?.Invoke(this, args);
 
-        public Game(List<Player> players)
+        protected virtual void OnPlayerChooseCoin(PlayerChooseCoinEventArgs args) =>
+            PlayerChooseCoin?.Invoke(this, args);
+
+        protected virtual void OnPlayerChooseDuck(PlayerChooseDuckEventArgs args) =>
+            PlayerChooseDuck?.Invoke(this, args);
+
+        protected virtual void OnDisplayMenuNeeded(DisplayMenuNeededEventArgs args) =>
+            DisplayMenuNeeded?.Invoke(this, args);
+
+        protected virtual void OnPlayerChooseQuit(PlayerChooseQuitEventArgs args) =>
+            PlayerChooseQuit?.Invoke(this, args);
+
+        protected virtual void OnPlayerChooseShowScores(PlayerChooseShowScoresEventArgs args) =>
+            PlayerChooseShowScores?.Invoke(this, args);
+
+        protected virtual void OnPlayerChooseShowPlayersGrid(PlayerChooseShowPlayersGridEventArgs args) =>
+            PlayerChooseShowPlayersGrid?.Invoke(this, args);
+
+        protected virtual void OnPlayerChooseCover(PlayerChooseCoverEventArgs args) =>
+            PlayerChooseCover?.Invoke(this, args);
+
+        public Game(IRules rules)
         {
-            this.Rules = new ClassicRules();
-            this.Id = Guid.NewGuid().ToString("N").Substring(0, 5);
-            this.Quit = false;
-            this.IsFinished = false;
-            this.Players = players;
-            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
-            this._currentPlayerIndex = 0;
-            this.CurrentPlayer = players[_currentPlayerIndex];
+            this.Rules = rules;
         }
-
-        public Game(string id, List<Player> players, int currentPlayerIndex, int cardsSkipped, bool isFinished)
-            : this(players)
+        
+        public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard, int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
         {
             this.Id = id;
-            this.Rules = new ClassicRules();
             this.Players = players;
+            this.Deck = deck;
             this._currentPlayerIndex = currentPlayerIndex;
             this.CurrentPlayer = players[_currentPlayerIndex];
-            this.CurrentDeckCard = Deck.Cards.FirstOrDefault()!;
+            this.CurrentDeckCard = currentDeckCard;
             this.CardsSkipped = cardsSkipped;
             this.IsFinished = isFinished;
+            this.LastNumber = lastNumber;
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void NextPlayer()
@@ -71,6 +127,7 @@ namespace Models.Game
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
+
         public void GameLoop()
         {
             bool isOver = false;
@@ -84,7 +141,7 @@ namespace Models.Game
                     if (AllPlayersPlayed())
                     {
                         NextDeckCard();
-                        Players.ForEach(p =>
+                        Players.ToList().ForEach(p =>
                         {
                             p.HasPlayed = false;
                             p.HasSkipped = false;
@@ -99,7 +156,7 @@ namespace Models.Game
                 }
             }
         }
-        
+
         public void HandlePlayerChoice(Player player, string choice)
         {
             try
@@ -149,12 +206,12 @@ namespace Models.Game
                 throw new Error(e.ErrorCode);
             }
         }
-        
+
         public void TriggerGameOver()
         {
             OnGameIsOver(new GameIsOverEventArgs(true));
-        }   
-        
+        }
+
         public void HandlePlayerChooseDuck(Player player, Position cardToMovePosition, Position duckPosition)
         {
             try
@@ -166,7 +223,7 @@ namespace Models.Game
                 throw new Error(e.ErrorCode);
             }
         }
-        
+
         public bool CheckGameOverCondition()
         {
             if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
@@ -177,7 +234,7 @@ namespace Models.Game
 
             return false;
         }
-        
+
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
             try
@@ -192,7 +249,7 @@ namespace Models.Game
 
                 player.StackCounter = grid.Count;
                 player.HasPlayed = true;
-                
+
                 NextPlayer();
             }
             catch (Error e)
@@ -213,7 +270,7 @@ namespace Models.Game
 
                 player.StackCounter = player.Grid.GameCardsGrid.Count;
                 player.HasPlayed = true;
-            
+
                 NextPlayer();
             }
             catch (Error e)
@@ -227,10 +284,10 @@ namespace Models.Game
             player.StackCounter = player.Grid.GameCardsGrid.Count;
             player.HasPlayed = true;
             player.HasSkipped = true;
-            
+
             NextPlayer();
         }
-        
+
         public DeckCard NextDeckCard()
         {
             if (Deck.Cards.Count == 0)
@@ -246,7 +303,7 @@ namespace Models.Game
             return CurrentDeckCard!;
         }
 
-        public void Save()
+        public void SaveScores()
         {
             foreach (var player in Players)
             {
@@ -259,7 +316,7 @@ namespace Models.Game
         {
             return Players.All(p => p.HasPlayed);
         }
-        
+
         public void CheckAllPlayersSkipped()
         {
             if (Players.All(p => p.HasSkipped))
@@ -267,6 +324,5 @@ namespace Models.Game
                 CardsSkipped++;
             }
         }
-
     }
 }

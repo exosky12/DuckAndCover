@@ -5,14 +5,31 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="DuckAndCover.Views.SettingOption"
     Spacing="10">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+    </Grid>
     <Label Text="{Binding Title, Source={x:Reference SettingOptionView}}"
            Style="{StaticResource LabelJeu}"
            HorizontalOptions="Center"
-           VerticalOptions="Center" />
-    <Border BackgroundColor="White"
-            Margin="30"
-            HeightRequest="50"
-            WidthRequest="300">
-        <ContentPresenter Content="{Binding OptionContent, Source={x:Reference SettingOptionView}}" />
-    </Border>
+           VerticalOptions="Center"
+           Grid.Row="1"/>
+    <Entry
+         MaxLength="10"
+         HorizontalOptions="Center"
+         VerticalOptions="Center"
+         BackgroundColor="White"
+         WidthRequest="300"
+        />
+
+
+    <ContentPresenter Content="{Binding OptionContent, Source={x:Reference SettingOptionView}}" />
 </VerticalStackLayout>

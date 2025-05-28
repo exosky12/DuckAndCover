@@ -1,5 +1,8 @@
-﻿using Models.Game;
+﻿using Models.Enums;
+using Models.Game;
 using Models.Exceptions;
+using Models.Rules;
+
 namespace UnitTests;
 
 public class PlayerTests
@@ -48,7 +51,13 @@ public class PlayerTests
         Player player3 = new Player("Charlie");
 
         var players = new List<Player> { player1, player2, player3 };
-        var game = new Game(players);
+        var game = new Game(new ClassicRules());
+        game.InitializeGame(
+            id: "SHDG62",
+            players: players,
+            deck: new Deck(),
+            currentDeckCard: new DeckCard(Bonus.None, 1)
+        );
 
         Assert.Equal(player1, game.CurrentPlayer);
 
@@ -66,7 +75,8 @@ public class PlayerTests
     public void Cover_CoversCardCorrectly()
     {
         Player player = new Player("Bob");
-        Game game = new Game(new List<Player> { player });
+        Game game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
         DeckCard deckCard = game.CurrentDeckCard;
         Grid grid = player.Grid;
         
@@ -97,7 +107,8 @@ public class PlayerTests
     public void Duck_MoveCardSuccess()
     {
         Player player = new Player("Bob");
-        Game game = new Game(new List<Player> { player });
+        Game game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
         Grid grid = player.Grid;
         DeckCard deckCard = game.CurrentDeckCard;
         GameCard card = new GameCard(3, deckCard.Number) { Position = new Position(1, 1) };
@@ -121,7 +132,8 @@ public class PlayerTests
     public void Duck_DoesNotMoveCardIfNotAdjacent()
     {
         Player player = new Player("Bob");
-        Game game = new Game(new List<Player> { player });
+        Game game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
         Grid grid = player.Grid;
         GameCard card = new GameCard(7, 5) { Position = new Position(1, 1) };
         grid.GameCardsGrid.Add(card);
@@ -135,7 +147,8 @@ public class PlayerTests
     public void Cover_ThrowsError_WhenInvalidPosition()
     {
         Player player = new Player("Bob");
-        Game game = new Game(new List<Player> { player });
+        Game game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
         Grid grid = player.Grid;
         GameCard cardToMove = new GameCard(5, 1) { Position = new Position(1, 1) };
         grid.GameCardsGrid.Add(cardToMove);
@@ -147,7 +160,8 @@ public class PlayerTests
     public void Duck_ThrowsError_WhenInvalidPosition()
     {
         Player player = new Player("Bob");
-        Game game = new Game(new List<Player> { player });
+        Game game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
         Grid grid = player.Grid;
         GameCard card = new GameCard(3, 7) { Position = new Position(1, 1) };
         grid.GameCardsGrid.Add(card);
@@ -159,7 +173,8 @@ public class PlayerTests
     public void Cover_UpdatesStackCounter()
     {
         Player player = new Player("Bob");
-        Game game = new Game(new List<Player> { player });
+        Game game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
         DeckCard deckCard = game.CurrentDeckCard;
         Grid grid = player.Grid;
         
@@ -193,7 +208,8 @@ public class PlayerTests
     public void Duck_DoesNotUpdateStackCounter()
     {
         Player player = new Player("Bob");
-        Game game = new Game(new List<Player> { player });
+        Game game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
         Grid grid = player.Grid;
         GameCard card = new GameCard(3, 7) { Position = new Position(1, 1) };
         grid.GameCardsGrid.Add(card);

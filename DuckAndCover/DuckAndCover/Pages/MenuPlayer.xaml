@@ -1,43 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             ControlTemplate="{StaticResource BackgroundTemplate}"
              x:Class="DuckAndCover.Pages.MenuPlayer"
-             xmlns:components="clr-namespace:DuckAndCover.Views">
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
+             xmlns:components="clr-namespace:DuckAndCover.Views"
+             ControlTemplate="{StaticResource BackgroundTemplate}">
 
-            <components:SettingOption Title="Nom   joueur 1">
-                <components:SettingOption.OptionContent>
-                    <Label Text="Valeur choisie" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="Center"/>
-                </components:SettingOption.OptionContent>
-            </components:SettingOption>
+    <Grid>
+        <ScrollView Padding="10" Margin="0, 0, 0, 300">
+            <VerticalStackLayout x:Name="PlayerInputsLayout"
+                                 Spacing="20"
+                                 Padding="20"
+                                 MaximumWidthRequest="800"/>
+        </ScrollView>
 
-            <components:SettingOption Title="Nom   Joueur 2 ">
-                <components:SettingOption.OptionContent>
-                    <HorizontalStackLayout HorizontalOptions="Start" 
-                                 VerticalOptions="Center" 
-                                 Margin="10,0,0,0">
-                        <Border BackgroundColor="White" 
-                    HeightRequest="50" 
-                    WidthRequest="50"/>
-       
-                    </HorizontalStackLayout>
-                </components:SettingOption.OptionContent>
-            </components:SettingOption>
-
-            <components:SettingOption Title="Nom   joueur 3 ">
-                <components:SettingOption.OptionContent>
-                    <Label Text="Valeur choisie" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="Center"/>
-                </components:SettingOption.OptionContent>
-            </components:SettingOption>
-            <components:Button x:Name="ContinuerBtn"
-                         Name="Continuer"/>
-
-        </VerticalStackLayout>
-    </ScrollView>
+        <components:Button x:Name="PlayBtn"
+                           Name="Jouer"
+                           Margin="10"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
+                           Clicked="PlayClicked" />
+    </Grid>
 </ContentPage>
