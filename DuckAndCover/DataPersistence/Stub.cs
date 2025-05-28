@@ -44,48 +44,48 @@ namespace DataPersistence
 
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {
-            var _players = GeneratePlayers();
-            var _games = GenerateGames();
-            return (new ObservableCollection<Player>(_players), new ObservableCollection<Game>(_games));
+            var players = GeneratePlayers();
+            var games = GenerateGames();
+            return (new ObservableCollection<Player>(players), new ObservableCollection<Game>(games));
         }
 
-        private List<Player> GeneratePlayers()
+        private ObservableCollection<Player> GeneratePlayers()
         {
-            var _players = new List<Player>();
+            var players = new ObservableCollection<Player>();
 
             // Jordy avec grille modifiée (1 déplacement)
             var jordyGrid = CreateJordyGrid();
             var jordy = new Player("Jordy", 11, new List<int> { 5, 6, 3 }, false, true, jordyGrid);
-            _players.Add(jordy);
+            players.Add(jordy);
 
             // Jules avec grille standard
             var jules = new Player("Jules", 12, new List<int> { 4, 7, 2 }, false, false, new Grid());
-            _players.Add(jules);
+            players.Add(jules);
 
             // Jordy2 avec grille standard
             var jordy2 = new Player("Jordy2", 1, new List<int> { 5, 6, 3 }, false, true, new Grid());
-            _players.Add(jordy2);
+            players.Add(jordy2);
 
             // Jules2 avec grille standard
             var jules2 = new Player("Jules2", 3, new List<int> { 4, 7, 2 }, false, false, new Grid());
-            _players.Add(jules2);
+            players.Add(jules2);
 
             // Jordy1 avec grille modifiée (3 déplacements)
             var jordy1Grid = CreateJordy1Grid();
             var jordy1 = new Player("Jordy1", 9, new List<int> { 5, 6, 3 }, false, true, jordy1Grid);
-            _players.Add(jordy1);
+            players.Add(jordy1);
 
             // Jules1 avec grille modifiée (3 déplacements)
             var jules1Grid = CreateJules1Grid();
             var jules1 = new Player("Jules1", 9, new List<int> { 4, 7, 2 }, false, false, jules1Grid);
-            _players.Add(jules1);
+            players.Add(jules1);
 
-            return _players;
+            return players;
         }
 
         private List<Game> GenerateGames()
         {
-            var _games = new List<Game>();
+            var games = new List<Game>();
             var allPlayers = GeneratePlayers();
 
             // Partie en cours (7051E)
@@ -98,7 +98,7 @@ namespace DataPersistence
                 deck: new Deck(),
                 lastNumber: null
             );
-            _games.Add(onGoingGame);
+            games.Add(onGoingGame);
 
             // Partie terminée (9051e)
             var finishedGame = new Game(
@@ -110,8 +110,10 @@ namespace DataPersistence
                 deck: new Deck(),
                 lastNumber: 1
             );
-            _games.Add(finishedGame);
+            games.Add(finishedGame);
 
+            Deck crazyDeck = new Deck();
+            crazyDeck.Cards.RemoveRange(0, 3);
             // Partie "crazy" (5051e)
             var crazyGame = new Game(
                 id: "5051e",
@@ -119,12 +121,12 @@ namespace DataPersistence
                 currentPlayerIndex: 1,
                 cardsSkipped: 3,
                 isFinished: false,
-                deck: new Deck(),
+                deck: crazyDeck,
                 lastNumber: 2
             );
-            _games.Add(crazyGame);
+            games.Add(crazyGame);
 
-            return _games;
+            return games;
         }
 
         private Grid CreateJordyGrid()

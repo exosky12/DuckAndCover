@@ -1,13 +1,8 @@
-﻿// File: ConsoleApp/Program.cs
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using Models.Game;
 using Models.Exceptions;
 using DataPersistence;
-using Models.Interfaces;
 using Models.Enums;
 using static System.Console;
 
@@ -22,7 +17,7 @@ namespace ConsoleApp
 
             var stub = new Stub();
             var (stubPlayers, stubGames) = stub.LoadData();
-
+            
             Game game = GetGameFromUserChoice(stubGames);
 
             if (game == null)
@@ -46,7 +41,7 @@ namespace ConsoleApp
                         ResumeGame(stubGames, out game);
                         return game;
                     case "N":
-                        Utils.CreateNewGame();
+                        game = Utils.CreateNewGame();
                         return game;
                     default:
                         var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
@@ -80,7 +75,7 @@ namespace ConsoleApp
 
                 var resumed = inProgress.FirstOrDefault(g =>
                     g.Id.Equals(codeInput, StringComparison.OrdinalIgnoreCase));
-
+                
                 if (resumed != null)
                 {
                     game = resumed;
