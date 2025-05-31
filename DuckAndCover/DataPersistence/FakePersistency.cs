@@ -59,10 +59,13 @@ namespace DataPersistence
             // Jordy avec grille modifiée (1 déplacement)
             var jordyGrid = CreateJordyGrid();
             var jordy = new Player("Jordy", 11, new List<int> { 5, 6, 3 }, false, true, jordyGrid);
+            jordy.Scores.Add(30);
             players.Add(jordy);
 
             // Jules avec grille standard
             var jules = new Player("Jules", 12, new List<int> { 4, 7, 2 }, false, false, new Grid());
+            jules.Scores.Add(30);
+            jules.Scores.Add(5);
             players.Add(jules);
 
             // Jordy2 avec grille standard
@@ -81,6 +84,8 @@ namespace DataPersistence
             // Jules1 avec grille modifiée (3 déplacements)
             var jules1Grid = CreateJules1Grid();
             var jules1 = new Player("Jules1", 9, new List<int> { 4, 7, 2 }, false, false, jules1Grid);
+            jules1.Scores.Add(20);
+            jules1.Scores.Add(12);
             players.Add(jules1);
 
             return players;

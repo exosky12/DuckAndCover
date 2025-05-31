@@ -1,5 +1,8 @@
 using DTOs;
+using Models.Game;
 using Models.Interfaces;
+using Models.Rules;
+using Models.Exceptions;
 
 namespace DuckAndCover.Pages;
 
@@ -7,7 +10,7 @@ public partial class MenuPlayer : ContentPage
 {
     private readonly GameSettingsDTO _gameSettings;
     
-    // public IDataPersistence? DataManager => (App.Current)?.DataManager as App;
+    public Game GameManager => (App.Current as App).GameManager;
 
     public MenuPlayer(GameSettingsDTO gameSettings)
     {
@@ -32,6 +35,46 @@ public partial class MenuPlayer : ContentPage
     
     public async void PlayClicked(object sender, EventArgs e)
     {
-        throw new NotImplementedException("La logique de démarrage du jeu n'est pas implémentée.");
+        try
+        {
+            // Créer la liste des joueurs
+            var players = new List<Player>();
+            foreach (var child in PlayerInputsLayout.Children)
+            {
+                if (child is Entry entry && !string.IsNullOrWhiteSpace(entry.Text))
+                {
+                    players.Add(new Player(entry.Text));
+                }
+            }
+
+            if (players.Count == 0)
+            {
+                await DisplayAlert("Erreur", "Veuillez entrer au moins un nom de joueur", "OK");
+                return;
+            }
+
+            // Créer un nouveau deck
+            var deck = new Deck();
+            if (deck.Cards.Count == 0)
+            {
+                await DisplayAlert("Erreur", "Le deck est vide", "OK");
+                return;
+            }
+
+            // Initialiser le jeu
+            GameManager.InitializeGame(
+                id: Guid.NewGuid().ToString("N").Substring(0, 5),
+                players: players,
+                deck: deck,
+                currentDeckCard: deck.Cards.First()
+            );
+
+            // Naviguer vers la page de jeu
+            await Navigation.PushAsync(new GamePage());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", $"Une erreur est survenue : {ex.Message}", "OK");
+        }
     }
 }

@@ -9,7 +9,8 @@
 
 ## 🎯 Présentation
 
-**DuckAndCover** est un jeu multijoueur local où les joueurs incarnent des canards 🦆 dans un environnement ludique et amusant. Le but est de remplir l'une des conditions de victoire définies dans le [contexte du jeu](https://codefirst.iut.uca.fr/git/2025_SAE_1A/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/src/branch/master/Documentation/contexte_Regles_du_jeu.md). 
+**DuckAndCover** est un jeu multijoueur local où les joueurs incarnent des canards 🦆 dans un environnement ludique et amusant.
+Retrouver toutes les règles et la documentation liée à notre projet dans notre [Wiki](https://codefirst.iut.uca.fr/git/2025_SAE_1A/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/wiki). 
 
 Le jeu propose un mode multijoueur local ainsi qu'une IA 🤖 pour compléter les parties.
 
@@ -34,4 +35,6 @@ Le jeu propose un mode multijoueur local ainsi qu'une IA 🤖 pour compléter le
 ### ▶️ Exécution
 à definir
 
-
+### © Crédits
+- BARRÈRE Jordy
+- MERIENNE Jules

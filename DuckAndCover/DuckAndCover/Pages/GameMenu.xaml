@@ -3,77 +3,107 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCover.Pages.GameMenu"
              ControlTemplate="{StaticResource BackgroundTemplate}"
-             xmlns:components="clr-namespace:DuckAndCover.Views">
+             xmlns:components="clr-namespace:DuckAndCover.Views"
+             Title="Configuration de la partie">
 
     <Grid Padding="20" RowDefinitions="Auto,*,Auto">
-        <Label Text="Configuration de la partie" 
-               FontSize="24" 
-               FontAttributes="Bold" 
-               HorizontalOptions="Center"
-               Margin="0,20,0,30"
-               TextColor="#222222"
-               Grid.Row="0" />
+        <!-- En-tête -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,40,0,30">
+            <Label Text="Configuration de la partie" 
+                   FontSize="36" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"
+                   TextColor="#222222"/>
+            <Label Text="Configurez les paramètres de votre partie"
+                   FontSize="18"
+                   HorizontalOptions="Center"
+                   TextColor="#222222"
+                   Opacity="0.8"/>
+        </VerticalStackLayout>
                
+        <!-- Contenu principal -->
         <ScrollView Grid.Row="1" Margin="0,0,0,20">
-            <FlexLayout Direction="Column"
-                      MaximumWidthRequest="800"
-                      AlignItems="Center"
-                      JustifyContent="SpaceEvenly">
-
-                <Frame BackgroundColor="#F5F5F5" 
-                       BorderColor="#DDDDDD"
-                       CornerRadius="12"
-                       Padding="24" 
-                       Margin="12"
-                       HasShadow="True">
-                    <StackLayout Spacing="24">
-                        <StackLayout Style="{StaticResource SectionContainerStyle}">
+            <Frame BackgroundColor="#F5F5F5"
+                   BorderColor="#E0E0E0"
+                   CornerRadius="20"
+                   Padding="30"
+                   Margin="20"
+                   MaximumWidthRequest="800"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="30">
+                    <!-- Section Nombre de joueurs -->
+                    <Frame BackgroundColor="White"
+                           BorderColor="#E0E0E0"
+                           CornerRadius="15"
+                           Padding="20"
+                           HasShadow="True">
+                        <VerticalStackLayout Spacing="15">
                             <Label Text="Nombre de joueurs"
-                                   Style="{StaticResource SectionTitleStyle}" />
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   TextColor="#222222"/>
                             <Entry x:Name="PlayerCountEntry"
                                    Placeholder="Ex: 3"
                                    Keyboard="Numeric"
-                                   Style="{StaticResource InputEntryStyle}" />
-                        </StackLayout>
+                                   Style="{StaticResource InputEntryStyle}"
+                                   Margin="0,10,0,0"/>
+                        </VerticalStackLayout>
+                    </Frame>
 
-                        <StackLayout Style="{StaticResource SectionContainerStyle}">
-                            <Label Text="Compléter avec des bots ?"
-                                   Style="{StaticResource SectionTitleStyle}" />
-                            <Grid ColumnDefinitions="Auto,*">
+                    <!-- Section Bots -->
+                    <Frame BackgroundColor="White"
+                           BorderColor="#E0E0E0"
+                           CornerRadius="15"
+                           Padding="20"
+                           HasShadow="True">
+                        <VerticalStackLayout Spacing="15">
+                            <Label Text="Joueurs IA"
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   TextColor="#222222"/>
+                            
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,10,0,0">
                                 <Switch x:Name="BotSwitch"
                                         IsToggled="False"
                                         OnColor="#4CAF50"
                                         ThumbColor="White"
-                                        Toggled="BotSwitch_Toggled" />
+                                        Toggled="BotSwitch_Toggled"/>
                                 <Label Grid.Column="1" 
                                        Text="Activer les joueurs IA"
                                        VerticalOptions="Center"
                                        Margin="12,0,0,0"
-                                       TextColor="#666666" />
+                                       TextColor="#222222"/>
                             </Grid>
-                        </StackLayout>
 
-                        <StackLayout Style="{StaticResource SectionContainerStyle}"
-                                     x:Name="BotCountSection"
-                                     IsVisible="True">
-                            <Label Text="Nombre de bots"
-                                   Style="{StaticResource SectionTitleStyle}"
-                                   x:Name="BotCountLabel" />
-                            <Entry x:Name="BotCountEntry"
-                                   Placeholder="Ex: 1"
-                                   Keyboard="Numeric"
-                                   Style="{StaticResource InputEntryStyle}" />
-                        </StackLayout>
-                    </StackLayout>
-                </Frame>
-                <components:Button x:Name="ContinueBtn"
-                                   Name="Continuer"
-                                   Margin="10,0"
-                                   Clicked="ContinueClicked" />
-            </FlexLayout>
-            
+                            <Frame x:Name="BotCountSection"
+                                   IsVisible="True"
+                                   BackgroundColor="#F5F5F5"
+                                   BorderColor="#E0E0E0"
+                                   CornerRadius="10"
+                                   Padding="15"
+                                   Margin="0,10,0,0">
+                                <VerticalStackLayout Spacing="10">
+                                    <Label Text="Nombre de bots"
+                                           FontSize="18"
+                                           TextColor="#222222"
+                                           x:Name="BotCountLabel"/>
+                                    <Entry x:Name="BotCountEntry"
+                                           Placeholder="Ex: 1"
+                                           Keyboard="Numeric"
+                                           Style="{StaticResource InputEntryStyle}"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </Frame>
         </ScrollView>
-        
-        
+
+        <!-- Bouton Continuer -->
+        <components:Button x:Name="ContinueBtn"
+                          Name="Continuer"
+                          Margin="10,20"
+                          Clicked="ContinueClicked"
+                          Grid.Row="2"/>
     </Grid>
 </ContentPage>

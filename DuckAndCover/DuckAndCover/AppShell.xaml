@@ -34,4 +34,10 @@
         ContentTemplate="{DataTemplate pages:MenuPlayer}"
         Route="MenuPlayer" />
     
+    
+    <ShellContent
+        Title="Jouer"
+        ContentTemplate="{DataTemplate pages:GamePage}"
+        Route="GamePage" />
+    
 </Shell>

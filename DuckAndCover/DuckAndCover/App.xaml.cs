@@ -13,6 +13,7 @@ namespace DuckAndCover
         public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");
         
         public Game GameManager { get; private set; }
+        
         public App()
         {
             InitializeComponent();
@@ -23,7 +24,9 @@ namespace DuckAndCover
             {
                 Directory.CreateDirectory(FilePath);
             }
+            
             string fullPath = Path.Combine(FilePath, FileName);
+            
             if (File.Exists(fullPath))
             {
                 IDataPersistence dataPersistence = new JsonPersistency();
@@ -31,7 +34,6 @@ namespace DuckAndCover
                 GameManager.AllPlayers = players;
                 GameManager.Games = games;
             }
-
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

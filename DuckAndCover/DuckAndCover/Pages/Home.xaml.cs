@@ -12,10 +12,10 @@
             await Navigation.PushAsync(new GameMenu());
         }
         
-        // private async void LeaderboardClicked(object sender, EventArgs e)
-        // {
-        //     await Navigation.PushAsync(new GameMenu());
-        // }
+        private async void LeaderboardClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LeaderboardPage());
+        }
         
         private async void RulesClicked(object sender, EventArgs e)
         {

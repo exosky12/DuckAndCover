@@ -55,25 +55,7 @@
                             Emoji="💡"
                             Name="Barrère Jordy" />
 
-                        <components:Credit
-                            Row="1"
-                            Column="0"
-                            Emoji="⚡"
-                            Name="Barrès Julien" />
-
-                        <components:Credit
-                            Row="1"
-                            Column="1"
-                            Emoji="🛠"
-                            Name="Ory Florentin" />
                     </Grid>
-
-                    <Label Text="© 2025 - Tous droits réservés"
-                           FontSize="14"
-                           TextColor="black"
-                           Opacity="0.7"
-                           HorizontalOptions="Center"
-                           Margin="0,20,0,0" />
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>

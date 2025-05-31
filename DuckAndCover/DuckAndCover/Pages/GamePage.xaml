@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DuckAndCover.Pages"
+             x:Class="DuckAndCover.Pages.GamePage"
+             Title="Partie en cours"
+             ControlTemplate="{StaticResource BackgroundTemplate}">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="20">
+        <!-- En-tête -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,20,0,10">
+            <Label x:Name="GridInfoLabel" 
+                   Text="Grille de jeu" 
+                   FontSize="36" 
+                   FontAttributes="Bold" 
+                   TextColor="#222222"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
+        <!-- Instructions -->
+        <Label x:Name="InstructionsLabel"
+               Grid.Row="1"
+               Text=""
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="#4CAF50"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20"/>
+
+        <!-- Grille de jeu -->
+        <ScrollView Grid.Row="2">
+            <Frame BackgroundColor="#F5F5F5"
+                   BorderColor="#E0E0E0"
+                   CornerRadius="20"
+                   Padding="20"
+                   Margin="10"
+                   HasShadow="True">
+                <Grid x:Name="GameGrid"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center"
+                      Padding="10"/>
+            </Frame>
+        </ScrollView>
+
+        <!-- Carte courante et actions -->
+        <VerticalStackLayout Grid.Row="3" Spacing="20" Margin="0,20,0,0">
+            <!-- Carte courante -->
+            <Frame x:Name="CurrentCardFrame"
+                   IsVisible="False"
+                   BackgroundColor="#F5F5F5"
+                   BorderColor="#E0E0E0"
+                   CornerRadius="15"
+                   Padding="20"
+                   HorizontalOptions="Center">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Carte courante"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="#222222"
+                           HorizontalOptions="Center"/>
+                    <Frame x:Name="CurrentCardBorder"
+                           WidthRequest="120"
+                           HeightRequest="160"
+                           Padding="0"
+                           CornerRadius="15"
+                           HasShadow="True">
+                        <Label x:Name="CurrentCardNumber"
+                               FontSize="48"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Boutons d'action -->
+            <HorizontalStackLayout Spacing="15" 
+                                 HorizontalOptions="Center"
+                                 Margin="0,20,0,0">
+                <Button x:Name="CoverBtn"
+                        Text="Cover"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        Padding="20,10"
+                        Clicked="OnCoverClicked"/>
+                
+                <Button x:Name="DuckBtn"
+                        Text="Duck"
+                        BackgroundColor="#2196F3"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        Padding="20,10"
+                        Clicked="OnDuckClicked"/>
+                
+                <Button x:Name="CoinBtn"
+                        Text="Coin"
+                        BackgroundColor="#FFC107"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        Padding="20,10"
+                        Clicked="OnCoinClicked"/>
+            </HorizontalStackLayout>
+
+            <!-- Label de debug -->
+            <Label x:Name="DebugLabel" 
+                   Text="" 
+                   FontSize="14" 
+                   TextColor="#222222"
+                   Opacity="0.6"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
