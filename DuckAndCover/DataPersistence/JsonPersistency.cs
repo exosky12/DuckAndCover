@@ -15,22 +15,35 @@ namespace DataPersistence
         
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {
+            Debug.WriteLine($"Attempting to load data from: {Path.Combine(FilePath, FileName)}");
             var jsonSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
             DataToPersist? data = new DataToPersist();
 
-            using (Stream s = File.OpenRead(Path.Combine(FilePath, FileName)))
+            try
             {
-                data = jsonSerializer.ReadObject(s) as DataToPersist;
+                using (Stream s = File.OpenRead(Path.Combine(FilePath, FileName)))
+                {
+                    data = jsonSerializer.ReadObject(s) as DataToPersist;
+                    Debug.WriteLine($"Successfully loaded data: {data.Players?.Count ?? 0} players, {data.Games?.Count ?? 0} games");
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading data: {ex.Message}");
+                throw;
+            }
+
             return (data.Players ?? new ObservableCollection<Player>(),
                 data.Games ?? new ObservableCollection<Game>());
-
         }
         
         public void SaveData(ObservableCollection<Player> players, ObservableCollection<Game> games)
         {
+            Debug.WriteLine($"Attempting to save data: {players.Count} players, {games.Count} games");
+            
             if (!Directory.Exists(FilePath))
             {
+                Debug.WriteLine($"Creating directory at: {FilePath}");
                 Directory.CreateDirectory(FilePath);
             }
 
@@ -40,18 +53,27 @@ namespace DataPersistence
             data.Players = players;
             data.Games = games;
 
-            var settings = new XmlWriterSettings() { Indent = true };
-            using (FileStream stream = File.Create(Path.Combine(FilePath, FileName)))
+            try
             {
-                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
-                           stream,
-                           Encoding.UTF8,
-                           false,
-                           true))
+                var settings = new XmlWriterSettings() { Indent = true };
+                using (FileStream stream = File.Create(Path.Combine(FilePath, FileName)))
                 {
-                    jsonSerializer.WriteObject(writer, data);
-                    writer.Flush();
+                    using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
+                               stream,
+                               Encoding.UTF8,
+                               false,
+                               true))
+                    {
+                        jsonSerializer.WriteObject(writer, data);
+                        writer.Flush();
+                        Debug.WriteLine("Data successfully saved to file");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving data: {ex.Message}");
+                throw;
             }
         }
     }

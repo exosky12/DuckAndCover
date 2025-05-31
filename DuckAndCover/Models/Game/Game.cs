@@ -25,9 +25,9 @@ namespace Models.Game
                 OnPropertyChanged(nameof(AllPlayers));
             }
         }
-        
+
         public List<Player> Players { get; set; } = new List<Player>();
-        
+
         [DataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
 
         public ObservableCollection<Game> Games
@@ -39,7 +39,7 @@ namespace Models.Game
                 OnPropertyChanged(nameof(Games));
             }
         }
-        
+
         public IRules Rules { get; set; }
 
         [DataMember] public int CardsSkipped { get; set; }
@@ -59,7 +59,7 @@ namespace Models.Game
         public DeckCard CurrentDeckCard { get; private set; } = new DeckCard(Bonus.None, 0);
 
         [DataMember] public int? LastNumber { get; set; }
-        
+
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -101,8 +101,9 @@ namespace Models.Game
         {
             this.Rules = rules;
         }
-        
-        public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard, int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
+
+        public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard,
+            int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
         {
             this.Id = id;
             this.Players = players;
@@ -301,14 +302,6 @@ namespace Models.Game
             return CurrentDeckCard!;
         }
 
-        public void SaveScores()
-        {
-            foreach (var player in Players)
-            {
-                int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
-                player.Scores.Add(score);
-            }
-        }
 
         public bool AllPlayersPlayed()
         {
@@ -320,6 +313,37 @@ namespace Models.Game
             if (Players.All(p => p.HasSkipped))
             {
                 CardsSkipped++;
+            }
+        }
+
+        public void SavePlayers()
+        {
+            foreach (var player in Players)
+            {
+                int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
+                player.Scores.Add(score);
+                var existingPlayer = AllPlayers.FirstOrDefault(p => p.Name == player.Name);
+                if (existingPlayer != null)
+                {
+                    existingPlayer.Scores.Add(score);
+                }
+                else
+                {
+                    AllPlayers.Add(player);
+                }
+            }
+        }
+
+        public void SaveGame()
+        {
+            var existingGame = Games.FirstOrDefault(g => g.Id == Id);
+            if (existingGame != null)
+            {
+                existingGame.IsFinished = true;
+            }
+            else 
+            {
+                Games.Add(this);
             }
         }
     }
