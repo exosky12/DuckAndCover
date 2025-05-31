@@ -59,9 +59,7 @@ namespace Models.Game
         public DeckCard CurrentDeckCard { get; private set; } = new DeckCard(Bonus.None, 0);
 
         [DataMember] public int? LastNumber { get; set; }
-
-
-
+        
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;

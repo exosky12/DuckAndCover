@@ -1,22 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCover.Pages.MenuPlayer"
              xmlns:components="clr-namespace:DuckAndCover.Views"
-             ControlTemplate="{StaticResource BackgroundTemplate}">
+             ControlTemplate="{StaticResource BackgroundTemplate}"
+             Title="Configuration des joueurs">
 
     <Grid>
-        <ScrollView Padding="10" Margin="0, 0, 0, 300">
-            <VerticalStackLayout x:Name="PlayerInputsLayout"
-                                 Spacing="20"
-                                 Padding="20"
-                                 MaximumWidthRequest="800"/>
-        </ScrollView>
+        <ScrollView Padding="20">
+            <VerticalStackLayout
+                Spacing="30"
+                HorizontalOptions="Center"
+                VerticalOptions="Fill"
+                Margin="0, 100">
 
-        <components:Button x:Name="PlayBtn"
-                           Name="Jouer"
-                           Margin="10"
-                           VerticalOptions="End"
+                <!-- En-tête -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Configuration des joueurs"
+                           FontSize="36"
+                           FontAttributes="Bold"
+                           TextColor="#222222"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Entrez les noms des joueurs qui vont participer à la partie"
+                           FontSize="18"
+                           TextColor="#222222"
                            HorizontalOptions="Center"
-                           Clicked="PlayClicked" />
+                           Opacity="0.8"/>
+                </VerticalStackLayout>
+
+                <!-- Zone de saisie des joueurs -->
+                <Frame BackgroundColor="#F5F5F5"
+                       BorderColor="#E0E0E0"
+                       CornerRadius="20"
+                       Padding="30"
+                       Margin="20"
+                       MaximumWidthRequest="600"
+                       HasShadow="True">
+                    <VerticalStackLayout x:Name="PlayerInputsLayout"
+                                       Spacing="20"
+                                       Padding="10"/>
+                </Frame>
+
+                <!-- Bouton Jouer -->
+                <components:Button x:Name="PlayBtn"
+                                 Name="Commencer la partie"
+                                 Margin="10,40"
+                                 Clicked="PlayClicked"
+                                 HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
     </Grid>
 </ContentPage>

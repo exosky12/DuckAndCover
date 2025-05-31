@@ -56,13 +56,6 @@
                             Name="Barrère Jordy" />
 
                     </Grid>
-
-                    <Label Text="© 2025 - Tous droits réservés"
-                           FontSize="14"
-                           TextColor="black"
-                           Opacity="0.7"
-                           HorizontalOptions="Center"
-                           Margin="0,20,0,0" />
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>
