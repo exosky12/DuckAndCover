@@ -92,7 +92,7 @@ legend right
     |<#F5FFFA>| UnitTests |
 endlegend
 @enduml
-
+```
 # Explication du Diagramme de Paquetage
 
 Ce diagramme représente l'architecture du projet DuckAndCover. L'organisation est structurée en plusieurs packages principaux, chacun ayant un rôle spécifique dans l'application.
