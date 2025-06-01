@@ -85,11 +85,11 @@ package "DuckAndCover" #white {
 }
 
 legend right
-|= Package |= Couleur |
-|<#D6EAF8>| Models |
-|<#FFE5B4>| DataPersistence |
-|<#E6E6FA>| ConsoleApp |
-|<#F5FFFA>| UnitTests |
+    |= Package |= Couleur |
+    |<#D6EAF8>| Models |
+    |<#FFE5B4>| DataPersistence |
+    |<#E6E6FA>| ConsoleApp |
+    |<#F5FFFA>| UnitTests |
 endlegend
 @enduml
 
