@@ -91,6 +91,7 @@ legend right
 |<#E6E6FA>| ConsoleApp |
 |<#F5FFFA>| UnitTests |
 endlegend
+@enduml
 
 # Explication du Diagramme de Paquetage
 
