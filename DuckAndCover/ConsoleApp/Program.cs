@@ -41,8 +41,20 @@ namespace ConsoleApp
                         ResumeGame(stubGames, out game);
                         return game;
                     case "N":
-                        game = Utils.CreateNewGame();
-                        return game;
+                        Write("Quelles règle souhaitez-voys choisir ? ");
+                        string input = ReadLine();
+                        int choice = int.Parse(input);
+                         switch (choice) {
+                            case 1:
+                                game = Utils.CreateNewGame(1);
+                                return game;
+                            case 2:
+                                game = Utils.CreateNewGame(2);
+                                return game;
+                            case 3:
+                                game = Utils.CreateNewGame(3);
+                                return game;
+                        }
                     default:
                         var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
                         Utils.WriteError(handler.Handle());
