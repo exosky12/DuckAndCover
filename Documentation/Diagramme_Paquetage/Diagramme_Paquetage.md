@@ -86,12 +86,11 @@ package "DuckAndCover" #white {
 
 legend right
 |= Package |= Couleur |
-|<#application>| Models |
+|<#D6EAF8>| Models |
 |<#FFE5B4>| DataPersistence |
-|<#lavender>| ConsoleApp |
-|<#mintcream>| UnitTests |
+|<#E6E6FA>| ConsoleApp |
+|<#F5FFFA>| UnitTests |
 endlegend
-@enduml
 
 # Explication du Diagramme de Paquetage
 
