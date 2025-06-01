@@ -21,6 +21,8 @@ package "DuckAndCover" #white {
 
         package "Rules" #application {
             class ClassicRules #D6EAF8
+            class BlitzRules #D6EAF8
+            class InsaneRules #D6EAF8
         }
 
         package "Generators" #application {
@@ -102,7 +104,7 @@ Le package Models est le cœur de l'application et contient plusieurs sous-packa
 
 - **Game** : Contient les classes fondamentales du jeu comme `Card`, `Game`, `Player`, `Deck`, `Position`, `GameCard`, `Grid`, et `DeckCard`. Ces classes représentent les éléments de base du jeu.
 
-- **Rules** : Contient la classe `ClassicRules`, `BlitzRules`, `InsaneRules` qui implémentent les règles du jeu.
+- **Rules** : Contient les classes `ClassicRules`, `BlitzRules` et `InsaneRules` qui implémentent les différentes variantes des règles du jeu.
 
 - **Generators** : Contient les classes `DeckGenerator` et `GridGenerator` responsables de la génération des éléments du jeu.
 
