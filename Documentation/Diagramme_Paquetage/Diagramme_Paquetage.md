@@ -102,7 +102,7 @@ Le package Models est le cœur de l'application et contient plusieurs sous-packa
 
 - **Game** : Contient les classes fondamentales du jeu comme `Card`, `Game`, `Player`, `Deck`, `Position`, `GameCard`, `Grid`, et `DeckCard`. Ces classes représentent les éléments de base du jeu.
 
-- **Rules** : Contient la classe `ClassicRules` qui implémente les règles du jeu.
+- **Rules** : Contient la classe `ClassicRules`, `BlitzRules`, `InsaneRules` qui implémentent les règles du jeu.
 
 - **Generators** : Contient les classes `DeckGenerator` et `GridGenerator` responsables de la génération des éléments du jeu.
 
@@ -138,5 +138,4 @@ Contient tous les tests unitaires de l'application, testant les différentes com
 - **Lavender** : Interface console
 - **Mintcream** : Tests unitaires
 
-Cette architecture suit les principes de séparation des responsabilité permettant une 
-maintenance et une évolution faciles du code.
+L'objectif de cette architecure c'est de suivra le principie de séparer les responsabilités ce qui aide a avoir une meilleure maintenance et de pouvoir rapidement faire évoluer le code.
