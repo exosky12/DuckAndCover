@@ -67,7 +67,7 @@ legend right
     |<#D5F5E3>| Interface |
 endlegend
 @enduml 
-
+```
 # Explication du Diagramme de Classes des Règles
 
 Ce diagramme représente l'architecture des règles du jeu DuckAndCover, mettant en évidence les différentes implémentations de règles et leur utilisation par la classe Game.
