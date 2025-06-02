@@ -14,7 +14,7 @@ namespace Models.Game
     {
         [DataMember] public string Id { get; set; } = string.Empty;
 
-        [DataMember] private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
+        [IgnoreDataMember] private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
 
         public ObservableCollection<Player> AllPlayers
         {
@@ -28,7 +28,7 @@ namespace Models.Game
 
         public List<Player> Players { get; set; } = new List<Player>();
 
-        [DataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
+        [IgnoreDataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
 
         public ObservableCollection<Game> Games
         {
@@ -46,6 +46,9 @@ namespace Models.Game
 
         [DataMember] public int CardsSkipped { get; set; }
 
+        [IgnoreDataMember]
+        private bool _gameOverAlreadyTriggered = false;
+
         public Player CurrentPlayer { get; set; } = new Player("Default", 0, new List<int>(), false, false, new Grid());
 
         [DataMember] private int _currentPlayerIndex;
@@ -56,7 +59,7 @@ namespace Models.Game
 
         [DataMember] public bool IsFinished { get; set; }
 
-        [DataMember] public bool LastGameFinishStatus { get; private set; }
+        [DataMember] public bool LastGameFinishStatus { get; set; }
 
         public DeckCard CurrentDeckCard { get; private set; } = new DeckCard(Bonus.None, 0);
 
@@ -132,7 +135,18 @@ namespace Models.Game
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
-        
+
+
+        public bool CheckGameOverCondition()
+        {
+            if (!_gameOverAlreadyTriggered && Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
+            {
+                _gameOverAlreadyTriggered = true;
+                OnGameIsOver(new GameIsOverEventArgs(true));
+                return true;
+            }
+            return false;
+        }
         public void ProcessCardEffect(DeckCard card, Player player)
         {
             switch (card.Bonus)
@@ -332,18 +346,6 @@ namespace Models.Game
             }
         }
 
-        public bool CheckGameOverCondition()
-        {
-            if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
-            {
-                IsFinished = true;
-                OnGameIsOver(new GameIsOverEventArgs(true));
-                return true;
-            }
-
-            return false;
-        }
-
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
             try
@@ -434,11 +436,18 @@ namespace Models.Game
             if (existingGame != null)
             {
                 existingGame.IsFinished = true;
+                existingGame.CardsSkipped = CardsSkipped;
+                existingGame.LastGameFinishStatus = LastGameFinishStatus;
+                existingGame.LastNumber = LastNumber;
+                existingGame.Deck = Deck;
+                existingGame.Players = Players;
+                existingGame.Rules = Rules;
             }
             else
             {
                 Games.Add(this);
             }
         }
+
     }
 }

@@ -23,7 +23,7 @@ namespace Models.Game
         [DataMember]
         public int StackCounter { get; set; }
 
-        [DataMember]
+        [IgnoreDataMember]
         public Grid Grid { get; private set; } = new Grid();
 
         public Player(string name)
