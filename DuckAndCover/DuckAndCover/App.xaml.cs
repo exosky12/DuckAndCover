@@ -1,15 +1,24 @@
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 using Models.Game;
 using Models.Rules;
 using DataPersistence;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Diagnostics;
 
 namespace DuckAndCover
 {
     public partial class App : Application
     {
-    
+        /// <summary>
+        /// Persistance de l’historique des parties terminées.
+        /// </summary>
         public JsonPersistency DataPersistence { get; }
 
+        /// <summary>
+        /// GameManager partagé par toute l’application (MAUI).
+        /// </summary>
         public Game GameManager { get; set; }
 
         public App()
@@ -32,7 +41,11 @@ namespace DuckAndCover
             GameManager.GameIsOver += OnGameIsOver;
 
         }
-        
+
+        /// <summary>
+        /// Appelé une seule fois quand la partie se termine.
+        /// On y archive la partie (SavePlayers + SaveGame) puis on appelle DataPersistence.SaveData(...).
+        /// </summary>
         private void OnGameIsOver(object? sender, Models.Events.GameIsOverEventArgs e)
         {
             try

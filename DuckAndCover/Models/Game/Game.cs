@@ -14,7 +14,8 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
     {
         [DataMember] public string Id { get; set; } = string.Empty;
 
-        [IgnoreDataMember] private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
+        [DataMember]
+        private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
 
         public ObservableCollection<Player> AllPlayers
         {
