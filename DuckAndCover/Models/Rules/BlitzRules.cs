@@ -2,12 +2,16 @@
 using Models.Interfaces;
 using Models.Enums;
 using Models.Game;
+using System.Runtime.Serialization;
+
 
 namespace Models.Rules
 {
+    [DataContract]
     public class BlitzRules : IRules
     {
-        public string Name => "Règles Classiques";
+        [DataMember]
+        public string Name => "Règles Blitz";
 
         public string Description =>
             "Vivez cette partie de manière intense et rapide";

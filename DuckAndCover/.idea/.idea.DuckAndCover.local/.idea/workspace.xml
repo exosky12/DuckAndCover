@@ -20,9 +20,18 @@
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Card.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Deck.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/DeckCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/DeckCard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/GamePage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/GamePage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/GameCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/GameCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Grid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Grid.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +74,7 @@
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DuckAndCover/Platforms/MacCatalyst/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DuckAndCover/Platforms/MacCatalyst/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Resources/Styles/Colors.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Resources/Styles/GlobalStyles.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Views/Credit.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -109,7 +118,7 @@
 }</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="SWEA" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -276,15 +285,7 @@
       <workItem from="1748445442749" duration="1175000" />
       <workItem from="1748689888002" duration="7153000" />
       <workItem from="1748779309528" duration="1401000" />
-      <workItem from="1748844247857" duration="1374000" />
-    </task>
-    <task id="LOCAL-00010" summary="fix(ConsoleApp): reduce Cognitive Complexity from 39 to the 15 allowed">
-      <option name="closed" value="true" />
-      <created>1747161057650</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1747161057650</updated>
+      <workItem from="1748844247857" duration="2899000" />
     </task>
     <task id="LOCAL-00011" summary="feat(GameCard Tests): TestCardConstructor, TestCardNewPosition">
       <option name="closed" value="true" />
@@ -670,7 +671,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748844782036</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="feat(game): implement game start logic and refactor turn processing">
+      <option name="closed" value="true" />
+      <created>1748845642319</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1748845642319</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -731,7 +740,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(events)" />
     <MESSAGE value="feat(error handling): working !!" />
     <MESSAGE value="feat(refactor tests)" />
     <MESSAGE value="refactor" />
@@ -756,7 +764,8 @@
     <MESSAGE value="change fake persistency values" />
     <MESSAGE value="fix" />
     <MESSAGE value="fix bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix bugs" />
+    <MESSAGE value="feat(game): implement game start logic and refactor turn processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(game): implement game start logic and refactor turn processing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -772,6 +781,12 @@
         <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Runtime.Serialization.SerializationException" breakIfHandledByUserCode="true" breakIfUnhandled="false" isInternal="false" displayValue="SerializationException" namespaceName="System.Runtime.Serialization">
+            <option name="internal" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs</url>

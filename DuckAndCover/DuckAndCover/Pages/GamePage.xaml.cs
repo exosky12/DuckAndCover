@@ -83,7 +83,6 @@ public partial class GamePage : ContentPage
         });
     }
 
-    #region Gestionnaires d'événements du jeu
 
     private void OnPlayerChooseCoin(object sender, PlayerChooseCoinEventArgs e)
     {
@@ -157,7 +156,6 @@ public partial class GamePage : ContentPage
         });
     }
 
-    #endregion
 
     private void ResetSelectionState()
     {
@@ -369,7 +367,6 @@ public partial class GamePage : ContentPage
         }
     }
 
-    #region Gestionnaires d'événements UI
 
     private async void OnCoinClicked(object sender, EventArgs e)
     {
@@ -419,86 +416,91 @@ public partial class GamePage : ContentPage
     }
 
     private async void OnCardTapped(GameCard card)
+{
+    try
     {
-        try
+        // Si aucune action n'est en cours, ignorer le tap
+        if (!_isWaitingForCoverTarget && !_isWaitingForDuckTarget)
         {
-            // Si aucune action n'est en cours, ignorer le tap
-            if (!_isWaitingForCoverTarget && !_isWaitingForDuckTarget)
-            {
-                return;
-            }
+            return;
+        }
 
-            // Vérifier si la carte correspond à la carte courante du deck
-            if (card.Number != GameManager.CurrentDeckCard.Number)
+        if (_isWaitingForCoverTarget)
+        {
+            if (_selectedCard == null)
             {
-                await DisplayAlert("Erreur", "Cette carte ne correspond pas à la carte courante du deck", "OK");
-                return;
+                // Première sélection : la carte à déplacer - DOIT correspondre au deck
+                if (GameManager.CurrentDeckCard == null || card.Number != GameManager.CurrentDeckCard.Number)
+                {
+                    await DisplayAlert("Erreur", "Cette carte ne correspond pas à la carte courante du deck", "OK");
+                    return;
+                }
+                
+                _selectedCard = card;
+                InstructionsLabel.Text = "Sélectionnez la carte à recouvrir";
+                LoadGrid(); // Recharger pour montrer la sélection
             }
-
-            if (_isWaitingForCoverTarget)
+            else
             {
-                if (_selectedCard == null)
+                // Deuxième sélection : la carte à recouvrir - PAS de vérification du deck
+                _cardToCover = card;
+                try
                 {
-                    // Première sélection : la carte à déplacer
-                    _selectedCard = card;
-                    InstructionsLabel.Text = "Sélectionnez la carte à recouvrir";
-                    LoadGrid(); // Recharger pour montrer la sélection
+                    GameManager.HandlePlayerChooseCover(
+                        GameManager.CurrentPlayer,
+                        _selectedCard.Position,
+                        _cardToCover.Position
+                    );
+                    ResetSelectionState();
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Deuxième sélection : la carte à recouvrir
-                    _cardToCover = card;
-                    try
-                    {
-                        GameManager.HandlePlayerChooseCover(
-                            GameManager.CurrentPlayer,
-                            _selectedCard.Position,
-                            _cardToCover.Position
-                        );
-                        ResetSelectionState();
-                    }
-                    catch (Exception ex)
-                    {
-                        await DisplayAlert("Erreur", ex.Message, "OK");
-                        ResetSelectionState();
-                    }
-                }
-            }
-            else if (_isWaitingForDuckTarget)
-            {
-                if (_selectedCard == null)
-                {
-                    // Première sélection : la carte à déplacer
-                    _selectedCard = card;
-                    InstructionsLabel.Text = "Sélectionnez la position où déplacer la carte";
-                    LoadGrid(); // Recharger pour montrer la sélection
-                }
-                else
-                {
-                    // Deuxième sélection : la position de destination
-                    try
-                    {
-                        GameManager.HandlePlayerChooseDuck(
-                            GameManager.CurrentPlayer,
-                            _selectedCard.Position,
-                            card.Position
-                        );
-                        ResetSelectionState();
-                    }
-                    catch (Exception ex)
-                    {
-                        await DisplayAlert("Erreur", ex.Message, "OK");
-                        ResetSelectionState();
-                    }
+                    await DisplayAlert("Erreur", ex.Message, "OK");
+                    ResetSelectionState();
                 }
             }
         }
-        catch (Exception ex)
+        else if (_isWaitingForDuckTarget)
         {
-            await DisplayAlert("Erreur", ex.Message, "OK");
-            ResetSelectionState();
+            if (_selectedCard == null)
+            {
+                // Première sélection : la carte à déplacer - DOIT correspondre au deck
+                if (GameManager.CurrentDeckCard == null || card.Number != GameManager.CurrentDeckCard.Number)
+                {
+                    await DisplayAlert("Erreur", "Cette carte ne correspond pas à la carte courante du deck", "OK");
+                    return;
+                }
+                
+                _selectedCard = card;
+                InstructionsLabel.Text = "Sélectionnez la position où déplacer la carte";
+                LoadGrid(); // Recharger pour montrer la sélection
+            }
+            else
+            {
+                // Deuxième sélection : la position de destination - PAS de vérification du deck
+                try
+                {
+                    GameManager.HandlePlayerChooseDuck(
+                        GameManager.CurrentPlayer,
+                        _selectedCard.Position,
+                        card.Position
+                    );
+                    ResetSelectionState();
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Erreur", ex.Message, "OK");
+                    ResetSelectionState();
+                }
+            }
         }
     }
+    catch (Exception ex)
+    {
+        await DisplayAlert("Erreur", ex.Message, "OK");
+        ResetSelectionState();
+    }
+}
 
     private async void OnShowGridsClicked(object sender, EventArgs e)
     {
@@ -535,9 +537,7 @@ public partial class GamePage : ContentPage
             await DisplayAlert("Erreur", ex.Message, "OK");
         }
     }
-
-    #endregion
-
+    
     protected override void OnDisappearing()
     {
         base.OnDisappearing();

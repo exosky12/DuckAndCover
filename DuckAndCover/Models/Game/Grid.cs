@@ -1,11 +1,13 @@
-﻿using Models.Generators;
+﻿using System.Runtime.Serialization;
+using Models.Generators;
 
 namespace Models.Game
 {
+    [DataContract]
     public class Grid
     {
-        public List<GameCard> GameCardsGrid { get; }
-
+        [DataMember]
+        public List<GameCard> GameCardsGrid { get; set; } = new(); 
 
         public Grid()
         {

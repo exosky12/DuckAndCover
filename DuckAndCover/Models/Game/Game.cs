@@ -40,6 +40,7 @@ namespace Models.Game
             }
         }
 
+        [DataMember]
         public IRules Rules { get; set; }
 
         [DataMember] public int CardsSkipped { get; set; }

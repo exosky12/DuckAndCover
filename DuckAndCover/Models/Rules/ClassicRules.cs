@@ -2,11 +2,15 @@ using Models.Exceptions;
 using Models.Interfaces;
 using Models.Enums;
 using Models.Game;
+using System.Runtime.Serialization;
+
 
 namespace Models.Rules
 {
+    [DataContract]
     public class ClassicRules : IRules
     {
+        [DataMember]
         public string Name => "Règles Classiques";
 
         public string Description =>

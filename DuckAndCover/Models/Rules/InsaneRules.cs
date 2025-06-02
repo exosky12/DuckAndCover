@@ -1,13 +1,17 @@
-﻿using Models.Exceptions;
+﻿using System.Runtime.Serialization;
+using Models.Exceptions;
 using Models.Interfaces;
 using Models.Enums;
 using Models.Game;
 
+
 namespace Models.Rules
 {
+    [DataContract]
     public class InsaneRules : IRules
     {
-        public string Name => "Règles XXL";
+        [DataMember]
+        public string Name => "Règles Insanes";
 
         public string Description =>
             "Dans cette variante, les joueurs peuvent déplacer leurs cartes de manière plus agressive. ";

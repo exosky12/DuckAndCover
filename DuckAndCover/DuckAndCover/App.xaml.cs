@@ -15,6 +15,9 @@ namespace DuckAndCover
         
         public Game GameManager { get; private set; }
         
+        // Garder une référence à l'instance de persistance
+        private IDataPersistence _dataPersistence;
+        
         public App()
         {
             Debug.WriteLine("Initializing App...");
@@ -29,31 +32,47 @@ namespace DuckAndCover
                 Directory.CreateDirectory(FilePath);
             }
             
+            // Initialiser la persistance une seule fois
+            _dataPersistence = new JsonPersistency();
+            
             string fullPath = Path.Combine(FilePath, FileName);
             Debug.WriteLine($"Checking for save file at: {fullPath}");
             
             if (File.Exists(fullPath))
             {
                 Debug.WriteLine("Save file found, loading data...");
-                IDataPersistence dataPersistence = new JsonPersistency();
-                (ObservableCollection<Player> players, ObservableCollection<Game> games) = dataPersistence.LoadData();
+                (ObservableCollection<Player> players, ObservableCollection<Game> games) = _dataPersistence.LoadData();
                 GameManager.AllPlayers = players;
                 GameManager.Games = games;
                 Debug.WriteLine($"Loaded {players.Count} players and {games.Count} games");
-                
-                GameManager.GameIsOver += (s, e) =>
-                {
-                    Debug.WriteLine("Game is over, saving data...");
-                    GameManager.IsFinished = true;
-                    GameManager.SavePlayers();
-                    GameManager.SaveGame();
-                    dataPersistence.SaveData(GameManager.AllPlayers, GameManager.Games);
-                    Debug.WriteLine("Data saved successfully");
-                };
             }
             else
             {
                 Debug.WriteLine("No save file found, starting fresh");
+                // Initialiser avec des collections vides si pas de fichier
+                GameManager.AllPlayers = new ObservableCollection<Player>();
+                GameManager.Games = new ObservableCollection<Game>();
+            }
+            
+            // TOUJOURS abonner l'événement GameIsOver (peu importe s'il y a un fichier ou pas)
+            GameManager.GameIsOver += OnGameIsOver;
+            Debug.WriteLine("GameIsOver event subscribed");
+        }
+
+        private void OnGameIsOver(object? sender, Models.Events.GameIsOverEventArgs e)
+        {
+            Debug.WriteLine("Game is over, saving data...");
+            try
+            {
+                GameManager.IsFinished = true;
+                GameManager.SavePlayers();
+                GameManager.SaveGame();
+                _dataPersistence.SaveData(GameManager.AllPlayers, GameManager.Games);
+                Debug.WriteLine("Data saved successfully");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving data: {ex.Message}");
             }
         }
 
