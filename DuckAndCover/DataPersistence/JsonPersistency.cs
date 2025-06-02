@@ -14,17 +14,12 @@ namespace DataPersistence
     {
         public string FileName { get; set; } = "duckAndCover_data.json";
 
-        // Par exemple : %AppData%\DuckAndCover\duckAndCover_data.json
         public string FilePath { get; set; } =
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "DuckAndCover"
             );
 
-        /// <summary>
-        /// Lit l’historique existant (players + games) si le fichier existe.
-        /// Sinon retourne deux collections vides.
-        /// </summary>
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {
             string fullPath = Path.Combine(FilePath, FileName);
@@ -55,7 +50,7 @@ namespace DataPersistence
                 {
                     File.Delete(fullPath);
                 }
-                catch { /* on ignore */ }
+                catch {}
 
                 return (
                     new ObservableCollection<Player>(),
@@ -64,23 +59,19 @@ namespace DataPersistence
             }
         }
 
-        /// <summary>
-        /// Charge l’ancien fichier, fusionne les collections passées (allPlayers, allGames)
-        /// avec les données existantes, sans dupliquer ni écraser inutilement, puis 
-        /// écrase le fichier avec le résultat fusionné.
-        /// </summary>
         public void SaveData(
-            ObservableCollection<Player> allPlayers,
-            ObservableCollection<Game> allGames)
+     ObservableCollection<Player> allPlayers,
+     ObservableCollection<Game> allGames)
         {
             try
             {
                 Directory.CreateDirectory(FilePath);
                 string fullPath = Path.Combine(FilePath, FileName);
 
-                // (1) Charger l’ancien contenu
+                // 1) Charger l’ancien contenu (s’il existe)
                 ObservableCollection<Player> existingPlayers;
                 ObservableCollection<Game> existingGames;
+
                 if (File.Exists(fullPath))
                 {
                     try
@@ -94,8 +85,7 @@ namespace DataPersistence
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"[JsonPersistency] Erreur lecture antérieure : {ex.Message}");
-                        // Si corrompu, on repart sur zéro
+                        Debug.WriteLine($"[JsonPersistency] Erreur lors de la lecture du JSON existant : {ex.Message}");
                         existingPlayers = new ObservableCollection<Player>();
                         existingGames = new ObservableCollection<Game>();
                     }
@@ -106,52 +96,48 @@ namespace DataPersistence
                     existingGames = new ObservableCollection<Game>();
                 }
 
-                // (2) Fusionner allPlayers dans existingPlayers par clé (Name)
+                // 2) Fusionner "allPlayers" dans "existingPlayers" (par Name)
                 foreach (var newPlayer in allPlayers)
                 {
                     var match = existingPlayers.FirstOrDefault(p => p.Name == newPlayer.Name);
                     if (match == null)
                     {
-                        // Nouveau joueur → on l’ajoute
+                        // Joueur entièrement nouveau → on l'ajoute
                         existingPlayers.Add(newPlayer);
                     }
                     else
                     {
-                        // Joueur existant → on ajoute ses scores récents
+                        // Joueur déjà présent → on ajoute seulement les scores qui n'existent pas encore
                         foreach (var score in newPlayer.Scores)
                         {
                             if (!match.Scores.Contains(score))
                                 match.Scores.Add(score);
                         }
-                        // On peut synchroniser d’autres champs si besoin
                     }
                 }
 
-                // (3) Fusionner allGames dans existingGames par clé (Id)
+                // 3) Fusionner "allGames" dans "existingGames" (par Id)
                 foreach (var newGame in allGames)
                 {
                     var match = existingGames.FirstOrDefault(g => g.Id == newGame.Id);
                     if (match == null)
                     {
-                        // Nouvelle partie → on l’ajoute
+                        // Partie nouvelle (même Id inconnu) → on l'ajoute
                         existingGames.Add(newGame);
                     }
                     else
                     {
-                        // Partie existante → on met à jour seulement les champs modifiables
+                        // Partie déjà présente : on met à jour uniquement les champs pertinents
                         match.IsFinished = newGame.IsFinished;
-                        // Si vous stockez LastNumber, CurrentDeckCard, etc. :
                         match.LastNumber = newGame.LastNumber;
                         match.CardsSkipped = newGame.CardsSkipped;
                         match.LastGameFinishStatus = newGame.LastGameFinishStatus;
-                        // Si vous voulez mettre à jour la grille complète :
                         match.Players = newGame.Players;
                         match.Deck = newGame.Deck;
-                        // etc., selon ce que vous jugez nécessaire de rafraîchir
+
                     }
                 }
 
-                // (4) Écrire le JSON fusionné dans le fichier (en écrasant l’ancien contenu)
                 using var writeStream = File.Open(fullPath, FileMode.Create, FileAccess.Write);
                 var persistSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
                 var mergedData = new DataToPersist
@@ -162,7 +148,7 @@ namespace DataPersistence
                 persistSerializer.WriteObject(writeStream, mergedData);
                 writeStream.Flush();
 
-                Debug.WriteLine($"[JsonPersistency] Données fusionnées et sauvegardées dans {fullPath}");
+                Debug.WriteLine($"[JsonPersistency] Données fusionnées et réécrites dans {fullPath}");
             }
             catch (Exception ex)
             {
@@ -170,5 +156,6 @@ namespace DataPersistence
                 throw;
             }
         }
+
     }
 }

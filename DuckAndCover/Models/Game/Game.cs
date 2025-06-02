@@ -26,6 +26,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             }
         }
 
+        [DataMember]
         public List<Player> Players { get; set; } = new List<Player>();
 
         [IgnoreDataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
@@ -372,10 +373,6 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
                     continue;
                 }
 
-                // Condition 2: La case cible (targetPosition) doit être adjacente à une carte existante sur la grille
-                // (pour correspondre à la logique de `TryValidMove` : `if (grid.IsAdjacentToCard(newPosition) == (false, null))`)
-                // Il faut s'assurer que la méthode `IsAdjacentToCard` existe sur votre classe Grid et fonctionne comme attendu.
-                // On suppose ici que `IsAdjacentToCard` retourne un tuple (bool IsAdjacent, GameCard AdjacentCardIfAny)
                 var (isTargetAdjToExistingCard, _) = forPlayer.Grid.IsAdjacentToCard(targetPosition);
                 if (!isTargetAdjToExistingCard)
                 {
