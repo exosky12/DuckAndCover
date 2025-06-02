@@ -1,13 +1,10 @@
 using Microsoft.Maui.Controls;
 using Models.Game;
-using Models.Enums;
 using Models.Events;
+using Models.Enums;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-// using System.Text; // Non utilisé directement, peut être enlevé si pas nécessaire ailleurs
-// using System.Threading.Tasks; // Non utilisé directement, peut être enlevé si pas nécessaire ailleurs
-using Models; // Assurez-vous que le namespace Models est correct pour Position, GameCard etc.
+using System.Threading.Tasks;
 
 namespace DuckAndCover.Pages;
 
@@ -43,6 +40,8 @@ public partial class GamePage : ContentPage
         GameManager.GameIsOver += OnGameIsOver;
         GameManager.ErrorOccurred += OnErrorOccurred;
         GameManager.PlayerChooseCoin += OnPlayerChooseCoin;
+        GameManager.PlayerChooseDuck += OnPlayerChooseDuck;
+        GameManager.PlayerChooseCover += OnPlayerChooseCover;
         GameManager.PlayerChooseShowPlayersGrid += OnPlayerChooseShowPlayersGrid;
         GameManager.PlayerChooseShowScores += OnPlayerChooseShowScores;
         GameManager.PlayerChooseQuit += OnPlayerChooseQuit;
@@ -95,27 +94,29 @@ public partial class GamePage : ContentPage
         }
     }
 
-    private async void OnGameIsOver(object sender, GameIsOverEventArgs e)
-    {
-        await MainThread.InvokeOnMainThreadAsync(async () =>
+        /// <summary>
+        /// Appelé exactement une fois, quand la partie est terminée.
+        /// </summary>
+        private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
         {
-            GameManager.SavePlayers();
-            GameManager.SaveGame();
-            
-            await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
-            if (Navigation.NavigationStack.Any() && Navigation.NavigationStack.LastOrDefault() == this)
+            await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                if (Navigation.NavigationStack.Count > 1)
+                GameManager.SavePlayers();
+                GameManager.SaveGame();
+
+                var pers = (App.Current as App)?.DataPersistence;
+                if (pers != null)
                 {
-                    await Navigation.PopAsync();
+                    pers.SaveData(
+                        GameManager.AllPlayers,
+                        GameManager.Games
+                    );
                 }
-                else
-                {
-                    // Application.Current.MainPage = new MainMenuPage(); // ou une navigation Shell appropriée
-                }
-            }
-        });
-    }
+
+                await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
+                await Navigation.PopAsync();
+            });
+        }
 
     private async void OnErrorOccurred(object sender, ErrorOccurredEventArgs e)
     {
@@ -127,27 +128,39 @@ public partial class GamePage : ContentPage
         });
     }
 
+
     private void OnPlayerChooseCoin(object sender, PlayerChooseCoinEventArgs e)
     {
-        // MainThread.BeginInvokeOnMainThread(() =>
-        // {
-        //     // InstructionsLabel.Text = $"{e.Player.Name} a passé son tour (Coin)."; 
-        //     // ResetSelectionState(); // Est géré par OnPlayerChanged via ProcessTurn
-        // });
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            InstructionsLabel.Text = $"{e.Player.Name} a passé son tour";
+            ResetSelectionState();
+        });
     }
-    
+
+    private void OnPlayerChooseDuck(object sender, PlayerChooseDuckEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            InstructionsLabel.Text = $"{e.Player.Name} effectue un déplacement Duck";
+        });
+    }
+
+    private void OnPlayerChooseCover(object sender, PlayerChooseCoverEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            InstructionsLabel.Text = $"{e.Player.Name} effectue un recouvrement";
+        });
+    }
+
     private async void OnPlayerChooseShowPlayersGrid(object sender, PlayerChooseShowPlayersGridEventArgs e)
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            if (e.Players == null || !e.Players.Any())
-            {
-                await DisplayAlert("Grilles des joueurs", "Aucun joueur à afficher.", "OK");
-                return;
-            }
-            var gridInfo = string.Join("\n", e.Players.Where(p=> p != null && p.Grid != null && p.Grid.GameCardsGrid != null)
-                .Select(p => $"{p.Name}: {p.Grid.GameCardsGrid.Count(c=>c!=null)} cartes, Stack: {p.StackCounter}"));
-            await DisplayAlert("Grilles des joueurs", string.IsNullOrWhiteSpace(gridInfo) ? "Aucune information de grille disponible." : gridInfo, "OK");
+            var gridInfo = string.Join("\n", e.Players.Select(p => 
+                $"{p.Name}: {p.Grid.GameCardsGrid.Count} cartes"));
+            await DisplayAlert("Grilles des joueurs", gridInfo, "OK");
         });
     }
 

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 
 namespace Models.Game
-{    
+{
     [DataContract]
     public class Deck
     {

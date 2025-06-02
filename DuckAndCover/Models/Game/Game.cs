@@ -14,7 +14,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
     {
         [DataMember] public string Id { get; set; } = string.Empty;
 
-        [DataMember] private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
+        [IgnoreDataMember] private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
 
         public ObservableCollection<Player> AllPlayers
         {
@@ -28,7 +28,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
         public List<Player> Players { get; set; } = new List<Player>();
 
-        [DataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
+        [IgnoreDataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
 
         public ObservableCollection<Game> Games
         {
@@ -46,6 +46,9 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
         [DataMember] public int CardsSkipped { get; set; }
 
+        [IgnoreDataMember]
+        private bool _gameOverAlreadyTriggered = false;
+
         public Player CurrentPlayer { get; set; } = new Player("Default", 0, new List<int>(), false, false, new Grid());
 
         [DataMember] private int _currentPlayerIndex;
@@ -56,12 +59,13 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
         [DataMember] public bool IsFinished { get; set; }
 
-        [DataMember] public bool LastGameFinishStatus { get; private set; }
+        [DataMember] public bool LastGameFinishStatus { get; set; }
 
         public DeckCard CurrentDeckCard { get; private set; } = new DeckCard(Bonus.None, 0);
 
         [DataMember] public int? LastNumber { get; set; }
 
+        // État du jeu pour savoir s'il a démarré
         public bool IsGameStarted { get; private set; }
 
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
@@ -96,7 +100,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
         public Game(IRules rules)
         {
             this.Rules = rules;
-            this._rulesName = rules.GetType().Name; // Ou une autre façon de stocker le nom/type des règles
+            this._rulesName = rules.GetType().Name; 
         }
         public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard,
             int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
@@ -105,7 +109,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             this.Players = players;
             this.Deck = deck;
             this._currentPlayerIndex = currentPlayerIndex;
-            this.CurrentPlayer = players[_currentPlayerIndex]; // Assurez-vous que _currentPlayerIndex est valide
+            this.CurrentPlayer = players[_currentPlayerIndex];
             this.CurrentDeckCard = currentDeckCard;
             this.CardsSkipped = cardsSkipped;
             this.IsFinished = isFinished;
@@ -139,7 +143,18 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             return deckCard.Number;
         }
 
-        public void ProcessCardEffect(DeckCard card, Player playerProcessingEffect)
+        public bool CheckGameOverCondition()
+        {
+            if (!_gameOverAlreadyTriggered && Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
+            {
+                _gameOverAlreadyTriggered = true;
+                OnGameIsOver(new GameIsOverEventArgs(true));
+                return true;
+            }
+            return false;
+        }
+        
+        public void ProcessCardEffect(DeckCard card, Player player)
         {
             switch (card.Bonus)
             {
@@ -182,7 +197,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
             if (Deck.Cards.Count == 0)
             {
-                CurrentDeckCard = null!; // Peut causer une exception si CurrentDeckCard ne peut être null
+                CurrentDeckCard = null!;
                 throw new Error(ErrorCodes.DeckEmpty, "Plus de cartes dans le deck");
             }
 
@@ -373,16 +388,6 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             return validTargets.Distinct().ToList();
         }
 
-        public bool CheckGameOverCondition()
-        {
-            if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
-            {
-                TriggerGameOver();
-                return true;
-            }
-            return false;
-        }
-
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
             // int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard); // Non utilisé directement ici mais important pour la logique globale
@@ -444,19 +449,15 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
         {
             foreach (var player in Players)
             {
-                int score = player.Grid.GameCardsGrid.Sum(card => card.Number); 
-                
+                int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
+                player.Scores.Add(score);
                 var existingPlayer = AllPlayers.FirstOrDefault(p => p.Name == player.Name);
                 if (existingPlayer != null)
                 {
-                     if (!existingPlayer.Scores.Contains(score) || existingPlayer.Scores.LastOrDefault() != score)
-                     {
-                          existingPlayer.Scores.Add(score);
-                     }
+                    existingPlayer.Scores.Add(score);
                 }
                 else
                 {
-                    player.Scores.Add(score); 
                     AllPlayers.Add(player);
                 }
             }
@@ -467,13 +468,19 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             var existingGame = Games.FirstOrDefault(g => g.Id == Id);
             if (existingGame != null)
             {
-                existingGame.IsFinished = this.IsFinished;
-                existingGame.LastGameFinishStatus = this.LastGameFinishStatus;
+                existingGame.IsFinished = true;
+                existingGame.CardsSkipped = CardsSkipped;
+                existingGame.LastGameFinishStatus = LastGameFinishStatus;
+                existingGame.LastNumber = LastNumber;
+                existingGame.Deck = Deck;
+                existingGame.Players = Players;
+                existingGame.Rules = Rules;
             }
             else
             {
                 Games.Add(this);
             }
         }
+
     }
 }
