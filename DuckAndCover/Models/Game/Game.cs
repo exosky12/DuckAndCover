@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using Models.Exceptions;
 using Models.Interfaces;
-using Models.Rules;
 using Models.Events;
 using Models.Enums;
 using System.ComponentModel;
@@ -62,7 +61,6 @@ namespace Models.Game
 
         [DataMember] public int? LastNumber { get; set; }
 
-        // État du jeu pour savoir s'il a démarré
         public bool IsGameStarted { get; private set; }
 
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
@@ -76,38 +74,29 @@ namespace Models.Game
         public event EventHandler<PlayerChooseShowScoresEventArgs>? PlayerChooseShowScores;
         public event EventHandler<DisplayMenuNeededEventArgs>? DisplayMenuNeeded;
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler<CardEffectProcessedEventArgs>? CardEffectProcessed;
 
         protected virtual void OnPlayerChanged(PlayerChangedEventArgs args) => PlayerChanged?.Invoke(this, args);
         protected virtual void OnErrorOccurred(ErrorOccurredEventArgs args) => ErrorOccurred?.Invoke(this, args);
         protected virtual void OnGameIsOver(GameIsOverEventArgs args) => GameIsOver?.Invoke(this, args);
-
-        protected virtual void OnPlayerChooseCoin(PlayerChooseCoinEventArgs args) =>
-            PlayerChooseCoin?.Invoke(this, args);
-
-        protected virtual void OnPlayerChooseDuck(PlayerChooseDuckEventArgs args) =>
-            PlayerChooseDuck?.Invoke(this, args);
-
-        protected virtual void OnDisplayMenuNeeded(DisplayMenuNeededEventArgs args) =>
-            DisplayMenuNeeded?.Invoke(this, args);
-
-        protected virtual void OnPlayerChooseQuit(PlayerChooseQuitEventArgs args) =>
-            PlayerChooseQuit?.Invoke(this, args);
-
-        protected virtual void OnPlayerChooseShowScores(PlayerChooseShowScoresEventArgs args) =>
-            PlayerChooseShowScores?.Invoke(this, args);
-
-        protected virtual void OnPlayerChooseShowPlayersGrid(PlayerChooseShowPlayersGridEventArgs args) =>
-            PlayerChooseShowPlayersGrid?.Invoke(this, args);
-
-        protected virtual void OnPlayerChooseCover(PlayerChooseCoverEventArgs args) =>
-            PlayerChooseCover?.Invoke(this, args);
+        protected virtual void OnPlayerChooseCoin(PlayerChooseCoinEventArgs args) => PlayerChooseCoin?.Invoke(this, args);
+        protected virtual void OnPlayerChooseDuck(PlayerChooseDuckEventArgs args) => PlayerChooseDuck?.Invoke(this, args);
+        protected virtual void OnDisplayMenuNeeded(DisplayMenuNeededEventArgs args) => DisplayMenuNeeded?.Invoke(this, args);
+        protected virtual void OnPlayerChooseQuit(PlayerChooseQuitEventArgs args) => PlayerChooseQuit?.Invoke(this, args);
+        protected virtual void OnPlayerChooseShowScores(PlayerChooseShowScoresEventArgs args) => PlayerChooseShowScores?.Invoke(this, args);
+        protected virtual void OnPlayerChooseShowPlayersGrid(PlayerChooseShowPlayersGridEventArgs args) => PlayerChooseShowPlayersGrid?.Invoke(this, args);
+        protected virtual void OnPlayerChooseCover(PlayerChooseCoverEventArgs args) => PlayerChooseCover?.Invoke(this, args);
+        protected virtual void OnCardEffectProcessed(CardEffectProcessedEventArgs args) => CardEffectProcessed?.Invoke(this, args);
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public Game(IRules rules)
         {
             this.Rules = rules;
             this._rulesName = rules.GetType().Name;
         }
-
         public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard,
             int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
         {
@@ -122,61 +111,67 @@ namespace Models.Game
             this.LastNumber = lastNumber;
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public void NextPlayer()
         {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
-        
-        public void ProcessCardEffect(DeckCard card, Player player)
+
+        public int GetEffectiveDeckCardNumber(Player forPlayer, DeckCard? deckCard)
+        {
+            if (deckCard == null)
+            {
+                throw new InvalidOperationException("Deck card cannot be null to get effective number.");
+            }
+
+            if (deckCard.Bonus == Bonus.Max)
+            {
+                if (forPlayer.Grid.GameCardsGrid.Any())
+                {
+                    return forPlayer.Grid.GameCardsGrid.Max(c => c.Number);
+                }
+                else
+                {
+                    return deckCard.Number;
+                }
+            }
+            return deckCard.Number;
+        }
+
+        public void ProcessCardEffect(DeckCard card, Player playerProcessingEffect)
         {
             switch (card.Bonus)
             {
                 case Bonus.Again when LastNumber.HasValue:
                     card.Number = LastNumber.Value;
-                    // Déclencher un événement pour informer l'UI
                     OnCardEffectProcessed(new CardEffectProcessedEventArgs(
                         $"Carte Again active ! Le numéro utilisé est {card.Number}",
                         card));
                     break;
 
                 case Bonus.Max:
-                    if (player.Grid.GameCardsGrid.Any())
+                    string maxEffectMessage;
+                    if (playerProcessingEffect.Grid.GameCardsGrid.Any())
                     {
-                        int max = player.Grid.GameCardsGrid.Max(c => c.Number);
-                        card.Number = max;
-                        OnCardEffectProcessed(new CardEffectProcessedEventArgs(
-                            $"Carte MAX ! Numéro utilisé : {max} (grille de {player.Name})",
-                            card));
+                        maxEffectMessage = $"Carte MAX ! Le numéro sera le plus élevé de la grille du joueur actif.";
                     }
                     else
                     {
-                        // Si la grille est vide, on ne peut pas utiliser MAX
-                        throw new Error(ErrorCodes.UnknownError);
+                        maxEffectMessage = $"Carte MAX ! Si la grille du joueur actif est vide, la carte prendra sa valeur de base ({card.Number}).";
                     }
-
+                    OnCardEffectProcessed(new CardEffectProcessedEventArgs(maxEffectMessage, card));
                     break;
 
                 default:
                     LastNumber = card.Number;
-                    string msg = card.Number == 0 ? card.Bonus.ToString() : card.Number.ToString();
+                    string msg = card.Number == 0 && card.Bonus != Bonus.None ? card.Bonus.ToString() : card.Number.ToString();
                     OnCardEffectProcessed(new CardEffectProcessedEventArgs(
                         $"Carte actuelle du deck : {msg}",
                         card));
                     break;
             }
         }
-
-        public event EventHandler<CardEffectProcessedEventArgs>? CardEffectProcessed;
-
-        protected virtual void OnCardEffectProcessed(CardEffectProcessedEventArgs args) =>
-            CardEffectProcessed?.Invoke(this, args);
-
+        
         public DeckCard NextDeckCard()
         {
             if (Deck.Cards.Count == 0)
@@ -191,8 +186,6 @@ namespace Models.Game
             }
 
             CurrentDeckCard = Deck.Cards.First();
-
-            // Traiter l'effet de la nouvelle carte avec le joueur actuel
             ProcessCardEffect(CurrentDeckCard, CurrentPlayer);
 
             return CurrentDeckCard;
@@ -202,30 +195,25 @@ namespace Models.Game
         {
             try
             {
-                // Vérifier si tous les joueurs ont joué
                 if (AllPlayersPlayed())
                 {
-                    NextDeckCard(); // Ceci va automatiquement traiter les effets de carte
-                    Players.ToList().ForEach(p =>
+                    NextDeckCard();
+                    Players.ForEach(p =>
                     {
                         p.HasPlayed = false;
                         p.HasSkipped = false;
                     });
                 }
 
-                // Vérifier les conditions de fin de partie
                 if (CheckGameOverCondition())
                 {
-                    return; // Le jeu est terminé
+                    return;
                 }
 
-                // Vérifier qu'il y a encore une carte courante
                 if (CurrentDeckCard == null)
                 {
                     throw new Error(ErrorCodes.DeckEmpty, "Plus de cartes disponibles");
                 }
-
-                // Déclencher l'événement pour le joueur suivant
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
             }
             catch (Error e)
@@ -236,23 +224,16 @@ namespace Models.Game
 
         public void StartGame()
         {
-            if (IsGameStarted)
-                return;
-
+            if (IsGameStarted) return;
             IsGameStarted = true;
 
             try
             {
-                // Vérifier qu'il y a une carte courante
                 if (CurrentDeckCard == null)
                 {
-                    throw new Error(ErrorCodes.DeckEmpty, "Aucune carte disponible pour démarrer le jeu");
+                     throw new Error(ErrorCodes.DeckEmpty, "Aucune carte disponible pour démarrer le jeu");
                 }
-
-                // Traiter l'effet de la carte initiale
                 ProcessCardEffect(CurrentDeckCard, CurrentPlayer);
-
-                // Déclencher l'événement pour le premier joueur
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
             }
             catch (Error e)
@@ -261,11 +242,15 @@ namespace Models.Game
             }
         }
 
-
         public void HandlePlayerChoice(Player player, string choice)
         {
             try
             {
+                if (player != CurrentPlayer && choice != "4" && choice != "5" && choice != "6") {
+                     OnErrorOccurred(new ErrorOccurredEventArgs(new Error(ErrorCodes.NotPlayerTurn, "Ce n'est pas votre tour.")));
+                     return;
+                }
+
                 switch (choice)
                 {
                     case "1":
@@ -275,10 +260,10 @@ namespace Models.Game
                         OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(CurrentPlayer));
                         break;
                     case "3":
-                        OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
-                        DoCoin(player);
+                        DoCoin(CurrentPlayer);
                         CheckAllPlayersSkipped();
-                        ProcessTurn(); // Traiter le tour suivant
+                        OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
+                        ProcessTurn();
                         break;
                     case "4":
                         OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
@@ -290,6 +275,9 @@ namespace Models.Game
                         break;
                     case "6":
                         OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(CurrentPlayer, this));
+                        if (this.Quit) {
+                             CheckGameOverCondition();
+                        }
                         break;
                     default:
                         throw new Error(ErrorCodes.InvalidChoice);
@@ -305,17 +293,20 @@ namespace Models.Game
         {
             try
             {
+                if (player != CurrentPlayer) throw new Error(ErrorCodes.NotPlayerTurn);
                 DoCover(player, cardToMovePosition, cardToCoverPosition);
-                ProcessTurn(); // Traiter le tour suivant après l'action
+                ProcessTurn();
             }
             catch (Error e)
             {
-                throw new Error(e.ErrorCode);
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
         }
 
         public void TriggerGameOver()
         {
+            IsFinished = true;
+            LastGameFinishStatus = true;
             OnGameIsOver(new GameIsOverEventArgs(true));
         }
 
@@ -323,69 +314,59 @@ namespace Models.Game
         {
             try
             {
+                if (player != CurrentPlayer) throw new Error(ErrorCodes.NotPlayerTurn);
                 DoDuck(player, cardToMovePosition, duckPosition);
-                ProcessTurn(); // Traiter le tour suivant après l'action
+                ProcessTurn();
             }
             catch (Error e)
             {
-                throw new Error(e.ErrorCode);
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
         }
-
+        
         public bool CheckGameOverCondition()
         {
             if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
             {
-                IsFinished = true;
-                OnGameIsOver(new GameIsOverEventArgs(true));
+                TriggerGameOver();
                 return true;
             }
-
             return false;
         }
 
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
-            try
-            {
-                Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", CurrentDeckCard);
-                GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
-                GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!;
-                List<GameCard> grid = player.Grid.GameCardsGrid;
+            int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard);
+            Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", CurrentDeckCard);
 
-                grid.Remove(cardToCover);
-                cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
+            GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!;
+            List<GameCard> grid = player.Grid.GameCardsGrid;
 
-                player.StackCounter = grid.Count;
-                player.HasPlayed = true;
+            grid.Remove(cardToCover);
+            cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
 
-                NextPlayer();
-            }
-            catch (Error e)
-            {
-                throw new Error(e.ErrorCode);
-            }
+            player.StackCounter = grid.Count;
+            player.HasPlayed = true;
+
+            NextPlayer();
         }
 
         public void DoDuck(Player player, Position cardToMovePosition, Position duckPosition)
         {
-            try
-            {
-                Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", CurrentDeckCard);
-                GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
+            int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard);
+            Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", CurrentDeckCard);
 
-                player.Grid.RemoveCard(cardToMove.Position);
-                player.Grid.SetCard(duckPosition, cardToMove);
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
 
-                player.StackCounter = player.Grid.GameCardsGrid.Count;
-                player.HasPlayed = true;
+            player.Grid.RemoveCard(cardToMove.Position);
+            cardToMove.Position = duckPosition;
+            player.Grid.SetCard(duckPosition, cardToMove);
 
-                NextPlayer();
-            }
-            catch (Error e)
-            {
-                throw new Error(e.ErrorCode);
-            }
+            player.StackCounter = player.Grid.GameCardsGrid.Count;
+            player.HasPlayed = true;
+
+            NextPlayer();
         }
 
         public void DoCoin(Player player)
@@ -407,22 +388,25 @@ namespace Models.Game
             if (Players.All(p => p.HasSkipped))
             {
                 CardsSkipped++;
+                Players.ForEach(p => p.HasSkipped = false);
             }
         }
-
         public void SavePlayers()
         {
             foreach (var player in Players)
             {
                 int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
-                player.Scores.Add(score);
                 var existingPlayer = AllPlayers.FirstOrDefault(p => p.Name == player.Name);
                 if (existingPlayer != null)
                 {
-                    existingPlayer.Scores.Add(score);
+                     if (!existingPlayer.Scores.Contains(score) || existingPlayer.Scores.LastOrDefault() != score)
+                     {
+                          existingPlayer.Scores.Add(score);
+                     }
                 }
                 else
                 {
+                    player.Scores.Add(score);
                     AllPlayers.Add(player);
                 }
             }
@@ -433,7 +417,8 @@ namespace Models.Game
             var existingGame = Games.FirstOrDefault(g => g.Id == Id);
             if (existingGame != null)
             {
-                existingGame.IsFinished = true;
+                existingGame.IsFinished = this.IsFinished;
+                existingGame.LastGameFinishStatus = this.LastGameFinishStatus;
             }
             else
             {

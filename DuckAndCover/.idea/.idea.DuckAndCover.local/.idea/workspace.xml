@@ -23,23 +23,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Models/Events/CardEffectProcessedEventArgs.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/DTOs.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/DTOs.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Platforms/MacCatalyst/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Platforms/MacCatalyst/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/GameIsOverEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/GameIsOverEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/GameCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/GameCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Position.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Position.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Models.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Models.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +75,7 @@
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Resources/Styles/GlobalStyles.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Views/Credit.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Views/Credit.xaml.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Enums/ErrorCodes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Events/DisplayMenuNeededEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
@@ -109,6 +98,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5f265c315f1ee2785ad9c6ad26a7a8e182fa65ce2a118388be2f887b15a856/XmlObjectSerializerWriteContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/68b06b8592b1287fd78f3ee68566d6a38d6e2f45b9a9e6ebd4d0e9972f7c29/Object.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/90e467c62b863bbc99f92cdbd4cba1b397b849b92623c9ae176fe135c6c6f2d/ObservableCollection.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a8d0cf45f932131a2b7de4b1ed709f3a78928f4c703dd3678d31e2159cb42/XmlObjectSerializerReadContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b3c63f8346871f177f9e798be966c256529336a22e4f618eec8a4f9a14eaf/XmlException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c13b7549ee16248da8129279fef4ea4e55359a2e93186afa9c95cc3f2be16/Page.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dce921d326f2af4d3ab29953501fee90477c1dbfd81d7f9ce48e2b161ac26d96/XmlObjectSerializer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -158,7 +148,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
     "git-widget-placeholder": "dev",
-    "macOS.DuckAndCover.local.executor": "Debug",
+    "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -339,15 +329,7 @@
       <workItem from="1748689888002" duration="7153000" />
       <workItem from="1748779309528" duration="1401000" />
       <workItem from="1748844247857" duration="3579000" />
-      <workItem from="1748847854985" duration="4042000" />
-    </task>
-    <task id="LOCAL-00012" summary="feat(Position Tests): TestPositionConstructor, TestPositionEquals, TestPositionNotEqualsNull">
-      <option name="closed" value="true" />
-      <created>1747162337295</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1747162337295</updated>
+      <workItem from="1748847854985" duration="6069000" />
     </task>
     <task id="LOCAL-00013" summary="feat-DeckCardTests): DeckCard_Constructor_WithNumberAndNoBonus, DeckCard_Constructor_WithBonusAndNumber">
       <option name="closed" value="true" />
@@ -733,7 +715,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748847213061</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="feat(game): enhance game logic with card effect processing and event handling">
+      <option name="closed" value="true" />
+      <created>1748852334265</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1748852334265</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -794,7 +784,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(refactor tests)" />
     <MESSAGE value="refactor" />
     <MESSAGE value="resolve test error" />
     <MESSAGE value="feat(Errors): add UnknownError" />
@@ -819,7 +808,8 @@
     <MESSAGE value="fix bugs" />
     <MESSAGE value="feat(game): implement game start logic and refactor turn processing" />
     <MESSAGE value="feat(rules): add data contract attributes for serialization in game rules and models" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(rules): add data contract attributes for serialization in game rules and models" />
+    <MESSAGE value="feat(game): enhance game logic with card effect processing and event handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(game): enhance game logic with card effect processing and event handling" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

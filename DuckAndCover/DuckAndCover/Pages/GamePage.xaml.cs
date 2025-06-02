@@ -22,14 +22,18 @@ public partial class GamePage : ContentPage
     public GamePage()
     {
         InitializeComponent();
+        if (GameManager.CurrentPlayer == null && GameManager.Players.Any())
+        {
+            GameManager.CurrentPlayer = GameManager.Players.First();
+        }
         LoadGrid();
+        LoadCurrentCard();
         SubscribeToGameEvents();
         StartGame();
     }
 
     private void StartGame()
     {
-        // Démarrer le jeu (pas de boucle infinie, juste l'initialisation)
         GameManager.StartGame();
     }
 
@@ -53,26 +57,34 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            LoadGrid();
-            LoadCurrentCard();
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
             DebugLabel.Text = "";
-            
-            // Réinitialiser les états de sélection
-            ResetSelectionState();
+            LoadGrid();
+            LoadCurrentCard();
+            ResetSelectionStatePartial();
         });
+    }
+
+    private void ResetSelectionStatePartial()
+    {
+        _isWaitingForCoverTarget = false;
+        _isWaitingForDuckTarget = false;
+        _selectedCard = null;
+        _cardToCover = null;
     }
 
     private async void OnGameIsOver(object sender, GameIsOverEventArgs e)
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            // Sauvegarder les joueurs et la partie
             GameManager.SavePlayers();
             GameManager.SaveGame();
             
             await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
-            await Navigation.PopAsync();
+            if (Navigation.NavigationStack.Count > 1)
+            {
+                await Navigation.PopAsync();
+            }
         });
     }
 
@@ -85,12 +97,11 @@ public partial class GamePage : ContentPage
         });
     }
 
-
     private void OnPlayerChooseCoin(object sender, PlayerChooseCoinEventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            InstructionsLabel.Text = $"{e.Player.Name} a passé son tour";
+            InstructionsLabel.Text = $"{e.Player.Name} a passé son tour (Coin).";
             ResetSelectionState();
         });
     }
@@ -99,7 +110,7 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            InstructionsLabel.Text = $"{e.Player.Name} effectue un déplacement Duck";
+            InstructionsLabel.Text = $"{e.Player.Name}: Déplacement Duck. Sélectionnez la carte à déplacer.";
         });
     }
 
@@ -107,7 +118,7 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            InstructionsLabel.Text = $"{e.Player.Name} effectue un recouvrement";
+            InstructionsLabel.Text = $"{e.Player.Name}: Recouvrement. Sélectionnez la carte à déplacer.";
         });
     }
 
@@ -116,7 +127,7 @@ public partial class GamePage : ContentPage
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
             var gridInfo = string.Join("\n", e.Players.Select(p => 
-                $"{p.Name}: {p.Grid.GameCardsGrid.Count} cartes"));
+                $"{p.Name}: {p.Grid.GameCardsGrid.Count} cartes, Stack: {p.StackCounter}"));
             await DisplayAlert("Grilles des joueurs", gridInfo, "OK");
         });
     }
@@ -142,7 +153,9 @@ public partial class GamePage : ContentPage
             if (confirm)
             {
                 e.CurrentGame.Quit = true;
-                await Navigation.PopAsync();
+                if (GameManager.CheckGameOverCondition())
+                {
+                }
             }
         });
     }
@@ -151,13 +164,10 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            // Actualiser l'affichage après une demande de menu
-            LoadGrid();
+            InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}. Choisissez une action.";
             LoadCurrentCard();
-            InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
         });
     }
-
 
     private void ResetSelectionState()
     {
@@ -165,84 +175,90 @@ public partial class GamePage : ContentPage
         _isWaitingForDuckTarget = false;
         _selectedCard = null;
         _cardToCover = null;
-        LoadGrid(); // Recharger pour enlever les surlignages
+        LoadGrid();
+        LoadCurrentCard();
+        if (GameManager.CurrentPlayer != null)
+        {
+             InstructionsLabel.Text = $"Tour de {GameManager.CurrentPlayer.Name}. Choisissez une action.";
+        }
     }
 
     private void LoadGrid()
     {
         try
         {
-            // Vérifier qu'il y a au moins un joueur
-            if (GameManager?.Players == null || !GameManager.Players.Any())
+            if (GameManager?.Players == null || !GameManager.Players.Any() || GameManager.CurrentPlayer == null)
             {
-                DebugLabel.Text = "Aucun joueur trouvé";
+                DebugLabel.Text = "Joueur non défini ou aucun joueur.";
+                GameGrid.Children.Clear();
+                GridInfoLabel.Text = "Aucun joueur actif";
                 return;
             }
 
-            // Prendre la grille du joueur courant
             var currentPlayer = GameManager.CurrentPlayer;
             var playerGrid = currentPlayer.Grid;
-
-            // Afficher la carte actuelle du deck
-            LoadCurrentCard();
 
             if (playerGrid?.GameCardsGrid == null || !playerGrid.GameCardsGrid.Any())
             {
                 DebugLabel.Text = $"Aucune carte trouvée dans la grille de {currentPlayer.Name}";
+                GameGrid.Children.Clear();
+                GameGrid.RowDefinitions.Clear();
+                GameGrid.ColumnDefinitions.Clear();
+                GridInfoLabel.Text = $"Grille de {currentPlayer.Name} (vide)";
                 return;
             }
 
-            // Effacer la grille existante
             GameGrid.Children.Clear();
             GameGrid.RowDefinitions.Clear();
             GameGrid.ColumnDefinitions.Clear();
 
-            // Obtenir les positions de toutes les cartes du joueur
             var positions = playerGrid.GameCardsGrid.Select(c => c.Position).ToList();
+            if (!positions.Any())
+            {
+                 GridInfoLabel.Text = $"Grille de {currentPlayer.Name} (vide après positions)";
+                 return;
+            }
             var bounds = Models.Game.Grid.GetBounds(positions);
 
-            // Calculer les dimensions de la grille
             int gridWidth = bounds.maxX - bounds.minX + 1;
             int gridHeight = bounds.maxY - bounds.minY + 1;
 
-            // Définir les lignes et colonnes avec des tailles plus grandes
             for (int i = 0; i < gridHeight; i++)
             {
                 GameGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(140) });
             }
-
             for (int i = 0; i < gridWidth; i++)
             {
                 GameGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(110) });
             }
 
-            // Ajouter les cartes à la grille
             foreach (var card in playerGrid.GameCardsGrid)
             {
                 if (card == null) continue;
-                
                 var cardView = CreateCardView(card);
-                
-                // Calculer les positions relatives à partir des bounds
                 int relativeRow = card.Position.Row - bounds.minY;
                 int relativeCol = card.Position.Column - bounds.minX;
-
                 Microsoft.Maui.Controls.Grid.SetRow(cardView, relativeRow);
                 Microsoft.Maui.Controls.Grid.SetColumn(cardView, relativeCol);
-                
                 GameGrid.Children.Add(cardView);
             }
 
-            // Mettre à jour les informations de debug
             DebugLabel.Text = $"Grille de {currentPlayer.Name}: {gridWidth}x{gridHeight}, {playerGrid.GameCardsGrid.Count} cartes";
             GridInfoLabel.Text = $"Grille de {currentPlayer.Name}";
         }
         catch (Exception ex)
         {
-            DebugLabel.Text = $"Erreur lors du chargement: {ex.Message}";
+            DebugLabel.Text = $"Erreur chargement grille: {ex.Message} {ex.StackTrace}";
+             if (GameManager.CurrentPlayer != null)
+             {
+                GridInfoLabel.Text = $"Erreur grille {GameManager.CurrentPlayer.Name}";
+             } else {
+                GridInfoLabel.Text = "Erreur grille";
+             }
         }
     }
 
+    // ############### MODIFICATION ICI POUR REVENIR A L'ANCIEN STYLE ###############
     private View CreateCardView(GameCard card)
     {
         if (card == null) throw new ArgumentNullException(nameof(card));
@@ -253,96 +269,84 @@ public partial class GamePage : ContentPage
         var frame = new Frame
         {
             BackgroundColor = backgroundColor,
-            BorderColor = Colors.White,
-            CornerRadius = 15,
+            BorderColor = Colors.White, // Style original
+            CornerRadius = 15,          // Style original
             WidthRequest = 100,
             HeightRequest = 130,
             HasShadow = true,
-            Padding = 0
+            Padding = 0                 // Style original
         };
 
-        // Si c'est la carte sélectionnée, ajouter un style distinctif
         if (card == _selectedCard)
         {
             frame.BorderColor = Colors.Yellow;
-            frame.Scale = 1.1;
+            frame.Scale = 1.1; // Augmenté un peu par rapport à 1.05, mais peut être ajusté
         }
 
-        var mainGrid = new Microsoft.Maui.Controls.Grid();
+        var mainGrid = new Microsoft.Maui.Controls.Grid(); // Utilisation de Grid
 
-        // Numéro principal au centre en gros
         var numberLabel = new Label
         {
             Text = card.Number.ToString(),
-            FontSize = 36,
+            FontSize = 36, // Style original
             FontAttributes = FontAttributes.Bold,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
             TextColor = textColor
         };
 
-        // Splash en bas à droite
         var splashLabel = new Label
         {
-            Text = card.Splash.ToString(),
-            FontSize = 20,
+            Text = card.Splash.ToString(), // Style original (juste le numéro)
+            FontSize = 20, // Style original
             FontAttributes = FontAttributes.Bold,
-            HorizontalOptions = LayoutOptions.End,
-            VerticalOptions = LayoutOptions.End,
+            HorizontalOptions = LayoutOptions.End, // Style original
+            VerticalOptions = LayoutOptions.End,   // Style original
             TextColor = textColor,
-            Margin = new Thickness(0, 0, 8, 8)
+            Margin = new Thickness(0, 0, 8, 8) // Style original
         };
 
-        // Position pour debug (plus petit et discret)
         var positionLabel = new Label
         {
-            Text = $"{card.Position.Row},{card.Position.Column}",
-            FontSize = 8,
-            HorizontalOptions = LayoutOptions.Start,
-            VerticalOptions = LayoutOptions.Start,
+            Text = $"{card.Position.Row},{card.Position.Column}", // Style original
+            FontSize = 8,  // Style original
+            HorizontalOptions = LayoutOptions.Start, // Style original
+            VerticalOptions = LayoutOptions.Start,   // Style original
             TextColor = textColor,
-            Opacity = 0.7,
-            Margin = new Thickness(4, 4, 0, 0)
+            Opacity = 0.7, // Style original
+            Margin = new Thickness(4, 4, 0, 0) // Style original
         };
 
         mainGrid.Children.Add(numberLabel);
         mainGrid.Children.Add(splashLabel);
         mainGrid.Children.Add(positionLabel);
 
-        frame.Content = mainGrid;
+        frame.Content = mainGrid; // Affectation à mainGrid
 
-        // Ajouter un gestionnaire de tap
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += (s, e) => OnCardTapped(card);
         frame.GestureRecognizers.Add(tapGesture);
 
         return frame;
     }
+    // ############### FIN DE LA MODIFICATION DU STYLE ###############
 
     private Color GetSplashColor(int splash)
     {
         return splash switch
         {
-            0 => Color.FromArgb("#FFFFFF"), // Blanc
-            1 => Color.FromArgb("#FFD700"), // Jaune
-            2 => Color.FromArgb("#B8860B"), // Jaune foncé
-            3 => Color.FromArgb("#FF0000"), // Rouge
-            4 => Color.FromArgb("#8B0000"), // Rouge foncé
-            _ => Color.FromArgb("#FF00FF")  // Magenta
+            0 => Color.FromArgb("#FFFFFF"), 
+            1 => Color.FromArgb("#FFD700"), 
+            2 => Color.FromArgb("#B8860B"), 
+            3 => Color.FromArgb("#FF0000"), 
+            4 => Color.FromArgb("#8B0000"), 
+            _ => Color.FromArgb("#FF00FF")
         };
     }
 
     private Color GetContrastingTextColor(Color backgroundColor)
     {
-        // Convertir la couleur en valeurs RGB
-        var r = backgroundColor.Red;
-        var g = backgroundColor.Green;
-        var b = backgroundColor.Blue;
-
-        // Calculer la luminosité relative
-        var luminance = (0.299 * r + 0.587 * g + 0.114 * b);
-
-        // Retourner noir ou blanc selon la luminosité
+        var luminance = 0.299 * backgroundColor.Red + 0.587 * backgroundColor.Green + 0.114 * backgroundColor.Blue;
         return luminance > 0.5 ? Colors.Black : Colors.White;
     }
 
@@ -350,12 +354,12 @@ public partial class GamePage : ContentPage
     {
         try
         {
-            ResetSelectionState();
             GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "3");
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erreur", ex.Message, "OK");
+            await DisplayAlert("Erreur Coin", ex.Message, "OK");
+            ResetSelectionState();
         }
     }
 
@@ -368,11 +372,11 @@ public partial class GamePage : ContentPage
             _selectedCard = null;
             _cardToCover = null;
             LoadGrid();
-            InstructionsLabel.Text = "Sélectionnez la carte à déplacer";
+            InstructionsLabel.Text = "COVER: Sélectionnez la carte à DÉPLACER.";
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erreur", ex.Message, "OK");
+            await DisplayAlert("Erreur Cover Setup", ex.Message, "OK");
         }
     }
 
@@ -383,102 +387,76 @@ public partial class GamePage : ContentPage
             _isWaitingForCoverTarget = false;
             _isWaitingForDuckTarget = true;
             _selectedCard = null;
-            _cardToCover = null;
             LoadGrid();
-            InstructionsLabel.Text = "Sélectionnez la carte à déplacer";
+            InstructionsLabel.Text = "DUCK: Sélectionnez la carte à DÉPLACER.";
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erreur", ex.Message, "OK");
+            await DisplayAlert("Erreur Duck Setup", ex.Message, "OK");
         }
     }
 
     private async void OnCardTapped(GameCard card)
-{
-    try
     {
-        // Si aucune action n'est en cours, ignorer le tap
-        if (!_isWaitingForCoverTarget && !_isWaitingForDuckTarget)
+        try
         {
-            return;
-        }
+            if (GameManager.CurrentDeckCard == null)
+            {
+                await DisplayAlert("Info", "Aucune carte de deck active.", "OK");
+                return;
+            }
+            int effectiveDeckCardNumber = GameManager.GetEffectiveDeckCardNumber(GameManager.CurrentPlayer, GameManager.CurrentDeckCard);
 
-        if (_isWaitingForCoverTarget)
-        {
-            if (_selectedCard == null)
+            if (_isWaitingForCoverTarget)
             {
-                // Première sélection : la carte à déplacer - DOIT correspondre au deck
-                if (GameManager.CurrentDeckCard == null || card.Number != GameManager.CurrentDeckCard.Number)
+                if (_selectedCard == null)
                 {
-                    await DisplayAlert("Erreur", "Cette carte ne correspond pas à la carte courante du deck", "OK");
-                    return;
+                    if (card.Number != effectiveDeckCardNumber)
+                    {
+                        await DisplayAlert("Action invalide", $"La carte N°{card.Number} ne correspond pas au N°{effectiveDeckCardNumber} (effectif) du deck.", "OK");
+                        return;
+                    }
+                    _selectedCard = card;
+                    LoadGrid();
+                    InstructionsLabel.Text = "COVER: Sélectionnez la carte à RECOUVRIR.";
                 }
-                
-                _selectedCard = card;
-                InstructionsLabel.Text = "Sélectionnez la carte à recouvrir";
-                LoadGrid(); // Recharger pour montrer la sélection
-            }
-            else
-            {
-                // Deuxième sélection : la carte à recouvrir - PAS de vérification du deck
-                _cardToCover = card;
-                try
+                else
                 {
-                    GameManager.HandlePlayerChooseCover(
-                        GameManager.CurrentPlayer,
-                        _selectedCard.Position,
-                        _cardToCover.Position
-                    );
-                    ResetSelectionState();
-                }
-                catch (Exception ex)
-                {
-                    await DisplayAlert("Erreur", ex.Message, "OK");
-                    ResetSelectionState();
+                    if (card == _selectedCard) {
+                        await DisplayAlert("Action invalide", "Vous ne pouvez pas recouvrir une carte avec elle-même.", "OK");
+                        return;
+                    }
+                    _cardToCover = card;
+                    GameManager.HandlePlayerChooseCover(GameManager.CurrentPlayer, _selectedCard.Position, _cardToCover.Position);
+                    if (GameManager.CurrentPlayer.HasPlayed) ResetSelectionState();
                 }
             }
-        }
-        else if (_isWaitingForDuckTarget)
-        {
-            if (_selectedCard == null)
+            else if (_isWaitingForDuckTarget)
             {
-                // Première sélection : la carte à déplacer - DOIT correspondre au deck
-                if (GameManager.CurrentDeckCard == null || card.Number != GameManager.CurrentDeckCard.Number)
+                if (_selectedCard == null)
                 {
-                    await DisplayAlert("Erreur", "Cette carte ne correspond pas à la carte courante du deck", "OK");
-                    return;
+                    if (card.Number != effectiveDeckCardNumber)
+                    {
+                        await DisplayAlert("Action invalide", $"La carte N°{card.Number} ne correspond pas au N°{effectiveDeckCardNumber} (effectif) du deck.", "OK");
+                        return;
+                    }
+                    _selectedCard = card;
+                    LoadGrid();
+                    InstructionsLabel.Text = "DUCK: Sélectionnez la CASE de destination (peut être une carte existante si la règle le permet, ou une case vide).";
                 }
-                
-                _selectedCard = card;
-                InstructionsLabel.Text = "Sélectionnez la position où déplacer la carte";
-                LoadGrid(); // Recharger pour montrer la sélection
-            }
-            else
-            {
-                // Deuxième sélection : la position de destination - PAS de vérification du deck
-                try
+                else
                 {
-                    GameManager.HandlePlayerChooseDuck(
-                        GameManager.CurrentPlayer,
-                        _selectedCard.Position,
-                        card.Position
-                    );
-                    ResetSelectionState();
-                }
-                catch (Exception ex)
-                {
-                    await DisplayAlert("Erreur", ex.Message, "OK");
-                    ResetSelectionState();
+                    GameManager.HandlePlayerChooseDuck(GameManager.CurrentPlayer, _selectedCard.Position, card.Position);
+                    if (GameManager.CurrentPlayer.HasPlayed) ResetSelectionState();
                 }
             }
         }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur Tap", ex.Message, "OK");
+            ResetSelectionState();
+        }
     }
-    catch (Exception ex)
-    {
-        await DisplayAlert("Erreur", ex.Message, "OK");
-        ResetSelectionState();
-    }
-}
 
     private async void OnShowGridsClicked(object sender, EventArgs e)
     {
@@ -518,18 +496,14 @@ public partial class GamePage : ContentPage
     
     private void OnCardEffectProcessed(object sender, CardEffectProcessedEventArgs e)
     {
-        MainThread.BeginInvokeOnMainThread(() =>
+        MainThread.BeginInvokeOnMainThread(async () =>
         {
-            // Afficher le message d'effet dans le label d'instructions
             InstructionsLabel.Text = e.Message;
-        
-            // Actualiser l'affichage de la carte courante
             LoadCurrentCard();
         
-            // Optionnel : afficher une alerte pour les effets importants
             if (e.ProcessedCard.Bonus == Bonus.Again || e.ProcessedCard.Bonus == Bonus.Max)
             {
-                DisplayAlert("Effet de carte", e.Message, "OK");
+                await DisplayAlert("Effet de carte!", e.Message, "OK");
             }
         });
     }
@@ -538,24 +512,22 @@ public partial class GamePage : ContentPage
     {
         try
         {
-            if (GameManager?.CurrentDeckCard != null)
+            if (GameManager?.CurrentDeckCard != null && GameManager.CurrentPlayer != null)
             {
                 CurrentCardFrame.IsVisible = true;
+                int effectiveNumber = GameManager.GetEffectiveDeckCardNumber(GameManager.CurrentPlayer, GameManager.CurrentDeckCard);
+                CurrentCardNumber.Text = effectiveNumber.ToString();
             
-                // Afficher le numéro (qui peut avoir été modifié par les effets)
-                CurrentCardNumber.Text = GameManager.CurrentDeckCard.Number.ToString();
-            
-                // Changer la couleur selon le bonus
                 switch (GameManager.CurrentDeckCard.Bonus)
                 {
                     case Bonus.Again:
-                        CurrentCardBorder.BackgroundColor = Color.FromArgb("#FF9800"); // Orange
+                        CurrentCardBorder.BackgroundColor = Colors.OrangeRed;
                         break;
                     case Bonus.Max:
-                        CurrentCardBorder.BackgroundColor = Color.FromArgb("#9C27B0"); // Violet
+                        CurrentCardBorder.BackgroundColor = Colors.Purple;
                         break;
                     default:
-                        CurrentCardBorder.BackgroundColor = Color.FromArgb("#4CAF50"); // Vert
+                        CurrentCardBorder.BackgroundColor = Colors.SeaGreen;
                         break;
                 }
             
@@ -569,24 +541,27 @@ public partial class GamePage : ContentPage
         catch (Exception ex)
         {
             CurrentCardFrame.IsVisible = false;
-            DebugLabel.Text += $" | CurrentCard error: {ex.Message}";
+            DebugLabel.Text += $" | Erreur Carte Actuelle: {ex.Message}";
         }
     }
     
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        GameManager.PlayerChanged -= OnPlayerChanged;
-        GameManager.GameIsOver -= OnGameIsOver;
-        GameManager.ErrorOccurred -= OnErrorOccurred;
-        GameManager.PlayerChooseCoin -= OnPlayerChooseCoin;
-        GameManager.PlayerChooseDuck -= OnPlayerChooseDuck;
-        GameManager.PlayerChooseCover -= OnPlayerChooseCover;
-        GameManager.PlayerChooseShowPlayersGrid -= OnPlayerChooseShowPlayersGrid;
-        GameManager.PlayerChooseShowScores -= OnPlayerChooseShowScores;
-        GameManager.PlayerChooseQuit -= OnPlayerChooseQuit;
-        GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
-    
-        GameManager.CardEffectProcessed -= OnCardEffectProcessed;
+        if (GameManager != null)
+        {
+            GameManager.PlayerChanged -= OnPlayerChanged;
+            GameManager.GameIsOver -= OnGameIsOver;
+            GameManager.ErrorOccurred -= OnErrorOccurred;
+            GameManager.PlayerChooseCoin -= OnPlayerChooseCoin;
+            GameManager.PlayerChooseDuck -= OnPlayerChooseDuck;
+            GameManager.PlayerChooseCover -= OnPlayerChooseCover;
+            GameManager.PlayerChooseShowPlayersGrid -= OnPlayerChooseShowPlayersGrid;
+            GameManager.PlayerChooseShowScores -= OnPlayerChooseShowScores;
+            GameManager.PlayerChooseQuit -= OnPlayerChooseQuit;
+            GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
+        
+            GameManager.CardEffectProcessed -= OnCardEffectProcessed;
+        }
     }
 }
