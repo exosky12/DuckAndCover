@@ -24,10 +24,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,22 +58,27 @@
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Utils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/AppShell.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/AppShell.xaml.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/MauiProgram.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Credits.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/Pages/GamePage.xaml.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/Pages/GamePage.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Platforms/MacCatalyst/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Resources/Styles/Colors.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Resources/Styles/GlobalStyles.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DuckAndCover/Views/Button.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Views/Credit.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Views/Credit.xaml.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Enums/ErrorCodes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Enums/ErrorCodes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Events/DisplayMenuNeededEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Events/GameIsOverEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
@@ -91,6 +92,9 @@
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/Error.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Game/Game.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Pages/GamePage.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Downloads/Leaderboard Page.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -123,7 +127,7 @@
 }</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="Toolset" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6

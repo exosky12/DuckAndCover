@@ -167,7 +167,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
                 case Bonus.Max:
                     string maxEffectMessage;
-                    if (playerProcessingEffect.Grid.GameCardsGrid.Any())
+                    if (player.Grid.GameCardsGrid.Any())
                     {
                         maxEffectMessage = $"Carte MAX ! Le numéro sera le plus élevé de la grille du joueur actif.";
                     }
