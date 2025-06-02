@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCover.Pages.LeaderboardPage"
@@ -8,16 +9,16 @@
     <Grid RowDefinitions="Auto,*,Auto" Padding="20">
         <!-- En-tête -->
         <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,20,0,30">
-            <Label Text="Classement" 
-                   FontSize="36" 
-                   FontAttributes="Bold" 
+            <Label Text="Classement"
+                   FontSize="36"
+                   FontAttributes="Bold"
                    TextColor="#222222"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Center" />
             <Label Text="Découvrez les meilleurs scores"
                    FontSize="18"
                    TextColor="#222222"
                    Opacity="0.8"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Center" />
         </VerticalStackLayout>
 
         <!-- Liste des scores -->
@@ -28,8 +29,8 @@
                    Padding="20"
                    Margin="10"
                    HasShadow="True">
-                <VerticalStackLayout x:Name="LeaderboardList" 
-                                   Spacing="15"/>
+                <VerticalStackLayout x:Name="LeaderboardList"
+                                     Spacing="15" />
             </Frame>
         </ScrollView>
 
@@ -42,6 +43,6 @@
                 CornerRadius="10"
                 Padding="20,10"
                 Margin="0,20,0,0"
-                Clicked="OnBackClicked"/>
+                Clicked="OnBackClicked" />
     </Grid>
-</ContentPage> 
+</ContentPage>

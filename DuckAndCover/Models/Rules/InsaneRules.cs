@@ -9,6 +9,9 @@ namespace Models.Rules
     {
         public string Name => "Règles XXL";
 
+        public string Description =>
+            "Dans cette variante, les joueurs peuvent déplacer leurs cartes de manière plus agressive. ";
+
         public int NbCardsInDeck => 128;
 
         public void TryValidMove(Position position, Position newPosition, Grid grid, string funcName, DeckCard currentDeckCard)

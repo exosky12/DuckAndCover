@@ -41,26 +41,32 @@ namespace ConsoleApp
                         ResumeGame(stubGames, out game);
                         return game;
                     case "N":
-                        Write("Quelles règle souhaitez-voys choisir ? ");
+                        Write("Quelles règle souhaitez-vous choisir ? ");
                         string input = ReadLine();
-                        int choice = int.Parse(input);
-                         switch (choice) {
-                            case 1:
-                                game = Utils.CreateNewGame(1);
-                                return game;
-                            case 2:
-                                game = Utils.CreateNewGame(2);
-                                return game;
-                            case 3:
-                                game = Utils.CreateNewGame(3);
-                                return game;
+                        if (!int.TryParse(input, out int choice))
+                        {
+                            var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                            Utils.WriteError(handler.Handle());
+                            WriteLine("Appuyez sur une touche pour continuer...");
+                            ReadKey(true);
+                            break;
                         }
-                    default:
-                        var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
-                        Utils.WriteError(handler.Handle());
-                        WriteLine("Appuyez sur une touche pour continuer...");
-                        ReadKey(true);
-                        break;
+
+                        switch (choice)
+                        {
+                            case 1:
+                            case 2:
+                            case 3:
+                                game = Utils.CreateNewGame(choice);
+                                return game;
+                            default:
+                                var handler2 = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                                Utils.WriteError(handler2.Handle());
+                                WriteLine("Appuyez sur une touche pour continuer...");
+                                ReadKey(true);
+                                break;
+                        }
+                        break; 
                 }
             }
         }
@@ -72,7 +78,7 @@ namespace ConsoleApp
             if (inProgress.Count == 0)
             {
                 WriteLine("Aucune partie en cours disponible.");
-                game = Utils.CreateNewGame();
+                game = Utils.CreateNewGame(1);
                 return;
             }
 
