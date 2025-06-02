@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Models.Exceptions;
+﻿using Models.Exceptions;
 using Models.Interfaces;
 using Models.Enums;
 using Models.Game;
@@ -7,10 +6,8 @@ using Models.Game;
 
 namespace Models.Rules
 {
-    [DataContract]
     public class InsaneRules : IRules
     {
-        [DataMember]
         public string Name => "Règles Insanes";
 
         public string Description =>

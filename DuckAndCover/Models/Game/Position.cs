@@ -1,8 +1,13 @@
+using System.Runtime.Serialization;
 namespace Models.Game
 {
+    [DataContract]
     public sealed class Position : IEquatable<Position>
     {
+        [DataMember]
         public int Row { get; private set; }
+        
+        [DataMember]
         public int Column { get; private set; }
 
         public Position(int row, int column)

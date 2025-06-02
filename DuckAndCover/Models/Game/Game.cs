@@ -40,8 +40,9 @@ namespace Models.Game
             }
         }
 
-        [DataMember]
         public IRules Rules { get; set; }
+
+        [DataMember] private string _rulesName = string.Empty;
 
         [DataMember] public int CardsSkipped { get; set; }
 
@@ -104,6 +105,7 @@ namespace Models.Game
         public Game(IRules rules)
         {
             this.Rules = rules;
+            this._rulesName = rules.GetType().Name;
         }
 
         public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard,
@@ -125,32 +127,77 @@ namespace Models.Game
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        // Nouvelle méthode pour démarrer le jeu
-        public void StartGame()
-        {
-            if (IsGameStarted)
-                return;
-
-            IsGameStarted = true;
-            
-            try
-            {
-                // Déclencher l'événement pour le premier joueur
-                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
-            }
-            catch (Error e)
-            {
-                OnErrorOccurred(new ErrorOccurredEventArgs(e));
-            }
-        }
-
         public void NextPlayer()
         {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
+        
+        public void ProcessCardEffect(DeckCard card, Player player)
+        {
+            switch (card.Bonus)
+            {
+                case Bonus.Again when LastNumber.HasValue:
+                    card.Number = LastNumber.Value;
+                    // Déclencher un événement pour informer l'UI
+                    OnCardEffectProcessed(new CardEffectProcessedEventArgs(
+                        $"Carte Again active ! Le numéro utilisé est {card.Number}",
+                        card));
+                    break;
 
-        // Remplacer GameLoop par cette méthode qui sera appelée après chaque action
+                case Bonus.Max:
+                    if (player.Grid.GameCardsGrid.Any())
+                    {
+                        int max = player.Grid.GameCardsGrid.Max(c => c.Number);
+                        card.Number = max;
+                        OnCardEffectProcessed(new CardEffectProcessedEventArgs(
+                            $"Carte MAX ! Numéro utilisé : {max} (grille de {player.Name})",
+                            card));
+                    }
+                    else
+                    {
+                        // Si la grille est vide, on ne peut pas utiliser MAX
+                        throw new Error(ErrorCodes.UnknownError);
+                    }
+
+                    break;
+
+                default:
+                    LastNumber = card.Number;
+                    string msg = card.Number == 0 ? card.Bonus.ToString() : card.Number.ToString();
+                    OnCardEffectProcessed(new CardEffectProcessedEventArgs(
+                        $"Carte actuelle du deck : {msg}",
+                        card));
+                    break;
+            }
+        }
+
+        public event EventHandler<CardEffectProcessedEventArgs>? CardEffectProcessed;
+
+        protected virtual void OnCardEffectProcessed(CardEffectProcessedEventArgs args) =>
+            CardEffectProcessed?.Invoke(this, args);
+
+        public DeckCard NextDeckCard()
+        {
+            if (Deck.Cards.Count == 0)
+                throw new Error(ErrorCodes.DeckEmpty);
+
+            Deck.Cards.RemoveAt(0);
+
+            if (Deck.Cards.Count == 0)
+            {
+                CurrentDeckCard = null!;
+                throw new Error(ErrorCodes.DeckEmpty, "Plus de cartes dans le deck");
+            }
+
+            CurrentDeckCard = Deck.Cards.First();
+
+            // Traiter l'effet de la nouvelle carte avec le joueur actuel
+            ProcessCardEffect(CurrentDeckCard, CurrentPlayer);
+
+            return CurrentDeckCard;
+        }
+
         public void ProcessTurn()
         {
             try
@@ -158,7 +205,7 @@ namespace Models.Game
                 // Vérifier si tous les joueurs ont joué
                 if (AllPlayersPlayed())
                 {
-                    NextDeckCard();
+                    NextDeckCard(); // Ceci va automatiquement traiter les effets de carte
                     Players.ToList().ForEach(p =>
                     {
                         p.HasPlayed = false;
@@ -172,6 +219,12 @@ namespace Models.Game
                     return; // Le jeu est terminé
                 }
 
+                // Vérifier qu'il y a encore une carte courante
+                if (CurrentDeckCard == null)
+                {
+                    throw new Error(ErrorCodes.DeckEmpty, "Plus de cartes disponibles");
+                }
+
                 // Déclencher l'événement pour le joueur suivant
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
             }
@@ -180,6 +233,34 @@ namespace Models.Game
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
         }
+
+        public void StartGame()
+        {
+            if (IsGameStarted)
+                return;
+
+            IsGameStarted = true;
+
+            try
+            {
+                // Vérifier qu'il y a une carte courante
+                if (CurrentDeckCard == null)
+                {
+                    throw new Error(ErrorCodes.DeckEmpty, "Aucune carte disponible pour démarrer le jeu");
+                }
+
+                // Traiter l'effet de la carte initiale
+                ProcessCardEffect(CurrentDeckCard, CurrentPlayer);
+
+                // Déclencher l'événement pour le premier joueur
+                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
+            }
+            catch (Error e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
+            }
+        }
+
 
         public void HandlePlayerChoice(Player player, string choice)
         {
@@ -316,21 +397,6 @@ namespace Models.Game
             NextPlayer();
         }
 
-        public DeckCard NextDeckCard()
-        {
-            if (Deck.Cards.Count == 0)
-                throw new Error(ErrorCodes.DeckEmpty);
-
-            Deck.Cards.RemoveAt(0);
-
-            if (Deck.Cards.Count == 0)
-                CurrentDeckCard = null!;
-            else
-                CurrentDeckCard = Deck.Cards.First();
-
-            return CurrentDeckCard!;
-        }
-
         public bool AllPlayersPlayed()
         {
             return Players.All(p => p.HasPlayed);
@@ -369,7 +435,7 @@ namespace Models.Game
             {
                 existingGame.IsFinished = true;
             }
-            else 
+            else
             {
                 Games.Add(this);
             }

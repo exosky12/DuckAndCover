@@ -4,7 +4,7 @@ using Models.Exceptions;
 namespace Models.Events
 {
     [ExcludeFromCodeCoverage]
-    public class ErrorOccurredEventArgs
+    public class ErrorOccurredEventArgs : EventArgs
     {
         public Error Error { get; }
 

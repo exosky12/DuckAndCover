@@ -45,6 +45,8 @@ public partial class GamePage : ContentPage
         GameManager.PlayerChooseShowScores += OnPlayerChooseShowScores;
         GameManager.PlayerChooseQuit += OnPlayerChooseQuit;
         GameManager.DisplayMenuNeeded += OnDisplayMenuNeeded;
+    
+        GameManager.CardEffectProcessed += OnCardEffectProcessed;
     }
 
     private void OnPlayerChanged(object sender, PlayerChangedEventArgs e)
@@ -344,30 +346,6 @@ public partial class GamePage : ContentPage
         return luminance > 0.5 ? Colors.Black : Colors.White;
     }
 
-    private void LoadCurrentCard()
-    {
-        try
-        {
-            if (GameManager?.CurrentDeckCard != null)
-            {
-                CurrentCardFrame.IsVisible = true;
-                CurrentCardNumber.Text = GameManager.CurrentDeckCard.Number.ToString();
-                CurrentCardBorder.BackgroundColor = Color.FromArgb("#4CAF50");
-                CurrentCardNumber.TextColor = Colors.White;
-            }
-            else
-            {
-                CurrentCardFrame.IsVisible = false;
-            }
-        }
-        catch (Exception ex)
-        {
-            CurrentCardFrame.IsVisible = false;
-            DebugLabel.Text += $" | CurrentCard error: {ex.Message}";
-        }
-    }
-
-
     private async void OnCoinClicked(object sender, EventArgs e)
     {
         try
@@ -538,10 +516,66 @@ public partial class GamePage : ContentPage
         }
     }
     
+    private void OnCardEffectProcessed(object sender, CardEffectProcessedEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            // Afficher le message d'effet dans le label d'instructions
+            InstructionsLabel.Text = e.Message;
+        
+            // Actualiser l'affichage de la carte courante
+            LoadCurrentCard();
+        
+            // Optionnel : afficher une alerte pour les effets importants
+            if (e.ProcessedCard.Bonus == Bonus.Again || e.ProcessedCard.Bonus == Bonus.Max)
+            {
+                DisplayAlert("Effet de carte", e.Message, "OK");
+            }
+        });
+    }
+    
+    private void LoadCurrentCard()
+    {
+        try
+        {
+            if (GameManager?.CurrentDeckCard != null)
+            {
+                CurrentCardFrame.IsVisible = true;
+            
+                // Afficher le numéro (qui peut avoir été modifié par les effets)
+                CurrentCardNumber.Text = GameManager.CurrentDeckCard.Number.ToString();
+            
+                // Changer la couleur selon le bonus
+                switch (GameManager.CurrentDeckCard.Bonus)
+                {
+                    case Bonus.Again:
+                        CurrentCardBorder.BackgroundColor = Color.FromArgb("#FF9800"); // Orange
+                        break;
+                    case Bonus.Max:
+                        CurrentCardBorder.BackgroundColor = Color.FromArgb("#9C27B0"); // Violet
+                        break;
+                    default:
+                        CurrentCardBorder.BackgroundColor = Color.FromArgb("#4CAF50"); // Vert
+                        break;
+                }
+            
+                CurrentCardNumber.TextColor = Colors.White;
+            }
+            else
+            {
+                CurrentCardFrame.IsVisible = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            CurrentCardFrame.IsVisible = false;
+            DebugLabel.Text += $" | CurrentCard error: {ex.Message}";
+        }
+    }
+    
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        // Désabonner des événements pour éviter les fuites de mémoire
         GameManager.PlayerChanged -= OnPlayerChanged;
         GameManager.GameIsOver -= OnGameIsOver;
         GameManager.ErrorOccurred -= OnErrorOccurred;
@@ -552,5 +586,7 @@ public partial class GamePage : ContentPage
         GameManager.PlayerChooseShowScores -= OnPlayerChooseShowScores;
         GameManager.PlayerChooseQuit -= OnPlayerChooseQuit;
         GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
+    
+        GameManager.CardEffectProcessed -= OnCardEffectProcessed;
     }
 }

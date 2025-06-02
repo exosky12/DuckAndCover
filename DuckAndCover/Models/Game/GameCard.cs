@@ -9,7 +9,8 @@ namespace Models.Game
         public Position Position { get; set; }
         
         [DataMember]
-        public int Splash { get; }
+        public int Splash { get; set; }
+
 
         public GameCard(int splash, int number) : base(number)
         {

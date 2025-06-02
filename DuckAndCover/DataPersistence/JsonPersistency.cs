@@ -12,20 +12,28 @@ namespace DataPersistence
     {
         public string FileName { get; set; } = "duckAndCover_data.json";
         public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");
-        
+
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {
-            Debug.WriteLine($"Attempting to load data from: {Path.Combine(FilePath, FileName)}");
+            var fullPath = Path.Combine(FilePath, FileName);
+            Debug.WriteLine($"Attempting to load data from: {fullPath}");
+
+            if (!File.Exists(fullPath))
+            {
+                Debug.WriteLine("File does not exist. Returning empty collections.");
+                return (new ObservableCollection<Player>(), new ObservableCollection<Game>());
+            }
+
             var jsonSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
-            DataToPersist? data = new DataToPersist();
+            DataToPersist? data = null;
 
             try
             {
-                using (Stream s = File.OpenRead(Path.Combine(FilePath, FileName)))
+                using (Stream stream = File.OpenRead(fullPath))
                 {
-                    data = jsonSerializer.ReadObject(s) as DataToPersist;
-                    Debug.WriteLine($"Successfully loaded data: {data.Players?.Count ?? 0} players, {data.Games?.Count ?? 0} games");
+                    data = jsonSerializer.ReadObject(stream) as DataToPersist;
                 }
+                Debug.WriteLine($"Successfully loaded data: {data?.Players?.Count ?? 0} players, {data?.Games?.Count ?? 0} games");
             }
             catch (Exception ex)
             {
@@ -33,14 +41,15 @@ namespace DataPersistence
                 throw;
             }
 
-            return (data.Players ?? new ObservableCollection<Player>(),
-                data.Games ?? new ObservableCollection<Game>());
+            return (data?.Players ?? new ObservableCollection<Player>(),
+                    data?.Games ?? new ObservableCollection<Game>());
         }
-        
+
         public void SaveData(ObservableCollection<Player> players, ObservableCollection<Game> games)
         {
+            var fullPath = Path.Combine(FilePath, FileName);
             Debug.WriteLine($"Attempting to save data: {players.Count} players, {games.Count} games");
-            
+
             if (!Directory.Exists(FilePath))
             {
                 Debug.WriteLine($"Creating directory at: {FilePath}");
@@ -48,27 +57,22 @@ namespace DataPersistence
             }
 
             var jsonSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
-            DataToPersist? data = new DataToPersist();
 
-            data.Players = players;
-            data.Games = games;
+            var data = new DataToPersist
+            {
+                Players = players,
+                Games = games
+            };
 
             try
             {
-                var settings = new XmlWriterSettings() { Indent = true };
-                using (FileStream stream = File.Create(Path.Combine(FilePath, FileName)))
+                using (FileStream stream = File.Create(fullPath))
+                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(stream, Encoding.UTF8, false, true))
                 {
-                    using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
-                               stream,
-                               Encoding.UTF8,
-                               false,
-                               true))
-                    {
-                        jsonSerializer.WriteObject(writer, data);
-                        writer.Flush();
-                        Debug.WriteLine("Data successfully saved to file");
-                    }
+                    jsonSerializer.WriteObject(writer, data);
+                    writer.Flush();
                 }
+                Debug.WriteLine("Data successfully saved to file");
             }
             catch (Exception ex)
             {
@@ -77,6 +81,4 @@ namespace DataPersistence
             }
         }
     }
-    
-    
 }
