@@ -41,27 +41,28 @@
                                     AlignItems="Center"
                                     Direction="Row"
                                     Wrap="NoWrap">
-
+                            
+                            
                             <components:Button x:Name="JouerBtn"
                                                Name="Jouer"
                                                Margin="10,0"
                                                Clicked="PlayClicked"/>
-
+                            
                             <components:Button x:Name="ClassementBtn"
                                                Name="Classement"
                                                Margin="10,0"
                                                Clicked="LeaderboardClicked"/>
-
+                            
                             <components:Button x:Name="ReglesBtn"
                                                Name="Règles du jeu"
                                                Margin="10,0"
                                                Clicked="RulesClicked"/>
-
+                            
                             <components:Button x:Name="CreditsBtn"
                                                Name="Credits"
                                                Margin="10,0"
                                                Clicked="CreditsClicked"/>
-
+                    
                         </FlexLayout>
                     </Grid>
                 </VerticalStackLayout>
