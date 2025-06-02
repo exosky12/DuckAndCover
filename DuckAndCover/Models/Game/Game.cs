@@ -1,12 +1,13 @@
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using Models.Exceptions;
+using Models.Exceptions; // Assurez-vous que ErrorCodes et Error sont accessibles
 using Models.Interfaces;
 using Models.Events;
 using Models.Enums;
 using System.ComponentModel;
+using System.Linq;
 
-namespace Models.Game
+namespace Models.Game // Assurez-vous que ce namespace est correct
 {
     [DataContract]
     public class Game : INotifyPropertyChanged
@@ -95,7 +96,7 @@ namespace Models.Game
         public Game(IRules rules)
         {
             this.Rules = rules;
-            this._rulesName = rules.GetType().Name;
+            this._rulesName = rules.GetType().Name; // Ou une autre façon de stocker le nom/type des règles
         }
         public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard,
             int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
@@ -104,7 +105,7 @@ namespace Models.Game
             this.Players = players;
             this.Deck = deck;
             this._currentPlayerIndex = currentPlayerIndex;
-            this.CurrentPlayer = players[_currentPlayerIndex];
+            this.CurrentPlayer = players[_currentPlayerIndex]; // Assurez-vous que _currentPlayerIndex est valide
             this.CurrentDeckCard = currentDeckCard;
             this.CardsSkipped = cardsSkipped;
             this.IsFinished = isFinished;
@@ -181,7 +182,7 @@ namespace Models.Game
 
             if (Deck.Cards.Count == 0)
             {
-                CurrentDeckCard = null!;
+                CurrentDeckCard = null!; // Peut causer une exception si CurrentDeckCard ne peut être null
                 throw new Error(ErrorCodes.DeckEmpty, "Plus de cartes dans le deck");
             }
 
@@ -229,6 +230,10 @@ namespace Models.Game
 
             try
             {
+                if (CurrentDeckCard == null && Deck.Cards.Any()) // S'assurer qu'on a une carte initiale si possible
+                {
+                     CurrentDeckCard = Deck.Cards.First();
+                }
                 if (CurrentDeckCard == null)
                 {
                      throw new Error(ErrorCodes.DeckEmpty, "Aucune carte disponible pour démarrer le jeu");
@@ -324,6 +329,50 @@ namespace Models.Game
             }
         }
         
+        public List<Position> GetValidDuckTargetPositions(Player forPlayer, Position cardToMovePosition, DeckCard currentDeckCard)
+        {
+            var validTargets = new List<Position>();
+            if (currentDeckCard == null || forPlayer == null) return validTargets;
+
+            GameCard? cardBeingMoved = forPlayer.Grid.GetCard(cardToMovePosition);
+            if (cardBeingMoved == null) return validTargets;
+
+            // Règle utilisateur : Si c'est la seule carte, on ne peut pas "ducker".
+            // S'assurer que GameCardsGrid contient uniquement les cartes non nulles.
+            if (forPlayer.Grid.GameCardsGrid.Count(c => c != null) == 1)
+            {
+                return validTargets; // Aucune cible valide si c'est la seule carte
+            }
+
+            int[] dRow = { -1, 1, 0, 0 }; 
+            int[] dCol = { 0, 0, -1, 1 }; 
+
+            for (int i = 0; i < 4; i++)
+            {
+                Position targetPosition = new Position(cardToMovePosition.Row + dRow[i], cardToMovePosition.Column + dCol[i]);
+                
+                // Condition 1: La case cible doit être vide
+                if (forPlayer.Grid.GetCard(targetPosition) != null) 
+                {
+                    continue;
+                }
+
+                // Condition 2: La case cible (targetPosition) doit être adjacente à une carte existante sur la grille
+                // (pour correspondre à la logique de `TryValidMove` : `if (grid.IsAdjacentToCard(newPosition) == (false, null))`)
+                // Il faut s'assurer que la méthode `IsAdjacentToCard` existe sur votre classe Grid et fonctionne comme attendu.
+                // On suppose ici que `IsAdjacentToCard` retourne un tuple (bool IsAdjacent, GameCard AdjacentCardIfAny)
+                var (isTargetAdjToExistingCard, _) = forPlayer.Grid.IsAdjacentToCard(targetPosition);
+                if (!isTargetAdjToExistingCard)
+                {
+                    continue;
+                }
+                
+                // Si toutes les conditions sont remplies
+                validTargets.Add(targetPosition);
+            }
+            return validTargets.Distinct().ToList();
+        }
+
         public bool CheckGameOverCondition()
         {
             if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
@@ -336,17 +385,17 @@ namespace Models.Game
 
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
-            int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard);
+            // int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard); // Non utilisé directement ici mais important pour la logique globale
             Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", CurrentDeckCard);
 
-            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
-            GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!;
-            List<GameCard> grid = player.Grid.GameCardsGrid;
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!; // Null check implicite par TryValidMove
+            GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!; // Null check implicite par TryValidMove
+            List<GameCard> gridCards = player.Grid.GameCardsGrid; // Accès direct à la liste pour modification
 
-            grid.Remove(cardToCover);
+            gridCards.Remove(cardToCover);
             cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
 
-            player.StackCounter = grid.Count;
+            player.StackCounter = gridCards.Count;
             player.HasPlayed = true;
 
             NextPlayer();
@@ -354,14 +403,14 @@ namespace Models.Game
 
         public void DoDuck(Player player, Position cardToMovePosition, Position duckPosition)
         {
-            int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard);
+            // int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard); // Non utilisé directement ici
             Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", CurrentDeckCard);
 
-            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!; // Null check implicite par TryValidMove
 
-            player.Grid.RemoveCard(cardToMove.Position);
+            player.Grid.RemoveCard(cardToMove.Position); // Assurez-vous que cette méthode existe et fonctionne
             cardToMove.Position = duckPosition;
-            player.Grid.SetCard(duckPosition, cardToMove);
+            player.Grid.SetCard(duckPosition, cardToMove); // Assurez-vous que cette méthode existe et fonctionne
 
             player.StackCounter = player.Grid.GameCardsGrid.Count;
             player.HasPlayed = true;
@@ -395,7 +444,8 @@ namespace Models.Game
         {
             foreach (var player in Players)
             {
-                int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
+                int score = player.Grid.GameCardsGrid.Sum(card => card.Number); 
+                
                 var existingPlayer = AllPlayers.FirstOrDefault(p => p.Name == player.Name);
                 if (existingPlayer != null)
                 {
@@ -406,7 +456,7 @@ namespace Models.Game
                 }
                 else
                 {
-                    player.Scores.Add(score);
+                    player.Scores.Add(score); 
                     AllPlayers.Add(player);
                 }
             }

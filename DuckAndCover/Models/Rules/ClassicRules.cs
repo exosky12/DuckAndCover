@@ -38,8 +38,11 @@ namespace Models.Rules
                     if (cardToDuck != null)
                         throw new Error(ErrorCodes.CardAlreadyExists);
                     
-                    if (grid.IsAdjacentToCard(newPosition) == (false, null))
-                        throw new Error(ErrorCodes.AdjacentCardNotFound);
+                    (bool isAdjacent, GameCard? adjacentCard) = grid.IsAdjacentToCard(newPosition);
+                    
+                    if (!isAdjacent || Equals(adjacentCard?.Position, position))
+                        throw new Error(ErrorCodes.CardsAreNotAdjacent);
+
                     return;
 
                 case "cover":

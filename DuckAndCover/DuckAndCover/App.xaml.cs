@@ -54,7 +54,6 @@ namespace DuckAndCover
                 GameManager.Games = new ObservableCollection<Game>();
             }
             
-            // TOUJOURS abonner l'événement GameIsOver (peu importe s'il y a un fichier ou pas)
             GameManager.GameIsOver += OnGameIsOver;
             Debug.WriteLine("GameIsOver event subscribed");
         }
