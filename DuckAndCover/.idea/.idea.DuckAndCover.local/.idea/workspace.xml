@@ -23,12 +23,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/shelf/Uncommitted_changes_before_Update_at_5_26_25,_3_05 PM_[Changes]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +58,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Utils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -97,6 +97,7 @@
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Downloads/Leaderboard Page.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/10db659eafe75f15fedc82c16493597e19f56ad6b9078ab8729e3f4823a4ebe/JsonCollectionDataContract.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3db3bda050481730cc1112d6adaa6dc6aed6dfebb3a320b0a4f0ebc792c3d04/StackLayout.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/579c781aa664439d7be6bc64b2c1d9ed0301dc19bcef3822adeaa7a64f6f/CodeGenerator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5f265c315f1ee2785ad9c6ad26a7a8e182fa65ce2a118388be2f887b15a856/XmlObjectSerializerWriteContext.cs" root0="FORCE_HIGHLIGHTING" />
@@ -334,15 +335,7 @@
       <workItem from="1748779309528" duration="1401000" />
       <workItem from="1748844247857" duration="3579000" />
       <workItem from="1748847854985" duration="9334000" />
-      <workItem from="1748874879379" duration="761000" />
-    </task>
-    <task id="LOCAL-00015" summary="refactor(Code Smells)">
-      <option name="closed" value="true" />
-      <created>1747165516660</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1747165516660</updated>
+      <workItem from="1748874879379" duration="1718000" />
     </task>
     <task id="LOCAL-00016" summary="refactor(Code Smells): good practices, optimize code">
       <option name="closed" value="true" />
@@ -728,7 +721,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748873977244</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="feat(game): enhance game structure with improved data persistence and code documentation">
+      <option name="closed" value="true" />
+      <created>1748875772311</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1748875772311</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -789,7 +790,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(Errors): add UnknownError" />
     <MESSAGE value="feat(HandlePlayerChoice): refactor the way we ask what the player want to do" />
     <MESSAGE value="feat(errors): add error DeckEmpty" />
     <MESSAGE value="feat(error handling): correct mistackes in error handling player choices" />
@@ -814,7 +814,8 @@
     <MESSAGE value="feat(game): enhance game logic with card effect processing and event handling" />
     <MESSAGE value="feat(game): add NotPlayerTurn error code and handle turn validation in game logic" />
     <MESSAGE value="fix(game): correct player reference in max effect message" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(game): correct player reference in max effect message" />
+    <MESSAGE value="feat(game): enhance game structure with improved data persistence and code documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(game): enhance game structure with improved data persistence and code documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
