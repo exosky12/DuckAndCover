@@ -60,6 +60,9 @@ namespace Models.Game
 
         [DataMember] public int? LastNumber { get; set; }
 
+        // État du jeu pour savoir s'il a démarré
+        public bool IsGameStarted { get; private set; }
+
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -121,38 +124,59 @@ namespace Models.Game
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        // Nouvelle méthode pour démarrer le jeu
+        public void StartGame()
+        {
+            if (IsGameStarted)
+                return;
+
+            IsGameStarted = true;
+            
+            try
+            {
+                // Déclencher l'événement pour le premier joueur
+                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
+            }
+            catch (Error e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
+            }
+        }
+
         public void NextPlayer()
         {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
 
-        public void GameLoop()
+        // Remplacer GameLoop par cette méthode qui sera appelée après chaque action
+        public void ProcessTurn()
         {
-            bool isOver = false;
-
-            while (!isOver)
+            try
             {
-                try
+                // Vérifier si tous les joueurs ont joué
+                if (AllPlayersPlayed())
                 {
-                    OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
-
-                    if (AllPlayersPlayed())
+                    NextDeckCard();
+                    Players.ToList().ForEach(p =>
                     {
-                        NextDeckCard();
-                        Players.ToList().ForEach(p =>
-                        {
-                            p.HasPlayed = false;
-                            p.HasSkipped = false;
-                        });
-                    }
+                        p.HasPlayed = false;
+                        p.HasSkipped = false;
+                    });
+                }
 
-                    isOver = CheckGameOverCondition();
-                }
-                catch (Error e)
+                // Vérifier les conditions de fin de partie
+                if (CheckGameOverCondition())
                 {
-                    OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                    return; // Le jeu est terminé
                 }
+
+                // Déclencher l'événement pour le joueur suivant
+                OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
+            }
+            catch (Error e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
         }
 
@@ -172,6 +196,7 @@ namespace Models.Game
                         OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
                         DoCoin(player);
                         CheckAllPlayersSkipped();
+                        ProcessTurn(); // Traiter le tour suivant
                         break;
                     case "4":
                         OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
@@ -199,6 +224,7 @@ namespace Models.Game
             try
             {
                 DoCover(player, cardToMovePosition, cardToCoverPosition);
+                ProcessTurn(); // Traiter le tour suivant après l'action
             }
             catch (Error e)
             {
@@ -216,6 +242,7 @@ namespace Models.Game
             try
             {
                 DoDuck(player, cardToMovePosition, duckPosition);
+                ProcessTurn(); // Traiter le tour suivant après l'action
             }
             catch (Error e)
             {
@@ -227,6 +254,7 @@ namespace Models.Game
         {
             if (Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
             {
+                IsFinished = true;
                 OnGameIsOver(new GameIsOverEventArgs(true));
                 return true;
             }
@@ -301,7 +329,6 @@ namespace Models.Game
 
             return CurrentDeckCard!;
         }
-
 
         public bool AllPlayersPlayed()
         {

@@ -14,11 +14,23 @@ public partial class GamePage : ContentPage
 {
     public Game GameManager => (App.Current as App)?.GameManager ?? throw new InvalidOperationException("GameManager not initialized");
 
+    private GameCard? _selectedCard;
+    private GameCard? _cardToCover;
+    private bool _isWaitingForCoverTarget = false;
+    private bool _isWaitingForDuckTarget = false;
+
     public GamePage()
     {
         InitializeComponent();
         LoadGrid();
         SubscribeToGameEvents();
+        StartGame();
+    }
+
+    private void StartGame()
+    {
+        // Démarrer le jeu (pas de boucle infinie, juste l'initialisation)
+        GameManager.StartGame();
     }
 
     private void SubscribeToGameEvents()
@@ -26,6 +38,13 @@ public partial class GamePage : ContentPage
         GameManager.PlayerChanged += OnPlayerChanged;
         GameManager.GameIsOver += OnGameIsOver;
         GameManager.ErrorOccurred += OnErrorOccurred;
+        GameManager.PlayerChooseCoin += OnPlayerChooseCoin;
+        GameManager.PlayerChooseDuck += OnPlayerChooseDuck;
+        GameManager.PlayerChooseCover += OnPlayerChooseCover;
+        GameManager.PlayerChooseShowPlayersGrid += OnPlayerChooseShowPlayersGrid;
+        GameManager.PlayerChooseShowScores += OnPlayerChooseShowScores;
+        GameManager.PlayerChooseQuit += OnPlayerChooseQuit;
+        GameManager.DisplayMenuNeeded += OnDisplayMenuNeeded;
     }
 
     private void OnPlayerChanged(object sender, PlayerChangedEventArgs e)
@@ -36,6 +55,9 @@ public partial class GamePage : ContentPage
             LoadCurrentCard();
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
             DebugLabel.Text = "";
+            
+            // Réinitialiser les états de sélection
+            ResetSelectionState();
         });
     }
 
@@ -43,6 +65,10 @@ public partial class GamePage : ContentPage
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
+            // Sauvegarder les joueurs et la partie
+            GameManager.SavePlayers();
+            GameManager.SaveGame();
+            
             await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
             await Navigation.PopAsync();
         });
@@ -53,7 +79,93 @@ public partial class GamePage : ContentPage
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
             await DisplayAlert("Erreur", e.Error.Message, "OK");
+            ResetSelectionState();
         });
+    }
+
+    #region Gestionnaires d'événements du jeu
+
+    private void OnPlayerChooseCoin(object sender, PlayerChooseCoinEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            InstructionsLabel.Text = $"{e.Player.Name} a passé son tour";
+            ResetSelectionState();
+        });
+    }
+
+    private void OnPlayerChooseDuck(object sender, PlayerChooseDuckEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            InstructionsLabel.Text = $"{e.Player.Name} effectue un déplacement Duck";
+        });
+    }
+
+    private void OnPlayerChooseCover(object sender, PlayerChooseCoverEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            InstructionsLabel.Text = $"{e.Player.Name} effectue un recouvrement";
+        });
+    }
+
+    private async void OnPlayerChooseShowPlayersGrid(object sender, PlayerChooseShowPlayersGridEventArgs e)
+    {
+        await MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+            var gridInfo = string.Join("\n", e.Players.Select(p => 
+                $"{p.Name}: {p.Grid.GameCardsGrid.Count} cartes"));
+            await DisplayAlert("Grilles des joueurs", gridInfo, "OK");
+        });
+    }
+
+    private async void OnPlayerChooseShowScores(object sender, PlayerChooseShowScoresEventArgs e)
+    {
+        await MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+            var scoresInfo = string.Join("\n", e.Players.Select(p => 
+                $"{p.Name}: {p.Scores.LastOrDefault()} points (Total: {p.Scores.Sum()})"));
+            await DisplayAlert("Scores", scoresInfo, "OK");
+        });
+    }
+
+    private async void OnPlayerChooseQuit(object sender, PlayerChooseQuitEventArgs e)
+    {
+        await MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+            bool confirm = await DisplayAlert("Quitter", 
+                $"{e.Player.Name} veut quitter la partie. Confirmer ?", 
+                "Oui", "Non");
+            
+            if (confirm)
+            {
+                e.CurrentGame.Quit = true;
+                await Navigation.PopAsync();
+            }
+        });
+    }
+
+    private void OnDisplayMenuNeeded(object sender, DisplayMenuNeededEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            // Actualiser l'affichage après une demande de menu
+            LoadGrid();
+            LoadCurrentCard();
+            InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
+        });
+    }
+
+    #endregion
+
+    private void ResetSelectionState()
+    {
+        _isWaitingForCoverTarget = false;
+        _isWaitingForDuckTarget = false;
+        _selectedCard = null;
+        _cardToCover = null;
+        LoadGrid(); // Recharger pour enlever les surlignages
     }
 
     private void LoadGrid()
@@ -257,22 +369,14 @@ public partial class GamePage : ContentPage
         }
     }
 
-    private GameCard? _selectedCard;
-    private GameCard? _cardToCover;
-    private bool _isWaitingForCoverTarget = false;
-    private bool _isWaitingForDuckTarget = false;
+    #region Gestionnaires d'événements UI
 
     private async void OnCoinClicked(object sender, EventArgs e)
     {
         try
         {
-            _isWaitingForCoverTarget = false;
-            _isWaitingForDuckTarget = false;
-            _selectedCard = null;
-            _cardToCover = null;
-            
+            ResetSelectionState();
             GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "3");
-            InstructionsLabel.Text = "Tour passé";
         }
         catch (Exception ex)
         {
@@ -338,6 +442,7 @@ public partial class GamePage : ContentPage
                     // Première sélection : la carte à déplacer
                     _selectedCard = card;
                     InstructionsLabel.Text = "Sélectionnez la carte à recouvrir";
+                    LoadGrid(); // Recharger pour montrer la sélection
                 }
                 else
                 {
@@ -350,16 +455,12 @@ public partial class GamePage : ContentPage
                             _selectedCard.Position,
                             _cardToCover.Position
                         );
-                        _isWaitingForCoverTarget = false;
-                        _selectedCard = null;
-                        _cardToCover = null;
+                        ResetSelectionState();
                     }
                     catch (Exception ex)
                     {
                         await DisplayAlert("Erreur", ex.Message, "OK");
-                        _selectedCard = null;
-                        _cardToCover = null;
-                        LoadGrid();
+                        ResetSelectionState();
                     }
                 }
             }
@@ -370,6 +471,7 @@ public partial class GamePage : ContentPage
                     // Première sélection : la carte à déplacer
                     _selectedCard = card;
                     InstructionsLabel.Text = "Sélectionnez la position où déplacer la carte";
+                    LoadGrid(); // Recharger pour montrer la sélection
                 }
                 else
                 {
@@ -381,14 +483,12 @@ public partial class GamePage : ContentPage
                             _selectedCard.Position,
                             card.Position
                         );
-                        _isWaitingForDuckTarget = false;
-                        _selectedCard = null;
+                        ResetSelectionState();
                     }
                     catch (Exception ex)
                     {
                         await DisplayAlert("Erreur", ex.Message, "OK");
-                        _selectedCard = null;
-                        LoadGrid();
+                        ResetSelectionState();
                     }
                 }
             }
@@ -396,13 +496,47 @@ public partial class GamePage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Erreur", ex.Message, "OK");
-            _isWaitingForCoverTarget = false;
-            _isWaitingForDuckTarget = false;
-            _selectedCard = null;
-            _cardToCover = null;
-            LoadGrid();
+            ResetSelectionState();
         }
     }
+
+    private async void OnShowGridsClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "4");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", ex.Message, "OK");
+        }
+    }
+
+    private async void OnShowScoresClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "5");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", ex.Message, "OK");
+        }
+    }
+
+    private async void OnQuitClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "6");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", ex.Message, "OK");
+        }
+    }
+
+    #endregion
 
     protected override void OnDisappearing()
     {
@@ -411,5 +545,12 @@ public partial class GamePage : ContentPage
         GameManager.PlayerChanged -= OnPlayerChanged;
         GameManager.GameIsOver -= OnGameIsOver;
         GameManager.ErrorOccurred -= OnErrorOccurred;
+        GameManager.PlayerChooseCoin -= OnPlayerChooseCoin;
+        GameManager.PlayerChooseDuck -= OnPlayerChooseDuck;
+        GameManager.PlayerChooseCover -= OnPlayerChooseCover;
+        GameManager.PlayerChooseShowPlayersGrid -= OnPlayerChooseShowPlayersGrid;
+        GameManager.PlayerChooseShowScores -= OnPlayerChooseShowScores;
+        GameManager.PlayerChooseQuit -= OnPlayerChooseQuit;
+        GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
     }
 }
