@@ -26,6 +26,8 @@ namespace DuckAndCover
 
             var (players, games) = DataPersistence.LoadData();
 
+            Debug.WriteLine(players);
+
             GameManager = new Game(new ClassicRules())
             {
                 AllPlayers = players,
@@ -39,10 +41,6 @@ namespace DuckAndCover
 
         }
 
-        /// <summary>
-        /// Appelé une seule fois quand la partie se termine.
-        /// On y archive la partie (SavePlayers + SaveGame) puis on appelle DataPersistence.SaveData(...).
-        /// </summary>
         private void OnGameIsOver(object? sender, Models.Events.GameIsOverEventArgs e)
         {
             try

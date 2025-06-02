@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.Serialization.Json;
+using System.Text.RegularExpressions;
 using Models.Game;
 using Models.Interfaces;
 
@@ -32,6 +33,7 @@ namespace DataPersistence
                 using var stream = File.OpenRead(fullPath);
                 var serializer = new DataContractJsonSerializer(typeof(DataToPersist));
                 var data = (DataToPersist)serializer.ReadObject(stream)!;
+                Debug.WriteLine(data);
                 return (
                     data.Players ?? new ObservableCollection<Player>(),
                     data.Games ?? new ObservableCollection<Game>()
@@ -53,9 +55,7 @@ namespace DataPersistence
             }
         }
 
-        public void SaveData(
-     ObservableCollection<Player> allPlayers,
-     ObservableCollection<Game> allGames)
+        public void SaveData(ObservableCollection<Player> allPlayers,ObservableCollection<Game> allGames)
         {
             try
             {

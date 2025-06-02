@@ -2,6 +2,9 @@ using Microsoft.Maui.Controls.Shapes;
 using Models.Game;
 using Models.Events;
 using Models.Enums;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DuckAndCover.Pages;
 
@@ -28,8 +31,6 @@ public partial class GamePage : ContentPage
     {
         GameManager.StartGame();
     }
-
-    /************************ EVENTS ************************/
 
     private void SubscribeToGameEvents()
     {
@@ -59,8 +60,7 @@ public partial class GamePage : ContentPage
         GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
         GameManager.CardEffectProcessed -= OnCardEffectProcessed;
     }
-
-    private void OnPlayerChanged(object? sender, PlayerChangedEventArgs e)
+    private void OnPlayerChanged(object sender, PlayerChangedEventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
@@ -104,22 +104,23 @@ public partial class GamePage : ContentPage
             InstructionsLabel.Text = "En attente d'un joueur...";
         }
     }
-    
-    private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
-    {
-        await MainThread.InvokeOnMainThreadAsync(async () =>
-        {
-            GameManager.SavePlayers();
-            GameManager.SaveGame();
 
-            var pers = (App.Current as App)?.DataPersistence;
-            if (pers != null)
+        /// <summary>
+        /// Appelé exactement une fois, quand la partie est terminée.
+        /// </summary>
+        private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
+        {
+            await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                pers.SaveData(
-                    GameManager.AllPlayers,
-                    GameManager.Games
-                );
-            }
+
+                var pers = (App.Current as App)?.DataPersistence;
+                if (pers != null)
+                {
+                    pers.SaveData(
+                        GameManager.AllPlayers,
+                        GameManager.Games
+                    );
+                }
 
             await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
             await Navigation.PopAsync();
