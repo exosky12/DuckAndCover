@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using Models.Game;
@@ -7,6 +10,7 @@ using Models.Interfaces;
 
 namespace DataPersistence
 {
+
     public class JsonPersistency : IDataPersistence
     {
         public string FileName { get; set; } = "duckAndCover_data.json";
@@ -20,39 +24,44 @@ namespace DataPersistence
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {
             string fullPath = Path.Combine(FilePath, FileName);
-            if (!Directory.Exists(FilePath) || !File.Exists(fullPath))
-            {
-                return (
-                    new ObservableCollection<Player>(),
-                    new ObservableCollection<Game>()
-                );
-            }
 
-            try
+            if (File.Exists(fullPath))
             {
-                using var stream = File.OpenRead(fullPath);
-                var serializer = new DataContractJsonSerializer(typeof(DataToPersist));
-                var data = (DataToPersist)serializer.ReadObject(stream)!;
-                Debug.WriteLine(data);
-                return (
-                    data.Players ?? new ObservableCollection<Player>(),
-                    data.Games ?? new ObservableCollection<Game>()
-                );
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[JsonPersistency] Erreur LoadData : {ex.Message}");
                 try
                 {
-                    File.Delete(fullPath);
+                    using var stream = File.OpenRead(fullPath);
+                    var serializer = new DataContractJsonSerializer(typeof(DataToPersist));
+                    var data = (DataToPersist)serializer.ReadObject(stream)!;
+                    Debug.WriteLine(data);
+                    return (
+                        data.Players ?? new ObservableCollection<Player>(),
+                        data.Games ?? new ObservableCollection<Game>()
+                    );
                 }
-                catch {}
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[JsonPersistency] Erreur LoadData : {ex.Message}");
+                    // Si JSON corrompu ou autre, on efface le fichier pour repartir propre
+                    try
+                    {
+                        File.Delete(fullPath);
+                    }
+                    catch { }
 
+                    return (
+                        new ObservableCollection<Player>(),
+                        new ObservableCollection<Game>()
+                    );
+                }
+            }
+            else
+            { 
                 return (
                     new ObservableCollection<Player>(),
                     new ObservableCollection<Game>()
                 );
             }
+         
         }
 
         public void SaveData(ObservableCollection<Player> allPlayers,ObservableCollection<Game> allGames)
@@ -62,6 +71,7 @@ namespace DataPersistence
                 Directory.CreateDirectory(FilePath);
                 string fullPath = Path.Combine(FilePath, FileName);
 
+                // 1) Charger l’ancien contenu (s’il existe)
                 ObservableCollection<Player> existingPlayers;
                 ObservableCollection<Game> existingGames;
 
@@ -106,21 +116,25 @@ namespace DataPersistence
                     }
                 }
 
+                // 3) Fusionner "allGames" dans "existingGames" (par Id)
                 foreach (var newGame in allGames)
                 {
                     var match = existingGames.FirstOrDefault(g => g.Id == newGame.Id);
                     if (match == null)
                     {
+                        // Partie nouvelle (même Id inconnu) → on l'ajoute
                         existingGames.Add(newGame);
                     }
                     else
                     {
+                        // Partie déjà présente : on met à jour uniquement les champs pertinents
                         match.IsFinished = newGame.IsFinished;
                         match.LastNumber = newGame.LastNumber;
                         match.CardsSkipped = newGame.CardsSkipped;
                         match.LastGameFinishStatus = newGame.LastGameFinishStatus;
                         match.Players = newGame.Players;
                         match.Deck = newGame.Deck;
+
                     }
                 }
 
@@ -142,5 +156,6 @@ namespace DataPersistence
                 throw;
             }
         }
+
     }
 }
