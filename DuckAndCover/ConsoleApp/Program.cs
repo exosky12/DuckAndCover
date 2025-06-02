@@ -1,10 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using static System.Console;
 using Models.Game;
+using Models.Events;
 using Models.Exceptions;
+using Models.Rules;
 using DataPersistence;
 using Models.Enums;
-using static System.Console;
+using Models.Interfaces;
 
 namespace ConsoleApp
 {
@@ -17,19 +22,21 @@ namespace ConsoleApp
 
             var stub = new FakePersistency();
             var (stubPlayers, stubGames) = stub.LoadData();
-            
+
             Game game = GetGameFromUserChoice(stubGames);
 
             if (game == null)
                 throw new Error(ErrorCodes.UnknownError);
 
             SubscribeToGameEvents(game);
-            game.GameLoop();
+
+            game.StartGame();
         }
 
         private static Game GetGameFromUserChoice(ObservableCollection<Game> stubGames)
         {
             Game? game = null;
+
             while (true)
             {
                 Write("Souhaitez-vous reprendre une partie en cours ? (O/N) ");
@@ -39,34 +46,52 @@ namespace ConsoleApp
                 {
                     case "O":
                         ResumeGame(stubGames, out game);
-                        return game;
+                        return game!;
+
                     case "N":
-                        Write("Quelles règle souhaitez-vous choisir ? ");
-                        string input = ReadLine();
-                        if (!int.TryParse(input, out int choice))
+
+                        IRules rules = Utils.ChoisirRegles();
+                        int count;
+                        while (true)
                         {
-                            var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
-                            Utils.WriteError(handler.Handle());
-                            WriteLine("Appuyez sur une touche pour continuer...");
-                            ReadKey(true);
+                            Utils.WriteGameMaster("Nombre de joueurs (2 à 7) :");
+                            if (!int.TryParse(ReadLine(), out count) || count < 2 || count > 7)
+                            {
+                                var handler2 = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                                Utils.WriteError(handler2.Handle());
+                                WriteLine("Appuyez sur une touche pour recommencer…");
+                                ReadKey(true);
+                                Utils.ClearCurrentConsoleLine();
+                                continue;
+                            }
                             break;
                         }
 
-                        switch (choice)
-                        {
-                            case 1:
-                            case 2:
-                            case 3:
-                                game = Utils.CreateNewGame(choice);
-                                return game;
-                            default:
-                                var handler2 = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
-                                Utils.WriteError(handler2.Handle());
-                                WriteLine("Appuyez sur une touche pour continuer...");
-                                ReadKey(true);
-                                break;
-                        }
-                        break; 
+                        var players = Utils.InitializePlayers(count);
+
+                        game = new Game(rules);
+
+                        Deck deck = new Deck();
+                        if (deck.Cards.Count == 0)
+                            throw new Error(ErrorCodes.DeckEmpty);
+
+                        string newId = Guid.NewGuid().ToString("N").Substring(0, 5).ToUpperInvariant();
+                        game.InitializeGame(
+                            newId,
+                            players,
+                            deck,
+                            deck.Cards.First()
+                        );
+
+                        return game!;
+
+                    default:
+                        var handler3 = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                        Utils.WriteError(handler3.Handle());
+                        WriteLine("Appuyez sur une touche pour recommencer…");
+                        ReadKey(true);
+                        Utils.ClearCurrentConsoleLine();
+                        break;
                 }
             }
         }
@@ -77,23 +102,24 @@ namespace ConsoleApp
 
             if (inProgress.Count == 0)
             {
-                WriteLine("Aucune partie en cours disponible.");
-                game = Utils.CreateNewGame(1);
+                Utils.WriteGameMaster("Aucune partie en cours disponible. Création d'une nouvelle partie Classic par défaut.");
+                game = CreateDefaultGame();
                 return;
             }
 
             while (true)
             {
-                WriteLine("Parties disponibles (Code – Joueurs) :");
+                WriteLine();
+                WriteLine("Parties en cours (Code – Joueurs) :");
                 foreach (var g in inProgress)
-                    WriteLine($"{g.Id} – {string.Join(", ", g.Players.Select(p => p.Name))}");
+                    WriteLine($"  {g.Id} – {string.Join(", ", g.Players.Select(p => p.Name))}");
 
                 Write("Entrez le code de la partie à reprendre : ");
                 var codeInput = (ReadLine() ?? "").Trim().ToUpperInvariant();
 
                 var resumed = inProgress.FirstOrDefault(g =>
                     g.Id.Equals(codeInput, StringComparison.OrdinalIgnoreCase));
-                
+
                 if (resumed != null)
                 {
                     game = resumed;
@@ -102,9 +128,47 @@ namespace ConsoleApp
 
                 var handler = new ErrorHandler(new Error(ErrorCodes.GameIdNotFound));
                 Utils.WriteError(handler.Handle());
-                WriteLine("Appuyez sur une touche pour continuer...");
+                WriteLine("Appuyez sur une touche pour continuer…");
                 ReadKey(true);
+                Utils.ClearCurrentConsoleLine();
             }
+        }
+
+        private static Game CreateDefaultGame()
+        {
+            IRules rules = new ClassicRules();
+            int count;
+            while (true)
+            {
+                Utils.WriteGameMaster("Nombre de joueurs (2 à 7) pour la partie Classic :");
+                if (!int.TryParse(ReadLine(), out count) || count < 2 || count > 7)
+                {
+                    var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                    Utils.WriteError(handler.Handle());
+                    WriteLine("Appuyez sur une touche pour recommencer…");
+                    ReadKey(true);
+                    Utils.ClearCurrentConsoleLine();
+                    continue;
+                }
+                break;
+            }
+
+            var players = Utils.InitializePlayers(count);
+
+            Game game = new Game(rules);
+
+            Deck deck = new Deck();
+            if (deck.Cards.Count == 0)
+                throw new Error(ErrorCodes.DeckEmpty);
+
+            string newId = Guid.NewGuid().ToString("N").Substring(0, 5).ToUpperInvariant();
+            game.InitializeGame(
+                newId,
+                players,
+                deck,
+                deck.Cards.First()
+            );
+            return game;
         }
 
         private static void SubscribeToGameEvents(Game game)
@@ -126,24 +190,28 @@ namespace ConsoleApp
 
             game.PlayerChooseCover += (s, e) =>
             {
-                Utils.WriteGameMaster("Quelle carte souhaitez‑vous utiliser pour recouvrir ?");
+                Utils.WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir ? (ex : A1)");
                 var src = ReadLine()!;
-                Utils.WriteGameMaster("Quelle carte souhaitez‑vous recouvrir ?");
+                Utils.WriteGameMaster("Quelle carte souhaitez-vous recouvrir ? (ex : B2)");
                 var dst = ReadLine()!;
-                game.HandlePlayerChooseCover(e.Player,
+                game.HandlePlayerChooseCover(
+                    e.Player,
                     Utils.ParsePosition(src),
-                    Utils.ParsePosition(dst));
+                    Utils.ParsePosition(dst)
+                );
             };
 
             game.PlayerChooseDuck += (s, e) =>
             {
-                Utils.WriteGameMaster("Quelle carte souhaitez‑vous déplacer ?");
+                Utils.WriteGameMaster("Quelle carte souhaitez-vous déplacer ? (ex : C3)");
                 var src = ReadLine()!;
-                Utils.WriteGameMaster("Où souhaitez‑vous la déplacer ?");
+                Utils.WriteGameMaster("Où souhaitez-vous la déplacer ? (ex : D4)");
                 var dst = ReadLine()!;
-                game.HandlePlayerChooseDuck(e.Player,
+                game.HandlePlayerChooseDuck(
+                    e.Player,
                     Utils.ParsePosition(src),
-                    Utils.ParsePosition(dst));
+                    Utils.ParsePosition(dst)
+                );
             };
 
             game.PlayerChooseShowPlayersGrid += (s, e) =>
@@ -157,7 +225,9 @@ namespace ConsoleApp
             };
 
             game.PlayerChooseShowScores += (s, e) =>
+            {
                 Utils.DisplayPlayerScores(e.Players);
+            };
 
             game.PlayerChooseQuit += (s, e) =>
             {
@@ -175,10 +245,10 @@ namespace ConsoleApp
             {
                 var handler = new ErrorHandler(e.Error);
                 Utils.WriteError(handler.Handle());
-                WriteLine("Appuyez sur une touche pour continuer...");
+                WriteLine("Appuyez sur une touche pour continuer…");
                 ReadKey(true);
             };
         }
+
     }
 }
-
