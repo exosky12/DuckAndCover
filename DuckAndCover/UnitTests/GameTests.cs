@@ -446,7 +446,7 @@ public class GameTests
         var game = new Game(new ClassicRules());
         var card = new DeckCard(Bonus.Max, 5);
 
-        int result = game.GetEffectiveDeckCardNumber(player, card);
+        int result = Game.GetEffectiveDeckCardNumber(player, card);
 
         Assert.Equal(20, result);
     }
@@ -457,7 +457,7 @@ public class GameTests
         var game = SetupSimpleGame();
         var player = game.CurrentPlayer;
 
-        Assert.Throws<InvalidOperationException>(() => game.GetEffectiveDeckCardNumber(player, null));
+        Assert.Throws<InvalidOperationException>(() => Game.GetEffectiveDeckCardNumber(player, null));
     }
 
     [Fact]
@@ -467,7 +467,7 @@ public class GameTests
         var player = game.CurrentPlayer;
         var card = new DeckCard(Bonus.None, 5);
 
-        int result = game.GetEffectiveDeckCardNumber(player, card);
+        int result = Game.GetEffectiveDeckCardNumber(player, card);
 
         Assert.Equal(5, result);
     }
@@ -533,7 +533,7 @@ public class GameTests
         player.Grid.GameCardsGrid.Clear();
         player.Grid.GameCardsGrid.Add(card);
 
-        var result = game.GetValidDuckTargetPositions(player, position, new DeckCard(Bonus.None, 1));
+        var result = Game.GetValidDuckTargetPositions(player, position, new DeckCard(Bonus.None, 1));
 
         Assert.Empty(result);
     }

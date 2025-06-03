@@ -530,7 +530,7 @@ public partial class GamePage : ContentPage
             }
 
             int effectiveDeckCardNumber =
-                GameManager.GetEffectiveDeckCardNumber(GameManager.CurrentPlayer, GameManager.CurrentDeckCard);
+                Game.GetEffectiveDeckCardNumber(GameManager.CurrentPlayer, GameManager.CurrentDeckCard);
 
             if (_isWaitingForCoverTarget)
             {
@@ -575,7 +575,7 @@ public partial class GamePage : ContentPage
                     }
 
                     _selectedCard = card;
-                    _validDuckTargets = GameManager.GetValidDuckTargetPositions(GameManager.CurrentPlayer,
+                    _validDuckTargets = Game.GetValidDuckTargetPositions(GameManager.CurrentPlayer,
                         _selectedCard.Position, GameManager.CurrentDeckCard);
                     LoadGrid();
                     InstructionsLabel.Text = "DUCK: Sélectionnez la CASE de destination.";
@@ -642,7 +642,7 @@ public partial class GamePage : ContentPage
             {
                 CurrentCardFrame.IsVisible = true;
                 int effectiveNumber =
-                    GameManager.GetEffectiveDeckCardNumber(GameManager.CurrentPlayer, GameManager.CurrentDeckCard);
+                    Game.GetEffectiveDeckCardNumber(GameManager.CurrentPlayer, GameManager.CurrentDeckCard);
                 string bonusText = "";
                 Color borderColor = Colors.SeaGreen;
                 switch (GameManager.CurrentDeckCard.Bonus)

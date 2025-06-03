@@ -23,17 +23,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/Utils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/GameSettingsDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/GameSettingsDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Deck.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
-    </list>
+    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,6 +95,7 @@
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Player.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/BlitzRules.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/ClassicRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/ClassicRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
@@ -362,14 +353,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00023" summary="fix(ExcludeFromCodeCoverage)">
-      <option name="closed" value="true" />
-      <created>1747170715214</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1747170715214</updated>
     </task>
     <task id="LOCAL-00024" summary="refactor(Deck Model): change first deck card if it's bonus is AGAIN">
       <option name="closed" value="true" />
@@ -755,7 +738,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748971157920</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="refactor: improve code consistency and readability by renaming DTO and updating method signatures">
+      <option name="closed" value="true" />
+      <created>1748974163723</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1748974163723</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -816,7 +807,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat (PersistenceJSON): add logic" />
     <MESSAGE value="fix errors" />
     <MESSAGE value=" ;" />
     <MESSAGE value="feat(Fake and Json Persistance): Job done !" />
@@ -841,7 +831,8 @@
     <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
     <MESSAGE value="fix(DeckCard MAX Bonus): attribute the correct card number when the deck card's bonus is MAX" />
     <MESSAGE value="feat(persistence): switch to JSON-based data persistence and update player scores property" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(persistence): switch to JSON-based data persistence and update player scores property" />
+    <MESSAGE value="refactor: improve code consistency and readability by renaming DTO and updating method signatures" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: improve code consistency and readability by renaming DTO and updating method signatures" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
