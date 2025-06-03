@@ -16,7 +16,7 @@ namespace Models.Game
         public bool HasPlayed { get; set; }
         
         [DataMember]
-        public List<int> Scores { get; } = new List<int>();
+        public List<int> Scores { get; set; } = new List<int>();
         
         public int TotalScore => Scores.Sum();
 

@@ -22,7 +22,7 @@ namespace DuckAndCover
         {
             InitializeComponent();
 
-            DataPersistence = new FakePersistency();
+            DataPersistence = new JsonPersistency();
 
             var (players, games) = DataPersistence.LoadData();
 
