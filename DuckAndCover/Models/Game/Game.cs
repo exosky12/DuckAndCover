@@ -323,6 +323,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             catch (Error e)
             {
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                throw;
             }
         }
 
@@ -344,6 +345,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             catch (Error e)
             {
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                throw;
             }
         }
         
