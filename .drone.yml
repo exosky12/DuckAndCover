@@ -9,6 +9,8 @@ trigger:
 steps:
   - name: Build
     image: mcr.microsoft.com/dotnet/sdk:9.0
+    environment:
+      CI: "true"  # Variable pour forcer les projets à ne pas cibler Android
     commands:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverWithoutMAUI.sln
@@ -18,7 +20,8 @@ steps:
   - name: BuildMAUI
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
     environment:
-      CI: "true"  # Variable pour forcer Android seulement
+      CI: "true"
+      BUILD_MAUI: "true"  # Variable pour activer les targets mobiles
     commands:
       - cd DuckAndCover/
       # Mise à jour des workloads si nécessaire
