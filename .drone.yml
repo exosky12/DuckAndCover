@@ -57,4 +57,4 @@ steps:
       - name: docs
         path: /docs
     commands:
-      - /entrypoint.sh
+      - /entrypoint.sh -l Documentation/Doxygen -t doxygen
