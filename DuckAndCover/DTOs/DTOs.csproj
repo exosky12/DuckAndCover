@@ -1,9 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <!-- Configuration par défaut (sans MAUI) -->
+        <TargetFramework Condition="'$(BUILD_MAUI)' != 'true'">net9.0</TargetFramework>
+        
+        <!-- Configuration MAUI pour CI (Linux) - Android seulement -->
+        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('Linux'))">net9.0;net9.0-android</TargetFrameworks>
+        
+        <!-- Configuration MAUI pour macOS - tous les targets mobiles -->
+        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('OSX'))">net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+        
+        <!-- Configuration MAUI pour Windows -->
+        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('Windows'))">net9.0;net9.0-android</TargetFrameworks>
+        
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <!-- Propriétés spécifiques aux plateformes mobiles -->
+    <PropertyGroup Condition="$(TargetFramework.Contains('-android')) OR $(TargetFramework.Contains('-ios')) OR $(TargetFramework.Contains('-maccatalyst'))">
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     </PropertyGroup>
 
 </Project>
