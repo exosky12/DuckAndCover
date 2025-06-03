@@ -1,10 +1,7 @@
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
 using Models.Game;
 using Models.Rules;
+using Models.Interfaces;
 using DataPersistence;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Diagnostics;
 
 namespace DuckAndCover
@@ -14,7 +11,7 @@ namespace DuckAndCover
         /// <summary>
         /// Persistance de l’historique des parties terminées.
         /// </summary>
-        public JsonPersistency DataPersistence { get; }
+        public IDataPersistence DataPersistence { get; }
 
         /// <summary>
         /// GameManager partagé par toute l’application (MAUI).
@@ -25,7 +22,7 @@ namespace DuckAndCover
         {
             InitializeComponent();
 
-            DataPersistence = new JsonPersistency();
+            DataPersistence = new FakePersistency();
 
             var (players, games) = DataPersistence.LoadData();
 
