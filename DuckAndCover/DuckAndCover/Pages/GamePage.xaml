@@ -72,49 +72,33 @@
             </Border>
         </ScrollView>
 
-        <Border x:Name="CurrentCardFrame"
-                Grid.Row="3"
-                IsVisible="False"
-                Background="{SolidColorBrush White}"
-                Stroke="#E0E0E0"
-                StrokeThickness="1"
-                Padding="25"
-                Margin="20,15,20,0"
-                HorizontalOptions="Center">
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="20"/>
-            </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="Black" Opacity="0.3" Offset="3,3" Radius="5"/>
-            </Border.Shadow>
+        <Frame Grid.Row="3" x:Name="CurrentCardFrame"
+               IsVisible="False"
+               BackgroundColor="#F5F5F5"
+               BorderColor="#E0E0E0"
+               CornerRadius="15"
+               Padding="20"
+               HorizontalOptions="Center">
             <VerticalStackLayout Spacing="15">
                 <Label Text="Carte courante"
-                       FontSize="22"
+                       FontSize="24"
                        FontAttributes="Bold"
                        TextColor="#222222"
                        HorizontalOptions="Center"/>
-                <Border x:Name="CurrentCardBorder"
-                        WidthRequest="130"
-                        HeightRequest="170"
-                        Padding="0"
-                        Background="{SolidColorBrush White}"
-                        Stroke="#E0E0E0"
-                        StrokeThickness="1">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="20"/>
-                    </Border.StrokeShape>
-                    <Border.Shadow>
-                        <Shadow Brush="Black" Opacity="0.3" Offset="2,2" Radius="4"/>
-                    </Border.Shadow>
+                <Frame x:Name="CurrentCardBorder"
+                       WidthRequest="120"
+                       HeightRequest="160"
+                       Padding="0"
+                       CornerRadius="15"
+                       HasShadow="True">
                     <Label x:Name="CurrentCardNumber"
-                           FontSize="52"
+                           FontSize="48"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           TextColor="#333333"/>
-                </Border>
+                           VerticalOptions="Center"/>
+                </Frame>
             </VerticalStackLayout>
-        </Border>
+        </Frame>
 
         <Border Grid.Row="4"
                 Background="{SolidColorBrush White}"

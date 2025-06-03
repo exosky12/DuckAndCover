@@ -8,6 +8,23 @@
     <Color x:Key="BackgroundColor">#F7F3AF</Color>
     <Color x:Key="BorderColor">#F8B229</Color>
 
+    <LinearGradientBrush x:Key="ButtonGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FFD93B" Offset="0" />
+        <GradientStop Color="#FF8C00" Offset="1" />
+    </LinearGradientBrush>
+    
+    <Style TargetType="Border" x:Key="CreditCardStyle">
+        <Setter Property="Stroke" Value="{StaticResource BorderColor}" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 30" />
+        <Setter Property="Padding" Value="25" />
+        <Setter Property="BackgroundColor" Value="#CCFFFFFF" />
+        <Setter Property="Shadow">
+            <Shadow Brush="Orange" Radius="15" Opacity="0.4" Offset="5,5"/>
+        </Setter>
+    </Style>
+
+
     <Style x:Key="LabelRegle"
            TargetType="Label">
         <Setter Property="FontFamily"
@@ -30,7 +47,6 @@
         <Setter Property="TextColor"
                 Value="Black" />
     </Style>
-
 
 
     <ControlTemplate x:Key="BackgroundTemplate">
@@ -56,33 +72,33 @@
         <Setter Property="VerticalOptions" Value="Center" />
         <Setter Property="BorderWidth" Value="2" />
     </Style>
-        
-        <Style x:Key="SectionTitleStyle" TargetType="Label">
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="#333333" />
-                <Setter Property="Margin" Value="0,0,0,8" />
-        </Style>
-            
-        <Style x:Key="InputEntryStyle" TargetType="Entry">
-                <Setter Property="BackgroundColor" Value="White" />
-                <Setter Property="HeightRequest" Value="55" />
-                <Setter Property="FontSize" Value="16" />
-                <Setter Property="Margin" Value="0,0,0,12" />
-                <Setter Property="PlaceholderColor" Value="#AAAAAA" />
-                <Setter Property="TextColor" Value="#333333" />
-        </Style>
-        
-        <Style x:Key="BorderStyle" TargetType="Border">
-                <Setter Property="StrokeThickness" Value="5" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 20,20,20,20" />
-                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
-                <Setter Property="Stroke" Value="#F8B229" />
-        </Style>
-            
-        <Style x:Key="SectionContainerStyle" TargetType="StackLayout">
-                <Setter Property="Spacing" Value="4" />
-                <Setter Property="Margin" Value="0,12,0,12" />
-                <Setter Property="WidthRequest" Value="500" />
-        </Style>
+
+    <Style x:Key="SectionTitleStyle" TargetType="Label">
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="TextColor" Value="#333333" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
+
+    <Style x:Key="InputEntryStyle" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="HeightRequest" Value="55" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Margin" Value="0,0,0,12" />
+        <Setter Property="PlaceholderColor" Value="#AAAAAA" />
+        <Setter Property="TextColor" Value="#333333" />
+    </Style>
+
+    <Style x:Key="BorderStyle" TargetType="Border">
+        <Setter Property="StrokeThickness" Value="5" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 20,20,20,20" />
+        <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
+        <Setter Property="Stroke" Value="#F8B229" />
+    </Style>
+
+    <Style x:Key="SectionContainerStyle" TargetType="StackLayout">
+        <Setter Property="Spacing" Value="4" />
+        <Setter Property="Margin" Value="0,12,0,12" />
+        <Setter Property="WidthRequest" Value="500" />
+    </Style>
 </ResourceDictionary>

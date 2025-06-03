@@ -7,7 +7,7 @@ namespace DuckAndCover.Pages;
 
 public partial class GamePage : ContentPage
 {
-    public Game GameManager => ((Application.Current as App)?.GameManager)!;
+    public Game GameManager => (Application.Current as App)?.GameManager;
 
     private GameCard? _selectedCard;
     private GameCard? _cardToCover;
@@ -19,6 +19,7 @@ public partial class GamePage : ContentPage
     {
         InitializeComponent();
         LoadGrid();
+        LoadCurrentCard();
         SubscribeToGameEvents();
         StartGame();
     }
@@ -63,6 +64,16 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
+            if (e.CurrentPlayer == null)
+            {
+                // Gérer le cas où le joueur est null, peut-être afficher un message ou attendre
+                InstructionsLabel.Text = "En attente d'un joueur...";
+                DebugLabel.Text = "CurrentPlayer est null dans OnPlayerChanged.";
+                CurrentCardFrame.IsVisible = false;
+                GameGrid.Children.Clear(); // Vider la grille si pas de joueur
+                return;
+            }
+
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
             DebugLabel.Text = "";
             ResetSelectionStatePartial();
@@ -85,9 +96,19 @@ public partial class GamePage : ContentPage
         ResetSelectionStatePartial();
         LoadGrid();
         LoadCurrentCard();
-        InstructionsLabel.Text = $"Tour de {GameManager.CurrentPlayer.Name}. Choisissez une action.";
+        if (GameManager.CurrentPlayer != null)
+        {
+            InstructionsLabel.Text = $"Tour de {GameManager.CurrentPlayer.Name}. Choisissez une action.";
+        }
+        else
+        {
+            InstructionsLabel.Text = "En attente d'un joueur...";
+        }
     }
 
+    /// <summary>
+    /// Appelé exactement une fois, quand la partie est terminée.
+    /// </summary>
     private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -113,7 +134,7 @@ public partial class GamePage : ContentPage
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            string errorMessage = e.Error.Message;
+            string errorMessage = e.Error?.Message ?? "Une erreur inconnue est survenue.";
             await DisplayAlert("Erreur", errorMessage, "OK");
             ResetSelectionState();
         });
@@ -159,25 +180,24 @@ public partial class GamePage : ContentPage
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            if (e.Players.Count == 0)
+            if (e.Players == null || !e.Players.Any())
             {
                 await DisplayAlert("Scores", "Aucun joueur à afficher les scores.", "OK");
                 return;
             }
 
-            var scoresInfo = string.Join("\n", e.Players
+            var scoresInfo = string.Join("\n", e.Players.Where(p => p != null && p.Scores != null)
                 .Select(p => $"{p.Name}: {p.Scores.LastOrDefault()} points (Total: {p.Scores.Sum()})"));
-
             await DisplayAlert("Scores",
                 string.IsNullOrWhiteSpace(scoresInfo) ? "Aucune information de score disponible." : scoresInfo, "OK");
         });
     }
 
-
     private async void OnPlayerChooseQuit(object? sender, EventArgs e)
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
+            if (GameManager.CurrentPlayer == null || GameManager == null) return;
             bool confirm = await DisplayAlert("Quitter",
                 $"{GameManager.CurrentPlayer.Name} veut quitter la partie. Confirmer ?",
                 "Oui", "Non");
@@ -185,8 +205,11 @@ public partial class GamePage : ContentPage
             if (confirm)
             {
                 GameManager.Quit = true;
-                GameManager
-                    .CheckGameOverCondition();
+                if (GameManager
+                    .CheckGameOverCondition()) // CheckGameOverCondition devrait appeler OnGameIsOver si nécessaire
+                {
+                    // L'événement OnGameIsOver sera déclenché par CheckGameOverCondition si le jeu est terminé.
+                }
             }
         });
     }
@@ -195,6 +218,12 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
+            if (e.CurrentPlayer == null)
+            {
+                InstructionsLabel.Text = "En attente d'un joueur...";
+                return;
+            }
+
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}. Choisissez une action.";
             LoadCurrentCard();
         });
@@ -204,6 +233,7 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(async () =>
         {
+            if (e.ProcessedCard == null) return;
             InstructionsLabel.Text = e.Message;
             LoadCurrentCard();
 
@@ -236,8 +266,12 @@ public partial class GamePage : ContentPage
             GameGrid.ColumnDefinitions.Clear();
 
             var allRelevantPositions = new List<Position>();
+            if (playerGrid.GameCardsGrid != null && playerGrid.GameCardsGrid.Any(c => c != null))
+            {
+                allRelevantPositions.AddRange(playerGrid.GameCardsGrid.Where(c => c != null).Select(c => c.Position));
+            }
 
-            if (_isWaitingForDuckTarget && _selectedCard != null &&
+            if (_isWaitingForDuckTarget && _selectedCard != null && _validDuckTargets != null &&
                 _validDuckTargets.Any())
             {
                 allRelevantPositions.AddRange(_validDuckTargets);
@@ -273,20 +307,20 @@ public partial class GamePage : ContentPage
             for (int i = 0; i < gridWidth; i++)
                 GameGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(110) });
 
-            for (int rOffset = 0; rOffset < gridHeight; rOffset++)
+            for (int r_offset = 0; r_offset < gridHeight; r_offset++)
             {
-                for (int cOffset = 0; cOffset < gridWidth; cOffset++)
+                for (int c_offset = 0; c_offset < gridWidth; c_offset++)
                 {
-                    int actualRow = bounds.minY + rOffset;
-                    int actualCol = bounds.minX + cOffset;
+                    int actualRow = bounds.minY + r_offset;
+                    int actualCol = bounds.minX + c_offset;
                     Position currentCellPosition = new Position(actualRow, actualCol);
                     GameCard? cardInCell = playerGrid.GetCard(currentCellPosition);
 
                     if (cardInCell != null)
                     {
                         var cardView = CreateCardView(cardInCell);
-                        Microsoft.Maui.Controls.Grid.SetRow(cardView, rOffset);
-                        Microsoft.Maui.Controls.Grid.SetColumn(cardView, cOffset);
+                        Microsoft.Maui.Controls.Grid.SetRow(cardView, r_offset);
+                        Microsoft.Maui.Controls.Grid.SetColumn(cardView, c_offset);
                         GameGrid.Children.Add(cardView);
                     }
                     else
@@ -295,8 +329,8 @@ public partial class GamePage : ContentPage
                             _validDuckTargets.Contains(currentCellPosition))
                         {
                             var duckTargetView = CreateValidDuckTargetCell(currentCellPosition);
-                            Microsoft.Maui.Controls.Grid.SetRow(duckTargetView, rOffset);
-                            Microsoft.Maui.Controls.Grid.SetColumn(duckTargetView, cOffset);
+                            Microsoft.Maui.Controls.Grid.SetRow(duckTargetView, r_offset);
+                            Microsoft.Maui.Controls.Grid.SetColumn(duckTargetView, c_offset);
                             GameGrid.Children.Add(duckTargetView);
                         }
                     }
@@ -305,7 +339,7 @@ public partial class GamePage : ContentPage
 
             GridInfoLabel.Text = $"Grille de {currentPlayer.Name}";
             DebugLabel.Text =
-                $"Cartes: {playerGrid.GameCardsGrid?.Count ?? 0}, Cibles Duck: {_validDuckTargets?.Count ?? 0}";
+                $"Cartes: {playerGrid.GameCardsGrid?.Count(c => c != null) ?? 0}, Cibles Duck: {_validDuckTargets?.Count ?? 0}";
         }
         catch (Exception ex)
         {
@@ -319,11 +353,11 @@ public partial class GamePage : ContentPage
         var border = new Border
         {
             Stroke = Colors.DodgerBlue,
-            Background = new SolidColorBrush(Colors.LightSkyBlue.WithAlpha(0.7f)),
+            Background = Colors.LightSkyBlue.WithAlpha(0.7f),
             StrokeThickness = 1,
             StrokeShape = new RoundRectangle()
             {
-                CornerRadius = new CornerRadius(10)
+                CornerRadius = new CornerRadius(15)
             },
             WidthRequest = 100,
             HeightRequest = 130,
@@ -342,6 +376,7 @@ public partial class GamePage : ContentPage
         var tapGesture = new TapGestureRecognizer();
         tapGesture.Tapped += (s, e) => OnDuckTargetCellTapped(position);
         border.GestureRecognizers.Add(tapGesture);
+
         return border;
     }
 
@@ -349,7 +384,7 @@ public partial class GamePage : ContentPage
     {
         try
         {
-            if (_selectedCard == null || !_isWaitingForDuckTarget)
+            if (_selectedCard == null || !_isWaitingForDuckTarget || GameManager.CurrentPlayer == null)
                 return;
             GameManager.HandlePlayerChooseDuck(GameManager.CurrentPlayer, _selectedCard.Position, targetPosition);
         }
@@ -426,6 +461,7 @@ public partial class GamePage : ContentPage
         return border;
     }
 
+
     private Color GetSplashColor(int splash) => splash switch
     {
         0 => Color.FromArgb("#FFFFFF"), 1 => Color.FromArgb("#FFD700"), 2 => Color.FromArgb("#B8860B"),
@@ -441,6 +477,7 @@ public partial class GamePage : ContentPage
     {
         try
         {
+            if (GameManager.CurrentPlayer == null) return;
             GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "3");
         }
         catch (Exception ex)
@@ -489,6 +526,12 @@ public partial class GamePage : ContentPage
     {
         try
         {
+            if (GameManager.CurrentDeckCard == null || GameManager.CurrentPlayer == null)
+            {
+                await DisplayAlert("Info", "Aucune carte de deck active ou joueur non défini.", "OK");
+                return;
+            }
+
             int effectiveDeckCardNumber =
                 GameManager.GetEffectiveDeckCardNumber(GameManager.CurrentPlayer, GameManager.CurrentDeckCard);
 
@@ -555,11 +598,50 @@ public partial class GamePage : ContentPage
         }
     }
 
+    private async void OnShowGridsClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            if (GameManager.CurrentPlayer == null) return;
+            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "4");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur Grilles", ex.Message, "OK");
+        }
+    }
+
+    private async void OnShowScoresClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            if (GameManager.CurrentPlayer == null) return;
+            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "5");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur Scores", ex.Message, "OK");
+        }
+    }
+
+    private async void OnQuitClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            if (GameManager.CurrentPlayer == null) return;
+            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "6");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur Quitter", ex.Message, "OK");
+        }
+    }
+
     private void LoadCurrentCard()
     {
         try
         {
-            if (GameManager?.CurrentDeckCard != null)
+            if (GameManager?.CurrentDeckCard != null && GameManager.CurrentPlayer != null)
             {
                 CurrentCardFrame.IsVisible = true;
                 int effectiveNumber =
