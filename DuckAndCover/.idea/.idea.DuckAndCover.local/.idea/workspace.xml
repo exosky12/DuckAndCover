@@ -23,18 +23,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/Credits.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/Credits.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/LeaderboardPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/LeaderboardPage.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/LeaderboardPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/LeaderboardPage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Resources/Styles/GlobalStyles.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Resources/Styles/GlobalStyles.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Views/Button.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Views/Button.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Views/Credit.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Views/Credit.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,26 +142,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.DuckAndCover.local: Windows Machine.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.ConsoleApp.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;f13ac3f2-de1b-496b-9677-a8a288b628c0.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;macOS.DuckAndCover.local.executor&quot;: &quot;Run&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.DuckAndCover.local: Windows Machine.executor": "Debug",
+    ".NET Project.ConsoleApp.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
+    "git-widget-placeholder": "dev",
+    "macOS.DuckAndCover.local.executor": "Debug",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="macOS.DuckAndCover.local">
     <configuration name="ConsoleApp" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/ConsoleApp/bin/Debug/net9.0-android/ConsoleApp.dll" />
@@ -852,6 +844,10 @@
           </properties>
           <option name="timeStamp" value="6" />
         </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="Models.Exceptions.Error" breakIfHandledByUserCode="true" displayValue="Error" namespaceName="Models.Exceptions" />
+          <option name="timeStamp" value="9" />
+        </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs</url>
           <line>21</line>
@@ -867,13 +863,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Models/Game/Game.cs</url>
-          <line>400</line>
+          <line>402</line>
           <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
             <startOffsets>
-              <option value="16393" />
+              <option value="16439" />
             </startOffsets>
             <endOffsets>
-              <option value="16431" />
+              <option value="16477" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />
