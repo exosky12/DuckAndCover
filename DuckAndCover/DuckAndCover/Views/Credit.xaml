@@ -1,28 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         x:Class="DuckAndCover.Views.Credit"
-        
-
         Grid.Row="{Binding Row}"
         Grid.Column="{Binding Column}"
-        Style="{StaticResource BorderStyle}"
-        Padding="20">
-    <HorizontalStackLayout Spacing="15"
+        HeightRequest="180"
+        WidthRequest="720"
+        Padding="25"
+        BackgroundColor="#CCFFFFFF"
+        Stroke="{StaticResource BorderColor}"
+        StrokeThickness="2"
+        StrokeShape="RoundRectangle 30">
+
+    <Border.Shadow>
+        <Shadow Brush="#FF8C00"
+                Offset="5,5"
+                Radius="20"
+                Opacity="0.3" />
+    </Border.Shadow>
+
+    <HorizontalStackLayout Spacing="20"
                            VerticalOptions="Center"
                            HorizontalOptions="Center">
+
         <Label Text="{Binding Emoji}"
-               FontSize="32"
+               FontSize="64"
+               Scale="1.1"
+               TranslationY="-5"
+               Opacity="0.95"
                VerticalOptions="Center"
                HorizontalOptions="Center" />
-        <VerticalStackLayout Spacing="5"
+
+        <VerticalStackLayout Spacing="8"
                              VerticalOptions="Center">
+
             <Label Text="{Binding Name}"
-                   FontSize="20"
-                   TextColor="Black"
+                   FontFamily="Clash"
+                   FontSize="26"
+                   TextColor="{StaticResource PrimaryColor}"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+            <Label Text="{Binding Role}"
+                   FontFamily="KalamRegular"
+                   FontSize="18"
+                   TextColor="#666666"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
     </HorizontalStackLayout>
 </Border>

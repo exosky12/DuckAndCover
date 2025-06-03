@@ -37,10 +37,10 @@
                            FontAttributes="Italic"
                            HorizontalOptions="Center" />
 
-                    <Grid ColumnDefinitions="*,*"
+                    <Grid ColumnDefinitions="*"
                           RowDefinitions="Auto,Auto"
                           RowSpacing="20"
-                          ColumnSpacing="20">
+                          ColumnSpacing="0">
 
                         <components:Credit
                             Row="0"
@@ -48,10 +48,9 @@
                             Emoji="🎭"
                             Name="Merienne Jules" />
 
-
                         <components:Credit
-                            Row="0"
-                            Column="1"
+                            Row="1"
+                            Column="0"
                             Emoji="💡"
                             Name="Barrère Jordy" />
 
