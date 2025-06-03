@@ -25,19 +25,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp/ConsoleApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/ConsoleApp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/DeckGeneratorTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/DeckGeneratorTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/GridTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GridTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/UnitTests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/UnitTests.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -364,14 +353,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00019" summary="feat(Player Tests): Cover_CoversCardCorrectly, Duck_MoveCardSuccess, Duck_DoesNotMoveCardIfNotAdjacent">
-      <option name="closed" value="true" />
-      <created>1747167639373</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1747167639373</updated>
     </task>
     <task id="LOCAL-00020" summary="feat(ClassicRules Tests): test 100% of ClassicRules class">
       <option name="closed" value="true" />
@@ -757,7 +738,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748950368622</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="refactor(rules): clean up comments and whitespace in ClassicRules and related tests">
+      <option name="closed" value="true" />
+      <created>1748952462652</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1748952462652</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -818,7 +807,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix(uuid generation)" />
     <MESSAGE value="refacotr(GameResumed and GameStarted events): delete" />
     <MESSAGE value="feat(game menu): add dto" />
     <MESSAGE value="." />
@@ -843,7 +831,8 @@
     <MESSAGE value="refactor(game): optimize player score handling and clean up unused namespaces" />
     <MESSAGE value="feat(project): update target framework to net9.0-android for all projects" />
     <MESSAGE value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
+    <MESSAGE value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -894,10 +883,10 @@
           <line>402</line>
           <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
             <startOffsets>
-              <option value="16439" />
+              <option value="16431" />
             </startOffsets>
             <endOffsets>
-              <option value="16477" />
+              <option value="16469" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />

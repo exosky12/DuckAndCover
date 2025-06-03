@@ -450,4 +450,109 @@ public class GameTests
 
         Assert.Equal(20, result);
     }
+
+    [Fact]
+    public void GetEffectiveDeckCardNumber_Throws_WhenDeckCardIsNull()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+
+        Assert.Throws<InvalidOperationException>(() => game.GetEffectiveDeckCardNumber(player, null));
+    }
+
+    [Fact]
+    public void GetEffectiveDeckCardNumber_ReturnsCardNumber_WhenBonusNotMax()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+        var card = new DeckCard(Bonus.None, 5);
+
+        int result = game.GetEffectiveDeckCardNumber(player, card);
+
+        Assert.Equal(5, result);
+    }
+
+    [Fact]
+    public void ProcessCardEffect_HandlesMaxBonus_WithEmptyGrid()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+        var card = new DeckCard(Bonus.Max, 5);
+        bool effectProcessed = false;
+
+        game.CardEffectProcessed += (s, e) =>
+        {
+            effectProcessed = true;
+            Assert.Contains("MAX", e.Message);
+        };
+
+        game.ProcessCardEffect(card, player);
+
+        Assert.True(effectProcessed);
+    }
+
+    [Fact]
+    public void ProcessTurn_HandlesAllPlayersPlayed()
+    {
+        var game = SetupSimpleGame();
+        game.Players.ForEach(p => p.HasPlayed = true);
+        bool playerChanged = false;
+
+        game.PlayerChanged += (s, e) => playerChanged = true;
+
+        game.ProcessTurn();
+
+        Assert.True(playerChanged);
+        Assert.All(game.Players, p => Assert.False(p.HasPlayed));
+        Assert.All(game.Players, p => Assert.False(p.HasSkipped));
+    }
+
+
+    [Fact]
+    public void HandlePlayerChoice_Throws_WhenNotPlayerTurn()
+    {
+        var game = SetupSimpleGame();
+        var otherPlayer = new Player("Other", 0, new List<int>(), false, false, new Grid());
+        bool errorOccurred = false;
+
+        game.ErrorOccurred += (s, e) => errorOccurred = true;
+
+        game.HandlePlayerChoice(otherPlayer, "1");
+
+        Assert.True(errorOccurred);
+    }
+
+    [Fact]
+    public void GetValidDuckTargetPositions_ReturnsEmpty_WhenOnlyOneCard()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+        var card = new GameCard(1, 1);
+        var position = new Position(1, 1);
+        player.Grid.SetCard(position, card);
+        player.Grid.GameCardsGrid.Clear();
+        player.Grid.GameCardsGrid.Add(card);
+
+        var result = game.GetValidDuckTargetPositions(player, position, new DeckCard(Bonus.None, 1));
+
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void SaveGame_UpdatesExistingGame()
+    {
+        var game = new Game(new ClassicRules());
+        game.Id = "test";
+        game.Games = new ObservableCollection<Game> { game };
+        game.CardsSkipped = 5;
+        game.LastGameFinishStatus = true;
+        game.LastNumber = 42;
+
+        game.SaveGame();
+
+        var savedGame = game.Games.First(g => g.Id == "test");
+        Assert.Equal(5, savedGame.CardsSkipped);
+        Assert.True(savedGame.LastGameFinishStatus);
+        Assert.Equal(42, savedGame.LastNumber);
+    }
 }
