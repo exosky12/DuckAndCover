@@ -25,7 +25,6 @@ public class ClassicRulesTests
         grid.GameCardsGrid.Add(card);
         var newPos = new Position(1, 2);
 
-        // Ajouter une carte à la nouvelle position
         grid.GameCardsGrid.Add(new GameCard(3, 8) { Position = newPos });
 
         var rules = new ClassicRules();
@@ -173,7 +172,7 @@ public class ClassicRulesTests
         var grid = new Grid();
         var card = new GameCard(7, 5) { Position = new Position(1, 1) };
         grid.GameCardsGrid.Add(card);
-        var newPos = new Position(3, 3); // Position non adjacente
+        var newPos = new Position(3, 3);
 
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 5);

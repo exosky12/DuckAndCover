@@ -66,11 +66,10 @@ public partial class GamePage : ContentPage
         {
             if (e.CurrentPlayer == null)
             {
-                // Gérer le cas où le joueur est null, peut-être afficher un message ou attendre
                 InstructionsLabel.Text = "En attente d'un joueur...";
                 DebugLabel.Text = "CurrentPlayer est null dans OnPlayerChanged.";
                 CurrentCardFrame.IsVisible = false;
-                GameGrid.Children.Clear(); // Vider la grille si pas de joueur
+                GameGrid.Children.Clear(); 
                 return;
             }
 
@@ -105,10 +104,7 @@ public partial class GamePage : ContentPage
             InstructionsLabel.Text = "En attente d'un joueur...";
         }
     }
-
-    /// <summary>
-    /// Appelé exactement une fois, quand la partie est terminée.
-    /// </summary>
+    
     private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -206,7 +202,7 @@ public partial class GamePage : ContentPage
             {
                 GameManager.Quit = true;
                 if (GameManager
-                    .CheckGameOverCondition()) // CheckGameOverCondition devrait appeler OnGameIsOver si nécessaire
+                    .CheckGameOverCondition()) 
                 {
                     // L'événement OnGameIsOver sera déclenché par CheckGameOverCondition si le jeu est terminé.
                 }
@@ -285,7 +281,7 @@ public partial class GamePage : ContentPage
             }
 
             var distinctPositions = allRelevantPositions.Distinct().ToList();
-            if (!distinctPositions.Any()) // Double vérification après distinct
+            if (!distinctPositions.Any())
             {
                 GridInfoLabel.Text = $"Grille de {currentPlayer.Name} (vide après distinct)";
                 return;

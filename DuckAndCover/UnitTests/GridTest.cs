@@ -3,9 +3,6 @@ namespace UnitTests;
 
 public class GridTest
 {
-    /* Il reste à tester:
-        - Grid constructeur (nécessite de test le générateur avec injection de dépendance et FakeGenerator)
-     */
     [Fact]
     public void TestGridSize()
     {

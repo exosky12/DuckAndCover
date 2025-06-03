@@ -21,7 +21,7 @@ namespace Models.Generators
         {
             var positionsCopy = new List<Position>(AllPositions);
             var shuffledGrid =
-                Grid.OrderBy(_ => RandomNumberGenerator.GetInt32(int.MaxValue)).ToList(); // Mélange sécurisé
+                Grid.OrderBy(_ => RandomNumberGenerator.GetInt32(int.MaxValue)).ToList();
 
             for (int i = 0; i < shuffledGrid.Count && positionsCopy.Count > 0; i++)
             {
