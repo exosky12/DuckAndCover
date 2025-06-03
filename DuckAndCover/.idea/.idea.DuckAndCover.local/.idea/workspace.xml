@@ -17,15 +17,13 @@
     <projectFile profileName="Windows Machine">DuckAndCover/DuckAndCover.local.csproj</projectFile>
     <projectFile kind="XamarinAndroid">Models/Models.csproj</projectFile>
     <projectFile kind="XamarinIOS">Models/Models.csproj</projectFile>
+    <projectFile kind="XamarinAndroid">UnitTests/UnitTests.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +58,10 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Utils.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DTOs/obj/Debug/net9.0-android/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/AppShell.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/AppShell.xaml.cs" root0="FORCE_HIGHLIGHTING" />
@@ -68,6 +69,8 @@
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Credits.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/Pages/GamePage.xaml.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/Pages/GamePage.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -91,6 +94,7 @@
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/Error.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Game/Game.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Pages/GamePage.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
@@ -118,6 +122,7 @@
       <facet id="DataPersistence/invalid/Android Facet - DataPersistence" />
       <facet id="DuckAndCover.local/invalid/Android Facet - DuckAndCover.local" />
       <facet id="Models/invalid/Android Facet - Models" />
+      <facet id="UnitTests/invalid/Android Facet - UnitTests" />
     </ignored-facets>
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -151,8 +156,8 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
-    "git-widget-placeholder": "dev",
-    "macOS.DuckAndCover.local.executor": "Debug",
+    "git-widget-placeholder": "master",
+    "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -246,6 +251,15 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="UnitTests" type="XamarinAndroidProject" factoryName="Xamarin.Android">
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/UnitTests/UnitTests.csproj" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="DEPLOY_BEHAVIOUR_NAME" value="Default" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
     <configuration name="DTOs" type="XamarinIOSProject" factoryName="Xamarin.iOS">
       <option name="PROJECT_PATH" value="$PROJECT_DIR$/DTOs/DTOs.csproj" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -290,6 +304,7 @@
     <list>
       <item itemvalue=".NET Launch Settings Profile.DuckAndCover.local: Windows Machine" />
       <item itemvalue=".NET Project.ConsoleApp" />
+      <item itemvalue="Android.UnitTests" />
       <item itemvalue="Android.DataPersistence" />
       <item itemvalue="Android.Models" />
       <item itemvalue="Android.ConsoleApp" />
@@ -336,38 +351,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00017" summary="refactor(ConsoleAPP): Extract nested ternary operation in DisplayCard">
-      <option name="closed" value="true" />
-      <created>1747166771691</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1747166771691</updated>
-    </task>
-    <task id="LOCAL-00018" summary="feat(Position Tests): TestPositionEqualsNull, TestPositionEqualsDifferentType, TestPositionGetHashCode, TestPositionGetHashCodeDifferentPositions">
-      <option name="closed" value="true" />
-      <created>1747167605291</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1747167605291</updated>
-    </task>
-    <task id="LOCAL-00019" summary="feat(Player Tests): Cover_CoversCardCorrectly, Duck_MoveCardSuccess, Duck_DoesNotMoveCardIfNotAdjacent">
-      <option name="closed" value="true" />
-      <created>1747167639373</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1747167639373</updated>
-    </task>
-    <task id="LOCAL-00020" summary="feat(ClassicRules Tests): test 100% of ClassicRules class">
-      <option name="closed" value="true" />
-      <created>1747168393080</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1747168393080</updated>
     </task>
     <task id="LOCAL-00021" summary="refactor(Game Model): remove comment">
       <option name="closed" value="true" />
@@ -729,7 +712,39 @@
       <option name="project" value="LOCAL" />
       <updated>1748876652948</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="feat(project): update target framework to net9.0-android for all projects">
+      <option name="closed" value="true" />
+      <created>1748950249504</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1748950249504</updated>
+    </task>
+    <task id="LOCAL-00067" summary="feat(project): update target framework from net9.0-android to net9.0 for all projects">
+      <option name="closed" value="true" />
+      <created>1748950368622</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1748950368622</updated>
+    </task>
+    <task id="LOCAL-00068" summary="refactor(rules): clean up comments and whitespace in ClassicRules and related tests">
+      <option name="closed" value="true" />
+      <created>1748952462652</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1748952462652</updated>
+    </task>
+    <task id="LOCAL-00069" summary="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic">
+      <option name="closed" value="true" />
+      <created>1748953263757</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1748953263757</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -790,10 +805,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(errors): add error DeckEmpty" />
-    <MESSAGE value="feat(error handling): correct mistackes in error handling player choices" />
-    <MESSAGE value="fix(uuid generation)" />
-    <MESSAGE value="refacotr(GameResumed and GameStarted events): delete" />
     <MESSAGE value="feat(game menu): add dto" />
     <MESSAGE value="." />
     <MESSAGE value="feat (PersistenceJSON): add logic" />
@@ -815,7 +826,11 @@
     <MESSAGE value="fix(game): correct player reference in max effect message" />
     <MESSAGE value="feat(game): enhance game structure with improved data persistence and code documentation" />
     <MESSAGE value="refactor(game): optimize player score handling and clean up unused namespaces" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(game): optimize player score handling and clean up unused namespaces" />
+    <MESSAGE value="feat(project): update target framework to net9.0-android for all projects" />
+    <MESSAGE value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
+    <MESSAGE value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
+    <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -851,25 +866,25 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs</url>
           <line>21</line>
-          <properties documentPath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" containingFunctionPresentation="Method 'RulesClicked'">
+          <properties documentPath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" containingFunctionPresentation="Method 'OnAppearing'">
             <startOffsets>
-              <option value="575" />
+              <option value="458" />
             </startOffsets>
             <endOffsets>
-              <option value="615" />
+              <option value="486" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Models/Game/Game.cs</url>
-          <line>402</line>
+          <line>395</line>
           <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
             <startOffsets>
-              <option value="16439" />
+              <option value="16245" />
             </startOffsets>
             <endOffsets>
-              <option value="16477" />
+              <option value="16283" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />

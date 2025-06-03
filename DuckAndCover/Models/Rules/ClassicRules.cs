@@ -3,7 +3,6 @@ using Models.Interfaces;
 using Models.Enums;
 using Models.Game;
 
-
 namespace Models.Rules
 {
     public class ClassicRules : IRules
@@ -15,13 +14,6 @@ namespace Models.Rules
 
         public int NbCardsInDeck => 24;
 
-
-        /* Check si y'a une carte à l'endroit de position --> si non alors retourner false, si oui --> regarder la méthode qui est appelé
-         grâce à funcName:
-         - si duck --> regarder si y'a une carte à newPosition, si oui --> retourner false, si non --> voir si on peut déplacer la carte là bas
-           en regardant si y'a des cartes adjacentes à newPosition
-         - si cover --> regarder si y'a une carte à newPosition, si non --> retourner false, si oui --> retourner true
-         */
         public void TryValidMove(Position position, Position newPosition, Grid grid, string funcName, DeckCard currentDeckCard)
         {
             GameCard? card = grid.GetCard(position);
@@ -57,7 +49,6 @@ namespace Models.Rules
                     throw new Error(ErrorCodes.InvalidFunctionName);
             }
         }
-
 
         public bool IsGameOver(int cardPassed, int stackCounter, bool quit) => cardPassed == 8 || stackCounter == 1 || quit;
 

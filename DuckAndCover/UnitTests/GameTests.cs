@@ -343,4 +343,216 @@ public class GameTests
         game.HandlePlayerChoice(game.CurrentPlayer, "3");
         Assert.True(coinHandled);
     }
+    
+    [Fact]
+    public void StartGame_InitializesGameAndRaisesPlayerChanged()
+    {
+        var players = new List<Player>
+        {
+            new Player("P1", 0, new List<int>(), false, false, new Grid()),
+            new Player("P2", 0, new List<int>(), false, false, new Grid())
+        };
+        var game = new Game(new ClassicRules());
+        game.Players = players;
+        bool playerChanged = false;
+        game.PlayerChanged += (s, e) => playerChanged = true;
+
+        game.StartGame();
+
+        Assert.True(game.IsGameStarted);
+        Assert.True(playerChanged);
+    }
+
+    [Fact]
+    public void ProcessCardEffect_AgainBonus_UsesLastNumber()
+    {
+        var player = new Player("P1", 0, new List<int>(), false, false, new Grid());
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
+        game.LastNumber = 42;
+        var card = new DeckCard(Bonus.Again, 5);
+
+        bool effectProcessed = false;
+        game.CardEffectProcessed += (s, e) =>
+        {
+            effectProcessed = true;
+            Assert.Contains("Again", e.Message);
+            Assert.Equal(42, e.ProcessedCard.Number);
+        };
+
+        game.ProcessCardEffect(card, player);
+
+        Assert.True(effectProcessed);
+    }
+
+    [Fact]
+    public void SavePlayers_AddsScoresToAllPlayers()
+    {
+        var player = new Player("P1", 0, new List<int>(), false, false, new Grid());
+        player.Grid.GameCardsGrid.Add(new GameCard(1, 1));
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
+        game.AllPlayers = new System.Collections.ObjectModel.ObservableCollection<Player>();
+
+        game.SavePlayers();
+
+        Assert.True(player.Scores.Count > 0);
+        Assert.Contains(player, game.AllPlayers);
+    }
+
+    [Fact]
+    public void SaveGame_UpdatesExistingGameOrAddsNew()
+    {
+        var game = new Game(new ClassicRules());
+        game.Id = "test";
+        game.Games = new System.Collections.ObjectModel.ObservableCollection<Game>();
+        game.SaveGame();
+        Assert.Contains(game, game.Games);
+    }
+
+    [Fact]
+    public void CheckAllPlayersSkipped_ResetsHasSkippedAndIncrementsCardsSkipped()
+    {
+        var player1 = new Player("P1", 0, new List<int>(), false, false, new Grid()) { HasSkipped = true };
+        var player2 = new Player("P2", 0, new List<int>(), false, false, new Grid()) { HasSkipped = true };
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player1, player2 };
+
+        game.CheckAllPlayersSkipped();
+
+        Assert.Equal(1, game.CardsSkipped);
+        Assert.All(game.Players, p => Assert.False(p.HasSkipped));
+    }
+
+    [Fact]
+    public void AllPlayersPlayed_ReturnsTrueIfAllPlayed()
+    {
+        var player1 = new Player("P1", 0, new List<int>(), false, false, new Grid());
+        var player2 = new Player("P2", 0, new List<int>(), false, false, new Grid());
+        player1.HasPlayed = true;
+        player2.HasPlayed = true;
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player1, player2 };
+
+        Assert.True(game.AllPlayersPlayed());
+    }
+
+    [Fact]
+    public void GetEffectiveDeckCardNumber_ReturnsMaxIfBonusMax()
+    {
+        var player = new Player("P1", 0, new List<int>(), false, false, new Grid());
+        player.Grid.GameCardsGrid.Add(new GameCard(1, 10));
+        player.Grid.GameCardsGrid.Add(new GameCard(1, 20));
+        var game = new Game(new ClassicRules());
+        var card = new DeckCard(Bonus.Max, 5);
+
+        int result = game.GetEffectiveDeckCardNumber(player, card);
+
+        Assert.Equal(20, result);
+    }
+
+    [Fact]
+    public void GetEffectiveDeckCardNumber_Throws_WhenDeckCardIsNull()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+
+        Assert.Throws<InvalidOperationException>(() => game.GetEffectiveDeckCardNumber(player, null));
+    }
+
+    [Fact]
+    public void GetEffectiveDeckCardNumber_ReturnsCardNumber_WhenBonusNotMax()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+        var card = new DeckCard(Bonus.None, 5);
+
+        int result = game.GetEffectiveDeckCardNumber(player, card);
+
+        Assert.Equal(5, result);
+    }
+
+    [Fact]
+    public void ProcessCardEffect_HandlesMaxBonus_WithEmptyGrid()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+        var card = new DeckCard(Bonus.Max, 5);
+        bool effectProcessed = false;
+
+        game.CardEffectProcessed += (s, e) =>
+        {
+            effectProcessed = true;
+            Assert.Contains("MAX", e.Message);
+        };
+
+        game.ProcessCardEffect(card, player);
+
+        Assert.True(effectProcessed);
+    }
+
+    [Fact]
+    public void ProcessTurn_HandlesAllPlayersPlayed()
+    {
+        var game = SetupSimpleGame();
+        game.Players.ForEach(p => p.HasPlayed = true);
+        bool playerChanged = false;
+
+        game.PlayerChanged += (s, e) => playerChanged = true;
+
+        game.ProcessTurn();
+
+        Assert.True(playerChanged);
+        Assert.All(game.Players, p => Assert.False(p.HasPlayed));
+        Assert.All(game.Players, p => Assert.False(p.HasSkipped));
+    }
+
+
+    [Fact]
+    public void HandlePlayerChoice_Throws_WhenNotPlayerTurn()
+    {
+        var game = SetupSimpleGame();
+        var otherPlayer = new Player("Other", 0, new List<int>(), false, false, new Grid());
+        bool errorOccurred = false;
+
+        game.ErrorOccurred += (s, e) => errorOccurred = true;
+
+        game.HandlePlayerChoice(otherPlayer, "1");
+
+        Assert.True(errorOccurred);
+    }
+
+    [Fact]
+    public void GetValidDuckTargetPositions_ReturnsEmpty_WhenOnlyOneCard()
+    {
+        var game = SetupSimpleGame();
+        var player = game.CurrentPlayer;
+        var card = new GameCard(1, 1);
+        var position = new Position(1, 1);
+        player.Grid.SetCard(position, card);
+        player.Grid.GameCardsGrid.Clear();
+        player.Grid.GameCardsGrid.Add(card);
+
+        var result = game.GetValidDuckTargetPositions(player, position, new DeckCard(Bonus.None, 1));
+
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void SaveGame_UpdatesExistingGame()
+    {
+        var game = new Game(new ClassicRules());
+        game.Id = "test";
+        game.Games = new ObservableCollection<Game> { game };
+        game.CardsSkipped = 5;
+        game.LastGameFinishStatus = true;
+        game.LastNumber = 42;
+
+        game.SaveGame();
+
+        var savedGame = game.Games.First(g => g.Id == "test");
+        Assert.Equal(5, savedGame.CardsSkipped);
+        Assert.True(savedGame.LastGameFinishStatus);
+        Assert.Equal(42, savedGame.LastNumber);
+    }
 }

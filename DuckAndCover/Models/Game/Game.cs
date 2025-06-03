@@ -64,7 +64,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
         [DataMember] public bool LastGameFinishStatus { get; set; }
 
-        public DeckCard CurrentDeckCard { get; private set; } = new DeckCard(Bonus.None, 0);
+        public DeckCard CurrentDeckCard { get; set; } = new DeckCard(Bonus.None, 0);
 
         [DataMember] public int? LastNumber { get; set; }
 
@@ -134,14 +134,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
             if (deckCard.Bonus == Bonus.Max)
             {
-                if (forPlayer.Grid.GameCardsGrid.Any())
-                {
-                    return forPlayer.Grid.GameCardsGrid.Max(c => c.Number);
-                }
-                else
-                {
-                    return deckCard.Number;
-                }
+                deckCard.Number = forPlayer.Grid.GameCardsGrid.Max(c => c.Number);
             }
             return deckCard.Number;
         }

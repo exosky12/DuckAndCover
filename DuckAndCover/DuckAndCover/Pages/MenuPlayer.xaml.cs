@@ -54,7 +54,6 @@ public partial class MenuPlayer : ContentPage
     {
         try
         {
-            // Créer la liste des joueurs
             var players = new List<Player>();
             foreach (var child in PlayerInputsLayout.Children)
             {
@@ -70,7 +69,6 @@ public partial class MenuPlayer : ContentPage
                 return;
             }
 
-            // Créer un nouveau deck
             var deck = new Deck();
             if (deck.Cards.Count == 0)
             {
@@ -78,16 +76,13 @@ public partial class MenuPlayer : ContentPage
                 return;
             }
 
-            // Initialiser le jeu
             GameManager.InitializeGame(
                 id: Guid.NewGuid().ToString("N").Substring(0, 5),
                 players: players,
                 deck: deck,
                 currentDeckCard: deck.Cards.First()
             );
-            
 
-            // Naviguer vers la page de jeu
             await Navigation.PushAsync(new GamePage());
         }
         catch (Exception ex)
