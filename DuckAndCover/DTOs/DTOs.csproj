@@ -1,12 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <!-- Configuration conditionnelle basée sur l'environnement -->
-        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true'">net9.0;net9.0-android</TargetFrameworks>
-        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND '$([MSBuild]::IsOSPlatform('osx'))'">net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
-        
         <!-- Configuration par défaut (sans MAUI) -->
         <TargetFramework Condition="'$(BUILD_MAUI)' != 'true'">net9.0</TargetFramework>
+        
+        <!-- Configuration MAUI pour CI (Linux) - Android seulement -->
+        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('Linux'))">net9.0;net9.0-android</TargetFrameworks>
+        
+        <!-- Configuration MAUI pour macOS - tous les targets mobiles -->
+        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('OSX'))">net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+        
+        <!-- Configuration MAUI pour Windows -->
+        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('Windows'))">net9.0;net9.0-android</TargetFrameworks>
         
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
