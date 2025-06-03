@@ -21,6 +21,8 @@ package "DuckAndCover" #white {
 
         package "Rules" #application {
             class ClassicRules #D6EAF8
+            class BlitzRules #D6EAF8
+            class InsaneRules #D6EAF8
         }
 
         package "Generators" #application {
@@ -59,6 +61,12 @@ package "DuckAndCover" #white {
         }
     }
 
+    package "DataPersistence" #FFE5B4 {
+        class JsonPersistency #D6EAF8
+        class FakePersistency #D6EAF8
+        class DataToPersist #D6EAF8
+    }
+
     package "ConsoleApp" #lavender {
         class Program #D6EAF8
         class Utils #D6EAF8
@@ -77,9 +85,59 @@ package "DuckAndCover" #white {
 }
 
 legend right
-|= Package |= Couleur |
-|<#application>| Models |
-|<#lavender>| ConsoleApp |
-|<#mintcream>| UnitTests |
+    |= Package |= Couleur |
+    |<#D6EAF8>| Models |
+    |<#FFE5B4>| DataPersistence |
+    |<#E6E6FA>| ConsoleApp |
+    |<#F5FFFA>| UnitTests |
 endlegend
 @enduml
+```
+# Explication du Diagramme de Paquetage
+
+Ce diagramme représente l'architecture du projet DuckAndCover. L'organisation est structurée en plusieurs packages principaux, chacun ayant un rôle spécifique dans l'application.
+
+## Structure Principale
+
+### 1. Package Models
+Le package Models est le cœur de l'application et contient plusieurs sous-packages :
+
+- **Game** : Contient les classes fondamentales du jeu comme `Card`, `Game`, `Player`, `Deck`, `Position`, `GameCard`, `Grid`, et `DeckCard`. Ces classes représentent les éléments de base du jeu.
+
+- **Rules** : Contient les classes `ClassicRules`, `BlitzRules` et `InsaneRules` qui implémentent les différentes variantes des règles du jeu.
+
+- **Generators** : Contient les classes `DeckGenerator` et `GridGenerator` responsables de la génération des éléments du jeu.
+
+- **Interfaces** : Définit les contrats principaux de l'application avec les interfaces :
+  - `IRules` : Pour les règles du jeu
+  - `IGameCardGenerator` : Pour la génération des cartes de jeu
+  - `IDeckCardGenerator` : Pour la génération des cartes du deck
+  - `IDataPersistence` : Pour la persistance des données
+
+- **Enums** : Contient les énumérations `Bonus` et `ErrorCodes` utilisées dans le jeu.
+
+- **Exceptions** : Gère les erreurs avec les classes `Error` et `ErrorHandler`.
+
+- **Events** : Contient toutes les classes d'événements pour gérer les interactions du jeu, comme les changements de joueur, la fin de partie, et les choix des joueurs.
+
+### 2. Package DataPersistence
+Ce package gère la persistance des données du jeu avec :
+- `JsonPersistency` : Pour sauvegarder les données au format JSON
+- `FakePersistency` : Pour simuler la persistance des données
+- `DataToPersist` : Structure de données pour les informations à sauvegarder
+
+### 3. Package ConsoleApp
+Contient les classes d'interface utilisateur en mode console :
+- `Program` : Point d'entrée de l'application
+- `Utils` : Utilitaires pour l'interface console
+
+### 4. Package UnitTests
+Contient tous les tests unitaires de l'application, testant les différentes composantes du jeu comme les joueurs, les positions, les règles, la grille, etc.
+
+## Code Couleur
+- **Application** (bleu clair) : Packages principaux de l'application
+- **Pêche** (#FFE5B4) : Package de persistance des données
+- **Lavender** : Interface console
+- **Mintcream** : Tests unitaires
+
+L'objectif de cette architecure c'est de suivra le principie de séparer les responsabilités ce qui aide a avoir une meilleure maintenance et de pouvoir rapidement faire évoluer le code.

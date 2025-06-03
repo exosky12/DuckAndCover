@@ -30,6 +30,7 @@ namespace Models.Exceptions
                 ErrorCodes.GameIdNotFound => "La partie est introuvable.",
                 ErrorCodes.InvalidChoice => "Choix invalide. Veuillez réessayer.",
                 ErrorCodes.UnknownError => "Une erreur inconnue s'est produite.",
+                ErrorCodes.NotPlayerTurn => "Ce n'est pas le tour du joueur.",
                 _ => "Code d'erreur non reconnu."
             };
         }

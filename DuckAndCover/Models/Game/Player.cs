@@ -16,16 +16,15 @@ namespace Models.Game
         public bool HasPlayed { get; set; }
         
         [DataMember]
-        public List<int> Scores { get; }
-
+        public List<int> Scores { get; } = new List<int>();
+        
         public int TotalScore => Scores.Sum();
 
         [DataMember]
         public int StackCounter { get; set; }
 
-
-        [DataMember]
-        public Grid Grid { get; } = new Grid();
+        [IgnoreDataMember]
+        public Grid Grid { get; private set; } = new Grid();
 
         public Player(string name)
         {
@@ -46,8 +45,6 @@ namespace Models.Game
             this.Grid = grid;
         }
         
-
-
         public bool HasCardWithNumber(int number)
         {
             foreach (var card in Grid.GameCardsGrid)

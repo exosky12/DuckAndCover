@@ -6,37 +6,27 @@
              xmlns:components="clr-namespace:DuckAndCover.Views"
              Title="Configuration de la partie">
 
-    <Grid Padding="20" RowDefinitions="Auto,*,Auto">
-        <!-- En-tête -->
-        <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,40,0,30">
-            <Label Text="Configuration de la partie" 
-                   FontSize="36" 
-                   FontAttributes="Bold" 
-                   HorizontalOptions="Center"
-                   TextColor="#222222"/>
-            <Label Text="Configurez les paramètres de votre partie"
-                   FontSize="18"
-                   HorizontalOptions="Center"
-                   TextColor="#222222"
-                   Opacity="0.8"/>
-        </VerticalStackLayout>
-               
-        <!-- Contenu principal -->
-        <ScrollView Grid.Row="1" Margin="0,0,0,20">
-            <Frame BackgroundColor="#F5F5F5"
-                   BorderColor="#E0E0E0"
-                   CornerRadius="20"
-                   Padding="30"
-                   Margin="20"
-                   MaximumWidthRequest="800"
-                   HasShadow="True">
+    <ScrollView Padding="20">
+        <VerticalStackLayout HorizontalOptions="Center" WidthRequest="600" Spacing="20" Margin="0, 100">
+            
+            <Border BackgroundColor="#80000000" Padding="20" Stroke="#00000000" StrokeThickness="0" >
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Label Text="Configuration de la partie" 
+                           FontSize="32" 
+                           FontAttributes="Bold" 
+                           HorizontalOptions="Center"
+                           TextColor="White"/>
+                    <Label Text="Configurez les paramètres de votre partie"
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           TextColor="#DDDDDD"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="#CCFFFFFF" Padding="30" Stroke="#E0E0E0" StrokeThickness="1" >
                 <VerticalStackLayout Spacing="30">
-                    <!-- Section Nombre de joueurs -->
-                    <Frame BackgroundColor="White"
-                           BorderColor="#E0E0E0"
-                           CornerRadius="15"
-                           Padding="20"
-                           HasShadow="True">
+
+                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Nombre de joueurs"
                                    FontSize="24"
@@ -48,14 +38,9 @@
                                    Style="{StaticResource InputEntryStyle}"
                                    Margin="0,10,0,0"/>
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
 
-                    <!-- Section Bots -->
-                    <Frame BackgroundColor="White"
-                           BorderColor="#E0E0E0"
-                           CornerRadius="15"
-                           Padding="20"
-                           HasShadow="True">
+                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Joueurs IA"
                                    FontSize="24"
@@ -75,11 +60,11 @@
                                        TextColor="#222222"/>
                             </Grid>
 
-                            <Frame x:Name="BotCountSection"
+                            <Border x:Name="BotCountSection"
                                    IsVisible="True"
-                                   BackgroundColor="#F5F5F5"
-                                   BorderColor="#E0E0E0"
-                                   CornerRadius="10"
+                                   BackgroundColor="#F5F5F5CC"
+                                   Stroke="#E0E0E0"
+                                   StrokeThickness="1"
                                    Padding="15"
                                    Margin="0,10,0,0">
                                 <VerticalStackLayout Spacing="10">
@@ -92,18 +77,85 @@
                                            Keyboard="Numeric"
                                            Style="{StaticResource InputEntryStyle}"/>
                                 </VerticalStackLayout>
-                            </Frame>
+                            </Border>
                         </VerticalStackLayout>
-                    </Frame>
-                </VerticalStackLayout>
-            </Frame>
-        </ScrollView>
+                    </Border>
 
-        <!-- Bouton Continuer -->
-        <components:Button x:Name="ContinueBtn"
-                          Name="Continuer"
-                          Margin="10,20"
-                          Clicked="ContinueClicked"
-                          Grid.Row="2"/>
-    </Grid>
+                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
+                        <VerticalStackLayout Spacing="15">
+                            <Label Text="Règles du jeu"
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   TextColor="#222222"/>
+                            
+                            <Label Text="Sélectionnez le type de règles à appliquer"
+                                   FontSize="16"
+                                   TextColor="#666666"
+                                   Margin="0,0,0,10"/>
+
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,5,0,0">
+                                <Switch x:Name="ClassicRulesSwitch"
+                                        IsToggled="True"
+                                        OnColor="#4CAF50"
+                                        ThumbColor="White"
+                                        Toggled="ClassicRules_Toggled"/>
+                                <VerticalStackLayout Grid.Column="1" Margin="12,0,0,0">
+                                    <Label Text="Règles classiques"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="#222222"/>
+                                    <Label Text="Mode de jeu standard avec les règles traditionnelles"
+                                           FontSize="14"
+                                           TextColor="#666666"
+                                           Opacity="0.8"/>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,10,0,0">
+                                <Switch x:Name="BlitzRulesSwitch"
+                                        IsToggled="False"
+                                        OnColor="#FF9800"
+                                        ThumbColor="White"
+                                        Toggled="BlitzRules_Toggled"/>
+                                <VerticalStackLayout Grid.Column="1" Margin="12,0,0,0">
+                                    <Label Text="Règles Blitz"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="#222222"/>
+                                    <Label Text="Parties rapides avec temps limité et actions accélérées"
+                                           FontSize="14"
+                                           TextColor="#666666"
+                                           Opacity="0.8"/>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,10,0,0">
+                                <Switch x:Name="InsaneRulesSwitch"
+                                        IsToggled="False"
+                                        OnColor="#F44336"
+                                        ThumbColor="White"
+                                        Toggled="InsaneRules_Toggled"/>
+                                <VerticalStackLayout Grid.Column="1" Margin="12,0,0,0">
+                                    <Label Text="Règles insanes"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="#222222"/>
+                                    <Label Text="Mode extrême avec règles modifiées et un style de jeu plus agressif"
+                                           FontSize="14"
+                                           TextColor="#666666"
+                                           Opacity="0.8"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <components:Button x:Name="ContinueBtn"
+                              Name="Continuer"
+                              Margin="10,20"
+                              Clicked="ContinueClicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

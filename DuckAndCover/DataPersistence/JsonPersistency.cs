@@ -1,60 +1,158 @@
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text;
-using System.Xml;
 using System.Runtime.Serialization.Json;
-using System.Collections.ObjectModel;
 using Models.Game;
 using Models.Interfaces;
 
 namespace DataPersistence
 {
+
     public class JsonPersistency : IDataPersistence
     {
         public string FileName { get; set; } = "duckAndCover_data.json";
-        public string FilePath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DuckAndCover");
-        
+
+        public string FilePath { get; set; } =
+            Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "DuckAndCover"
+            );
+
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {
-            var jsonSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
-            DataToPersist? data = new DataToPersist();
-
-            using (Stream s = File.OpenRead(Path.Combine(FilePath, FileName)))
+            string fullPath = Path.Combine(FilePath, FileName);
+            if (!Directory.Exists(FilePath) || !File.Exists(fullPath))
             {
-                data = jsonSerializer.ReadObject(s) as DataToPersist;
+                // Pas de fichier : on retourne des listes vides
+                return (
+                    new ObservableCollection<Player>(),
+                    new ObservableCollection<Game>()
+                );
             }
-            return (data.Players ?? new ObservableCollection<Player>(),
-                data.Games ?? new ObservableCollection<Game>());
 
+            try
+            {
+                using var stream = File.OpenRead(fullPath);
+                var serializer = new DataContractJsonSerializer(typeof(DataToPersist));
+                var data = (DataToPersist)serializer.ReadObject(stream)!;
+                return (
+                    data.Players ?? new ObservableCollection<Player>(),
+                    data.Games ?? new ObservableCollection<Game>()
+                );
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[JsonPersistency] Erreur LoadData : {ex.Message}");
+                // Si JSON corrompu ou autre, on efface le fichier pour repartir propre
+                try
+                {
+                    File.Delete(fullPath);
+                }
+                catch {}
+
+                return (
+                    new ObservableCollection<Player>(),
+                    new ObservableCollection<Game>()
+                );
+            }
         }
-        
-        public void SaveData(ObservableCollection<Player> players, ObservableCollection<Game> games)
+
+        public void SaveData(
+     ObservableCollection<Player> allPlayers,
+     ObservableCollection<Game> allGames)
         {
-            if (!Directory.Exists(FilePath))
+            try
             {
                 Directory.CreateDirectory(FilePath);
-            }
+                string fullPath = Path.Combine(FilePath, FileName);
 
-            var jsonSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
-            DataToPersist? data = new DataToPersist();
+                // 1) Charger l’ancien contenu (s’il existe)
+                ObservableCollection<Player> existingPlayers;
+                ObservableCollection<Game> existingGames;
 
-            data.Players = players;
-            data.Games = games;
-
-            var settings = new XmlWriterSettings() { Indent = true };
-            using (FileStream stream = File.Create(Path.Combine(FilePath, FileName)))
-            {
-                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
-                           stream,
-                           Encoding.UTF8,
-                           false,
-                           true))
+                if (File.Exists(fullPath))
                 {
-                    jsonSerializer.WriteObject(writer, data);
-                    writer.Flush();
+                    try
+                    {
+                        using var readStream = File.OpenRead(fullPath);
+                        var serializer = new DataContractJsonSerializer(typeof(DataToPersist));
+                        var oldData = (DataToPersist)serializer.ReadObject(readStream)!;
+
+                        existingPlayers = oldData.Players ?? new ObservableCollection<Player>();
+                        existingGames = oldData.Games ?? new ObservableCollection<Game>();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"[JsonPersistency] Erreur lors de la lecture du JSON existant : {ex.Message}");
+                        existingPlayers = new ObservableCollection<Player>();
+                        existingGames = new ObservableCollection<Game>();
+                    }
                 }
+                else
+                {
+                    existingPlayers = new ObservableCollection<Player>();
+                    existingGames = new ObservableCollection<Game>();
+                }
+
+                // 2) Fusionner "allPlayers" dans "existingPlayers" (par Name)
+                foreach (var newPlayer in allPlayers)
+                {
+                    var match = existingPlayers.FirstOrDefault(p => p.Name == newPlayer.Name);
+                    if (match == null)
+                    {
+                        // Joueur entièrement nouveau → on l'ajoute
+                        existingPlayers.Add(newPlayer);
+                    }
+                    else
+                    {
+                        // Joueur déjà présent → on ajoute seulement les scores qui n'existent pas encore
+                        foreach (var score in newPlayer.Scores)
+                        {
+                            if (!match.Scores.Contains(score))
+                                match.Scores.Add(score);
+                        }
+                    }
+                }
+
+                // 3) Fusionner "allGames" dans "existingGames" (par Id)
+                foreach (var newGame in allGames)
+                {
+                    var match = existingGames.FirstOrDefault(g => g.Id == newGame.Id);
+                    if (match == null)
+                    {
+                        // Partie nouvelle (même Id inconnu) → on l'ajoute
+                        existingGames.Add(newGame);
+                    }
+                    else
+                    {
+                        // Partie déjà présente : on met à jour uniquement les champs pertinents
+                        match.IsFinished = newGame.IsFinished;
+                        match.LastNumber = newGame.LastNumber;
+                        match.CardsSkipped = newGame.CardsSkipped;
+                        match.LastGameFinishStatus = newGame.LastGameFinishStatus;
+                        match.Players = newGame.Players;
+                        match.Deck = newGame.Deck;
+
+                    }
+                }
+
+                using var writeStream = File.Open(fullPath, FileMode.Create, FileAccess.Write);
+                var persistSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
+                var mergedData = new DataToPersist
+                {
+                    Players = existingPlayers,
+                    Games = existingGames
+                };
+                persistSerializer.WriteObject(writeStream, mergedData);
+                writeStream.Flush();
+
+                Debug.WriteLine($"[JsonPersistency] Données fusionnées et réécrites dans {fullPath}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[JsonPersistency] Erreur SaveData : {ex.Message}");
+                throw;
             }
         }
+
     }
-    
-    
 }

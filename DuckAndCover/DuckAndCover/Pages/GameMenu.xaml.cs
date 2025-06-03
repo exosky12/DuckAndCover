@@ -30,6 +30,9 @@ public partial class GameMenu : ContentPage
             PlayerCount = playerCount,
             UseBots = BotSwitch.IsToggled,
             BotCount = BotSwitch.IsToggled ? botCount : 0,
+            Rules = ClassicRulesSwitch.IsToggled ? "Classic" :
+                     BlitzRulesSwitch.IsToggled ? "Blitz" :
+                     InsaneRulesSwitch.IsToggled ? "Insane" : "Classic"
         };
         
         if (playerCount < 1)
@@ -39,5 +42,45 @@ public partial class GameMenu : ContentPage
         }
 
         await Navigation.PushAsync(new MenuPlayer(dto));
+    }
+    
+    
+    private void ClassicRules_Toggled(object sender, ToggledEventArgs e)
+    {
+        if (e.Value)
+        {
+            BlitzRulesSwitch.IsToggled = false;
+            InsaneRulesSwitch.IsToggled = false;
+        }
+        else if (!BlitzRulesSwitch.IsToggled && !InsaneRulesSwitch.IsToggled)
+        {
+            ClassicRulesSwitch.IsToggled = true;
+        }
+    }
+
+    private void BlitzRules_Toggled(object sender, ToggledEventArgs e)
+    {
+        if (e.Value)
+        {
+            ClassicRulesSwitch.IsToggled = false;
+            InsaneRulesSwitch.IsToggled = false;
+        }
+        else if (!ClassicRulesSwitch.IsToggled && !InsaneRulesSwitch.IsToggled)
+        {
+            BlitzRulesSwitch.IsToggled = true;
+        }
+    }
+
+    private void InsaneRules_Toggled(object sender, ToggledEventArgs e)
+    {
+        if (e.Value)
+        {
+            ClassicRulesSwitch.IsToggled = false;
+            BlitzRulesSwitch.IsToggled = false;
+        }
+        else if (!ClassicRulesSwitch.IsToggled && !BlitzRulesSwitch.IsToggled)
+        {
+            InsaneRulesSwitch.IsToggled = true;
+        }
     }
 }

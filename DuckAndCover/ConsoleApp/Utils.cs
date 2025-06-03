@@ -238,7 +238,38 @@ public static class Utils
         DisplayPlayerScores(players);
     }
 
-    public static Game CreateNewGame()
+    public static IRules ChoisirRegles()
+    {
+        while (true)
+        {
+            WriteLine();
+            WriteLine("Choisissez vos règles :");
+            WriteLine("  1 – Classic");
+            WriteLine("  2 – Blitz");
+            WriteLine("  3 – Insane");
+            Write("Votre choix (1, 2 ou 3) : ");
+
+            string input = ReadLine() ?? "";
+            if (!int.TryParse(input, out int choix) || choix < 1 || choix > 3)
+            {
+                var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                WriteError(handler.Handle());
+                WriteLine("Appuyez sur une touche pour recommencer…");
+                ReadKey(true);
+                continue;
+            }
+
+            return choix switch
+            {
+                1 => new ClassicRules(),
+                2 => new BlitzRules(),
+                3 => new InsaneRules(),
+                _ => throw new Error(ErrorCodes.InvalidChoice)
+            };
+        }
+    }
+
+    public static Game CreateNewGame(int choice)
     {
         int count = AskNumberOfPlayers();
         if (count <= 0)
@@ -248,15 +279,40 @@ public static class Utils
         }
 
         var newPlayers = InitializePlayers(count);
-        IRules rules = new ClassicRules();
-        var newGame = new Game(rules);
+        Game game = null;
+
+        switch (choice) 
+        {
+            case 1: 
+                return new Game(new ClassicRules());
+            
+            case 2: 
+                return new Game(new InsaneRules());
+
+            case 3:
+                return new Game(new BlitzRules());
+
+            default:
+                var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                break;
+        }
+
+
         Deck deck = new Deck();
-        newGame.InitializeGame(
+        game.InitializeGame(
             Guid.NewGuid().ToString("N").Substring(0, 5),
             newPlayers,
             deck,
             deck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
             );
-        return newGame;
+        return game;
+    }
+
+    public static void ClearCurrentConsoleLine()
+    {
+        int currentLineCursor = CursorTop;
+        SetCursorPosition(0, currentLineCursor);
+        Write(new string(' ', WindowWidth));
+        SetCursorPosition(0, currentLineCursor);
     }
 }

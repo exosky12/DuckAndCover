@@ -1,9 +1,16 @@
+using System.Runtime.Serialization;
+
 namespace Models.Game
 {
+    [DataContract]
     public class GameCard : Card
     {
+        [DataMember]
         public Position Position { get; set; }
-        public int Splash { get; }
+        
+        [DataMember]
+        public int Splash { get; set; }
+
 
         public GameCard(int splash, int number) : base(number)
         {

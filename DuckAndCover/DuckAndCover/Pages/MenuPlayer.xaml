@@ -6,49 +6,36 @@
              ControlTemplate="{StaticResource BackgroundTemplate}"
              Title="Configuration des joueurs">
 
-    <Grid>
-        <ScrollView Padding="20">
-            <VerticalStackLayout
-                Spacing="30"
-                HorizontalOptions="Center"
-                VerticalOptions="Fill"
-                Margin="0, 100">
+    <ScrollView Padding="20">
+        <VerticalStackLayout
+            Spacing="30"
+            HorizontalOptions="Center"
+            WidthRequest="600"
+            Margin="0,100,0,20">
 
-                <!-- En-tête -->
-                <VerticalStackLayout Spacing="10">
+            <Border BackgroundColor="#80000000" Padding="20" StrokeThickness="0">
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
                     <Label Text="Configuration des joueurs"
-                           FontSize="36"
+                           FontSize="32"
                            FontAttributes="Bold"
-                           TextColor="#222222"
-                           HorizontalOptions="Center"/>
-                    <Label Text="Entrez les noms des joueurs qui vont participer à la partie"
-                           FontSize="18"
-                           TextColor="#222222"
                            HorizontalOptions="Center"
-                           Opacity="0.8"/>
+                           TextColor="White"/>
+                    <Label Text="Entrez les noms des joueurs qui vont participer à la partie"
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           TextColor="#DDDDDD"/>
                 </VerticalStackLayout>
+            </Border>
 
-                <!-- Zone de saisie des joueurs -->
-                <Frame BackgroundColor="#F5F5F5"
-                       BorderColor="#E0E0E0"
-                       CornerRadius="20"
-                       Padding="30"
-                       Margin="20"
-                       MaximumWidthRequest="600"
-                       HasShadow="True">
-                    <VerticalStackLayout x:Name="PlayerInputsLayout"
-                                       Spacing="20"
-                                       Padding="10"/>
-                </Frame>
+            <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="30">
+                <VerticalStackLayout x:Name="PlayerInputsLayout" Spacing="20" Padding="10"/>
+            </Border>
 
-                <!-- Bouton Jouer -->
-                <components:Button x:Name="PlayBtn"
-                                 Name="Commencer la partie"
-                                 Margin="10,40"
-                                 Clicked="PlayClicked"
-                                 HorizontalOptions="Center"/>
-
-            </VerticalStackLayout>
-        </ScrollView>
-    </Grid>
+            <components:Button x:Name="PlayBtn"
+                               Name="Commencer la partie"
+                               Margin="10,40"
+                               Clicked="PlayClicked"
+                               HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

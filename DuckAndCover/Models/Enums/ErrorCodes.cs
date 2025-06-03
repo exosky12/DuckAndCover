@@ -14,5 +14,6 @@ namespace Models.Enums
         UnknownError = 1010,
         DeckEmpty = 1011,
         GameIdNotFound = 1012,
+        NotPlayerTurn = 1013
     }
 }
