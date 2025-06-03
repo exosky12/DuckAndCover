@@ -24,8 +24,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/GameSettingsDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/GameSettingsDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Game/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,8 +63,6 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Utils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -153,7 +156,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
     "git-widget-placeholder": "dev",
-    "macOS.DuckAndCover.local.executor": "Debug",
+    "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -335,15 +338,8 @@
       <workItem from="1748779309528" duration="1401000" />
       <workItem from="1748844247857" duration="3579000" />
       <workItem from="1748847854985" duration="9334000" />
-      <workItem from="1748874879379" duration="1718000" />
-    </task>
-    <task id="LOCAL-00016" summary="refactor(Code Smells): good practices, optimize code">
-      <option name="closed" value="true" />
-      <created>1747166451881</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1747166451881</updated>
+      <workItem from="1748874879379" duration="3670000" />
+      <workItem from="1748937421736" duration="3055000" />
     </task>
     <task id="LOCAL-00017" summary="refactor(ConsoleAPP): Extract nested ternary operation in DisplayCard">
       <option name="closed" value="true" />
@@ -729,7 +725,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748875772311</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="refactor(game): optimize player score handling and clean up unused namespaces">
+      <option name="closed" value="true" />
+      <created>1748876652948</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1748876652948</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -790,7 +794,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(HandlePlayerChoice): refactor the way we ask what the player want to do" />
     <MESSAGE value="feat(errors): add error DeckEmpty" />
     <MESSAGE value="feat(error handling): correct mistackes in error handling player choices" />
     <MESSAGE value="fix(uuid generation)" />
@@ -815,7 +818,8 @@
     <MESSAGE value="feat(game): add NotPlayerTurn error code and handle turn validation in game logic" />
     <MESSAGE value="fix(game): correct player reference in max effect message" />
     <MESSAGE value="feat(game): enhance game structure with improved data persistence and code documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(game): enhance game structure with improved data persistence and code documentation" />
+    <MESSAGE value="refactor(game): optimize player score handling and clean up unused namespaces" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(game): optimize player score handling and clean up unused namespaces" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -856,6 +860,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Models/Game/Game.cs</url>
+          <line>400</line>
+          <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
+            <startOffsets>
+              <option value="16393" />
+            </startOffsets>
+            <endOffsets>
+              <option value="16431" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

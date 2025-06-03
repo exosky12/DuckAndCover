@@ -45,8 +45,6 @@ namespace Models.Game
             this.Grid = grid;
         }
         
-
-
         public bool HasCardWithNumber(int number)
         {
             foreach (var card in Grid.GameCardsGrid)

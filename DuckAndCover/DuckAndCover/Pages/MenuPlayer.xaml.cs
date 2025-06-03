@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DTOs;
 using Models.Game;
 using Models.Interfaces;
@@ -16,6 +17,22 @@ public partial class MenuPlayer : ContentPage
     {
         InitializeComponent();
         _gameSettings = gameSettings;
+
+        switch (_gameSettings.Rules)
+        {
+            case "Classic":
+                GameManager.Rules = new ClassicRules();
+                break;
+            case "Blitz":
+                GameManager.Rules = new BlitzRules();
+                break;
+            case "Insane":
+                GameManager.Rules = new InsaneRules();
+                break;
+            default:
+                GameManager.Rules = new ClassicRules();
+                break;
+        }
 
         GeneratePlayerInputs();
     }
@@ -68,6 +85,7 @@ public partial class MenuPlayer : ContentPage
                 deck: deck,
                 currentDeckCard: deck.Cards.First()
             );
+            
 
             // Naviguer vers la page de jeu
             await Navigation.PushAsync(new GamePage());

@@ -5,6 +5,7 @@ using Models.Interfaces;
 using Models.Events;
 using Models.Enums;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Models.Game // Assurez-vous que ce namespace est correct
@@ -397,7 +398,6 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
             gridCards.Remove(cardToCover);
             cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
-
             player.StackCounter = gridCards.Count;
             player.HasPlayed = true;
 
