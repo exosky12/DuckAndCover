@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- Déclaration des frameworks ciblés -->
 
-	  <TargetFrameworks Condition="'$(IncludeAndroid)' == 'true'">net9.0-android</TargetFrameworks>
+  <TargetFrameworks>net9.0-android</TargetFrameworks>
 
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('ios'))">$(TargetFrameworks);net9.0-ios</TargetFrameworks>
