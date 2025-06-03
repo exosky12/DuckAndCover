@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<Button xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        x:Class="DuckAndCover.Views.Button"
-        Text="{Binding Name}"
-        Padding="20"
-        WidthRequest="300"
-        CornerRadius="20"
-        FontSize="32"
-        FontAttributes="Bold"
-        TextColor="Black"
-        BorderColor="{StaticResource BorderColor}"
-        BorderWidth="5"
-        HorizontalOptions="Center"
-        VerticalOptions="Center"
-        BackgroundColor="{StaticResource BackgroundColor}"
-        Clicked="OnClick">
+<Button
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="DuckAndCover.Views.Button"
+    Text="{Binding Name}"
+    Padding="20"
+    FontSize="32"
+    FontAttributes="Bold"
+    CornerRadius="30"
+    TextColor="White"
+    Clicked="OnClick"
+    HorizontalOptions="Center"
+    VerticalOptions="Center"
+    BackgroundColor="Transparent">
+
+    <Button.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFD93B" Offset="0.0" />
+            <GradientStop Color="#FF8C00" Offset="1.0" />
+        </LinearGradientBrush>
+    </Button.Background>
 
     <Button.Shadow>
-        <Shadow Brush="#F8B229" Opacity="0.5" Offset="3,3" Radius="5" />
+        <Shadow Brush="#FFB300" Radius="15" Offset="0,5" Opacity="0.5" />
     </Button.Shadow>
+
     <Button.Triggers>
         <Trigger TargetType="Button" Property="IsPressed" Value="True">
-            <Setter Property="Scale" Value="0.95" />
-            <Setter Property="Opacity" Value="0.9" />
+            <Setter Property="Scale" Value="0.96" />
+            <Setter Property="Opacity" Value="0.85" />
+            <Setter Property="Shadow">
+                <Setter.Value>
+                    <Shadow Brush="Black" Radius="4" Offset="0,2" Opacity="0.25" />
+                </Setter.Value>
+            </Setter>
         </Trigger>
     </Button.Triggers>
 </Button>
