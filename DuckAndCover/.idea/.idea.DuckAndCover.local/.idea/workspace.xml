@@ -24,9 +24,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -353,14 +351,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00020" summary="feat(ClassicRules Tests): test 100% of ClassicRules class">
-      <option name="closed" value="true" />
-      <created>1747168393080</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1747168393080</updated>
     </task>
     <task id="LOCAL-00021" summary="refactor(Game Model): remove comment">
       <option name="closed" value="true" />
@@ -746,7 +736,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748952462652</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic">
+      <option name="closed" value="true" />
+      <created>1748953263757</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1748953263757</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -807,7 +805,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="refacotr(GameResumed and GameStarted events): delete" />
     <MESSAGE value="feat(game menu): add dto" />
     <MESSAGE value="." />
     <MESSAGE value="feat (PersistenceJSON): add logic" />
@@ -832,7 +829,8 @@
     <MESSAGE value="feat(project): update target framework to net9.0-android for all projects" />
     <MESSAGE value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
     <MESSAGE value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
+    <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -880,13 +878,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Models/Game/Game.cs</url>
-          <line>402</line>
+          <line>395</line>
           <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
             <startOffsets>
-              <option value="16431" />
+              <option value="16245" />
             </startOffsets>
             <endOffsets>
-              <option value="16469" />
+              <option value="16283" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />

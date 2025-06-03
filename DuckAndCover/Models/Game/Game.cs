@@ -134,14 +134,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
             if (deckCard.Bonus == Bonus.Max)
             {
-                if (forPlayer.Grid.GameCardsGrid.Any())
-                {
-                    return forPlayer.Grid.GameCardsGrid.Max(c => c.Number);
-                }
-                else
-                {
-                    return deckCard.Number;
-                }
+                deckCard.Number = forPlayer.Grid.GameCardsGrid.Max(c => c.Number);
             }
             return deckCard.Number;
         }
