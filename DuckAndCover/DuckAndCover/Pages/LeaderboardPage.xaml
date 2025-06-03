@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCover.Pages.LeaderboardPage"
@@ -7,34 +6,25 @@
              ControlTemplate="{StaticResource BackgroundTemplate}">
 
     <Grid RowDefinitions="Auto,*,Auto" Padding="20">
-        <!-- En-tête -->
         <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,20,0,30">
             <Label Text="Classement"
-                   FontSize="36"
+                   FontSize="40"
                    FontAttributes="Bold"
                    TextColor="#222222"
                    HorizontalOptions="Center" />
             <Label Text="Découvrez les meilleurs scores"
                    FontSize="18"
-                   TextColor="#222222"
-                   Opacity="0.8"
+                   TextColor="#444"
+                   Opacity="0.7"
                    HorizontalOptions="Center" />
         </VerticalStackLayout>
 
-        <!-- Liste des scores -->
-        <ScrollView Grid.Row="1">
-            <Frame BackgroundColor="#F5F5F5"
-                   BorderColor="#E0E0E0"
-                   CornerRadius="20"
-                   Padding="20"
-                   Margin="10"
-                   HasShadow="True">
-                <VerticalStackLayout x:Name="LeaderboardList"
-                                     Spacing="15" />
-            </Frame>
+        <ScrollView Grid.Row="1" WidthRequest="600" HorizontalOptions="Center">
+            <VerticalStackLayout x:Name="LeaderboardList"
+                                 Spacing="15"
+                                 Padding="10" />
         </ScrollView>
 
-        <!-- Bouton retour -->
         <Button Grid.Row="2"
                 Text="Retour"
                 BackgroundColor="#4CAF50"
