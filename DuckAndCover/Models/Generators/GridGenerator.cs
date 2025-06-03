@@ -4,19 +4,39 @@ using Models.Interfaces;
 
 namespace Models.Generators
 {
-
+    /// <summary>
+    /// Générateur de grille de jeu avec des cartes placées aléatoirement.
+    /// </summary>
     public class GridGenerator : IGenerator<GameCard>
     {
+        /// <summary>
+        /// Obtient la grille générée.
+        /// </summary>
         public List<GameCard> Grid { get; private set; }
+
+        /// <summary>
+        /// Obtient la liste de toutes les positions possibles sur la grille.
+        /// </summary>
         public List<Position> AllPositions { get; private set; } = InitializePositions();
+
+        /// <summary>
+        /// Obtient le nombre de cartes dans la grille.
+        /// </summary>
         public int NbCards { get; private set; } = 12;
 
+        /// <summary>
+        /// Initialise une nouvelle instance de la classe GridGenerator.
+        /// </summary>
         public GridGenerator()
         {
             Grid = GenerateAllCards();
             Generate();
         }
 
+        /// <summary>
+        /// Génère une nouvelle grille avec les cartes placées aléatoirement.
+        /// </summary>
+        /// <returns>La liste des cartes placées dans la grille.</returns>
         public List<GameCard> Generate()
         {
             var positionsCopy = new List<Position>(AllPositions);
@@ -36,12 +56,16 @@ namespace Models.Generators
             return Grid;
         }
 
+        /// <summary>
+        /// Initialise la liste des positions possibles sur la grille.
+        /// </summary>
+        /// <returns>Une liste contenant toutes les positions possibles (3x4).</returns>
         private static List<Position> InitializePositions()
         {
             var positions = new List<Position>();
-            for (int row = 1; row <= 3; row++) // 3 lignes
+            for (int row = 1; row <= 3; row++)
             {
-                for (int col = 1; col <= 4; col++) // 4 colonnes
+                for (int col = 1; col <= 4; col++)
                 {
                     positions.Add(new Position(row, col));
                 }
@@ -50,6 +74,10 @@ namespace Models.Generators
             return positions;
         }
 
+        /// <summary>
+        /// Génère toutes les cartes avec leurs valeurs de splash correspondantes.
+        /// </summary>
+        /// <returns>Une liste contenant toutes les cartes du jeu.</returns>
         private static List<GameCard> GenerateAllCards()
         {
             var cards = new List<GameCard>();

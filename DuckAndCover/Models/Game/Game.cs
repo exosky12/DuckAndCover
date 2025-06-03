@@ -1,23 +1,33 @@
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using Models.Exceptions; // Assurez-vous que ErrorCodes et Error sont accessibles
+using Models.Exceptions;
 using Models.Interfaces;
 using Models.Events;
 using Models.Enums;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 
-namespace Models.Game // Assurez-vous que ce namespace est correct
+namespace Models.Game
 {
+    /// <summary>
+    /// Représente une partie de jeu avec ses joueurs, son deck et sa logique.
+    /// </summary>
     [DataContract]
     public class Game : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Obtient ou définit l'identifiant unique de la partie.
+        /// </summary>
         [DataMember] public string Id { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Collection observable des joueurs de la partie.
+        /// </summary>
         [DataMember]
         private ObservableCollection<Player> _allPlayers = new ObservableCollection<Player>();
 
+        /// <summary>
+        /// Obtient ou définit la collection observable des joueurs.
+        /// </summary>
         public ObservableCollection<Player> AllPlayers
         {
             get => _allPlayers;
@@ -28,11 +38,20 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             }
         }
 
+        /// <summary>
+        /// Liste des joueurs de la partie.
+        /// </summary>
         [DataMember]
         public List<Player> Players { get; set; } = new List<Player>();
 
+        /// <summary>
+        /// Collection observable des parties.
+        /// </summary>
         [IgnoreDataMember] private ObservableCollection<Game> _games = new ObservableCollection<Game>();
 
+        /// <summary>
+        /// Obtient ou définit la collection observable des parties.
+        /// </summary>
         public ObservableCollection<Game> Games
         {
             get => _games;
@@ -43,32 +62,70 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             }
         }
 
+        /// <summary>
+        /// Règles du jeu.
+        /// </summary>
         public IRules Rules { get; set; }
 
+        /// <summary>
+        /// Nom des règles utilisées.
+        /// </summary>
         [DataMember] private string _rulesName = string.Empty;
 
+        /// <summary>
+        /// Nombre de cartes passées.
+        /// </summary>
         [DataMember] public int CardsSkipped { get; set; }
 
+        /// <summary>
+        /// Indique si l'événement de fin de partie a déjà été déclenché.
+        /// </summary>
         [IgnoreDataMember]
         private bool _gameOverAlreadyTriggered = false;
 
+        /// <summary>
+        /// Joueur actuel.
+        /// </summary>
         public Player CurrentPlayer { get; set; } = new Player("Default", 0, new List<int>(), false, false, new Grid());
 
+        /// <summary>
+        /// Index du joueur actuel.
+        /// </summary>
         [DataMember] private int _currentPlayerIndex;
 
+        /// <summary>
+        /// Deck de cartes du jeu.
+        /// </summary>
         [DataMember] public Deck Deck { get; set; } = new Deck();
 
+        /// <summary>
+        /// Indique si le jeu est quitté.
+        /// </summary>
         public bool Quit { get; set; }
 
+        /// <summary>
+        /// Indique si le jeu est terminé.
+        /// </summary>
         [DataMember] public bool IsFinished { get; set; }
 
+        /// <summary>
+        /// Statut de fin de la dernière partie.
+        /// </summary>
         [DataMember] public bool LastGameFinishStatus { get; set; }
 
+        /// <summary>
+        /// Carte actuelle du deck.
+        /// </summary>
         public DeckCard CurrentDeckCard { get; set; } = new DeckCard(Bonus.None, 0);
 
+        /// <summary>
+        /// Dernier numéro joué.
+        /// </summary>
         [DataMember] public int? LastNumber { get; set; }
 
-        // État du jeu pour savoir s'il a démarré
+        /// <summary>
+        /// Indique si le jeu a démarré.
+        /// </summary>
         public bool IsGameStarted { get; private set; }
 
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
@@ -100,11 +157,27 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Initialise une nouvelle instance de la classe Game.
+        /// </summary>
+        /// <param name="rules">Les règles du jeu à utiliser.</param>
         public Game(IRules rules)
         {
             this.Rules = rules;
             this._rulesName = rules.GetType().Name; 
         }
+
+        /// <summary>
+        /// Initialise une nouvelle partie avec les paramètres spécifiés.
+        /// </summary>
+        /// <param name="id">L'identifiant de la partie.</param>
+        /// <param name="players">La liste des joueurs.</param>
+        /// <param name="deck">Le deck de cartes.</param>
+        /// <param name="currentDeckCard">La carte actuelle du deck.</param>
+        /// <param name="currentPlayerIndex">L'index du joueur actuel.</param>
+        /// <param name="cardsSkipped">Le nombre de cartes passées.</param>
+        /// <param name="isFinished">Indique si le jeu est terminé.</param>
+        /// <param name="lastNumber">Le dernier numéro joué.</param>
         public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard,
             int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
         {
@@ -119,12 +192,21 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             this.LastNumber = lastNumber;
         }
 
+        /// <summary>
+        /// Passe au joueur suivant.
+        /// </summary>
         public void NextPlayer()
         {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
 
+        /// <summary>
+        /// Obtient le numéro effectif d'une carte du deck pour un joueur donné.
+        /// </summary>
+        /// <param name="forPlayer">Le joueur concerné.</param>
+        /// <param name="deckCard">La carte du deck.</param>
+        /// <returns>Le numéro effectif de la carte.</returns>
         public int GetEffectiveDeckCardNumber(Player forPlayer, DeckCard? deckCard)
         {
             if (deckCard == null)
@@ -139,6 +221,10 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             return deckCard.Number;
         }
 
+        /// <summary>
+        /// Vérifie si les conditions de fin de partie sont remplies.
+        /// </summary>
+        /// <returns>true si le jeu est terminé ; sinon, false.</returns>
         public bool CheckGameOverCondition()
         {
             if (!_gameOverAlreadyTriggered && Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
@@ -150,6 +236,11 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             return false;
         }
         
+        /// <summary>
+        /// Traite l'effet d'une carte.
+        /// </summary>
+        /// <param name="card">La carte à traiter.</param>
+        /// <param name="player">Le joueur concerné.</param>
         public void ProcessCardEffect(DeckCard card, Player player)
         {
             switch (card.Bonus)
@@ -184,6 +275,10 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             }
         }
         
+        /// <summary>
+        /// Passe à la carte suivante du deck.
+        /// </summary>
+        /// <returns>La nouvelle carte du deck.</returns>
         public DeckCard NextDeckCard()
         {
             if (Deck.Cards.Count == 0)
@@ -203,6 +298,9 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             return CurrentDeckCard;
         }
 
+        /// <summary>
+        /// Traite le tour de jeu actuel.
+        /// </summary>
         public void ProcessTurn()
         {
             try
@@ -234,6 +332,9 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             }
         }
 
+        /// <summary>
+        /// Démarre une nouvelle partie.
+        /// </summary>
         public void StartGame()
         {
             if (IsGameStarted) return;
@@ -241,7 +342,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
             try
             {
-                if (CurrentDeckCard == null && Deck.Cards.Any()) // S'assurer qu'on a une carte initiale si possible
+                if (CurrentDeckCard == null && Deck.Cards.Any())
                 {
                      CurrentDeckCard = Deck.Cards.First();
                 }
@@ -350,11 +451,10 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             GameCard? cardBeingMoved = forPlayer.Grid.GetCard(cardToMovePosition);
             if (cardBeingMoved == null) return validTargets;
 
-            // Règle utilisateur : Si c'est la seule carte, on ne peut pas "ducker".
-            // S'assurer que GameCardsGrid contient uniquement les cartes non nulles.
+            
             if (forPlayer.Grid.GameCardsGrid.Count(c => c != null) == 1)
             {
-                return validTargets; // Aucune cible valide si c'est la seule carte
+                return validTargets;
             }
 
             int[] dRow = { -1, 1, 0, 0 }; 
@@ -364,7 +464,6 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
             {
                 Position targetPosition = new Position(cardToMovePosition.Row + dRow[i], cardToMovePosition.Column + dCol[i]);
                 
-                // Condition 1: La case cible doit être vide
                 if (forPlayer.Grid.GetCard(targetPosition) != null) 
                 {
                     continue;
@@ -376,7 +475,6 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
                     continue;
                 }
                 
-                // Si toutes les conditions sont remplies
                 validTargets.Add(targetPosition);
             }
             return validTargets.Distinct().ToList();
@@ -384,12 +482,11 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
         {
-            // int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard); // Non utilisé directement ici mais important pour la logique globale
             Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", CurrentDeckCard);
 
-            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!; // Null check implicite par TryValidMove
-            GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!; // Null check implicite par TryValidMove
-            List<GameCard> gridCards = player.Grid.GameCardsGrid; // Accès direct à la liste pour modification
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!; 
+            GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!; 
+            List<GameCard> gridCards = player.Grid.GameCardsGrid; 
 
             gridCards.Remove(cardToCover);
             cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
@@ -401,14 +498,13 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
 
         public void DoDuck(Player player, Position cardToMovePosition, Position duckPosition)
         {
-            // int effectiveDeckCardNumber = GetEffectiveDeckCardNumber(player, CurrentDeckCard); // Non utilisé directement ici
             Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", CurrentDeckCard);
 
-            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!; // Null check implicite par TryValidMove
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
 
-            player.Grid.RemoveCard(cardToMove.Position); // Assurez-vous que cette méthode existe et fonctionne
+            player.Grid.RemoveCard(cardToMove.Position); 
             cardToMove.Position = duckPosition;
-            player.Grid.SetCard(duckPosition, cardToMove); // Assurez-vous que cette méthode existe et fonctionne
+            player.Grid.SetCard(duckPosition, cardToMove); 
 
             player.StackCounter = player.Grid.GameCardsGrid.Count;
             player.HasPlayed = true;

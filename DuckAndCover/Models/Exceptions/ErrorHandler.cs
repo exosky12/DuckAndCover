@@ -1,19 +1,31 @@
 using Models.Enums;
 using System.Diagnostics.CodeAnalysis;
 namespace Models.Exceptions
-
 {
+    /// <summary>
+    /// Gestionnaire d'erreurs qui convertit les codes d'erreur en messages explicites.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class ErrorHandler
     {
-        
+        /// <summary>
+        /// L'erreur à traiter.
+        /// </summary>
         private readonly Error _error;
 
+        /// <summary>
+        /// Initialise une nouvelle instance de la classe ErrorHandler.
+        /// </summary>
+        /// <param name="error">L'erreur à traiter.</param>
         public ErrorHandler(Error error)
         {
             _error = error;
         }
 
+        /// <summary>
+        /// Traite l'erreur et retourne un message explicite correspondant au code d'erreur.
+        /// </summary>
+        /// <returns>Un message explicite décrivant l'erreur.</returns>
         public string Handle()
         {
             return _error.ErrorCode switch

@@ -142,7 +142,7 @@ public class GameTests
         {
             menuDisplayed = true;
             Assert.NotNull(args.CurrentPlayer);
-            Assert.NotNull(args.DeckCard);
+            Assert.NotNull(args.CurrentDeckCard);
         };
 
         game.HandlePlayerChoice(game.CurrentPlayer, "4");

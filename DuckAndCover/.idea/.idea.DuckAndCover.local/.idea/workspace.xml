@@ -25,8 +25,41 @@
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Enums/Bonus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/Bonus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/CardEffectProcessedEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/CardEffectProcessedEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/DisplayMenuNeededEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/DisplayMenuNeededEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/GameIsOverEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/GameIsOverEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChangedEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChangedEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseCoinEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseCoinEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseCoverEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseCoverEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseDuckEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseDuckEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseQuitEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseQuitEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseShowPlayersGridEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseShowPlayersGridEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseShowScoresEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseShowScoresEventArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Exceptions/Error.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/Error.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Card.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Deck.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/DeckCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/DeckCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/GameCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/GameCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Grid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Grid.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Game/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Position.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Position.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Generators/DeckGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/DeckGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Interfaces/IDataPersistence.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Interfaces/IDataPersistence.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Interfaces/IGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Interfaces/IGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Interfaces/IRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Interfaces/IRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +73,7 @@
     <branch-grouping />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
+        <entry key="$PROJECT_DIR$/.." value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -97,6 +130,7 @@
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Game/Game.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Player.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Downloads/Leaderboard Page.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -157,8 +191,8 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
-    "git-widget-placeholder": "dev",
-    "macOS.DuckAndCover.local.executor": "Debug",
+    "git-widget-placeholder": "code-docs",
+    "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -352,14 +386,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00022" summary="refactor">
-      <option name="closed" value="true" />
-      <created>1747169624340</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1747169624340</updated>
     </task>
     <task id="LOCAL-00023" summary="fix(ExcludeFromCodeCoverage)">
       <option name="closed" value="true" />
@@ -745,7 +771,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748967233838</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="feat(persistence): switch to JSON-based data persistence and update player scores property">
+      <option name="closed" value="true" />
+      <created>1748971157920</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1748971157920</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -806,7 +840,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="." />
     <MESSAGE value="feat (PersistenceJSON): add logic" />
     <MESSAGE value="fix errors" />
     <MESSAGE value=" ;" />
@@ -831,7 +864,8 @@
     <MESSAGE value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
     <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
     <MESSAGE value="fix(DeckCard MAX Bonus): attribute the correct card number when the deck card's bonus is MAX" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(DeckCard MAX Bonus): attribute the correct card number when the deck card's bonus is MAX" />
+    <MESSAGE value="feat(persistence): switch to JSON-based data persistence and update player scores property" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(persistence): switch to JSON-based data persistence and update player scores property" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -879,13 +913,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Models/Game/Game.cs</url>
-          <line>402</line>
+          <line>498</line>
           <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
             <startOffsets>
-              <option value="16439" />
+              <option value="19395" />
             </startOffsets>
             <endOffsets>
-              <option value="16477" />
+              <option value="19418" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="8" />

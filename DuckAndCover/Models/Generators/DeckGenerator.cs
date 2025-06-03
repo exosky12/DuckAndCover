@@ -5,11 +5,25 @@ using Models.Enums;
 
 namespace Models.Generators
 {
+    /// <summary>
+    /// Générateur de deck de cartes pour le jeu.
+    /// </summary>
     public class DeckGenerator : IGenerator<DeckCard>
     {
+        /// <summary>
+        /// Obtient le deck généré.
+        /// </summary>
         public List<DeckCard> Deck { get; private set; } = new List<DeckCard>();
+
+        /// <summary>
+        /// Obtient la liste de toutes les cartes possibles.
+        /// </summary>
         public List<DeckCard> AllPossibleCards { get; private set; } = InitializeDeck();
 
+        /// <summary>
+        /// Initialise le deck avec toutes les cartes possibles.
+        /// </summary>
+        /// <returns>Une liste contenant toutes les cartes possibles.</returns>
         private static List<DeckCard> InitializeDeck()
         {
             var cards = new List<DeckCard>();
@@ -28,11 +42,18 @@ namespace Models.Generators
             return cards;
         }
 
+        /// <summary>
+        /// Initialise une nouvelle instance de la classe DeckGenerator.
+        /// </summary>
         public DeckGenerator()
         {
             Generate();
         }
 
+        /// <summary>
+        /// Génère un nouveau deck de cartes mélangé aléatoirement.
+        /// </summary>
+        /// <returns>La liste des cartes du deck généré.</returns>
         public List<DeckCard> Generate()
         {
             Deck.Clear();
@@ -48,6 +69,11 @@ namespace Models.Generators
             return Deck;
         }
 
+        /// <summary>
+        /// Génère un index aléatoire sécurisé.
+        /// </summary>
+        /// <param name="max">La valeur maximale (exclusive) pour l'index.</param>
+        /// <returns>Un index aléatoire entre 0 et max-1.</returns>
         private static int GetSecureRandomIndex(int max)
         {
             return RandomNumberGenerator.GetInt32(max);

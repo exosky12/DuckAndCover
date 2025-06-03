@@ -10,17 +10,31 @@ using Models.Interfaces;
 
 namespace DataPersistence
 {
-
+    /// <summary>
+    /// Classe responsable de la persistance des données au format JSON.
+    /// </summary>
     public class JsonPersistency : IDataPersistence
     {
+        /// <summary>
+        /// Nom du fichier JSON où les données sont sauvegardées.
+        /// </summary>
         public string FileName { get; set; } = "duckAndCover_data.json";
 
+        /// <summary>
+        /// Chemin complet vers le dossier contenant le fichier JSON.
+        /// </summary>
         public string FilePath { get; set; } =
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "DuckAndCover"
             );
 
+        /// <summary>
+        /// Charge les données depuis le fichier JSON.
+        /// </summary>
+        /// <returns>
+        /// Un tuple contenant les collections observables des joueurs et des parties.
+        /// </returns>
         public (ObservableCollection<Player>, ObservableCollection<Game>) LoadData()
         {
             string fullPath = Path.Combine(FilePath, FileName);
@@ -41,7 +55,7 @@ namespace DataPersistence
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"[JsonPersistency] Erreur LoadData : {ex.Message}");
-                    // Si JSON corrompu ou autre, on efface le fichier pour repartir propre
+                    // Si le JSON est corrompu ou autre erreur, supprimer le fichier pour repartir sur une base propre
                     try
                     {
                         File.Delete(fullPath);
@@ -55,16 +69,21 @@ namespace DataPersistence
                 }
             }
             else
-            { 
+            {
                 return (
                     new ObservableCollection<Player>(),
                     new ObservableCollection<Game>()
                 );
             }
-         
         }
 
-        public void SaveData(ObservableCollection<Player> allPlayers,ObservableCollection<Game> allGames)
+        /// <summary>
+        /// Sauvegarde les données des joueurs et des parties dans le fichier JSON.
+        /// </summary>
+        /// <param name="allPlayers">Collection des joueurs à sauvegarder.</param>
+        /// <param name="allGames">Collection des parties à sauvegarder.</param>
+        /// <exception cref="Exception">Relance toute exception survenue lors de la sauvegarde.</exception>
+        public void SaveData(ObservableCollection<Player> allPlayers, ObservableCollection<Game> allGames)
         {
             try
             {
@@ -99,6 +118,7 @@ namespace DataPersistence
                     existingGames = new ObservableCollection<Game>();
                 }
 
+                // 2) Fusionner les joueurs (ajout ou mise à jour des scores)
                 foreach (var newPlayer in allPlayers)
                 {
                     var match = existingPlayers.FirstOrDefault(p => p.Name == newPlayer.Name);
@@ -116,7 +136,7 @@ namespace DataPersistence
                     }
                 }
 
-                // 3) Fusionner "allGames" dans "existingGames" (par Id)
+                // 3) Fusionner les parties (ajout ou mise à jour par Id)
                 foreach (var newGame in allGames)
                 {
                     var match = existingGames.FirstOrDefault(g => g.Id == newGame.Id);
@@ -127,17 +147,17 @@ namespace DataPersistence
                     }
                     else
                     {
-                        // Partie déjà présente : on met à jour uniquement les champs pertinents
+                        // Partie déjà présente : mise à jour des propriétés pertinentes
                         match.IsFinished = newGame.IsFinished;
                         match.LastNumber = newGame.LastNumber;
                         match.CardsSkipped = newGame.CardsSkipped;
                         match.LastGameFinishStatus = newGame.LastGameFinishStatus;
                         match.Players = newGame.Players;
                         match.Deck = newGame.Deck;
-
                     }
                 }
 
+                // 4) Sérialiser les données fusionnées dans le fichier JSON
                 using var writeStream = File.Open(fullPath, FileMode.Create, FileAccess.Write);
                 var persistSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
                 var mergedData = new DataToPersist
@@ -156,6 +176,5 @@ namespace DataPersistence
                 throw;
             }
         }
-
     }
 }
