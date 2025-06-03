@@ -13,6 +13,7 @@ steps:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverWithoutMAUI.sln
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore 
+      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
   
   - name: BuildMAUI
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
@@ -20,7 +21,9 @@ steps:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverMAUIonly.sln
       - dotnet build DuckAndCoverMAUIonly.sln -c Release --no-restore /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
-  
+      - dotnet publish DuckAndCoverMAUIonly.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
+
+
   - name: Tests
     image: mcr.microsoft.com/dotnet/sdk:9.0
     commands:
@@ -44,7 +47,7 @@ steps:
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore
       - dotnet test DuckAndCoverWithoutMAUI.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
-      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
+      - dotnet publish DuckAndCover.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
       - dotnet sonarscanner end /d:sonar.login=$${sonar_token}
 
   - name: Docs
