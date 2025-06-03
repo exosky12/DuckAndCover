@@ -14,7 +14,7 @@ namespace Models.Game
         /// Obtient ou définit la liste des cartes dans le deck.
         /// </summary>
         [DataMember]
-        public List<DeckCard> Cards { get; set; } = new();
+        public List<DeckCard> Cards { get; set; } = new List<DeckCard>();
 
         /// <summary>
         /// Initialise une nouvelle instance de la classe Deck.

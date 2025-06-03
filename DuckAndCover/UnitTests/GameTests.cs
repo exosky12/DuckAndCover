@@ -252,7 +252,7 @@ public class GameTests
         Assert.Equal(ErrorCodes.DeckEmpty, ex.ErrorCode);
     }
 
-    private Game SetupSimpleGame()
+    private static Game SetupSimpleGame()
     {
         var player1 = new Player("Test", 0, new List<int>(), false, false, new Grid());
         var player2 = new Player("Bot", 0, new List<int>(), false, false, new Grid());

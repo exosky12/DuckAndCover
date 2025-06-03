@@ -25,36 +25,7 @@ namespace Models.Rules
         /// Obtient le nombre de cartes dans le deck.
         /// </summary>
         public int NbCardsInDeck => 24;
-
-        /// <summary>
-        /// Vérifie si une carte peut être jouée à une position donnée.
-        /// </summary>
-        /// <param name="card">La carte à jouer.</param>
-        /// <param name="position">La position où jouer la carte.</param>
-        /// <param name="grid">La grille de jeu.</param>
-        /// <returns>True si la carte peut être jouée, sinon False.</returns>
-        public bool CanPlayCard(DeckCard card, Position position, Grid grid)
-        {
-            var cardAtPosition = grid.GetCard(position);
-            if (cardAtPosition == null)
-            {
-                return false;
-            }
-
-            return cardAtPosition.Number == card.Number;
-        }
-
-        /// <summary>
-        /// Vérifie si deux positions sont adjacentes.
-        /// </summary>
-        /// <param name="pos1">Première position.</param>
-        /// <param name="pos2">Deuxième position.</param>
-        /// <returns>True si les positions sont adjacentes, sinon False.</returns>
-        public bool ArePositionsAdjacent(Position pos1, Position pos2)
-        {
-            return Math.Abs(pos1.Row - pos2.Row) <= 1 && Math.Abs(pos1.Column - pos2.Column) <= 1;
-        }
-
+        
         /// <summary>
         /// Indique si la partie est terminée.
         /// </summary>

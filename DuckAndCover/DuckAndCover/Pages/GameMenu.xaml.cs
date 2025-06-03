@@ -25,7 +25,7 @@ public partial class GameMenu : ContentPage
         int.TryParse(PlayerCountEntry.Text, out int playerCount);
         int.TryParse(BotCountEntry.Text, out int botCount);
 
-        var dto = new GameSettingsDTO
+        var dto = new GameSettingsDto
         {
             PlayerCount = playerCount,
             UseBots = BotSwitch.IsToggled,

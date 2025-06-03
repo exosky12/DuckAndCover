@@ -9,11 +9,11 @@ namespace DuckAndCover.Pages;
 
 public partial class MenuPlayer : ContentPage
 {
-    private readonly GameSettingsDTO _gameSettings;
+    private readonly GameSettingsDto _gameSettings;
     
     public Game GameManager => (App.Current as App).GameManager;
 
-    public MenuPlayer(GameSettingsDTO gameSettings)
+    public MenuPlayer(GameSettingsDto gameSettings)
     {
         InitializeComponent();
         _gameSettings = gameSettings;

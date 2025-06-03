@@ -279,7 +279,7 @@ public static class Utils
         }
 
         var newPlayers = InitializePlayers(count);
-        Game game = null;
+        Game? game = null;
 
         switch (choice) 
         {
@@ -294,11 +294,17 @@ public static class Utils
 
             default:
                 var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                handler.Handle();
                 break;
         }
 
 
         Deck deck = new Deck();
+        if (game == null)
+        {
+            game = new Game(ChoisirRegles());
+            return game;
+        }
         game.InitializeGame(
             Guid.NewGuid().ToString("N").Substring(0, 5),
             newPlayers,

@@ -207,7 +207,7 @@ namespace Models.Game
         /// <param name="forPlayer">Le joueur concerné.</param>
         /// <param name="deckCard">La carte du deck.</param>
         /// <returns>Le numéro effectif de la carte.</returns>
-        public int GetEffectiveDeckCardNumber(Player forPlayer, DeckCard? deckCard)
+        public static int GetEffectiveDeckCardNumber(Player forPlayer, DeckCard? deckCard)
         {
             if (deckCard == null)
             {
@@ -254,7 +254,7 @@ namespace Models.Game
 
                 case Bonus.Max:
                     string maxEffectMessage;
-                    if (player.Grid.GameCardsGrid.Any())
+                    if (player.Grid.GameCardsGrid.Count == 0)
                     {
                         maxEffectMessage = $"Carte MAX ! Le numéro sera le plus élevé de la grille du joueur actif.";
                     }
@@ -342,7 +342,7 @@ namespace Models.Game
 
             try
             {
-                if (CurrentDeckCard == null && Deck.Cards.Any())
+                if (CurrentDeckCard == null && Deck.Cards.Count == 0)
                 {
                      CurrentDeckCard = Deck.Cards.First();
                 }
@@ -443,7 +443,7 @@ namespace Models.Game
             }
         }
         
-        public List<Position> GetValidDuckTargetPositions(Player forPlayer, Position cardToMovePosition, DeckCard currentDeckCard)
+        public static List<Position> GetValidDuckTargetPositions(Player forPlayer, Position cardToMovePosition, DeckCard currentDeckCard)
         {
             var validTargets = new List<Position>();
             if (currentDeckCard == null || forPlayer == null) return validTargets;
