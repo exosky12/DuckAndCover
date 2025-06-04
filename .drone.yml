@@ -65,7 +65,7 @@ steps:
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
       - dotnet sonarscanner end /d:sonar.login=$${sonar_token}
 
-  - name: generate-and-deploy-docs
+  - name: Docs
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
     failure: ignore
     volumes:
