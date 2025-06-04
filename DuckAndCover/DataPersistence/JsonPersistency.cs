@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Json;
-using System.Text.RegularExpressions;
 using Models.Game;
 using Models.Interfaces;
+using DTOs;
 
 namespace DataPersistence
 {
@@ -44,8 +41,8 @@ namespace DataPersistence
                 try
                 {
                     using var stream = File.OpenRead(fullPath);
-                    var serializer = new DataContractJsonSerializer(typeof(DataToPersist));
-                    var data = (DataToPersist)serializer.ReadObject(stream)!;
+                    var serializer = new DataContractJsonSerializer(typeof(DataToPersistDto));
+                    var data = (DataToPersistDto)serializer.ReadObject(stream)!;
                     Debug.WriteLine(data);
                     return (
                         data.Players ?? new ObservableCollection<Player>(),
@@ -98,8 +95,8 @@ namespace DataPersistence
                     try
                     {
                         using var readStream = File.OpenRead(fullPath);
-                        var serializer = new DataContractJsonSerializer(typeof(DataToPersist));
-                        var oldData = (DataToPersist)serializer.ReadObject(readStream)!;
+                        var serializer = new DataContractJsonSerializer(typeof(DataToPersistDto));
+                        var oldData = (DataToPersistDto)serializer.ReadObject(readStream)!;
 
                         existingPlayers = oldData.Players ?? new ObservableCollection<Player>();
                         existingGames = oldData.Games ?? new ObservableCollection<Game>();
@@ -158,8 +155,8 @@ namespace DataPersistence
 
                 // 4) Sérialiser les données fusionnées dans le fichier JSON
                 using var writeStream = File.Open(fullPath, FileMode.Create, FileAccess.Write);
-                var persistSerializer = new DataContractJsonSerializer(typeof(DataToPersist));
-                var mergedData = new DataToPersist
+                var persistSerializer = new DataContractJsonSerializer(typeof(DataToPersistDto));
+                var mergedData = new DataToPersistDto
                 {
                     Players = existingPlayers,
                     Games = existingGames

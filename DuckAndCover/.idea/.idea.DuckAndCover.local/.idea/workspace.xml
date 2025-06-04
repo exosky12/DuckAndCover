@@ -24,8 +24,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/DTOs/DataToPersistDTO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/DTOs.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/DTOs.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +63,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Utils.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DTOs/DataToPersistDTO.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
@@ -362,14 +367,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00028" summary="feat(STUB): WIP">
-      <option name="closed" value="true" />
-      <created>1747397557023</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1747397557023</updated>
     </task>
     <task id="LOCAL-00029" summary="feat(Game actions): DoCover, DoDuck">
       <option name="closed" value="true" />
@@ -755,7 +752,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749057999809</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="test: add unit tests for TryValidMove method in various rules classes">
+      <option name="closed" value="true" />
+      <created>1749059345439</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1749059345439</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -816,7 +821,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix: naming" />
     <MESSAGE value="fix: DTOs.csproj targetFrameworks" />
     <MESSAGE value="fix: dto.csproj" />
     <MESSAGE value="big update" />
@@ -841,7 +845,8 @@
     <MESSAGE value="refactor: replace Error with ErrorException for error handling and other stuff" />
     <MESSAGE value="docs: add Doxygen configuration for project documentation" />
     <MESSAGE value="refactor: change GetEmptyPositions method to public and add DeckTests for deck functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: change GetEmptyPositions method to public and add DeckTests for deck functionality" />
+    <MESSAGE value="test: add unit tests for TryValidMove method in various rules classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="test: add unit tests for TryValidMove method in various rules classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
