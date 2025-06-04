@@ -23,27 +23,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorException.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/Utils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Exceptions/Error.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Bot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Bot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/PlayerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/PlayerTests.cs" afterDir="false" />
-    </list>
+    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -374,14 +354,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00025" summary="feat(Game Model): last deck card played, 2 events: OnPlayerChanged, OnGameOver, Save">
-      <option name="closed" value="true" />
-      <created>1747216366222</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1747216366222</updated>
     </task>
     <task id="LOCAL-00026" summary="feat(Player Model): HasPlayed property, update stackCounter">
       <option name="closed" value="true" />
@@ -767,7 +739,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749052455549</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="refactor: replace Error with ErrorException for error handling and other stuff">
+      <option name="closed" value="true" />
+      <created>1749053777514</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1749053777514</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -828,7 +808,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value=" ;" />
     <MESSAGE value="feat(Fake and Json Persistance): Job done !" />
     <MESSAGE value="chrore:         &lt;TargetFrameworks&gt;net9.0-android&lt;/TargetFrameworks&gt;&#10; in DTO csproj" />
     <MESSAGE value="fix: naming" />
@@ -853,7 +832,8 @@
     <MESSAGE value="feat(persistence): switch to JSON-based data persistence and update player scores property" />
     <MESSAGE value="fix(GetValidDuckTargetPositions)" />
     <MESSAGE value="refactor: make GetEffectiveDeckCardNumber and GetValidDuckTargetPositions static" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: make GetEffectiveDeckCardNumber and GetValidDuckTargetPositions static" />
+    <MESSAGE value="refactor: replace Error with ErrorException for error handling and other stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: replace Error with ErrorException for error handling and other stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
