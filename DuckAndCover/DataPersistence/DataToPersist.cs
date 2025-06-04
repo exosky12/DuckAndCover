@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using Models.Game;
 namespace DataPersistence
 {
+    [KnownType(typeof(Bot))]
     [DataContract]
     public class DataToPersist
     {

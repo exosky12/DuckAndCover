@@ -28,7 +28,7 @@ public partial class LeaderboardPage : ContentPage
                 TotalScore = p.Scores.Sum(),
                 GamesPlayed = p.Scores.Count
             })
-            .OrderByDescending(p => p.TotalScore)
+            .OrderBy(p => p.TotalScore)
             .ToList();
 
         if (!playersWithScores.Any())

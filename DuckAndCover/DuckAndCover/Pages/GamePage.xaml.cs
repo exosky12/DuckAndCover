@@ -61,20 +61,14 @@ public partial class GamePage : ContentPage
         GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
         GameManager.CardEffectProcessed -= OnCardEffectProcessed;
     }
-    private void OnPlayerChanged(object sender, PlayerChangedEventArgs e)
+    private void OnPlayerChanged(object? sender, PlayerChangedEventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
             
-            if (e.CurrentPlayer != null && e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot bot)
+            if (e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot b )
             {
-            if (e.CurrentPlayer == null)
-            {
-                InstructionsLabel.Text = "En attente d'un joueur...";
-                DebugLabel.Text = "CurrentPlayer est null dans OnPlayerChanged.";
-                CurrentCardFrame.IsVisible = false;
-                GameGrid.Children.Clear(); 
-                return;
+                Task.Delay(3000).ContinueWith(_ => b.PlayTurnAutomatically(GameManager));
             }
 
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
@@ -108,10 +102,7 @@ public partial class GamePage : ContentPage
             InstructionsLabel.Text = "En attente d'un joueur...";
         }
     }
-
-        /// <summary>
-        /// Appelé exactement une fois, quand la partie est terminée.
-        /// </summary>
+    
         private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
         {
             await MainThread.InvokeOnMainThreadAsync(async () =>

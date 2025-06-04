@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using Models.Exceptions; // Assurez-vous que ErrorCodes et Error sont accessibles
+using Models.Exceptions; 
 using Models.Interfaces;
 using Models.Events;
 using Models.Enums;
@@ -8,8 +8,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Models.Game // Assurez-vous que ce namespace est correct
+namespace Models.Game
 {
+    
+    [KnownType(typeof(Bot))]
     [DataContract]
     public class Game : INotifyPropertyChanged
     {
@@ -442,17 +444,20 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
         {
             foreach (var player in Players)
             {
-                int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
-                player.Scores.Add(score);
-                var existingPlayer = AllPlayers.FirstOrDefault(p => p.Name == player.Name);
-                if (existingPlayer != null)
-                {
-                    existingPlayer.Scores.Add(score);
+                if (!player.IsBot){
+                    int score = player.Grid.GameCardsGrid.Sum(card => card.Splash);
+                    player.Scores.Add(score);
+                    var existingPlayer = AllPlayers.FirstOrDefault(p => p.Name == player.Name);
+                    if (existingPlayer != null)
+                    {
+                        existingPlayer.Scores.Add(score);
+                    }
+                    else
+                    {
+                        AllPlayers.Add(player);
+                    }
                 }
-                else
-                {
-                    AllPlayers.Add(player);
-                }
+                    
             }
         }
 

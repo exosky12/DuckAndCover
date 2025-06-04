@@ -39,7 +39,13 @@ public partial class MenuPlayer : ContentPage
 
     private void GeneratePlayerInputs()
     {
-        for (int i = 0; i < _gameSettings.PlayerCount; i++)
+        PlayerInputsLayout.Children.Clear();
+        
+        int humanCount = _gameSettings.PlayerCount 
+                         - (_gameSettings.UseBots ? _gameSettings.BotCount : 0);
+        if (humanCount < 0) humanCount = 0;
+        
+        for (int i = 0; i < humanCount; i++)
         {
             var entry = new Entry
             {
@@ -62,6 +68,14 @@ public partial class MenuPlayer : ContentPage
                     players.Add(new Player(entry.Text));
                 }
             }
+            
+            if (_gameSettings.UseBots)
+            {
+                for (int i = 1; i <= _gameSettings.BotCount; i++)
+                {
+                    players.Add(new Bot(i.ToString()));
+                }
+            }
 
             if (players.Count == 0)
             {
@@ -82,6 +96,7 @@ public partial class MenuPlayer : ContentPage
                 deck: deck,
                 currentDeckCard: deck.Cards.First()
             );
+            
 
             await Navigation.PushAsync(new GamePage());
         }

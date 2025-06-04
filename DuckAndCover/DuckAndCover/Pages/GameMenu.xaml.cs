@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DTOs;
 namespace DuckAndCover.Pages;
 
@@ -30,7 +31,7 @@ public partial class GameMenu : ContentPage
             PlayerCount = playerCount,
             UseBots = BotSwitch.IsToggled,
             BotCount = BotSwitch.IsToggled ? botCount : 0,
-            Rules = ClassicRulesSwitch.IsToggled ? "Classic" :
+            Rules = ClassicRulesSwitch.IsToggled ? "Classic" : 
                      BlitzRulesSwitch.IsToggled ? "Blitz" :
                      InsaneRulesSwitch.IsToggled ? "Insane" : "Classic"
         };

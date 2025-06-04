@@ -1,20 +1,22 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Models.Game;
 using Models.Exceptions;
 
 namespace Models.Game
 {
+    
+    [DataContract]
     public class Bot : Player
     {
-        private static int _botCounter = 1;
         private static readonly Random _rnd = new Random();
 
-        public Bot()
+        public Bot(string _botCounter)
             : base($"Bot#{_botCounter}")
         {
-            _botCounter++;
+            
             IsBot = true;
         }
         public void PlayTurnAutomatically(Game game)
@@ -40,7 +42,7 @@ namespace Models.Game
                 game.HandlePlayerChoice(joueur, "3");
                 return;
             }
-            var types = new[] { "cover", "duck", "coin" }
+            var types = new[] { "cover", "cover" ,"duck", "coin" }
                         .OrderBy(_ => _rnd.Next())
                         .ToList();
 

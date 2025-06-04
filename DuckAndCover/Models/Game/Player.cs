@@ -2,6 +2,7 @@ using System.Runtime.Serialization;
 
 namespace Models.Game
 {
+    [KnownType(typeof(Bot))]
     [DataContract]
     public class Player
     {
