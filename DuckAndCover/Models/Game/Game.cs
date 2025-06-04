@@ -231,7 +231,7 @@ namespace Models.Game
         /// <param name="forPlayer">Le joueur concerné.</param>
         /// <param name="deckCard">La carte du deck.</param>
         /// <returns>Le numéro effectif de la carte.</returns>
-        public int GetEffectiveDeckCardNumber(Player forPlayer, DeckCard? deckCard)
+        public static int GetEffectiveDeckCardNumber(Player forPlayer, DeckCard? deckCard)
         {
             if (deckCard == null)
             {
@@ -480,7 +480,7 @@ namespace Models.Game
             }
         }
 
-        public List<Position> GetValidDuckTargetPositions(Player forPlayer, Position cardToMovePosition, DeckCard currentDeckCard)
+        public static List<Position> GetValidDuckTargetPositions(Player forPlayer, Position cardToMovePosition, DeckCard currentDeckCard)
         {
             var validTargets = new HashSet<Position>();
             if (currentDeckCard == null || forPlayer == null) return validTargets.ToList();
