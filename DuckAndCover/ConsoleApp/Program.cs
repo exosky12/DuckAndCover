@@ -174,26 +174,20 @@ namespace ConsoleApp
             {
                 while (true)
                 {
-                    WriteLine("[DEBUG] Début PlayerChanged");
                     var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.CurrentDeckCard, game);
-                    WriteLine($"[DEBUG] Choix reçu: {choice}");
                     
-                    // Valider le choix avant d'appeler HandlePlayerChoice
                     if (IsValidChoice(choice))
                     {
                         try
                         {
                             game.HandlePlayerChoice(e.CurrentPlayer, choice);
-                            WriteLine("[DEBUG] HandlePlayerChoice terminé avec succès");
-                            break; // Sortir de la boucle si succès
+                            break;
                         }
                         catch (Exception ex)
                         {
-                            WriteLine($"[DEBUG] Exception dans HandlePlayerChoice: {ex.Message}");
                             Utils.WriteError("Une erreur s'est produite lors du traitement de votre choix.");
                             WriteLine("Appuyez sur une touche pour continuer…");
                             ReadKey(true);
-                            // Continue la boucle
                         }
                     }
                     else
@@ -201,7 +195,6 @@ namespace ConsoleApp
                         Utils.WriteError("Choix invalide. Veuillez réessayer.");
                         WriteLine("Appuyez sur une touche pour continuer…");
                         ReadKey(true);
-                        // Continue la boucle pour redemander le choix
                     }
                 }
             };
@@ -210,26 +203,20 @@ namespace ConsoleApp
             {
                 while (true)
                 {
-                    WriteLine("[DEBUG] Début DisplayMenuNeeded");
                     var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.CurrentDeckCard, game);
-                    WriteLine($"[DEBUG] Choix reçu: {choice}");
                     
-                    // Valider le choix avant d'appeler HandlePlayerChoice
                     if (IsValidChoice(choice))
                     {
                         try
                         {
                             game.HandlePlayerChoice(e.CurrentPlayer, choice);
-                            WriteLine("[DEBUG] HandlePlayerChoice terminé avec succès");
-                            break; // Sortir de la boucle si succès
+                            break; 
                         }
                         catch (Exception ex)
                         {
-                            WriteLine($"[DEBUG] Exception dans HandlePlayerChoice: {ex.Message}");
                             Utils.WriteError("Une erreur s'est produite lors du traitement de votre choix.");
                             WriteLine("Appuyez sur une touche pour continuer…");
                             ReadKey(true);
-                            // Continue la boucle
                         }
                     }
                     else
@@ -237,7 +224,6 @@ namespace ConsoleApp
                         Utils.WriteError("Choix invalide. Veuillez réessayer.");
                         WriteLine("Appuyez sur une touche pour continuer…");
                         ReadKey(true);
-                        // Continue la boucle pour redemander le choix
                     }
                 }
             };
@@ -260,7 +246,7 @@ namespace ConsoleApp
                             Utils.ParsePosition(src),
                             Utils.ParsePosition(dst)
                         );
-                        break; // Si aucune erreur, sortir de la boucle
+                        break;
                     }
                     catch (Exception ex)
                     {
@@ -276,7 +262,6 @@ namespace ConsoleApp
                         Utils.WriteError(handler.Handle());
                         WriteLine("Appuyez sur une touche pour continuer…");
                         ReadKey(true);
-                        // Continue la boucle pour redemander les positions
                     }
                 }
             };
@@ -296,7 +281,7 @@ namespace ConsoleApp
                             Utils.ParsePosition(src),
                             Utils.ParsePosition(dst)
                         );
-                        break; // Si aucune erreur, sortir de la boucle
+                        break;
                     }
                     catch (Exception ex)
                     {
@@ -312,7 +297,6 @@ namespace ConsoleApp
                         Utils.WriteError(handler.Handle());
                         WriteLine("Appuyez sur une touche pour continuer…");
                         ReadKey(true);
-                        // Continue la boucle pour redemander les positions
                     }
                 }
             };
@@ -346,8 +330,10 @@ namespace ConsoleApp
 
             game.ErrorOccurred += (s, e) =>
             {
-                // Gestionnaire silencieux - les erreurs sont déjà gérées dans les boucles while
-                WriteLine($"[DEBUG] ErrorOccurred déclenché: {e.ErrorException.Message}");
+                var handler = new ErrorHandler(e.ErrorException);
+                Utils.WriteError(handler.Handle());
+                WriteLine("Appuyez sur une touche pour continuer…");
+                ReadKey(true);
             };
         }
 
