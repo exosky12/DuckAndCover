@@ -24,12 +24,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/DTOs/DataToPersistDTO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/DTOs.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/DTOs.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/DataToPersist.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -367,14 +362,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00029" summary="feat(Game actions): DoCover, DoDuck">
-      <option name="closed" value="true" />
-      <created>1747412143357</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1747412143357</updated>
     </task>
     <task id="LOCAL-00030" summary="feat(Error handling): Error exception class and Error handler class">
       <option name="closed" value="true" />
@@ -760,7 +747,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749059345439</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="feat: add DataToPersistDto for data serialization and update JsonPersistency to use the new DTO">
+      <option name="closed" value="true" />
+      <created>1749060760471</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1749060760471</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -821,7 +816,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix: DTOs.csproj targetFrameworks" />
     <MESSAGE value="fix: dto.csproj" />
     <MESSAGE value="big update" />
     <MESSAGE value="change fake persistency values" />
@@ -846,7 +840,8 @@
     <MESSAGE value="docs: add Doxygen configuration for project documentation" />
     <MESSAGE value="refactor: change GetEmptyPositions method to public and add DeckTests for deck functionality" />
     <MESSAGE value="test: add unit tests for TryValidMove method in various rules classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="test: add unit tests for TryValidMove method in various rules classes" />
+    <MESSAGE value="feat: add DataToPersistDto for data serialization and update JsonPersistency to use the new DTO" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add DataToPersistDto for data serialization and update JsonPersistency to use the new DTO" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
