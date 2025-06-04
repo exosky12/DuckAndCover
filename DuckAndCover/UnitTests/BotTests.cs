@@ -40,7 +40,7 @@ public class BotTests
         var dummyTarget = new GameCard(3, 2) { Position = new Position(1, 2) };
         bot.Grid.GameCardsGrid.Add(dummyTarget);
 
-        bot.PlayTurnAutomatically(game);
+        Bot.PlayTurnAutomatically(game);
 
         Assert.False(bot.HasSkipped); 
     }

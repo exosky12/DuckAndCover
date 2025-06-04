@@ -54,40 +54,40 @@ namespace Models.Rules
         /// <param name="grid">Grille de jeu.</param>
         /// <param name="funcName">Nom de la fonction ("duck" ou "cover").</param>
         /// <param name="currentDeckCard">Carte du deck utilisée pour la validation.</param>
-        /// <exception cref="Error">Lance une erreur si le mouvement est invalide.</exception>
+        /// <exception cref="ErrorException">Lance une erreur si le mouvement est invalide.</exception>
         public void TryValidMove(Position position, Position newPosition, Grid grid, string funcName, DeckCard currentDeckCard)
         {
             GameCard? card = grid.GetCard(position);
             if (card == null)
-                throw new Error(ErrorCodes.CardNotFound);
+                throw new ErrorException(ErrorCodes.CardNotFound);
 
             if (card.Number != currentDeckCard.Number)
-                throw new Error(ErrorCodes.CardNumberNotEqualToDeckCardNumber);
+                throw new ErrorException(ErrorCodes.CardNumberNotEqualToDeckCardNumber);
 
             switch (funcName.ToLower())
             {
                 case "duck":
                     GameCard? cardToDuck = grid.GetCard(newPosition);
                     if (cardToDuck != null)
-                        throw new Error(ErrorCodes.CardAlreadyExists);
+                        throw new ErrorException(ErrorCodes.CardAlreadyExists);
                     
                     (bool isAdjacent, GameCard? adjacentCard) = grid.IsAdjacentToCard(newPosition);
                     
                     if (!isAdjacent || Equals(adjacentCard?.Position, position))
-                        throw new Error(ErrorCodes.CardsAreNotAdjacent);
+                        throw new ErrorException(ErrorCodes.CardsAreNotAdjacent);
 
                     return;
 
                 case "cover":
                     GameCard? cardToCover = grid.GetCard(newPosition);
                     if (cardToCover == null)
-                        throw new Error(ErrorCodes.CardNotFound);
+                        throw new ErrorException(ErrorCodes.CardNotFound);
                     if (!grid.AreAdjacentCards(position, newPosition))
-                        throw new Error(ErrorCodes.CardsAreNotAdjacent);
+                        throw new ErrorException(ErrorCodes.CardsAreNotAdjacent);
                     return;
 
                 default:
-                    throw new Error(ErrorCodes.InvalidFunctionName);
+                    throw new ErrorException(ErrorCodes.InvalidFunctionName);
             }
         }
     }

@@ -27,7 +27,7 @@ public class InsaneRulesTests
         grid.GameCardsGrid.Add(new GameCard(3, 8) { Position = newPos });
         var rules = new InsaneRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() => rules.TryValidMove(card.Position, newPos, grid, "duck", deckCard));
+        Assert.Throws<ErrorException>(() => rules.TryValidMove(card.Position, newPos, grid, "duck", deckCard));
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class InsaneRulesTests
         var newPos = new Position(1, 2);
         var rules = new InsaneRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() => rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard));
+        Assert.Throws<ErrorException>(() => rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard));
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class InsaneRulesTests
         grid.GameCardsGrid.Add(new GameCard(3, 13) { Position = newPos });
         var rules = new InsaneRules();
         var deckCard = new DeckCard(Bonus.None, 8);
-        var ex = Assert.Throws<Error>(() =>
+        var ex = Assert.Throws<ErrorException>(() =>
             rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard));
         Assert.Equal(ErrorCodes.CardNumberNotEqualToDeckCardNumber, ex.ErrorCode);
     }
@@ -98,7 +98,7 @@ public class InsaneRulesTests
         var newPos = new Position(10, 10);
         var rules = new InsaneRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() =>
+        Assert.Throws<ErrorException>(() =>
             rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard)
         );
     }

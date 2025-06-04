@@ -95,9 +95,9 @@ public class PlayerTests
         {
             game.DoCover(player, cardToMove.Position, cardToCover.Position);
         }
-        catch (Error e)
+        catch (ErrorException e)
         {
-            Assert.IsType<Error>(e);
+            Assert.IsType<ErrorException>(e);
         }
 
         Assert.Equal(new Position(1, 2), cardToMove.Position);
@@ -120,9 +120,9 @@ public class PlayerTests
         {
             game.DoDuck(player, card.Position, newPos);
         }
-        catch (Error e)
+        catch (ErrorException e)
         {
-            Assert.IsType<Error>(e);
+            Assert.IsType<ErrorException>(e);
         }
         
         Assert.Equal(newPos, card.Position);
@@ -139,7 +139,7 @@ public class PlayerTests
         grid.GameCardsGrid.Add(card);
         Position newPos = new Position(6, 6);
         
-        Assert.Throws<Error>(() => game.DoDuck(player, card.Position, newPos));
+        Assert.Throws<ErrorException>(() => game.DoDuck(player, card.Position, newPos));
         Assert.Equal(new Position(1, 1), card.Position);
     }
 
@@ -153,7 +153,7 @@ public class PlayerTests
         GameCard cardToMove = new GameCard(5, 1) { Position = new Position(1, 1) };
         grid.GameCardsGrid.Add(cardToMove);
 
-        Assert.Throws<Error>(() => game.DoCover(player, new Position(1, 1), new Position(999, 999)));
+        Assert.Throws<ErrorException>(() => game.DoCover(player, new Position(1, 1), new Position(999, 999)));
     }
 
     [Fact]
@@ -166,7 +166,7 @@ public class PlayerTests
         GameCard card = new GameCard(3, 7) { Position = new Position(1, 1) };
         grid.GameCardsGrid.Add(card);
 
-        Assert.Throws<Error>(() => game.DoDuck(player, new Position(1, 1), new Position(999, 999)));
+        Assert.Throws<ErrorException>(() => game.DoDuck(player, new Position(1, 1), new Position(999, 999)));
     }
 
     [Fact]
@@ -195,9 +195,9 @@ public class PlayerTests
         {
             game.DoCover(player, cardToMove.Position, cardToCover.Position);
         }
-        catch (Error e)
+        catch (ErrorException e)
         {
-            Assert.IsType<Error>(e);
+            Assert.IsType<ErrorException>(e);
         }
         
 
@@ -220,9 +220,9 @@ public class PlayerTests
         {
             game.DoDuck(player, card.Position, newPos);
         }
-        catch (Error e)
+        catch (ErrorException e)
         {
-            Assert.IsType<Error>(e);
+            Assert.IsType<ErrorException>(e);
         }
 
         Assert.Equal(initialStackCounter, player.StackCounter);

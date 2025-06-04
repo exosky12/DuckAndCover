@@ -68,7 +68,7 @@ public partial class GamePage : ContentPage
             
             if (e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot b )
             {
-                Task.Delay(1000).ContinueWith(_ => b.PlayTurnAutomatically(GameManager));
+                Task.Delay(1000).ContinueWith(_ => Bot.PlayTurnAutomatically(GameManager));
             }
 
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
@@ -116,7 +116,7 @@ public partial class GamePage : ContentPage
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            string errorMessage = e.Error?.Message ?? "Une erreur inconnue est survenue.";
+            string errorMessage = e.ErrorException?.Message ?? "Une erreur inconnue est survenue.";
             await DisplayAlert("Erreur", errorMessage, "OK");
             ResetSelectionState();
         });

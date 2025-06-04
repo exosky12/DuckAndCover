@@ -65,10 +65,10 @@ public static class Utils
     {
         string[] parts = input.Split(',');
         if (parts.Length != 2)
-            throw new Error(ErrorCodes.WrongPositionFormat);
+            throw new ErrorException(ErrorCodes.WrongPositionFormat);
 
         if (!int.TryParse(parts[0].Trim(), out int row) || !int.TryParse(parts[1].Trim(), out int col))
-            throw new Error(ErrorCodes.PositionsMustBeIntegers);
+            throw new ErrorException(ErrorCodes.PositionsMustBeIntegers);
 
         return new Position(row, col);
     }
@@ -252,7 +252,7 @@ public static class Utils
             string input = ReadLine() ?? "";
             if (!int.TryParse(input, out int choix) || choix < 1 || choix > 3)
             {
-                var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                var handler = new ErrorHandler(new ErrorException(ErrorCodes.InvalidChoice));
                 WriteError(handler.Handle());
                 WriteLine("Appuyez sur une touche pour recommencer…");
                 ReadKey(true);
@@ -264,7 +264,7 @@ public static class Utils
                 1 => new ClassicRules(),
                 2 => new BlitzRules(),
                 3 => new InsaneRules(),
-                _ => throw new Error(ErrorCodes.InvalidChoice)
+                _ => throw new ErrorException(ErrorCodes.InvalidChoice)
             };
         }
     }
@@ -293,23 +293,18 @@ public static class Utils
                 return new Game(new BlitzRules());
 
             default:
-                var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                var handler = new ErrorHandler(new ErrorException(ErrorCodes.InvalidChoice));
                 handler.Handle();
                 break;
         }
 
 
         Deck deck = new Deck();
-        if (game == null)
-        {
-            game = new Game(ChoisirRegles());
-            return game;
-        }
-        game.InitializeGame(
+        game!.InitializeGame(
             Guid.NewGuid().ToString("N").Substring(0, 5),
             newPlayers,
             deck,
-            deck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
+            deck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty)
             );
         return game;
     }

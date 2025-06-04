@@ -23,7 +23,7 @@ namespace ConsoleApp
             Game game = GetGameFromUserChoice(stubGames);
 
             if (game == null)
-                throw new Error(ErrorCodes.UnknownError);
+                throw new ErrorException(ErrorCodes.UnknownError);
 
             SubscribeToGameEvents(game);
 
@@ -54,7 +54,7 @@ namespace ConsoleApp
                             Utils.WriteGameMaster("Nombre de joueurs (2 à 7) :");
                             if (!int.TryParse(ReadLine(), out count) || count < 2 || count > 7)
                             {
-                                var handler2 = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                                var handler2 = new ErrorHandler(new ErrorException(ErrorCodes.InvalidChoice));
                                 Utils.WriteError(handler2.Handle());
                                 WriteLine("Appuyez sur une touche pour recommencer…");
                                 ReadKey(true);
@@ -70,7 +70,7 @@ namespace ConsoleApp
 
                         Deck deck = new Deck();
                         if (deck.Cards.Count == 0)
-                            throw new Error(ErrorCodes.DeckEmpty);
+                            throw new ErrorException(ErrorCodes.DeckEmpty);
 
                         string newId = Guid.NewGuid().ToString("N").Substring(0, 5).ToUpperInvariant();
                         game.InitializeGame(
@@ -83,7 +83,7 @@ namespace ConsoleApp
                         return game!;
 
                     default:
-                        var handler3 = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                        var handler3 = new ErrorHandler(new ErrorException(ErrorCodes.InvalidChoice));
                         Utils.WriteError(handler3.Handle());
                         WriteLine("Appuyez sur une touche pour recommencer…");
                         ReadKey(true);
@@ -123,7 +123,7 @@ namespace ConsoleApp
                     return;
                 }
 
-                var handler = new ErrorHandler(new Error(ErrorCodes.GameIdNotFound));
+                var handler = new ErrorHandler(new ErrorException(ErrorCodes.GameIdNotFound));
                 Utils.WriteError(handler.Handle());
                 WriteLine("Appuyez sur une touche pour continuer…");
                 ReadKey(true);
@@ -140,7 +140,7 @@ namespace ConsoleApp
                 Utils.WriteGameMaster("Nombre de joueurs (2 à 7) pour la partie Classic :");
                 if (!int.TryParse(ReadLine(), out count) || count < 2 || count > 7)
                 {
-                    var handler = new ErrorHandler(new Error(ErrorCodes.InvalidChoice));
+                    var handler = new ErrorHandler(new ErrorException(ErrorCodes.InvalidChoice));
                     Utils.WriteError(handler.Handle());
                     WriteLine("Appuyez sur une touche pour recommencer…");
                     ReadKey(true);
@@ -156,7 +156,7 @@ namespace ConsoleApp
 
             Deck deck = new Deck();
             if (deck.Cards.Count == 0)
-                throw new Error(ErrorCodes.DeckEmpty);
+                throw new ErrorException(ErrorCodes.DeckEmpty);
 
             string newId = Guid.NewGuid().ToString("N").Substring(0, 5).ToUpperInvariant();
             game.InitializeGame(
@@ -240,7 +240,7 @@ namespace ConsoleApp
 
             game.ErrorOccurred += (s, e) =>
             {
-                var handler = new ErrorHandler(e.Error);
+                var handler = new ErrorHandler(e.ErrorException);
                 Utils.WriteError(handler.Handle());
                 WriteLine("Appuyez sur une touche pour continuer…");
                 ReadKey(true);

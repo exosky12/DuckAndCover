@@ -22,7 +22,7 @@ public class GameTests
             id: "ED23F",
             players: players,
             deck: deck,
-            currentDeckCard: deck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
+            currentDeckCard: deck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty)
         );
 
         Assert.Equal(2, game.Players.Count);
@@ -83,7 +83,7 @@ public class GameTests
             id: "12345",
             players: players,
             deck: deck,
-            currentDeckCard: deck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
+            currentDeckCard: deck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty)
         );
 
         Assert.Equal(players[0], game.CurrentPlayer);
@@ -123,7 +123,7 @@ public class GameTests
         game.ErrorOccurred += (sender, args) =>
         {
             errorHandled = true;
-            Assert.NotNull(args.Error);
+            Assert.NotNull(args.ErrorException);
         };
 
         game.HandlePlayerChoice(game.CurrentPlayer, "invalid_choice");
@@ -248,7 +248,7 @@ public class GameTests
         game.Players = players;
         game.Deck.Cards.Clear();
 
-        var ex = Assert.Throws<Error>(() => game.NextDeckCard());
+        var ex = Assert.Throws<ErrorException>(() => game.NextDeckCard());
         Assert.Equal(ErrorCodes.DeckEmpty, ex.ErrorCode);
     }
 
@@ -270,7 +270,7 @@ public class GameTests
         var from = new Position(0, 0);
         var to = new Position(4, 4);
 
-        Assert.Throws<Error>(() => game.HandlePlayerChooseCover(player, from, to));
+        Assert.Throws<ErrorException>(() => game.HandlePlayerChooseCover(player, from, to));
     }
 
     [Fact]
@@ -282,7 +282,7 @@ public class GameTests
         var from = new Position(0, 0);
         var to = new Position(3, 3);
 
-        Assert.Throws<Error>(() => game.HandlePlayerChooseDuck(player, from, to));
+        Assert.Throws<ErrorException>(() => game.HandlePlayerChooseDuck(player, from, to));
     }
 
     [Fact]

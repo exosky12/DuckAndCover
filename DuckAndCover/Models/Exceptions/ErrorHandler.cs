@@ -11,15 +11,15 @@ namespace Models.Exceptions
         /// <summary>
         /// L'erreur à traiter.
         /// </summary>
-        private readonly Error _error;
+        private readonly ErrorException _errorException;
 
         /// <summary>
         /// Initialise une nouvelle instance de la classe ErrorHandler.
         /// </summary>
-        /// <param name="error">L'erreur à traiter.</param>
-        public ErrorHandler(Error error)
+        /// <param name="errorException">L'erreur à traiter.</param>
+        public ErrorHandler(ErrorException errorException)
         {
-            _error = error;
+            _errorException = errorException;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Models.Exceptions
         /// <returns>Un message explicite décrivant l'erreur.</returns>
         public string Handle()
         {
-            return _error.ErrorCode switch
+            return _errorException.ErrorCode switch
             {
                 ErrorCodes.CardNotFound => "La carte est introuvable à la position donnée.",
                 ErrorCodes.AdjacentCardNotFound => "Aucune carte adjacente. Vous devez donner une position avec au moins une carte adjacente.",

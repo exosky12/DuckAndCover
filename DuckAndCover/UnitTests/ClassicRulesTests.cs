@@ -29,7 +29,7 @@ public class ClassicRulesTests
 
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() => rules.TryValidMove(card.Position, newPos, grid, "duck", deckCard));
+        Assert.Throws<ErrorException>(() => rules.TryValidMove(card.Position, newPos, grid, "duck", deckCard));
     }
 
     [Fact]
@@ -45,9 +45,9 @@ public class ClassicRulesTests
         {
             rules.TryValidMove(card.Position, newPos, grid, "duck", deckCard);
         }
-        catch (Error e)
+        catch (ErrorException e)
         {
-            Assert.IsType<Error>(e);
+            Assert.IsType<ErrorException>(e);
         }
 
         Assert.True(true);
@@ -63,7 +63,7 @@ public class ClassicRulesTests
 
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() => rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard));
+        Assert.Throws<ErrorException>(() => rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard));
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public class ClassicRulesTests
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 8);
 
-        var ex = Assert.Throws<Error>(() =>
+        var ex = Assert.Throws<ErrorException>(() =>
             rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard));
     
         Assert.Equal(ErrorCodes.CardNumberNotEqualToDeckCardNumber, ex.ErrorCode);
@@ -113,7 +113,7 @@ public class ClassicRulesTests
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 5);
 
-        Assert.Throws<Error>(() =>
+        Assert.Throws<ErrorException>(() =>
             rules.TryValidMove(card.Position, newPos, grid, "cover", deckCard)
         );
     }
@@ -176,7 +176,7 @@ public class ClassicRulesTests
 
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() => rules.TryValidMove(card.Position, newPos, grid, "duck", deckCard));
+        Assert.Throws<ErrorException>(() => rules.TryValidMove(card.Position, newPos, grid, "duck", deckCard));
     }
 
     [Fact]
@@ -188,7 +188,7 @@ public class ClassicRulesTests
 
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() => rules.TryValidMove(card.Position, card.Position, grid, "cover", deckCard));
+        Assert.Throws<ErrorException>(() => rules.TryValidMove(card.Position, card.Position, grid, "cover", deckCard));
     }
 
     [Fact]
@@ -200,7 +200,7 @@ public class ClassicRulesTests
 
         var rules = new ClassicRules();
         var deckCard = new DeckCard(Bonus.None, 5);
-        Assert.Throws<Error>(() => rules.TryValidMove(card.Position, card.Position, grid, "duck", deckCard));
+        Assert.Throws<ErrorException>(() => rules.TryValidMove(card.Position, card.Position, grid, "duck", deckCard));
     }
 
     [Fact]

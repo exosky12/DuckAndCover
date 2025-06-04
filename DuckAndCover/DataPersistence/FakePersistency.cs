@@ -135,7 +135,7 @@ namespace DataPersistence
                 players: new List<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
                 deck: onGoingDeck,
                 currentPlayerIndex: 0,
-                currentDeckCard: onGoingDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty)
+                currentDeckCard: onGoingDeck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty)
             );
             games.Add(onGoingGame);
 
@@ -148,7 +148,7 @@ namespace DataPersistence
                 players: new List<Player> { allPlayers[2], allPlayers[3] }, // Jordy2, Jules2
                 deck: finishedDeck,
                 currentPlayerIndex: 0,
-                currentDeckCard: finishedDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty),
+                currentDeckCard: finishedDeck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty),
                 cardsSkipped: 8,
                 lastNumber: 1,
                 isFinished: true
@@ -163,7 +163,7 @@ namespace DataPersistence
                 id: "5051e",
                 players: new List<Player> { allPlayers[4], allPlayers[5] }, // Jordy1, Jules1
                 deck: crazyDeck,
-                currentDeckCard: crazyDeck.Cards.FirstOrDefault() ?? throw new Error(ErrorCodes.DeckEmpty),
+                currentDeckCard: crazyDeck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty),
                 currentPlayerIndex: 1,
                 cardsSkipped: 3,
                 lastNumber: 2

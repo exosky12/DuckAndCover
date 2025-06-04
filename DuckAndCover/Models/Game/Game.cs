@@ -280,7 +280,7 @@ namespace Models.Game
 
                 case Bonus.Max:
                     string maxEffectMessage;
-                    if (player.Grid.GameCardsGrid.Any())
+                    if (player.Grid.GameCardsGrid.Count > 0)
                     {
                         maxEffectMessage = $"Carte MAX ! Le numéro sera le plus élevé de la grille du joueur actif.";
                     }
@@ -312,14 +312,14 @@ namespace Models.Game
         public DeckCard NextDeckCard()
         {
             if (Deck.Cards.Count == 0)
-                throw new Error(ErrorCodes.DeckEmpty);
+                throw new ErrorException(ErrorCodes.DeckEmpty);
 
             Deck.Cards.RemoveAt(0);
 
             if (Deck.Cards.Count == 0)
             {
                 CurrentDeckCard = null!;
-                throw new Error(ErrorCodes.DeckEmpty, "Plus de cartes dans le deck");
+                throw new ErrorException(ErrorCodes.DeckEmpty, "Plus de cartes dans le deck");
             }
 
             CurrentDeckCard = Deck.Cards.First();
@@ -352,12 +352,12 @@ namespace Models.Game
 
                 if (CurrentDeckCard == null)
                 {
-                    throw new Error(ErrorCodes.DeckEmpty, "Plus de cartes disponibles");
+                    throw new ErrorException(ErrorCodes.DeckEmpty, "Plus de cartes disponibles");
                 }
 
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
             }
-            catch (Error e)
+            catch (ErrorException e)
             {
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
@@ -373,20 +373,20 @@ namespace Models.Game
 
             try
             {
-                if (CurrentDeckCard == null && Deck.Cards.Any())
+                if (CurrentDeckCard == null && Deck.Cards.Count > 0)
                 {
                     CurrentDeckCard = Deck.Cards.First();
                 }
 
                 if (CurrentDeckCard == null)
                 {
-                    throw new Error(ErrorCodes.DeckEmpty, "Aucune carte disponible pour démarrer le jeu");
+                    throw new ErrorException(ErrorCodes.DeckEmpty, "Aucune carte disponible pour démarrer le jeu");
                 }
 
                 ProcessCardEffect(CurrentDeckCard, CurrentPlayer);
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
             }
-            catch (Error e)
+            catch (ErrorException e)
             {
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
@@ -398,7 +398,7 @@ namespace Models.Game
             {
                 if (player != CurrentPlayer && choice != "4" && choice != "5" && choice != "6")
                 {
-                    OnErrorOccurred(new ErrorOccurredEventArgs(new Error(ErrorCodes.NotPlayerTurn,
+                    OnErrorOccurred(new ErrorOccurredEventArgs(new ErrorException(ErrorCodes.NotPlayerTurn,
                         "Ce n'est pas votre tour.")));
                     return;
                 }
@@ -434,10 +434,10 @@ namespace Models.Game
 
                         break;
                     default:
-                        throw new Error(ErrorCodes.InvalidChoice);
+                        throw new ErrorException(ErrorCodes.InvalidChoice);
                 }
             }
-            catch (Error e)
+            catch (ErrorException e)
             {
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
             }
@@ -447,11 +447,11 @@ namespace Models.Game
         {
             try
             {
-                if (player != CurrentPlayer) throw new Error(ErrorCodes.NotPlayerTurn);
+                if (player != CurrentPlayer) throw new ErrorException(ErrorCodes.NotPlayerTurn);
                 DoCover(player, cardToMovePosition, cardToCoverPosition);
                 ProcessTurn();
             }
-            catch (Error e)
+            catch (ErrorException e)
             {
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
                 throw;
@@ -469,11 +469,11 @@ namespace Models.Game
         {
             try
             {
-                if (player != CurrentPlayer) throw new Error(ErrorCodes.NotPlayerTurn);
+                if (player != CurrentPlayer) throw new ErrorException(ErrorCodes.NotPlayerTurn);
                 DoDuck(player, cardToMovePosition, duckPosition);
                 ProcessTurn();
             }
-            catch (Error e)
+            catch (ErrorException e)
             {
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
                 throw;
@@ -495,7 +495,7 @@ namespace Models.Game
 
             var occupiedPositions = new HashSet<Position>(
                 forPlayer.Grid.GameCardsGrid
-                    .Where(c => c != null && c.Position != cardToMovePosition) 
+                    .Where(c => c != null && c.Position != cardToMovePosition)
                     .Select(c => c.Position)
             );
 
@@ -511,8 +511,7 @@ namespace Models.Game
                 {
                     var adjacent = new Position(card.Position.Row + dRow[i], card.Position.Column + dCol[i]);
 
-                    
-                    if (forPlayer.Grid.GetCard(adjacent) != null)
+                    if (occupiedPositions.Contains(adjacent))
                         continue;
 
                     validTargets.Add(adjacent);
@@ -521,6 +520,7 @@ namespace Models.Game
 
             return validTargets.ToList();
         }
+
 
 
         public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)

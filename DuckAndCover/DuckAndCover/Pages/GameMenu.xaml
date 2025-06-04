@@ -28,7 +28,7 @@
 
                     <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
                         <VerticalStackLayout Spacing="15">
-                            <Label Text="Nombre de joueurs"
+                            <Label Text="Nombre de joueurs au total (IA incluses)"
                                    FontSize="24"
                                    FontAttributes="Bold"
                                    TextColor="#222222"/>
