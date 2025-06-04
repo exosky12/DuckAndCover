@@ -45,11 +45,8 @@ namespace Models.Game
 
             var priorities = GetRandomizedPriorities();
 
-            foreach (var action in priorities)
-            {
-                if (TryExecuteAction(action, game, player, grid, rules, deckCard))
-                    return;
-            }
+            if (priorities.Any(action => TryExecuteAction(action, game, player, grid, rules, deckCard)))
+                return;
 
             game.HandlePlayerChoice(player, "3");
         }
