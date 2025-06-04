@@ -7,67 +7,76 @@ using Models.Exceptions;
 
 namespace Models.Game
 {
-    
+    /// <summary>
+    /// Représente une IA (bot) dans le jeu.
+    /// </summary>
     [DataContract]
     public class Bot : Player
     {
-        private static readonly Random _rnd = new Random();
-
-        public Bot(string _botCounter)
-            : base($"Bot#{_botCounter}")
+        /// <summary>
+        /// Initialise une nouvelle instance de la classe Bot.
+        /// </summary>
+        /// <param name="botNumber">Le numéro du bot qui sera utilisé dans son nom.</param>
+        public Bot(string botNumber)
+            : base($"Bot#{botNumber}")
         {
-            
             IsBot = true;
         }
+
+        /// <summary>
+        /// Joue automatiquement le tour du bot en suivant une stratégie prédéfinie.
+        /// Le bot essaiera d'abord de faire un "cover", puis un "duck", et enfin de passer son tour avec coin.
+        /// </summary>
+        /// <param name="game">L'instance du jeu en cours.</param>
         public void PlayTurnAutomatically(Game game)
         {
-            var joueur   = game.CurrentPlayer;
+            var player = game.CurrentPlayer;
             var deckCard = game.CurrentDeckCard;
-            var grid     = joueur.Grid;
-            var règles   = game.Rules;
-            
+            var grid = player.Grid;
+            var rules = game.Rules;
+
             if (deckCard == null)
             {
-                game.HandlePlayerChoice(joueur, "3");
+                game.HandlePlayerChoice(player, "3");
                 return;
             }
-            
+
             var sources = grid.GameCardsGrid
-                               .Where(c => c.Number == deckCard.Number)
-                               .Select(c => c.Position)
-                               .ToList();
-            
+                .Where(c => c.Number == deckCard.Number)
+                .Select(c => c.Position)
+                .ToList();
+
             if (!sources.Any())
             {
-                game.HandlePlayerChoice(joueur, "3");
+                game.HandlePlayerChoice(player, "3");
                 return;
             }
-            var types = new[] { "cover", "cover" ,"duck", "coin" }
-                        .OrderBy(_ => _rnd.Next())
-                        .ToList();
 
-            foreach (var t in types)
+            var priorities = new[] { "cover", "cover", "duck", "coin" }
+                .OrderBy(_ => Random.Shared.Next())
+                .ToList();
+
+            foreach (var action in priorities)
             {
-                if (t == "coin")
+                if (action == "coin")
                 {
-                    game.HandlePlayerChoice(joueur, "3");
+                    game.HandlePlayerChoice(player, "3");
                     return;
                 }
 
-                if (t == "cover")
+                if (action == "cover")
                 {
-                    // Jusqu’à 5 essais de Cover aléatoire
-                    for (int essai = 0; essai < 5; essai++)
+                    for (int attempt = 0; attempt < 5; attempt++)
                     {
-                        var src    = sources[_rnd.Next(sources.Count)];
-                        var cibles = grid.GameCardsGrid.Select(c => c.Position).ToList();
-                        if (!cibles.Any()) break;
+                        var source = sources[Random.Shared.Next(sources.Count)];
+                        var targets = grid.GameCardsGrid.Select(c => c.Position).ToList();
+                        if (!targets.Any()) break;
 
-                        var dst = cibles[_rnd.Next(cibles.Count)];
+                        var destination = targets[Random.Shared.Next(targets.Count)];
                         try
                         {
-                            règles.TryValidMove(src, dst, grid, "cover", deckCard);
-                            game.HandlePlayerChooseCover(joueur, src, dst);
+                            rules.TryValidMove(source, destination, grid, "cover", deckCard);
+                            game.HandlePlayerChooseCover(player, source, destination);
                             return;
                         }
                         catch (Error)
@@ -77,19 +86,19 @@ namespace Models.Game
                     }
                 }
 
-                if (t == "duck")
+                if (action == "duck")
                 {
-                    for (int essai = 0; essai < 5; essai++)
+                    for (int attempt = 0; attempt < 5; attempt++)
                     {
-                        var src = sources[_rnd.Next(sources.Count)];
-                        var empties = GetEmptyPositions(grid);
-                        if (!empties.Any()) break;
+                        var source = sources[Random.Shared.Next(sources.Count)];
+                        var emptyPositions = GetEmptyPositions(grid);
+                        if (!emptyPositions.Any()) break;
 
-                        var dst = empties[_rnd.Next(empties.Count)];
+                        var destination = emptyPositions[Random.Shared.Next(emptyPositions.Count)];
                         try
                         {
-                            règles.TryValidMove(src, dst, grid, "duck", deckCard);
-                            game.HandlePlayerChooseDuck(joueur, src, dst);
+                            rules.TryValidMove(source, destination, grid, "duck", deckCard);
+                            game.HandlePlayerChooseDuck(player, source, destination);
                             return;
                         }
                         catch (Error)
@@ -99,32 +108,39 @@ namespace Models.Game
                     }
                 }
             }
-            
-            game.HandlePlayerChoice(joueur, "3");
+
+            game.HandlePlayerChoice(player, "3");
         }
-        
+
+        /// <summary>
+        /// Récupère la liste des positions vides dans la grille de jeu.
+        /// Les positions vides sont déterminées en fonction des cartes déjà placées.
+        /// </summary>
+        /// <param name="grid">La grille de jeu à analyser.</param>
+        /// <returns>Une liste des positions vides dans la grille.</returns>
         private static List<Position> GetEmptyPositions(Grid grid)
         {
-            var occupées = grid.GameCardsGrid.Select(c => c.Position).ToHashSet();
-            if (!occupées.Any())
+            var occupied = grid.GameCardsGrid.Select(c => c.Position).ToHashSet();
+            if (!occupied.Any())
                 return new List<Position>();
 
-            int minRow = occupées.Min(p => p.Row);
-            int maxRow = occupées.Max(p => p.Row);
-            int minCol = occupées.Min(p => p.Column);
-            int maxCol = occupées.Max(p => p.Column);
+            int minRow = occupied.Min(p => p.Row);
+            int maxRow = occupied.Max(p => p.Row);
+            int minCol = occupied.Min(p => p.Column);
+            int maxCol = occupied.Max(p => p.Column);
 
-            var empties = new List<Position>();
-            for (int r = minRow; r <= maxRow; r++)
+            var empty = new List<Position>();
+            for (int row = minRow; row <= maxRow; row++)
             {
-                for (int c = minCol; c <= maxCol; c++)
+                for (int col = minCol; col <= maxCol; col++)
                 {
-                    var pos = new Position(r, c);
-                    if (!occupées.Contains(pos))
-                        empties.Add(pos);
+                    var pos = new Position(row, col);
+                    if (!occupied.Contains(pos))
+                        empty.Add(pos);
                 }
             }
-            return empties;
+
+            return empty;
         }
     }
 }
