@@ -23,7 +23,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="" />
+    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Models/Exceptions/ErrorException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorException.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,9 +90,11 @@
     <setting file="file://$PROJECT_DIR$/Models/Events/PlayerChooseQuitEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Events/PlayerChooseShowPlayersGridEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Events/PlayerChooseShowScoresEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Models/Exceptions/Error.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Game/Game.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Player.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/BlitzRules.cs" root0="SKIP_HIGHLIGHTING" />
@@ -354,14 +358,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00026" summary="feat(Player Model): HasPlayed property, update stackCounter">
-      <option name="closed" value="true" />
-      <created>1747216393387</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1747216393387</updated>
     </task>
     <task id="LOCAL-00027" summary="feat(Console App)">
       <option name="closed" value="true" />
@@ -747,7 +743,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749053777514</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="docs: add Doxygen configuration for project documentation">
+      <option name="closed" value="true" />
+      <created>1749054117086</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1749054117086</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -808,7 +812,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(Fake and Json Persistance): Job done !" />
     <MESSAGE value="chrore:         &lt;TargetFrameworks&gt;net9.0-android&lt;/TargetFrameworks&gt;&#10; in DTO csproj" />
     <MESSAGE value="fix: naming" />
     <MESSAGE value="fix: DTOs.csproj targetFrameworks" />
@@ -833,7 +836,8 @@
     <MESSAGE value="fix(GetValidDuckTargetPositions)" />
     <MESSAGE value="refactor: make GetEffectiveDeckCardNumber and GetValidDuckTargetPositions static" />
     <MESSAGE value="refactor: replace Error with ErrorException for error handling and other stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: replace Error with ErrorException for error handling and other stuff" />
+    <MESSAGE value="docs: add Doxygen configuration for project documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: add Doxygen configuration for project documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
