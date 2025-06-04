@@ -23,7 +23,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="" />
+    <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/UnitTests/BotTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Bot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Bot.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,7 +60,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Utils.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DTOs/obj/Debug/net9.0-android/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
@@ -95,8 +98,10 @@
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Player.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/BlitzRules.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/BlitzRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/ClassicRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/ClassicRules.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/UnitTests/BotTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/UnitTests/GameTests.cs" root0="SKIP_HIGHLIGHTING" />
@@ -158,7 +163,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "tests(Bot)",
     "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -738,13 +743,13 @@
       <option name="project" value="LOCAL" />
       <updated>1748971157920</updated>
     </task>
-    <task id="LOCAL-00072" summary="refactor: improve code consistency and readability by renaming DTO and updating method signatures">
+    <task id="LOCAL-00072" summary="fix(GetValidDuckTargetPositions)">
       <option name="closed" value="true" />
-      <created>1748974163723</created>
+      <created>1749051187249</created>
       <option name="number" value="00072" />
       <option name="presentableId" value="LOCAL-00072" />
       <option name="project" value="LOCAL" />
-      <updated>1748974163723</updated>
+      <updated>1749051187249</updated>
     </task>
     <option name="localTasksCounter" value="73" />
     <servers />
@@ -831,8 +836,8 @@
     <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
     <MESSAGE value="fix(DeckCard MAX Bonus): attribute the correct card number when the deck card's bonus is MAX" />
     <MESSAGE value="feat(persistence): switch to JSON-based data persistence and update player scores property" />
-    <MESSAGE value="refactor: improve code consistency and readability by renaming DTO and updating method signatures" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: improve code consistency and readability by renaming DTO and updating method signatures" />
+    <MESSAGE value="fix(GetValidDuckTargetPositions)" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(GetValidDuckTargetPositions)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -877,19 +882,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Models/Game/Game.cs</url>
-          <line>498</line>
-          <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
-            <startOffsets>
-              <option value="19419" />
-            </startOffsets>
-            <endOffsets>
-              <option value="19442" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

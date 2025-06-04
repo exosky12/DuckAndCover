@@ -68,7 +68,7 @@ public partial class GamePage : ContentPage
             
             if (e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot b )
             {
-                Task.Delay(3000).ContinueWith(_ => b.PlayTurnAutomatically(GameManager));
+                Task.Delay(1000).ContinueWith(_ => b.PlayTurnAutomatically(GameManager));
             }
 
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
