@@ -16,6 +16,9 @@ namespace Models.Game
         public bool HasPlayed { get; set; }
         
         [DataMember]
+        public bool IsBot { get; set; } 
+        
+        [DataMember]
         public List<int> Scores { get; set; } = new List<int>();
         
         public int TotalScore => Scores.Sum();
@@ -31,6 +34,7 @@ namespace Models.Game
             this.StackCounter = 12;
             this.Scores = new List<int>();
             this.Name = name;
+            this.IsBot = false;
             this.HasSkipped = false;
             this.HasPlayed = false;
         }

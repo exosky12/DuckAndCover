@@ -61,7 +61,7 @@ namespace Models.Game // Assurez-vous que ce namespace est correct
         public bool Quit { get; set; }
 
         [DataMember] public bool IsFinished { get; set; }
-
+        
         [DataMember] public bool LastGameFinishStatus { get; set; }
 
         public DeckCard CurrentDeckCard { get; set; } = new DeckCard(Bonus.None, 0);

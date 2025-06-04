@@ -5,6 +5,7 @@ using Models.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DataPersistence;
 
 namespace DuckAndCover.Pages;
 
@@ -64,6 +65,9 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
+            
+            if (e.CurrentPlayer != null && e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot bot)
+            {
             if (e.CurrentPlayer == null)
             {
                 InstructionsLabel.Text = "En attente d'un joueur...";
@@ -112,16 +116,6 @@ public partial class GamePage : ContentPage
         {
             await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-
-                var pers = (App.Current as App)?.DataPersistence;
-                if (pers != null)
-                {
-                    pers.SaveData(
-                        GameManager.AllPlayers,
-                        GameManager.Games
-                    );
-                }
-
             await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
             await Navigation.PopAsync();
         });
@@ -202,10 +196,17 @@ public partial class GamePage : ContentPage
             if (confirm)
             {
                 GameManager.Quit = true;
-                if (GameManager
-                    .CheckGameOverCondition()) 
+                if (GameManager.CheckGameOverCondition()) 
                 {
-                    // L'événement OnGameIsOver sera déclenché par CheckGameOverCondition si le jeu est terminé.
+                    
+                    var pers = (App.Current as App)?.DataPersistence;
+                    if (pers != null)
+                    {
+                        pers.SaveData(
+                            GameManager.AllPlayers,
+                            GameManager.Games
+                        );
+                    }
                 }
             }
         });
