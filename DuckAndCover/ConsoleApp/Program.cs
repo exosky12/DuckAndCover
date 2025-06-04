@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using static System.Console;
 using Models.Game;
-using Models.Events;
 using Models.Exceptions;
 using Models.Rules;
 using DataPersistence;
@@ -175,13 +172,13 @@ namespace ConsoleApp
         {
             game.PlayerChanged += (s, e) =>
             {
-                var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.DeckCard, game);
+                var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.CurrentDeckCard, game);
                 game.HandlePlayerChoice(e.CurrentPlayer, choice);
             };
 
             game.DisplayMenuNeeded += (s, e) =>
             {
-                var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.DeckCard, game);
+                var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.CurrentDeckCard, game);
                 game.HandlePlayerChoice(e.CurrentPlayer, choice);
             };
 

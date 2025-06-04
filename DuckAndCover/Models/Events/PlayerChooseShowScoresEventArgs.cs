@@ -4,14 +4,24 @@ using Models.Game;
     
 namespace Models.Events
 {
+    /// <summary>
+    /// Arguments d'événement pour l'affichage des scores des joueurs.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class PlayerChooseShowScoresEventArgs : EventArgs
     {
-        public List<Player> Players { get; private set; }
+        /// <summary>
+        /// Obtient la liste des joueurs dont les scores doivent être affichés.
+        /// </summary>
+        public List<Player> Players { get; }
         
-        public PlayerChooseShowScoresEventArgs(List<Player> players )
+        /// <summary>
+        /// Initialise une nouvelle instance de la classe PlayerChooseShowScoresEventArgs.
+        /// </summary>
+        /// <param name="players">La liste des joueurs dont les scores doivent être affichés.</param>
+        public PlayerChooseShowScoresEventArgs(List<Player> players)
         {
-            this.Players = players;
+            Players = players;
         }
     }
 } 

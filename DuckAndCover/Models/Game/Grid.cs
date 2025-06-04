@@ -3,18 +3,33 @@ using Models.Generators;
 
 namespace Models.Game
 {
+    /// <summary>
+    /// Représente la grille de jeu contenant les cartes.
+    /// </summary>
     [DataContract]
     public class Grid
     {
+        /// <summary>
+        /// Obtient ou définit la liste des cartes dans la grille.
+        /// </summary>
         [DataMember]
         public List<GameCard> GameCardsGrid { get; set; } = new(); 
 
+        /// <summary>
+        /// Initialise une nouvelle instance de la classe Grid.
+        /// Génère une nouvelle grille de jeu.
+        /// </summary>
         public Grid()
         {
             GridGenerator gridGenerator = new GridGenerator();
             GameCardsGrid = gridGenerator.Grid;
         }
 
+        /// <summary>
+        /// Calcule les limites de la grille à partir d'une liste de positions.
+        /// </summary>
+        /// <param name="positions">La liste des positions à analyser.</param>
+        /// <returns>Un tuple contenant les coordonnées minimales et maximales (minX, maxX, minY, maxY).</returns>
         public static (int minX, int maxX, int minY, int maxY) GetBounds(List<Position> positions)
         {
             var minX = int.MaxValue;
@@ -33,7 +48,11 @@ namespace Models.Game
             return (minX, maxX, minY, maxY);
         }
 
-
+        /// <summary>
+        /// Récupère la carte à une position donnée.
+        /// </summary>
+        /// <param name="p">La position à vérifier.</param>
+        /// <returns>La carte à la position spécifiée, ou null si aucune carte n'est présente.</returns>
         public GameCard? GetCard(Position p)
         {
             foreach (var card in GameCardsGrid)
@@ -47,6 +66,11 @@ namespace Models.Game
             return null;
         }
 
+        /// <summary>
+        /// Place une nouvelle carte à une position donnée.
+        /// </summary>
+        /// <param name="p">La position où placer la carte.</param>
+        /// <param name="newCard">La carte à placer.</param>
         public void SetCard(Position p, GameCard newCard)
         {
             if (IsInGrid(p))
@@ -58,6 +82,11 @@ namespace Models.Game
             GameCardsGrid.Add(newCard);
         }
 
+        /// <summary>
+        /// Vérifie si une position est occupée dans la grille.
+        /// </summary>
+        /// <param name="p">La position à vérifier.</param>
+        /// <returns>true si la position est occupée ; sinon, false.</returns>
         public bool IsInGrid(Position p)
         {
             return GameCardsGrid
@@ -65,6 +94,11 @@ namespace Models.Game
                 .Any(pos => pos.Row == p.Row && pos.Column == p.Column);
         }
 
+        /// <summary>
+        /// Vérifie si une position est adjacente à une carte existante.
+        /// </summary>
+        /// <param name="p">La position à vérifier.</param>
+        /// <returns>Un tuple contenant un booléen indiquant si la position est adjacente et la carte adjacente si elle existe.</returns>
         public (bool isAdjacent, GameCard? adjacentCard) IsAdjacentToCard(Position p)
         {
             foreach (var card in GameCardsGrid)
@@ -81,6 +115,12 @@ namespace Models.Game
             return (false, null);
         }
         
+        /// <summary>
+        /// Vérifie si deux positions contiennent des cartes adjacentes.
+        /// </summary>
+        /// <param name="p1">La première position.</param>
+        /// <param name="p2">La deuxième position.</param>
+        /// <returns>true si les cartes sont adjacentes ; sinon, false.</returns>
         public bool AreAdjacentCards(Position p1, Position p2)
         {
             var card1 = GetCard(p1);
@@ -95,6 +135,10 @@ namespace Models.Game
             return (rowDiff == 1 && colDiff == 0) || (rowDiff == 0 && colDiff == 1);
         }
 
+        /// <summary>
+        /// Supprime la carte à une position donnée.
+        /// </summary>
+        /// <param name="p">La position de la carte à supprimer.</param>
         public void RemoveCard(Position p)
         {
             bool cardFound = IsInGrid(p);
