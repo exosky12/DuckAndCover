@@ -24,10 +24,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/UnitTests/DeckTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Bot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Bot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/BotTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/BotTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +105,7 @@
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/ClassicRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/ClassicRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/BotTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/UnitTests/BotTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/UnitTests/GameTests.cs" root0="SKIP_HIGHLIGHTING" />
@@ -363,14 +362,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00027" summary="feat(Console App)">
-      <option name="closed" value="true" />
-      <created>1747216403189</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1747216403189</updated>
     </task>
     <task id="LOCAL-00028" summary="feat(STUB): WIP">
       <option name="closed" value="true" />
@@ -756,7 +747,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749054117086</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="refactor: change GetEmptyPositions method to public and add DeckTests for deck functionality">
+      <option name="closed" value="true" />
+      <created>1749057999809</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1749057999809</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -817,7 +816,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="chrore:         &lt;TargetFrameworks&gt;net9.0-android&lt;/TargetFrameworks&gt;&#10; in DTO csproj" />
     <MESSAGE value="fix: naming" />
     <MESSAGE value="fix: DTOs.csproj targetFrameworks" />
     <MESSAGE value="fix: dto.csproj" />
@@ -842,7 +840,8 @@
     <MESSAGE value="refactor: make GetEffectiveDeckCardNumber and GetValidDuckTargetPositions static" />
     <MESSAGE value="refactor: replace Error with ErrorException for error handling and other stuff" />
     <MESSAGE value="docs: add Doxygen configuration for project documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add Doxygen configuration for project documentation" />
+    <MESSAGE value="refactor: change GetEmptyPositions method to public and add DeckTests for deck functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: change GetEmptyPositions method to public and add DeckTests for deck functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

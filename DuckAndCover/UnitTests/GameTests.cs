@@ -555,4 +555,330 @@ public class GameTests
         Assert.True(savedGame.LastGameFinishStatus);
         Assert.Equal(42, savedGame.LastNumber);
     }
+
+    [Fact]
+    public void ProcessCardEffect_MaxBonus_WithCardsInGrid()
+    {
+        var player = new Player("P1", 0, new List<int>(), false, false, new Grid());
+        player.Grid.GameCardsGrid.Add(new GameCard(1, 10));
+        player.Grid.GameCardsGrid.Add(new GameCard(2, 15));
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
+        var card = new DeckCard(Bonus.Max, 5);
+
+        bool effectProcessed = false;
+        game.CardEffectProcessed += (s, e) =>
+        {
+            effectProcessed = true;
+            Assert.Contains("MAX", e.Message);
+            Assert.Contains("plus élevé", e.Message);
+        };
+
+        game.ProcessCardEffect(card, player);
+
+        Assert.True(effectProcessed);
+    }
+
+    [Fact]
+    public void ProcessCardEffect_DefaultCase_WithZeroNumber()
+    {
+        var player = new Player("P1", 0, new List<int>(), false, false, new Grid());
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
+        var card = new DeckCard(Bonus.Again, 0);
+
+        bool effectProcessed = false;
+        game.CardEffectProcessed += (s, e) =>
+        {
+            effectProcessed = true;
+            Assert.Contains("Again", e.Message);
+        };
+
+        game.ProcessCardEffect(card, player);
+
+        Assert.True(effectProcessed);
+    }
+
+    [Fact]
+    public void ProcessCardEffect_DefaultCase_WithNormalNumber()
+    {
+        var player = new Player("P1", 0, new List<int>(), false, false, new Grid());
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
+        var card = new DeckCard(Bonus.None, 7);
+
+        bool effectProcessed = false;
+        game.CardEffectProcessed += (s, e) =>
+        {
+            effectProcessed = true;
+            Assert.Contains("Carte actuelle du deck : 7", e.Message);
+        };
+
+        game.ProcessCardEffect(card, player);
+
+        Assert.True(effectProcessed);
+        Assert.Equal(7, game.LastNumber);
+    }
+
+    [Fact]
+    public void NextDeckCard_ThrowsWhenEmptyAfterRemoval()
+    {
+        var game = SetupSimpleGame();
+        game.Deck.Cards.Clear();
+        game.Deck.Cards.Add(new DeckCard(Bonus.None, 1)); // Only one card
+
+        var ex = Assert.Throws<ErrorException>(() => game.NextDeckCard());
+        Assert.Equal(ErrorCodes.DeckEmpty, ex.ErrorCode);
+        Assert.Contains("Plus de cartes dans le deck", ex.Message);
+    }
+
+    [Fact]
+    public void StartGame_DoesNotStartTwice()
+    {
+        var game = SetupSimpleGame();
+        game.StartGame();
+        
+        int playerChangedCount = 0;
+        game.PlayerChanged += (s, e) => playerChangedCount++;
+        
+        game.StartGame(); // Should not start again
+        
+        Assert.Equal(0, playerChangedCount);
+    }
+
+    [Fact]
+    public void StartGame_ThrowsWhenNoDeckCards()
+    {
+        var game = SetupSimpleGame();
+        game.Deck.Cards.Clear();
+        game.CurrentDeckCard = null;
+
+        bool errorOccurred = false;
+        game.ErrorOccurred += (s, e) =>
+        {
+            errorOccurred = true;
+            Assert.Equal(ErrorCodes.DeckEmpty, e.ErrorException.ErrorCode);
+        };
+
+        game.StartGame();
+
+        Assert.True(errorOccurred);
+    }
+
+    [Fact]
+    public void StartGame_SetsCurrentDeckCardFromDeck()
+    {
+        var game = SetupSimpleGame();
+        game.CurrentDeckCard = null;
+        var firstCard = game.Deck.Cards.First();
+
+        game.StartGame();
+
+        Assert.Equal(firstCard, game.CurrentDeckCard);
+    }
+
+    [Fact]
+    public void HandlePlayerChoice_Case1_CoverEvent()
+    {
+        var game = SetupSimpleGame();
+        bool coverEventRaised = false;
+
+        game.PlayerChooseCover += (s, e) =>
+        {
+            coverEventRaised = true;
+            Assert.Equal(game.CurrentPlayer, e.Player);
+        };
+
+        game.HandlePlayerChoice(game.CurrentPlayer, "1");
+
+        Assert.True(coverEventRaised);
+    }
+
+    [Fact]
+    public void HandlePlayerChoice_Case2_DuckEvent()
+    {
+        var game = SetupSimpleGame();
+        bool duckEventRaised = false;
+
+        game.PlayerChooseDuck += (s, e) =>
+        {
+            duckEventRaised = true;
+            Assert.Equal(game.CurrentPlayer, e.Player);
+        };
+
+        game.HandlePlayerChoice(game.CurrentPlayer, "2");
+
+        Assert.True(duckEventRaised);
+    }
+
+    [Fact]
+    public void HandlePlayerChoice_Case6_QuitAndCheckGameOver()
+    {
+        var game = SetupSimpleGame();
+        game.Quit = true;
+        bool gameOverEventRaised = false;
+
+        game.GameIsOver += (s, e) => gameOverEventRaised = true;
+
+        game.HandlePlayerChoice(game.CurrentPlayer, "6");
+
+        Assert.True(gameOverEventRaised);
+    }
+
+    [Fact]
+    public void HandlePlayerChooseCover_NotPlayerTurn_ThrowsError()
+    {
+        var game = SetupSimpleGame();
+        var otherPlayer = new Player("Other", 0, new List<int>(), false, false, new Grid());
+
+        var ex = Assert.Throws<ErrorException>(() => 
+            game.HandlePlayerChooseCover(otherPlayer, new Position(1, 1), new Position(1, 2)));
+        
+        Assert.Equal(ErrorCodes.NotPlayerTurn, ex.ErrorCode);
+    }
+
+    [Fact]
+    public void HandlePlayerChooseDuck_NotPlayerTurn_ThrowsError()
+    {
+        var game = SetupSimpleGame();
+        var otherPlayer = new Player("Other", 0, new List<int>(), false, false, new Grid());
+
+        var ex = Assert.Throws<ErrorException>(() => 
+            game.HandlePlayerChooseDuck(otherPlayer, new Position(1, 1), new Position(1, 2)));
+        
+        Assert.Equal(ErrorCodes.NotPlayerTurn, ex.ErrorCode);
+    }
+
+    [Fact]
+    public void GetValidDuckTargetPositions_ReturnsEmpty_WhenNullPlayer()
+    {
+        var result = Game.GetValidDuckTargetPositions(null, new Position(1, 1), new DeckCard(Bonus.None, 1));
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetValidDuckTargetPositions_ReturnsEmpty_WhenNullDeckCard()
+    {
+        var player = new Player("Test", 0, new List<int>(), false, false, new Grid());
+        var result = Game.GetValidDuckTargetPositions(player, new Position(1, 1), null);
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetValidDuckTargetPositions_ReturnsEmpty_WhenCardNotFound()
+    {
+        var player = new Player("Test", 0, new List<int>(), false, false, new Grid());
+        player.Grid.GameCardsGrid.Clear();
+        var result = Game.GetValidDuckTargetPositions(player, new Position(1, 1), new DeckCard(Bonus.None, 1));
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetValidDuckTargetPositions_ReturnsValidTargets()
+    {
+        var player = new Player("Test", 0, new List<int>(), false, false, new Grid());
+        player.Grid.GameCardsGrid.Clear();
+        
+        var card1 = new GameCard(1, 1) { Position = new Position(1, 1) };
+        var card2 = new GameCard(2, 2) { Position = new Position(1, 2) };
+        player.Grid.GameCardsGrid.Add(card1);
+        player.Grid.GameCardsGrid.Add(card2);
+
+        var result = Game.GetValidDuckTargetPositions(player, new Position(1, 1), new DeckCard(Bonus.None, 1));
+        
+        Assert.NotEmpty(result);
+    }
+
+    [Fact]
+    public void SavePlayers_SkipsBotPlayers()
+    {
+        var humanPlayer = new Player("Human", 0, new List<int>(), false, false, new Grid());
+        var botPlayer = new Bot("Bot1");
+        
+        humanPlayer.Grid.GameCardsGrid.Add(new GameCard(1, 1));
+        botPlayer.Grid.GameCardsGrid.Add(new GameCard(2, 2));
+
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { humanPlayer, botPlayer };
+        game.AllPlayers = new ObservableCollection<Player>();
+
+        game.SavePlayers();
+
+        Assert.Contains(humanPlayer, game.AllPlayers);
+        Assert.DoesNotContain(botPlayer, game.AllPlayers);
+        Assert.True(humanPlayer.Scores.Count > 0);
+        Assert.Empty(botPlayer.Scores);
+    }
+
+    [Fact]
+    public void SavePlayers_UpdatesExistingPlayer()
+    {
+        var player = new Player("Test", 0, new List<int>(), false, false, new Grid());
+        player.Grid.GameCardsGrid.Add(new GameCard(1, 1));
+        
+        var existingPlayer = new Player("Test", 0, new List<int>(), false, false, new Grid());
+        existingPlayer.Scores.Add(5);
+
+        var game = new Game(new ClassicRules());
+        game.Players = new List<Player> { player };
+        game.AllPlayers = new ObservableCollection<Player> { existingPlayer };
+
+        game.SavePlayers();
+
+        Assert.Equal(2, existingPlayer.Scores.Count);
+        Assert.Equal(1, game.AllPlayers.Count);
+    }
+
+    [Fact]
+    public void ProcessTurn_HandlesErrorOccurred()
+    {
+        var game = SetupSimpleGame();
+        game.Deck.Cards.Clear(); // This will cause an error in NextDeckCard
+        game.Players.ForEach(p => p.HasPlayed = true); // Force NextDeckCard call
+
+        bool errorOccurred = false;
+        game.ErrorOccurred += (s, e) =>
+        {
+            errorOccurred = true;
+            Assert.Equal(ErrorCodes.DeckEmpty, e.ErrorException.ErrorCode);
+        };
+
+        game.ProcessTurn();
+
+        Assert.True(errorOccurred);
+    }
+
+    [Fact]
+    public void ProcessTurn_ChecksGameOverAfterNextDeckCard()
+    {
+        var game = SetupSimpleGame();
+        game.Players.ForEach(p => p.HasPlayed = true);
+        game.CardsSkipped = 8; // This will trigger game over in classic rules
+
+        bool gameOverTriggered = false;
+        game.GameIsOver += (s, e) => gameOverTriggered = true;
+
+        game.ProcessTurn();
+
+        Assert.True(gameOverTriggered);
+    }
+
+    [Fact]
+    public void ProcessTurn_ThrowsWhenCurrentDeckCardIsNull()
+    {
+        var game = SetupSimpleGame();
+        game.CurrentDeckCard = null;
+
+        bool errorOccurred = false;
+        game.ErrorOccurred += (s, e) =>
+        {
+            errorOccurred = true;
+            Assert.Equal(ErrorCodes.DeckEmpty, e.ErrorException.ErrorCode);
+            Assert.Contains("Plus de cartes disponibles", e.ErrorException.Message);
+        };
+
+        game.ProcessTurn();
+
+        Assert.True(errorOccurred);
+    }
 }
