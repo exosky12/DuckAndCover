@@ -45,11 +45,9 @@ namespace DuckAndCover
         {
             try
             {
-                // Mise à jour des collections en mémoire
                 GameManager.SavePlayers();
                 GameManager.SaveGame();
-
-                // Sauvegarde finale de l’historique (players + games) dans le JSON
+                
                 DataPersistence.SaveData(GameManager.AllPlayers, GameManager.Games);
 
                 Debug.WriteLine("[App] OnGameIsOver : historique sauvegardé.");

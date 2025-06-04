@@ -5,6 +5,7 @@ namespace Models.Game
     /// <summary>
     /// Représente un joueur dans le jeu avec ses attributs et son état.
     /// </summary>
+    [KnownType(typeof(Bot))]
     [DataContract]
     public class Player
     {
@@ -25,6 +26,9 @@ namespace Models.Game
         /// </summary>
         [DataMember]
         public bool HasPlayed { get; set; }
+        
+        [DataMember]
+        public bool IsBot { get; set; } 
         
         /// <summary>
         /// Obtient ou définit la liste des scores du joueur.
@@ -58,6 +62,7 @@ namespace Models.Game
             this.StackCounter = 12;
             this.Scores = new List<int>();
             this.Name = name;
+            this.IsBot = false;
             this.HasSkipped = false;
             this.HasPlayed = false;
         }

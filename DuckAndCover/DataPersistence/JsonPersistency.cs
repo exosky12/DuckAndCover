@@ -89,9 +89,8 @@ namespace DataPersistence
             {
                 Directory.CreateDirectory(FilePath);
                 string fullPath = Path.Combine(FilePath, FileName);
-
-                // 1) Charger l’ancien contenu (s’il existe)
-                ObservableCollection<Player> existingPlayers;
+                
+                ObservableCollection<Player>existingPlayers;
                 ObservableCollection<Game> existingGames;
 
                 if (File.Exists(fullPath))

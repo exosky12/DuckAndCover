@@ -5,6 +5,7 @@ using Models.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DataPersistence;
 
 namespace DuckAndCover.Pages;
 
@@ -60,17 +61,14 @@ public partial class GamePage : ContentPage
         GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
         GameManager.CardEffectProcessed -= OnCardEffectProcessed;
     }
-    private void OnPlayerChanged(object sender, PlayerChangedEventArgs e)
+    private void OnPlayerChanged(object? sender, PlayerChangedEventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            if (e.CurrentPlayer == null)
+            
+            if (e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot b )
             {
-                InstructionsLabel.Text = "En attente d'un joueur...";
-                DebugLabel.Text = "CurrentPlayer est null dans OnPlayerChanged.";
-                CurrentCardFrame.IsVisible = false;
-                GameGrid.Children.Clear(); 
-                return;
+                Task.Delay(3000).ContinueWith(_ => b.PlayTurnAutomatically(GameManager));
             }
 
             InstructionsLabel.Text = $"Tour de {e.CurrentPlayer.Name}";
@@ -104,24 +102,11 @@ public partial class GamePage : ContentPage
             InstructionsLabel.Text = "En attente d'un joueur...";
         }
     }
-
-        /// <summary>
-        /// Appelé exactement une fois, quand la partie est terminée.
-        /// </summary>
+    
         private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
         {
             await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-
-                var pers = (App.Current as App)?.DataPersistence;
-                if (pers != null)
-                {
-                    pers.SaveData(
-                        GameManager.AllPlayers,
-                        GameManager.Games
-                    );
-                }
-
             await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
             await Navigation.PopAsync();
         });
@@ -202,10 +187,17 @@ public partial class GamePage : ContentPage
             if (confirm)
             {
                 GameManager.Quit = true;
-                if (GameManager
-                    .CheckGameOverCondition()) 
+                if (GameManager.CheckGameOverCondition()) 
                 {
-                    // L'événement OnGameIsOver sera déclenché par CheckGameOverCondition si le jeu est terminé.
+                    
+                    var pers = (App.Current as App)?.DataPersistence;
+                    if (pers != null)
+                    {
+                        pers.SaveData(
+                            GameManager.AllPlayers,
+                            GameManager.Games
+                        );
+                    }
                 }
             }
         });
