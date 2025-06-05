@@ -82,8 +82,7 @@ steps:
       - echo "Looking for .cs files:"
       - find DuckAndCover -name "*.cs" | wc -l
       - echo "=== TESTING MINIMAL CONFIG ==="
-      - cp Documentation/doxygen_minimal Documentation/doxygen_backup
-      - cp Documentation/doxygen_minimal Documentation/doxygen
+      - cp Documentation/doxygen Documentation/doxygen_backup
       - echo "=== RUNNING ENTRYPOINT ==="
       - /entrypoint.sh
       - echo "=== CHECKING RESULTS ==="
