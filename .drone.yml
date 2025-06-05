@@ -5,7 +5,7 @@ trigger:
     branch:
         - master
     event:
-        - tag
+        - push
 steps:
   - name: Build
     image: mcr.microsoft.com/dotnet/sdk:9.0
@@ -77,6 +77,8 @@ kind: pipeline
 type: docker
 name: CD
 trigger:
+    branch:
+        - master
     event:
         - tag
 steps:
