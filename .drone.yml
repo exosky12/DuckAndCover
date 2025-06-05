@@ -72,23 +72,7 @@ steps:
       - name: docs
         path: /docs
     commands:
-      - echo "=== DEBUG: Checking file structure ==="
-      - ls -la
-      - ls -la Documentation/
-      - echo "=== DEBUG: Checking doxygen file ==="
-      - head -20 Documentation/doxygen
-      - echo "=== DEBUG: Checking source directory ==="
-      - ls -la DuckAndCover/ || echo "DuckAndCover directory not found"
-      - find DuckAndCover/ -name "*.cs" | head -10 || echo "No .cs files found"
-      - echo "=== DEBUG: Running entrypoint ==="
       - /entrypoint.sh
-      - echo "=== DEBUG: Checking generated docs ==="
-      - ls -la /docs/ || echo "/docs directory not found"
-      - find /docs -name "*.html" | head -5 || echo "No HTML files generated"
     environment: 
       NOSWAGGER: true
       NODOCUSAURUS: true
-
-volumes:
-  - name: docs
-    temp: {}
