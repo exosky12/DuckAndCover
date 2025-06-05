@@ -80,7 +80,7 @@ namespace Models.Game
         {
             this.Name = name;
             this.StackCounter = stack;
-            this.Scores = new List<int>();
+            this.Scores = scores;
             this.HasSkipped = skipped;    
             this.HasPlayed = played;
             this.Grid = grid;

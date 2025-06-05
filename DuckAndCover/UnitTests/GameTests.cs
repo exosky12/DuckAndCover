@@ -651,7 +651,7 @@ public class GameTests
     {
         var game = SetupSimpleGame();
         game.Deck.Cards.Clear();
-        game.CurrentDeckCard = null;
+        game.CurrentDeckCard = null!;
 
         bool errorOccurred = false;
         game.ErrorOccurred += (s, e) =>
@@ -669,7 +669,7 @@ public class GameTests
     public void StartGame_SetsCurrentDeckCardFromDeck()
     {
         var game = SetupSimpleGame();
-        game.CurrentDeckCard = null;
+        game.CurrentDeckCard = null!;
         var firstCard = game.Deck.Cards.First();
 
         game.StartGame();
@@ -752,7 +752,7 @@ public class GameTests
     [Fact]
     public void GetValidDuckTargetPositions_ReturnsEmpty_WhenNullPlayer()
     {
-        var result = Game.GetValidDuckTargetPositions(null, new Position(1, 1), new DeckCard(Bonus.None, 1));
+        var result = Game.GetValidDuckTargetPositions(null!, new Position(1, 1), new DeckCard(Bonus.None, 1));
         Assert.Empty(result);
     }
 
@@ -760,7 +760,7 @@ public class GameTests
     public void GetValidDuckTargetPositions_ReturnsEmpty_WhenNullDeckCard()
     {
         var player = new Player("Test", 0, new List<int>(), false, false, new Grid());
-        var result = Game.GetValidDuckTargetPositions(player, new Position(1, 1), null);
+        var result = Game.GetValidDuckTargetPositions(player, new Position(1, 1), null!);
         Assert.Empty(result);
     }
 
@@ -826,7 +826,7 @@ public class GameTests
         game.SavePlayers();
 
         Assert.Equal(2, existingPlayer.Scores.Count);
-        Assert.Equal(1, game.AllPlayers.Count);
+        Assert.Single(game.AllPlayers);
     }
 
     [Fact]
@@ -867,7 +867,7 @@ public class GameTests
     public void ProcessTurn_ThrowsWhenCurrentDeckCardIsNull()
     {
         var game = SetupSimpleGame();
-        game.CurrentDeckCard = null;
+        game.CurrentDeckCard = null!;
 
         bool errorOccurred = false;
         game.ErrorOccurred += (s, e) =>

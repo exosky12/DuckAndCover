@@ -4,6 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="DuckAndCover.Views.Button"
+    x:DataType="local:Button"
+    xmlns:local="clr-namespace:DuckAndCover.Views"
     Text="{Binding Name}"
     Padding="20"
     FontSize="32"

@@ -11,8 +11,8 @@ public partial class MenuPlayer : ContentPage
 {
     private readonly GameSettingsDto _gameSettings;
     
-    public Game GameManager => (App.Current as App).GameManager;
-
+    public Game GameManager => (Application.Current as App)?.GameManager ?? 
+                               throw new InvalidOperationException("GameManager not initialized");
     public MenuPlayer(GameSettingsDto gameSettings)
     {
         InitializeComponent();
@@ -51,7 +51,8 @@ public partial class MenuPlayer : ContentPage
             {
                 Placeholder = $"Nom du joueur {i + 1}"
             };
-            entry.Style = (Style)Application.Current.Resources["InputEntryStyle"];
+            entry.Style = Application.Current?.Resources?["InputEntryStyle"] as Style ?? 
+                new Style(typeof(Entry));
             PlayerInputsLayout.Children.Add(entry);
         }
     }

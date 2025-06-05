@@ -24,14 +24,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Models/Rules/BaseRules.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

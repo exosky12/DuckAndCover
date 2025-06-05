@@ -11,7 +11,8 @@ namespace DuckAndCover.Pages;
 
 public partial class GamePage : ContentPage
 {
-    public Game GameManager => (Application.Current as App)?.GameManager;
+    public Game GameManager => (Application.Current as App)?.GameManager ?? 
+                               throw new InvalidOperationException("GameManager not initialized");
 
     private GameCard? _selectedCard;
     private GameCard? _cardToCover;

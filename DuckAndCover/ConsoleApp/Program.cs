@@ -183,7 +183,7 @@ namespace ConsoleApp
                             game.HandlePlayerChoice(e.CurrentPlayer, choice);
                             break;
                         }
-                        catch (Exception ex)
+                        catch (ErrorException ex)
                         {
                             Utils.WriteError("Une erreur s'est produite lors du traitement de votre choix.");
                             WriteLine("Appuyez sur une touche pour continuer…");

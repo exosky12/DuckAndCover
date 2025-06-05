@@ -182,8 +182,11 @@ namespace DataPersistence
             var grid = new Grid();
             // Déplacement unique : (1,1) -> (1,2)
             var cardToMove = grid.GetCard(new Position(1, 1));
-            grid.RemoveCard(new Position(1, 1));
-            grid.SetCard(new Position(1, 2), cardToMove);
+            if (cardToMove != null)
+            {
+                grid.RemoveCard(new Position(1, 1));
+                grid.SetCard(new Position(1, 2), cardToMove);
+            }
             return grid;
         }
 
@@ -197,18 +200,27 @@ namespace DataPersistence
 
             // A) (1,1) -> (2,1)
             var cardA = grid.GetCard(new Position(1, 1));
-            grid.RemoveCard(new Position(1, 1));
-            grid.SetCard(new Position(2, 1), cardA);
+            if (cardA != null)
+            {
+                grid.RemoveCard(new Position(1, 1));
+                grid.SetCard(new Position(2, 1), cardA);
+            }
 
             // B) (1,2) -> (1,3)
             var cardB = grid.GetCard(new Position(1, 2));
-            grid.RemoveCard(new Position(1, 2));
-            grid.SetCard(new Position(1, 3), cardB);
+            if (cardB != null)
+            {
+                grid.RemoveCard(new Position(1, 2));
+                grid.SetCard(new Position(1, 3), cardB);
+            }
 
             // C) (2,3) -> (0,0)
             var cardC = grid.GetCard(new Position(2, 3));
-            grid.RemoveCard(new Position(2, 3));
-            grid.SetCard(new Position(0, 0), cardC);
+            if (cardC != null)
+            {
+                grid.RemoveCard(new Position(2, 3));
+                grid.SetCard(new Position(0, 0), cardC);
+            }
 
             return grid;
         }
@@ -223,18 +235,27 @@ namespace DataPersistence
 
             // D) (2,1) -> (3,1)
             var cardD = grid.GetCard(new Position(2, 1));
-            grid.RemoveCard(new Position(2, 1));
-            grid.SetCard(new Position(3, 1), cardD);
+            if (cardD != null)
+            {
+                grid.RemoveCard(new Position(2, 1));
+                grid.SetCard(new Position(3, 1), cardD);
+            }
 
             // E) (3,2) -> (3,3)
             var cardE = grid.GetCard(new Position(3, 2));
-            grid.RemoveCard(new Position(3, 2));
-            grid.SetCard(new Position(3, 3), cardE);
+            if (cardE != null)
+            {
+                grid.RemoveCard(new Position(3, 2));
+                grid.SetCard(new Position(3, 3), cardE);
+            }
 
             // F) (1,4) -> (1,2)
             var cardF = grid.GetCard(new Position(1, 4));
-            grid.RemoveCard(new Position(1, 4));
-            grid.SetCard(new Position(1, 2), cardF);
+            if (cardF != null)
+            {
+                grid.RemoveCard(new Position(1, 4));
+                grid.SetCard(new Position(1, 2), cardF);
+            }
 
             return grid;
         }

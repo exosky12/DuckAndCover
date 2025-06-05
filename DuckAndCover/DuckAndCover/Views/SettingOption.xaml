@@ -3,7 +3,9 @@
     x:Name="SettingOptionView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:DuckAndCover.Views"
     x:Class="DuckAndCover.Views.SettingOption"
+    x:DataType="local:SettingOption"
     Spacing="10">
 
     <Grid>
@@ -17,7 +19,7 @@
         </Grid.ColumnDefinitions>
 
     </Grid>
-    <Label Text="{Binding Title, Source={x:Reference SettingOptionView}}"
+    <Label Text="{Binding Title}"
            Style="{StaticResource LabelJeu}"
            HorizontalOptions="Center"
            VerticalOptions="Center"
@@ -31,5 +33,5 @@
         />
 
 
-    <ContentPresenter Content="{Binding OptionContent, Source={x:Reference SettingOptionView}}" />
+    <ContentPresenter Content="{Binding OptionContent}" />
 </VerticalStackLayout>

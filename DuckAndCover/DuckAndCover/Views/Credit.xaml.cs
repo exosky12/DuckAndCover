@@ -59,6 +59,20 @@ public partial class Credit : Border
         get => (string)GetValue(NameProperty);
         set => SetValue(NameProperty, value);
     }
+
+    public static readonly BindableProperty RoleProperty =
+        BindableProperty.Create(
+            nameof(Role),
+            typeof(string),
+            typeof(Border),
+            default(string));
+
+    public string Role
+    {
+        get => (string)GetValue(RoleProperty);
+        set => SetValue(RoleProperty, value);
+    }
+
     public Credit()
     {
         InitializeComponent();
