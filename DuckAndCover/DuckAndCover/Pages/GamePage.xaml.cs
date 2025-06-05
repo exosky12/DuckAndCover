@@ -670,4 +670,32 @@ public partial class GamePage : ContentPage
                 DebugLabel.Text += $" | ErrCarte: {ex.Message.Substring(0, Math.Min(ex.Message.Length, 20))}";
         }
     }
+    
+    private void UpdateDarkModeButtonText()
+    {
+        if (DarkModeButton != null) // Ensure button is initialized from XAML
+        {
+            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            {
+                DarkModeButton.Text = "☀️"; // Sun icon for switching to Light Mode
+            }
+            else
+            {
+                DarkModeButton.Text = "🌙"; // Moon icon for switching to Dark Mode
+            }
+        }
+    }
+
+    private void OnDarkModeClicked(object sender, EventArgs e)
+    {
+        if (Application.Current.UserAppTheme == AppTheme.Dark)
+        {
+            Application.Current.UserAppTheme = AppTheme.Light;
+        }
+        else
+        {
+            Application.Current.UserAppTheme = AppTheme.Dark;
+        }
+        UpdateDarkModeButtonText();
+    }
 }
