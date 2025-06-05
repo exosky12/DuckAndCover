@@ -72,9 +72,6 @@ steps:
       - name: docs
         path: /docs
     commands:
-      - pwd
-      - ls Documentation
-      - ls Documentation/doxygen
       - /entrypoint.sh
     environment: 
       NOSWAGGER: true
