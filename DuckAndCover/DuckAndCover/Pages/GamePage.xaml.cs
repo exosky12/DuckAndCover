@@ -41,8 +41,6 @@ public partial class GamePage : ContentPage
         GameManager.PlayerChooseCoin += OnPlayerChooseCoin;
         GameManager.PlayerChooseDuck += OnPlayerChooseDuck;
         GameManager.PlayerChooseCover += OnPlayerChooseCover;
-        GameManager.PlayerChooseShowPlayersGrid += OnPlayerChooseShowPlayersGrid;
-        GameManager.PlayerChooseShowScores += OnPlayerChooseShowScores;
         GameManager.PlayerChooseQuit += OnPlayerChooseQuit;
         GameManager.DisplayMenuNeeded += OnDisplayMenuNeeded;
         GameManager.CardEffectProcessed += OnCardEffectProcessed;
@@ -55,17 +53,16 @@ public partial class GamePage : ContentPage
         GameManager.GameIsOver -= OnGameIsOver;
         GameManager.ErrorOccurred -= OnErrorOccurred;
         GameManager.PlayerChooseCoin -= OnPlayerChooseCoin;
-        GameManager.PlayerChooseShowPlayersGrid -= OnPlayerChooseShowPlayersGrid;
-        GameManager.PlayerChooseShowScores -= OnPlayerChooseShowScores;
         GameManager.PlayerChooseQuit -= OnPlayerChooseQuit;
         GameManager.DisplayMenuNeeded -= OnDisplayMenuNeeded;
         GameManager.CardEffectProcessed -= OnCardEffectProcessed;
     }
+
     private void OnPlayerChanged(object? sender, PlayerChangedEventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            if (e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot b )
+            if (e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot b)
             {
                 Task.Delay(1000).ContinueWith(_ => Bot.PlayTurnAutomatically(GameManager));
             }
@@ -101,11 +98,11 @@ public partial class GamePage : ContentPage
             InstructionsLabel.Text = "En attente d'un joueur...";
         }
     }
-    
-        private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
+
+    private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
+    {
+        await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            await MainThread.InvokeOnMainThreadAsync(async () =>
-            {
             await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
             await Navigation.PopAsync();
         });
@@ -147,33 +144,6 @@ public partial class GamePage : ContentPage
         });
     }
 
-    private async void OnPlayerChooseShowPlayersGrid(object? sender, PlayerChooseShowPlayersGridEventArgs e)
-    {
-        await MainThread.InvokeOnMainThreadAsync(async () =>
-        {
-            var gridInfo = string.Join("\n", e.Players.Select(p =>
-                $"{p.Name}: {p.Grid.GameCardsGrid.Count} cartes"));
-            await DisplayAlert("Grilles des joueurs", gridInfo, "OK");
-        });
-    }
-
-    private async void OnPlayerChooseShowScores(object? sender, PlayerChooseShowScoresEventArgs e)
-    {
-        await MainThread.InvokeOnMainThreadAsync(async () =>
-        {
-            if (e.Players == null || !e.Players.Any())
-            {
-                await DisplayAlert("Scores", "Aucun joueur à afficher les scores.", "OK");
-                return;
-            }
-
-            var scoresInfo = string.Join("\n", e.Players.Where(p => p != null && p.Scores != null)
-                .Select(p => $"{p.Name}: {p.Scores.LastOrDefault()} points (Total: {p.Scores.Sum()})"));
-            await DisplayAlert("Scores",
-                string.IsNullOrWhiteSpace(scoresInfo) ? "Aucune information de score disponible." : scoresInfo, "OK");
-        });
-    }
-
     private async void OnPlayerChooseQuit(object? sender, EventArgs e)
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -186,9 +156,8 @@ public partial class GamePage : ContentPage
             if (confirm)
             {
                 GameManager.Quit = true;
-                if (GameManager.CheckGameOverCondition()) 
+                if (GameManager.CheckGameOverCondition())
                 {
-                    
                     var pers = (App.Current as App)?.DataPersistence;
                     if (pers != null)
                     {
@@ -391,7 +360,7 @@ public partial class GamePage : ContentPage
         var border = new Border
         {
             Background = new SolidColorBrush(backgroundColor),
-            Stroke= Colors.White,
+            Stroke = Colors.White,
             StrokeThickness = 1,
             StrokeShape = new RoundRectangle
             {

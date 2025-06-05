@@ -24,9 +24,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/DTOs/DataToPersistDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/DataToPersistDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Bot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Bot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +151,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "master",
     "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -348,22 +346,6 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00030" summary="feat(Error handling): Error exception class and Error handler class">
-      <option name="closed" value="true" />
-      <created>1747412162080</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1747412162080</updated>
-    </task>
-    <task id="LOCAL-00031" summary="refactor folders">
-      <option name="closed" value="true" />
-      <created>1747429980899</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1747429980899</updated>
     </task>
     <task id="LOCAL-00032" summary="wip">
       <option name="closed" value="true" />
@@ -741,7 +723,23 @@
       <option name="project" value="LOCAL" />
       <updated>1749060760471</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="refactor: change GetEmptyPositions method to private and clean up GamePage.xaml.cs">
+      <option name="closed" value="true" />
+      <created>1749103980253</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1749103980253</updated>
+    </task>
+    <task id="LOCAL-00080" summary="refactor: update Doxygen configuration paths and clean up workspace settings">
+      <option name="closed" value="true" />
+      <created>1749104644560</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1749104644560</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -802,8 +800,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix: dto.csproj" />
-    <MESSAGE value="big update" />
     <MESSAGE value="change fake persistency values" />
     <MESSAGE value="fix" />
     <MESSAGE value="fix bugs" />
@@ -827,7 +823,9 @@
     <MESSAGE value="refactor: change GetEmptyPositions method to public and add DeckTests for deck functionality" />
     <MESSAGE value="test: add unit tests for TryValidMove method in various rules classes" />
     <MESSAGE value="feat: add DataToPersistDto for data serialization and update JsonPersistency to use the new DTO" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add DataToPersistDto for data serialization and update JsonPersistency to use the new DTO" />
+    <MESSAGE value="refactor: change GetEmptyPositions method to private and clean up GamePage.xaml.cs" />
+    <MESSAGE value="refactor: update Doxygen configuration paths and clean up workspace settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: update Doxygen configuration paths and clean up workspace settings" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -863,12 +861,12 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs</url>
           <line>21</line>
-          <properties documentPath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" containingFunctionPresentation="Method 'RulesClicked'">
+          <properties documentPath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" containingFunctionPresentation="Method 'OnAppearing'">
             <startOffsets>
-              <option value="575" />
+              <option value="458" />
             </startOffsets>
             <endOffsets>
-              <option value="615" />
+              <option value="486" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
