@@ -5,7 +5,7 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "DuckAndCover"
 PROJECT_NUMBER         = 2.0.0
 PROJECT_BRIEF          = "SAE 2.01 - Jeu Duck And Cover"
-PROJECT_LOGO           = ../DuckAndCover/DuckAndCover/Resources/Images/titre.png
+PROJECT_LOGO           = DuckAndCover/DuckAndCover/Resources/Images/titre.png
 OUTPUT_DIRECTORY       = docs/doxygen
 CREATE_SUBDIRS         = YES
 ALLOW_UNICODE_NAMES    = YES
@@ -26,8 +26,8 @@ ABBREVIATE_BRIEF       = "La classe $name" \
 ALWAYS_DETAILED_SEC    = YES
 INLINE_INHERITED_MEMB  = YES
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = ../DuckAndCover/
-STRIP_FROM_INC_PATH    = ../DuckAndCover/
+STRIP_FROM_PATH        = DuckAndCover/
+STRIP_FROM_INC_PATH    = DuckAndCover/
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
 JAVADOC_BANNER         = NO
@@ -125,7 +125,7 @@ WARN_LOGFILE           =
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = ../DuckAndCover/
+INPUT                  = DuckAndCover/
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                         *.cc \
@@ -182,15 +182,15 @@ EXCLUDE_PATTERNS       += */bin/*
 EXCLUDE_PATTERNS       += */obj/*
 EXCLUDE_PATTERNS       += */Migrations/*
 EXCLUDE_SYMBOLS        =
-EXAMPLE_PATH           = ../Examples/
+EXAMPLE_PATH           = Examples/
 EXAMPLE_PATTERNS       = *.cs
 EXAMPLE_RECURSIVE      = YES
-IMAGE_PATH             = ../DuckAndCover/DuckAndCover/Resources/Images/
+IMAGE_PATH             = DuckAndCover/DuckAndCover/Resources/Images/
 INPUT_FILTER           =
 FILTER_PATTERNS        =
 FILTER_SOURCE_FILES    = NO
 FILTER_SOURCE_PATTERNS =
-USE_MDFILE_AS_MAINPAGE = ../README.md
+USE_MDFILE_AS_MAINPAGE = README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -228,7 +228,7 @@ HTML_HEADER            =
 HTML_FOOTER            =
 HTML_STYLESHEET        =
 HTML_EXTRA_STYLESHEET  =
-HTML_EXTRA_FILES       = ../DuckAndCover/DuckAndCover/Resources/Images/titre.png
+HTML_EXTRA_FILES       = DuckAndCover/DuckAndCover/Resources/Images/titre.png
 HTML_COLORSTYLE_HUE    = 210
 HTML_COLORSTYLE_SAT    = 50
 HTML_COLORSTYLE_GAMMA  = 220

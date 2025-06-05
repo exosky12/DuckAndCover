@@ -88,3 +88,7 @@ steps:
     environment: 
       NOSWAGGER: true
       NODOCUSAURUS: true
+
+volumes:
+  - name: docs
+    temp: {}
