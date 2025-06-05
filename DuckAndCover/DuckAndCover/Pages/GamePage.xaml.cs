@@ -65,7 +65,6 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            
             if (e.CurrentPlayer.IsBot && e.CurrentPlayer is Bot b )
             {
                 Task.Delay(1000).ContinueWith(_ => Bot.PlayTurnAutomatically(GameManager));

@@ -187,7 +187,7 @@ namespace Models.Game
         /// </summary>
         /// <param name="grid">La grille de jeu à analyser.</param>
         /// <returns>Une liste des positions vides dans la grille.</returns>
-        public static List<Position> GetEmptyPositions(Grid grid)
+        private static List<Position> GetEmptyPositions(Grid grid)
         {
             var occupied = grid.GameCardsGrid.Select(c => c.Position).ToHashSet();
             if (occupied.Count == 0)
