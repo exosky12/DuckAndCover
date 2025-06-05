@@ -24,7 +24,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,26 +142,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.DuckAndCover.local: Windows Machine.executor": "Debug",
-    ".NET Project.ConsoleApp.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
-    "git-widget-placeholder": "master",
-    "macOS.DuckAndCover.local.executor": "Run",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.DuckAndCover.local: Windows Machine.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.ConsoleApp.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;f13ac3f2-de1b-496b-9677-a8a288b628c0.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;macOS.DuckAndCover.local.executor&quot;: &quot;Run&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="macOS.DuckAndCover.local">
     <configuration name="ConsoleApp" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/ConsoleApp/bin/Debug/net9.0-android/ConsoleApp.dll" />
@@ -346,78 +346,7 @@
       <workItem from="1748847854985" duration="9334000" />
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
-    </task>
-    <task id="LOCAL-00032" summary="wip">
-      <option name="closed" value="true" />
-      <created>1747438414598</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1747438414598</updated>
-    </task>
-    <task id="LOCAL-00033" summary="feat(events)">
-      <option name="closed" value="true" />
-      <created>1747479039395</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1747479039395</updated>
-    </task>
-    <task id="LOCAL-00034" summary="feat(error handling): working !!">
-      <option name="closed" value="true" />
-      <created>1747484549798</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1747484549798</updated>
-    </task>
-    <task id="LOCAL-00035" summary="feat(refactor tests)">
-      <option name="closed" value="true" />
-      <created>1747496089269</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1747496089269</updated>
-    </task>
-    <task id="LOCAL-00036" summary="refactor">
-      <option name="closed" value="true" />
-      <created>1747496798636</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1747496798636</updated>
-    </task>
-    <task id="LOCAL-00037" summary="resolve test error">
-      <option name="closed" value="true" />
-      <created>1747497057573</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1747497057573</updated>
-    </task>
-    <task id="LOCAL-00038" summary="feat(Errors): add UnknownError">
-      <option name="closed" value="true" />
-      <created>1747503227149</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1747503227149</updated>
-    </task>
-    <task id="LOCAL-00039" summary="feat(HandlePlayerChoice): refactor the way we ask what the player want to do">
-      <option name="closed" value="true" />
-      <created>1747517787370</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1747517787370</updated>
-    </task>
-    <task id="LOCAL-00040" summary="feat(errors): add error DeckEmpty">
-      <option name="closed" value="true" />
-      <created>1747517988182</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1747517988182</updated>
+      <workItem from="1749135501609" duration="412000" />
     </task>
     <task id="LOCAL-00041" summary="feat(error handling): correct mistackes in error handling player choices">
       <option name="closed" value="true" />
@@ -739,7 +668,79 @@
       <option name="project" value="LOCAL" />
       <updated>1749104644560</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="refactor: update Doxygen configuration and clean up GamePage.xaml.cs">
+      <option name="closed" value="true" />
+      <created>1749105518525</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1749105518525</updated>
+    </task>
+    <task id="LOCAL-00082" summary="refactor: add debug commands to Drone CI for documentation verification">
+      <option name="closed" value="true" />
+      <created>1749105883957</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1749105883957</updated>
+    </task>
+    <task id="LOCAL-00083" summary="refactor: update Doxygen configuration paths and add volume for documentation">
+      <option name="closed" value="true" />
+      <created>1749106095627</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1749106095627</updated>
+    </task>
+    <task id="LOCAL-00084" summary="refactor: update Doxygen configuration paths for improved file referencing">
+      <option name="closed" value="true" />
+      <created>1749106692601</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1749106692601</updated>
+    </task>
+    <task id="LOCAL-00085" summary="refactor: update project configuration for improved build and documentation processes">
+      <option name="closed" value="true" />
+      <created>1749107036512</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1749107036512</updated>
+    </task>
+    <task id="LOCAL-00086" summary="refactor: add minimal Doxygen configuration testing to Drone CI">
+      <option name="closed" value="true" />
+      <created>1749107076123</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1749107076124</updated>
+    </task>
+    <task id="LOCAL-00087" summary="refactor: correct Doxygen configuration file copy commands in Drone CI">
+      <option name="closed" value="true" />
+      <created>1749107628525</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1749107628526</updated>
+    </task>
+    <task id="LOCAL-00088" summary="refactor: enhance Doxygen testing in Drone CI with additional checks and outputs">
+      <option name="closed" value="true" />
+      <created>1749108636133</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1749108636133</updated>
+    </task>
+    <task id="LOCAL-00089" summary="refactor">
+      <option name="closed" value="true" />
+      <created>1749109627137</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1749109627137</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -800,15 +801,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="change fake persistency values" />
-    <MESSAGE value="fix" />
-    <MESSAGE value="fix bugs" />
-    <MESSAGE value="feat(game): implement game start logic and refactor turn processing" />
-    <MESSAGE value="feat(rules): add data contract attributes for serialization in game rules and models" />
-    <MESSAGE value="feat(game): enhance game logic with card effect processing and event handling" />
-    <MESSAGE value="feat(game): add NotPlayerTurn error code and handle turn validation in game logic" />
-    <MESSAGE value="fix(game): correct player reference in max effect message" />
-    <MESSAGE value="feat(game): enhance game structure with improved data persistence and code documentation" />
     <MESSAGE value="refactor(game): optimize player score handling and clean up unused namespaces" />
     <MESSAGE value="feat(project): update target framework to net9.0-android for all projects" />
     <MESSAGE value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
@@ -825,7 +817,16 @@
     <MESSAGE value="feat: add DataToPersistDto for data serialization and update JsonPersistency to use the new DTO" />
     <MESSAGE value="refactor: change GetEmptyPositions method to private and clean up GamePage.xaml.cs" />
     <MESSAGE value="refactor: update Doxygen configuration paths and clean up workspace settings" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: update Doxygen configuration paths and clean up workspace settings" />
+    <MESSAGE value="refactor: update Doxygen configuration and clean up GamePage.xaml.cs" />
+    <MESSAGE value="refactor: add debug commands to Drone CI for documentation verification" />
+    <MESSAGE value="refactor: update Doxygen configuration paths and add volume for documentation" />
+    <MESSAGE value="refactor: update Doxygen configuration paths for improved file referencing" />
+    <MESSAGE value="refactor: update project configuration for improved build and documentation processes" />
+    <MESSAGE value="refactor: add minimal Doxygen configuration testing to Drone CI" />
+    <MESSAGE value="refactor: correct Doxygen configuration file copy commands in Drone CI" />
+    <MESSAGE value="refactor: enhance Doxygen testing in Drone CI with additional checks and outputs" />
+    <MESSAGE value="refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
