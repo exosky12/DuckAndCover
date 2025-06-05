@@ -81,6 +81,9 @@ steps:
       - test -d DuckAndCover && echo "✓ DuckAndCover dir exists" || echo "✗ DuckAndCover dir missing"
       - echo "Looking for .cs files:"
       - find DuckAndCover -name "*.cs" | wc -l
+      - echo "=== TESTING MINIMAL CONFIG ==="
+      - cp Documentation/doxygen_minimal Documentation/doxygen_backup
+      - cp Documentation/doxygen_minimal Documentation/doxygen
       - echo "=== RUNNING ENTRYPOINT ==="
       - /entrypoint.sh
       - echo "=== CHECKING RESULTS ==="
