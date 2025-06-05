@@ -72,7 +72,24 @@ steps:
       - name: docs
         path: /docs
     commands:
+      - echo "=== DEBUG INFO ==="
+      - pwd
+      - ls -la Documentation/
+      - echo "Checking if doxygen file exists:"
+      - test -f Documentation/doxygen && echo "✓ doxygen file exists" || echo "✗ doxygen file missing"
+      - echo "Checking DuckAndCover directory:"
+      - test -d DuckAndCover && echo "✓ DuckAndCover dir exists" || echo "✗ DuckAndCover dir missing"
+      - echo "Looking for .cs files:"
+      - find DuckAndCover -name "*.cs" | wc -l
+      - echo "=== RUNNING ENTRYPOINT ==="
       - /entrypoint.sh
+      - echo "=== CHECKING RESULTS ==="
+      - find /docs -type f 2>/dev/null | wc -l
+      - ls -la /docs/ 2>/dev/null || echo "No /docs directory"
     environment: 
       NOSWAGGER: true
       NODOCUSAURUS: true
+
+volumes:
+  - name: docs
+    temp: {}
