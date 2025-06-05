@@ -117,7 +117,7 @@ WARN_LOGFILE           =
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = ../../DuckAndCover/
+INPUT                  = ../DuckAndCover/
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.cs \
                         *.md
