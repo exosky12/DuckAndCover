@@ -1,11 +1,14 @@
 kind: pipeline
 type: docker
 name: CI
+
 trigger:
-    branch:
-        - master
-    event:
-        - push
+  branch:
+    - master
+  event:
+    - push
+    - tag
+
 steps:
   - name: Build
     image: mcr.microsoft.com/dotnet/sdk:9.0
@@ -32,8 +35,9 @@ steps:
       - dotnet build Models/Models.csproj -c Release
       - dotnet build DataPersistence/DataPersistence.csproj -c Release
       - dotnet restore DuckAndCover/DuckAndCover.csproj
-      - dotnet build DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
-      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0 -o $CI_PROJECT_DIR/build/release
+      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android -o $CI_PROJECT_DIR/build/android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
+      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-windows -o $CI_PROJECT_DIR/build/windows
+      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-macos -o $CI_PROJECT_DIR/build/macos
 
   - name: Tests
     image: mcr.microsoft.com/dotnet/sdk:9.0
@@ -54,7 +58,7 @@ steps:
     commands:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverWithoutMAUI.sln
-      - dotnet sonarscanner begin /k:$${project_key} /d:sonar.host.url=$${sonar_host} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions=$${coverage_exclusions} /d:sonar.login=$${sonar_token} 
+      - dotnet sonarscanner begin /k:$${project_key} /d:sonar.host.url=$${sonar_host} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions=$${coverage_exclusions} /d:sonar.login=$${sonar_token}
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore
       - dotnet test DuckAndCoverWithoutMAUI.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
@@ -72,62 +76,24 @@ steps:
       NOSWAGGER: true
       NODOCUSAURUS: true
 
----
-kind: pipeline
-type: docker
-name: CD
-trigger:
-  event:
-    - tag
-
-steps:
-  - name: Build_Windows
-    image: mcr.microsoft.com/dotnet/sdk:9.0
-    commands:
-      - cd DuckAndCover/
-      - dotnet restore DuckAndCoverWithoutMAUI.sln
-      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release -r win-x64 --self-contained -o ./publish/win
-
-  - name: Build_macOS
-    image: mcr.microsoft.com/dotnet/sdk:9.0
-    commands:
-      - cd DuckAndCover/
-      - dotnet restore DuckAndCoverWithoutMAUI.sln
-      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release -r osx-x64 --self-contained -o ./publish/mac
-
-  - name: Build_Android_MAUI
-    image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
-    environment:
-      ANDROID_SDK_ROOT: /usr/local/share/android-sdk
-    commands:
-      - cd DuckAndCover/
-      - dotnet workload restore
-      - dotnet restore DuckAndCover/DuckAndCover.csproj
-      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android \
-          /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT \
-          -p:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0 \
-          -p:OutputPath=./publish/android
-
-  - name: Upload Release Assets
+  - name: Upload Release
     image: curlimages/curl
     environment:
       GITEA_TOKEN:
-        from_secret: gitea_token
+        from_secret: SECRET_GITEA_TOKEN
+    when:
+      event:
+        - tag
     commands:
-      - TAG_NAME=${DRONE_TAG##*/}
-      - curl -X POST -H "Content-Type: application/json" \
-        -H "Authorization: token ${GITEA_TOKEN}" \
-        -d "{\"tag_name\": \"${TAG_NAME}\", \"name\": \"Release ${TAG_NAME}\", \"draft\": false, \"prerelease\": false}" \
+      - TAG_NAME="${DRONE_TAG##*/}"
+      - >
+        curl -X POST -H "Content-Type: application/json"
+        -H "Authorization: token ${GITEA_TOKEN}"
+        -d "{\"tag_name\": \"${TAG_NAME}\", \"name\": \"Release ${TAG_NAME}\", \"draft\": false, \"prerelease\": false}"
         https://codefirst.iut.uca.fr/api/v1/repos/<username>/<repo>/releases
-
-      - curl -X POST -H "Authorization: token ${GITEA_TOKEN}" \
-        -F "attachment=@DuckAndCover/publish/win/nom.exe" \
-        https://codefirst.iut.uca.fr/api/v1/repos/<username>/<repo>/releases/${TAG_NAME}/assets
-
-      - curl -X POST -H "Authorization: token ${GITEA_TOKEN}" \
-        -F "attachment=@DuckAndCover/publish/mac/nom" \
-        https://codefirst.iut.uca.fr/api/v1/repos/<username>/<repo>/releases/${TAG_NAME}/assets
-
-      - curl -X POST -H "Authorization: token ${GITEA_TOKEN}" \
-        -F "attachment=@DuckAndCover/publish/android/com.companyname.duckandcover-Signed.apk" \
-        https://codefirst.iut.uca.fr/api/v1/repos/<username>/<repo>/releases/${TAG_NAME}/assets
+      - >
+        for platform in android windows macos; do
+          curl -X POST -H "Authorization: token ${GITEA_TOKEN}" \
+          -F "attachment=@$CI_PROJECT_DIR/build/$platform" \
+          https://codefirst.iut.uca.fr/api/v1/repos/<username>/<repo>/releases/assets/${TAG_NAME}?name=DuckAndCover-${platform}.zip
+        done
