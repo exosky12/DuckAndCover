@@ -431,7 +431,6 @@ namespace Models.Game
                         {
                             CheckGameOverCondition();
                         }
-
                         break;
                     default:
                         throw new ErrorException(ErrorCodes.InvalidChoice);
