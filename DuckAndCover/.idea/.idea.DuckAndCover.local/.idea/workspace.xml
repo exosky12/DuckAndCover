@@ -24,7 +24,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Models/Rules/BaseRules.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/ClassicRulesTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,6 +97,7 @@
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Game/Game.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/BlitzRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/BotTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
@@ -347,6 +355,8 @@
       <workItem from="1748874879379" duration="3670000" />
       <workItem from="1748937421736" duration="3055000" />
       <workItem from="1749135501609" duration="412000" />
+      <workItem from="1749162251433" duration="4000" />
+      <workItem from="1749162954016" duration="349000" />
     </task>
     <task id="LOCAL-00041" summary="feat(error handling): correct mistackes in error handling player choices">
       <option name="closed" value="true" />
