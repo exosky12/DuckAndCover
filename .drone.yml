@@ -17,6 +17,28 @@ steps:
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore 
       - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
   
+  - name: Build Windows
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    environment:
+      CI: "true"
+    commands:
+      - cd DuckAndCover/
+      - dotnet restore DuckAndCoverWithoutMAUI.sln
+      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release -r win-x64 --self-contained true -o $CI_PROJECT_DIR/build/windows
+      - cd $CI_PROJECT_DIR/build/windows
+      - zip -r ../DuckAndCover-Windows.zip .
+
+  - name: Build macOS
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    environment:
+      CI: "true"
+    commands:
+      - cd DuckAndCover/
+      - dotnet restore DuckAndCoverWithoutMAUI.sln
+      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release -r osx-x64 --self-contained true -o $CI_PROJECT_DIR/build/macos
+      - cd $CI_PROJECT_DIR/build/macos
+      - zip -r ../DuckAndCover-macOS.zip .
+
   - name: BuildMAUI
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
     environment:
@@ -76,3 +98,22 @@ steps:
     environment: 
       NOSWAGGER: true
       NODOCUSAURUS: true
+
+  - name: Create Release
+    image: plugins/gitea-release
+    settings:
+      base_url: https://codefirst.iut.uca.fr/gitea
+      api_key:
+        from_secret: gitea_token
+      files: build/*.zip
+      title: Release ${DRONE_COMMIT_SHA:0:8}
+      note: |
+        Release automatique pour le commit ${DRONE_COMMIT_SHA:0:8}
+        
+        - Version Windows (64-bit)
+        - Version macOS (64-bit)
+    when:
+      branch:
+        - master
+      event:
+        - push
