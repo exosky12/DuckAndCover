@@ -7,14 +7,14 @@ PROJECT_NUMBER         = 2.0.0
 PROJECT_BRIEF          = "SAE 2.01 - Jeu Duck And Cover"
 PROJECT_LOGO           = ../../DuckAndCover/DuckAndCover/Resources/Images/titre.png
 OUTPUT_DIRECTORY       = docs/doxygen
-CREATE_SUBDIRS         = YES
-ALLOW_UNICODE_NAMES    = YES
-OUTPUT_LANGUAGE        = French
+CREATE_SUBDIRS         = NO
+ALLOW_UNICODE_NAMES    = NO
+OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
 REPEAT_BRIEF           = YES
 ABBREVIATE_BRIEF       = "The $name class" \
                         "The $name widget" \
-                        The $name file " \
+                        "The $name file " \
                         is  \
                         provides  \
                         specifieds  \
@@ -23,13 +23,13 @@ ABBREVIATE_BRIEF       = "The $name class" \
                         a  \
                         an  \
                         the 
-ALWAYS_DETAILED_SEC    = YES
-INLINE_INHERITED_MEMB  = YES
+ALWAYS_DETAILED_SEC    = NO
+INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = ../../DuckAndCover/
-STRIP_FROM_INC_PATH    = ../../DuckAndCover/
+STRIP_FROM_PATH        = 
+STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
-JAVADOC_AUTOBRIEF      = YES
+JAVADOC_AUTOBRIEF      = NO
 JAVADOC_BANNER         = NO
 QT_AUTOBRIEF           = NO
 MULTILINE_CPP_IS_BRIEF = NO
