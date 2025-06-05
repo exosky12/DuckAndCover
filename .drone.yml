@@ -83,11 +83,22 @@ steps:
       - find DuckAndCover -name "*.cs" | wc -l
       - echo "=== TESTING MINIMAL CONFIG ==="
       - cp Documentation/doxygen Documentation/doxygen_backup
+      - cp Documentation/doxygen_minimal Documentation/doxygen
+      - echo "=== TESTING DOXYGEN MANUALLY ==="
+      - cd Documentation
+      - doxygen doxygen || echo "Doxygen failed"
+      - cd ..
       - echo "=== RUNNING ENTRYPOINT ==="
       - /entrypoint.sh
       - echo "=== CHECKING RESULTS ==="
+      - echo "Files in /docs:"
       - find /docs -type f 2>/dev/null | wc -l
-      - ls -la /docs/ 2>/dev/null || echo "No /docs directory"
+      - echo "Files in Documentation/docs:"
+      - find Documentation/docs -type f 2>/dev/null | wc -l || echo "No local docs directory"
+      - echo "Contents of /docs/doxygen:"
+      - ls -la /docs/doxygen/ 2>/dev/null || echo "No doxygen directory"
+      - echo "Contents of Documentation/docs:"
+      - ls -la Documentation/docs/ 2>/dev/null || echo "No local docs directory"
     environment: 
       NOSWAGGER: true
       NODOCUSAURUS: true
