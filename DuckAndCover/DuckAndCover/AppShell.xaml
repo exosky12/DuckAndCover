@@ -39,4 +39,9 @@
         ContentTemplate="{DataTemplate pages:GamePage}"
         Route="GamePage" />
     
+    <ShellContent
+        Title="ReprendrePartie"    
+        ContentTemplate="{DataTemplate pages:ResumeGame}"
+        Route="GamePage" />
+    
 </Shell>

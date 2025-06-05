@@ -1,0 +1,48 @@
+
+
+using Microsoft.Maui.Controls;
+using System;
+using System.Threading.Tasks;
+
+// Si votre GameManager est dans un autre namespace et que vous en avez besoin ici
+// (bien que pour OnNoClicked seul, il ne soit pas directement utilisé)
+// using DuckAndCover.Models.Game; // Exemple
+
+namespace DuckAndCover.Pages
+{
+    public partial class ResumeGame : ContentPage
+    {
+        public ResumeGame()
+        {
+            InitializeComponent();
+        }
+        
+        private async void OnNoClicked(object sender, EventArgs e)
+        {
+
+            await NavigateToMenuPlayer();
+
+        }
+        
+        private async Task NavigateToMenuPlayer()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync($"//{nameof(MenuPlayer)}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur de navigation vers MenuPlayer: {ex.Message}");
+                await DisplayAlert("Erreur de navigation", "Impossible d'accéder à la page du menu des joueurs.", "OK");
+            }
+        }
+        
+
+        private async void OnYesClicked(object sender, EventArgs e)
+        {
+            await DisplayAlert("Reprise", "Logique de reprise de partie à implémenter.", "OK");
+            
+        }
+        
+    }
+}
