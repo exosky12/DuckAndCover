@@ -164,7 +164,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="macOS.DuckAndCover.local">
+  <component name="RunManager" selected=".NET Project.ConsoleApp">
     <configuration name="ConsoleApp" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/ConsoleApp/bin/Debug/net9.0-android/ConsoleApp.dll" />
       <option name="PROGRAM_PARAMETERS" value="" />

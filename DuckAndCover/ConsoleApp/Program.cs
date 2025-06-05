@@ -170,171 +170,126 @@ namespace ConsoleApp
 
         private static void SubscribeToGameEvents(Game game)
         {
-            game.PlayerChanged += (s, e) =>
+            game.PlayerChanged += (s, e) => HandlePlayerTurn(game, e.CurrentPlayer, e.CurrentDeckCard);
+            game.DisplayMenuNeeded += (s, e) => HandlePlayerTurn(game, e.CurrentPlayer, e.CurrentDeckCard);
+            game.PlayerChooseCoin += (s, e) => Utils.WriteGameMaster($"{e.Player.Name} a fait coin !");
+            game.PlayerChooseCover += (s, e) => HandleCoverChoice(game, e.Player);
+            game.PlayerChooseDuck += (s, e) => HandleDuckChoice(game, e.Player);
+            game.PlayerChooseShowPlayersGrid += (s, e) => DisplayPlayerGrids(e.Players);
+            game.PlayerChooseShowScores += (s, e) => Utils.DisplayPlayerScores(e.Players);
+            game.PlayerChooseQuit += (s, e) => HandlePlayerQuit(game, e.Player);
+            game.GameIsOver += (s, e) => HandleGameOver(game);
+            game.ErrorOccurred += (s, e) => HandleError(e.ErrorException);
+        }
+
+        private static void HandlePlayerTurn(Game game, Player currentPlayer, DeckCard currentDeckCard)
+        {
+            while (true)
             {
-                while (true)
+                var choice = Utils.PromptPlayerTurn(currentPlayer, currentDeckCard, game);
+                
+                if (!IsValidChoice(choice))
                 {
-                    var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.CurrentDeckCard, game);
-                    
-                    if (IsValidChoice(choice))
-                    {
-                        try
-                        {
-                            game.HandlePlayerChoice(e.CurrentPlayer, choice);
-                            break;
-                        }
-                        catch (ErrorException ex)
-                        {
-                            Utils.WriteError("Une erreur s'est produite lors du traitement de votre choix.");
-                            WriteLine("Appuyez sur une touche pour continuer…");
-                            ReadKey(true);
-                        }
-                    }
-                    else
-                    {
-                        Utils.WriteError("Choix invalide. Veuillez réessayer.");
-                        WriteLine("Appuyez sur une touche pour continuer…");
-                        ReadKey(true);
-                    }
+                    ShowErrorAndWait("Choix invalide. Veuillez réessayer.");
+                    continue;
                 }
-            };
 
-            game.DisplayMenuNeeded += (s, e) =>
-            {
-                while (true)
+                try
                 {
-                    var choice = Utils.PromptPlayerTurn(e.CurrentPlayer, e.CurrentDeckCard, game);
-                    
-                    if (IsValidChoice(choice))
-                    {
-                        try
-                        {
-                            game.HandlePlayerChoice(e.CurrentPlayer, choice);
-                            break; 
-                        }
-                        catch (Exception ex)
-                        {
-                            Utils.WriteError("Une erreur s'est produite lors du traitement de votre choix.");
-                            WriteLine("Appuyez sur une touche pour continuer…");
-                            ReadKey(true);
-                        }
-                    }
-                    else
-                    {
-                        Utils.WriteError("Choix invalide. Veuillez réessayer.");
-                        WriteLine("Appuyez sur une touche pour continuer…");
-                        ReadKey(true);
-                    }
+                    game.HandlePlayerChoice(currentPlayer, choice);
+                    break;
                 }
-            };
-
-            game.PlayerChooseCoin += (s, e) =>
-                Utils.WriteGameMaster($"{e.Player.Name} a fait coin !");
-
-            game.PlayerChooseCover += (s, e) =>
-            {
-                while (true)
+                catch (ErrorException)
                 {
-                    try
-                    {
-                        Utils.WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir ? (ex : A1)");
-                        var src = ReadLine()!;
-                        Utils.WriteGameMaster("Quelle carte souhaitez-vous recouvrir ? (ex : B2)");
-                        var dst = ReadLine()!;
-                        game.HandlePlayerChooseCover(
-                            e.Player,
-                            Utils.ParsePosition(src),
-                            Utils.ParsePosition(dst)
-                        );
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler handler;
-                        if (ex is ErrorException errorEx)
-                        {
-                            handler = new ErrorHandler(errorEx);
-                        }
-                        else
-                        {
-                            handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
-                        }
-                        Utils.WriteError(handler.Handle());
-                        WriteLine("Appuyez sur une touche pour continuer…");
-                        ReadKey(true);
-                    }
+                    ShowErrorAndWait("Une erreur s'est produite lors du traitement de votre choix.");
                 }
-            };
+            }
+        }
 
-            game.PlayerChooseDuck += (s, e) =>
+        private static void HandleCoverChoice(Game game, Player player)
+        {
+            while (true)
             {
-                while (true)
+                try
                 {
-                    try
-                    {
-                        Utils.WriteGameMaster("Quelle carte souhaitez-vous déplacer ? (ex : C3)");
-                        var src = ReadLine()!;
-                        Utils.WriteGameMaster("Où souhaitez-vous la déplacer ? (ex : D4)");
-                        var dst = ReadLine()!;
-                        game.HandlePlayerChooseDuck(
-                            e.Player,
-                            Utils.ParsePosition(src),
-                            Utils.ParsePosition(dst)
-                        );
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler handler;
-                        if (ex is ErrorException errorEx)
-                        {
-                            handler = new ErrorHandler(errorEx);
-                        }
-                        else
-                        {
-                            handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
-                        }
-                        Utils.WriteError(handler.Handle());
-                        WriteLine("Appuyez sur une touche pour continuer…");
-                        ReadKey(true);
-                    }
+                    Utils.WriteGameMaster("Quelle carte souhaitez-vous utiliser pour recouvrir ? (ex : A1)");
+                    var src = ReadLine()!;
+                    Utils.WriteGameMaster("Quelle carte souhaitez-vous recouvrir ? (ex : B2)");
+                    var dst = ReadLine()!;
+                    game.HandlePlayerChooseCover(player, Utils.ParsePosition(src), Utils.ParsePosition(dst));
+                    break;
                 }
-            };
-
-            game.PlayerChooseShowPlayersGrid += (s, e) =>
-            {
-                Utils.WriteGameMaster("Voici les grilles des joueurs :");
-                foreach (var p in e.Players)
+                catch (Exception ex)
                 {
-                    Utils.WriteGameMaster($"Grille de {p.Name} :");
-                    Utils.DisplayGrid(p);
+                    HandleException(ex);
                 }
-            };
+            }
+        }
 
-            game.PlayerChooseShowScores += (s, e) =>
+        private static void HandleDuckChoice(Game game, Player player)
+        {
+            while (true)
             {
-                Utils.DisplayPlayerScores(e.Players);
-            };
+                try
+                {
+                    Utils.WriteGameMaster("Quelle carte souhaitez-vous déplacer ? (format : ligne, colonnes ex : 1,1)");
+                    var src = ReadLine()!;
+                    Utils.WriteGameMaster("Où souhaitez-vous la déplacer ? (format : ligne, colonne ex : 1,5)");
+                    var dst = ReadLine()!;
+                    game.HandlePlayerChooseDuck(player, Utils.ParsePosition(src), Utils.ParsePosition(dst));
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
+            }
+        }
 
-            game.PlayerChooseQuit += (s, e) =>
+        private static void DisplayPlayerGrids(IEnumerable<Player> players)
+        {
+            Utils.WriteGameMaster("Voici les grilles des joueurs :");
+            foreach (var p in players)
             {
-                Utils.WriteGameMaster($"{e.Player.Name} a quitté la partie.");
-                game.Quit = true;
-            };
+                Utils.WriteGameMaster($"Grille de {p.Name} :");
+                Utils.DisplayGrid(p);
+            }
+        }
 
-            game.GameIsOver += (s, e) =>
-            {
-                game.IsFinished = true;
-                Utils.EndGame(game.Players, game);
-            };
+        private static void HandlePlayerQuit(Game game, Player player)
+        {
+            Utils.WriteGameMaster($"{player.Name} a quitté la partie.");
+            game.Quit = true;
+        }
 
-            game.ErrorOccurred += (s, e) =>
-            {
-                var handler = new ErrorHandler(e.ErrorException);
-                Utils.WriteError(handler.Handle());
-                WriteLine("Appuyez sur une touche pour continuer…");
-                ReadKey(true);
-            };
+        private static void HandleGameOver(Game game)
+        {
+            game.IsFinished = true;
+            Utils.EndGame(game.Players, game);
+        }
+
+        private static void HandleError(ErrorException errorException)
+        {
+            var handler = new ErrorHandler(errorException);
+            Utils.WriteError(handler.Handle());
+            ShowErrorAndWait();
+        }
+
+        private static void HandleException(Exception ex)
+        {
+            ErrorHandler handler = ex is ErrorException errorEx 
+                ? new ErrorHandler(errorEx)
+                : new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
+            Utils.WriteError(handler.Handle());
+            ShowErrorAndWait();
+        }
+
+        private static void ShowErrorAndWait(string? message = null)
+        {
+            if (message != null)
+                Utils.WriteError(message);
+            WriteLine("Appuyez sur une touche pour continuer…");
+            ReadKey(true);
         }
 
         private static bool IsValidChoice(string choice)
