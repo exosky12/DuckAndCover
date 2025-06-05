@@ -11,7 +11,10 @@
         <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('OSX'))">net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
         
         <!-- Configuration MAUI pour Windows -->
-        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('Windows'))">net9.0;net9.0-android</TargetFrameworks>
+        <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('Windows'))">net9.0;net9.0-android;net9.0-windows10.0.19041.0</TargetFrameworks>
+        
+        <!-- Configuration par défaut si aucune condition ne correspond -->
+        <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net9.0</TargetFrameworks>
         
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
