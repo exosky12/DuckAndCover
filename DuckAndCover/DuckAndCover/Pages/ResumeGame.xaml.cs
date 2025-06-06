@@ -3,6 +3,8 @@
 using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
+using Models.Game;
+using DataPersistence;
 
 // Si votre GameManager est dans un autre namespace et que vous en avez besoin ici
 // (bien que pour OnNoClicked seul, il ne soit pas directement utilisé)
@@ -17,12 +19,7 @@ namespace DuckAndCover.Pages
             InitializeComponent();
         }
         
-        private async void OnNoClicked(object sender, EventArgs e)
-        {
-
-            await NavigateToMenuPlayer();
-
-        }
+        private async void OnNoClicked(object sender, EventArgs e) => await Navigation.PushAsync(new GameMenu());
         
         private async Task NavigateToMenuPlayer()
         {
@@ -38,10 +35,20 @@ namespace DuckAndCover.Pages
         }
         
 
+
         private async void OnYesClicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Reprise", "Logique de reprise de partie à implémenter.", "OK");
-            
+            var lastGame = new JsonPersistency().LoadLastUnfinishedGame(); // ou LoadMostRecentGame()
+
+            if (lastGame == null)
+            {
+                await DisplayAlert("Aucune partie", "Aucune partie précédente à reprendre.", "OK");
+                return;
+            }
+
+            GameManager.Instance.LoadFrom(lastGame); // à implémenter si besoin
+
+            await Shell.Current.GoToAsync($"//{nameof(GameBoard)}");
         }
         
     }

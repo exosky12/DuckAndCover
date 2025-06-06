@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:components="clr-namespace:DuckAndCover.Views"
+             ControlTemplate="{StaticResource BackgroundTemplate}"
              x:Class="DuckAndCover.Pages.ResumeGame"
              Title="Reprendre la partie"
              Shell.NavBarIsVisible="False">  <Grid VerticalOptions="Center" HorizontalOptions="Center" RowSpacing="25" Padding="30">
@@ -16,7 +17,9 @@
                FontAttributes="Bold"
                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                Margin="0,0,0,20" />  
-        <components:Button x:Name="YesButton"
+        <components:Button Grid.Row="1"
+            
+                            x:Name="YesButton"
                            Name="Oui"           
                            Clicked="OnYesClicked"
                            HorizontalOptions="Center"

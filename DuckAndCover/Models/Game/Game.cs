@@ -120,6 +120,10 @@ namespace Models.Game
         /// Carte actuelle du deck.
         /// </summary>
         public DeckCard CurrentDeckCard { get; set; } = new DeckCard(Bonus.None, 0);
+        
+        
+        [DataMember]
+        public DateTime SavedAt { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Dernier numéro joué.
@@ -570,6 +574,24 @@ namespace Models.Game
                 existingGame.Deck = Deck;
                 existingGame.Players = Players;
                 existingGame.Rules = Rules;
+                
+                existingGame.SavedAt = DateTime.Now;
+                existingGame.Players = Players.Select(p => new Player(
+                    p.Name,
+                    p.StackCounter,
+                    new List<int>(p.Scores),
+                    p.HasSkipped,
+                    p.HasPlayed,
+                    new Grid
+                    {
+                        GameCardsGrid = p.Grid.GameCardsGrid
+                            .Select(card => new GameCard(card.Splash, card.Number)
+                            {
+                                Position = new Position(card.Position.Row, card.Position.Column)
+                            })
+                            .ToList()
+                    }
+                )).ToList();
             }
             else
             {

@@ -175,5 +175,15 @@ namespace DataPersistence
                 throw;
             }
         }
+        public Game? LoadLastUnfinishedGame()
+        {
+            var (_, allGames) = LoadData(); 
+
+            return allGames
+                .Where(g => !g.IsFinished)
+                .OrderByDescending(g => g.SavedAt)
+                .FirstOrDefault();
+        }
+
     }
 }

@@ -50,7 +50,7 @@ namespace Models.Game
         /// <summary>
         /// Obtient la grille de jeu du joueur.
         /// </summary>
-        [IgnoreDataMember]
+        [DataMember]
         public Grid Grid { get; private set; } = new Grid();
 
         /// <summary>

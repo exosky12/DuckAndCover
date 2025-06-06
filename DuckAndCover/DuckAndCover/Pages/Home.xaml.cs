@@ -44,7 +44,7 @@
             }
         }
 
-        private async void PlayClicked(object sender, EventArgs e) => await Navigation.PushAsync(new GameMenu());
+        private async void PlayClicked(object sender, EventArgs e) => await Navigation.PushAsync(new ResumeGame());
         private async void LeaderboardClicked(object sender, EventArgs e) => await Navigation.PushAsync(new LeaderboardPage());
         private async void RulesClicked(object sender, EventArgs e) => await Navigation.PushAsync(new Rules());
         private async void CreditsClicked(object sender, EventArgs e) => await Navigation.PushAsync(new Credits());
