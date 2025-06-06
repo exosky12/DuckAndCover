@@ -1,17 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFrameworks Condition="'$(OS)' == 'Linux'">net9.0-android</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net9.0-android;net9.0-windows10.0.17763.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' == 'OSX'">net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
-
-    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net9.0-android</TargetFrameworks>
-
-    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
-    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-
+<PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>DuckAndCover</RootNamespace>
     <UseMaui>true</UseMaui>
@@ -19,7 +7,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
-    
+
+    <TargetFrameworks Condition="'$(OS)' == 'Linux'">net9.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net9.0-android;net9.0-windows10.0.17763.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' == 'OSX'">net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+
+    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net9.0-android</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.17763.0'">
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
 
     <!-- Informations d'application -->
     <ApplicationTitle>DuckAndCover</ApplicationTitle>
