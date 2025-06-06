@@ -1,6 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- Configuration conditionnelle des frameworks cibles -->
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux'))">net9.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">net9.0-android;net9.0-windows10.0.17763.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+    
+    <!-- Fallback par défaut si aucune condition ne correspond -->
+    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net9.0-android</TargetFrameworks>
+    
+    <!-- Sortie de l'application -->
     <OutputType>Exe</OutputType>
     <RootNamespace>DuckAndCover</RootNamespace>
     <UseMaui>true</UseMaui>
@@ -8,43 +17,27 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+    
 
-    <!-- Cibles selon OS -->
-    <TargetFrameworks Condition="'$(OS)' == 'Linux'">net9.0-android</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net9.0-android;net9.0-windows10.0.19041.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' == 'OSX'">net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
-
-    <!-- Par défaut si aucune condition correspond -->
-    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net9.0-android</TargetFrameworks>
-  </PropertyGroup>
-
-  <!-- Configuration Windows spécifique -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">
-    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
-    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
-    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
-  </PropertyGroup>
-
-  <!-- Infos application -->
-  <PropertyGroup>
+    <!-- Informations d'application -->
     <ApplicationTitle>DuckAndCover</ApplicationTitle>
     <ApplicationId>com.companyname.duckandcover</ApplicationId>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <WindowsPackageType>None</WindowsPackageType>
 
-    <!-- Versions minimum plateformes -->
+    <!-- Versions minimum des plateformes -->
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 
-    <!-- Conditions spécifiques -->
+    <!-- Conditions pour MacCatalyst et Android -->
     <UseMacCatalyst Condition="'$(OS)' == 'Darwin'">true</UseMacCatalyst>
     <UseAndroid Condition="'$(OS)' == 'Unix'">true</UseAndroid>
+
   </PropertyGroup>
 
   <ItemGroup>

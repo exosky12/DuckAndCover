@@ -34,13 +34,13 @@ steps:
       - dotnet build DTOs/DTOs.csproj -c Release
       - dotnet build Models/Models.csproj -c Release
       - dotnet build DataPersistence/DataPersistence.csproj -c Release
-      - dotnet restore DuckAndCover/DuckAndCover.csproj --framework net9.0-windows10.0.19041.0
+      - dotnet restore DuckAndCover/DuckAndCover.csproj
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android -o $CI_PROJECT_DIR/build/android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
-      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-windows10.0.19041.0 -o $CI_PROJECT_DIR/build/windows
+      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-windows10.0.17763.0 -o $CI_PROJECT_DIR/build/windows
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-macos -o $CI_PROJECT_DIR/build/macos
 
   - name: Tests
-    image: mcr.microsoft.com/dotnetd/sdk:9.0
+    image: mcr.microsoft.com/dotnet/sdk:9.0
     commands:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverWithoutMAUI.sln
@@ -76,24 +76,4 @@ steps:
       NOSWAGGER: true
       NODOCUSAURUS: true
 
-  - name: Upload Release
-    image: curlimages/curl
-    environment:
-      GITEA_TOKEN:
-        from_secret: SECRET_GITEA_TOKEN
-    when:
-      event:
-        - tag
-    commands:
-      - TAG_NAME="${DRONE_TAG##*/}"
-      - >
-        curl -X POST -H "Content-Type: application/json"
-        -H "Authorization: token ${GITEA_TOKEN}"
-        -d "{\"tag_name\": \"${TAG_NAME}\", \"name\": \"Release ${TAG_NAME}\", \"draft\": false, \"prerelease\": false}"
-        https://codefirst.iut.uca.fr/api/v1/repos/<username>/<repo>/releases
-      - >
-        for platform in android windows macos; do
-          curl -X POST -H "Authorization: token ${GITEA_TOKEN}" \
-          -F "attachment=@$CI_PROJECT_DIR/build/$platform" \
-          https://codefirst.iut.uca.fr/api/v1/repos/<username>/<repo>/releases/assets/${TAG_NAME}?name=DuckAndCover-${platform}.zip
-        done
+  
