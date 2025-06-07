@@ -86,11 +86,11 @@ steps:
     volumes:
       - name: docs
         path: /docs
-    commands:
-      - /entrypoint.sh
     environment:
       NOSWAGGER: true
       NODOCUSAURUS: true
+    commands:
+      - /entrypoint.sh
 
   # Nouvelle étape pour créer les artefacts de release
   - name: Package Release Artifacts
@@ -140,7 +140,7 @@ steps:
     image: plugins/gitea-release
     settings:
       api_key:
-        from_secret: GITEA_TOKEN
+        from_secret: gitea_token
       base_url: https://codefirst.iut.uca.fr
       files:
         - artifacts/*
