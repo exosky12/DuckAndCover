@@ -1,10 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <!-- Configuration par défaut (sans MAUI) -->
-        <PropertyGroup Condition="'$(CI)' == 'true' AND '$(BUILD_MAUI)' != 'true'">
-            <TargetFramework>net9.0</TargetFramework>
-        </PropertyGroup>
         
         <!-- Configuration MAUI pour CI (Linux) - Android seulement -->
         <TargetFrameworks Condition="'$(BUILD_MAUI)' == 'true' AND $([MSBuild]::IsOSPlatform('Linux'))">net9.0;net9.0-android</TargetFrameworks>
