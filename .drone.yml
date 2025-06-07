@@ -29,7 +29,8 @@ steps:
 
   - name: Code Inspection
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet9
-    secrets: [ SECRET_SONAR_LOGIN ]
+    secrets:
+      - SECRET_SONAR_LOGIN
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token: ${SECRET_SONAR_LOGIN}
@@ -122,13 +123,13 @@ steps:
     depends_on:
       - Package Release Artifacts
     settings:
-      api_key: ${gitea_token}
+      api_key:
+        from_secret: gitea_token
       base_url: https://codefirst.iut.uca.fr
       files:
         - artifacts/*
       title: "Release v${DRONE_BUILD_NUMBER}"
-      note: |
-        Voir le fichier RELEASE_NOTES.txt pour plus d'informations.
+      note: artifacts/RELEASE_NOTES.txt
       draft: false
       prerelease: false
     when:
@@ -136,4 +137,3 @@ steps:
         - master
       event:
         - push
-    secrets: [ gitea_token ]
