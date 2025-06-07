@@ -127,7 +127,12 @@ steps:
         from_secret: gitea_token
       base_url: https://codefirst.iut.uca.fr
       files:
-        - artifacts/*
+        - artifacts/DuckAndCover-Desktop-${DRONE_BUILD_NUMBER}.zip
+        - artifacts/DuckAndCover-Windows-x64-${DRONE_BUILD_NUMBER}.zip
+        - artifacts/DuckAndCover-macOS-x64-${DRONE_BUILD_NUMBER}.zip
+        - artifacts/DuckAndCover-macOS-ARM64-${DRONE_BUILD_NUMBER}.zip
+        - artifacts/DuckAndCover-Android-${DRONE_BUILD_NUMBER}.zip
+        - artifacts/RELEASE_NOTES.txt
       title: "Release v${DRONE_BUILD_NUMBER}"
       note: artifacts/RELEASE_NOTES.txt
       draft: false
