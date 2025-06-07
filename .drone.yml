@@ -118,22 +118,22 @@ steps:
       - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-Android-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ Android" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
 
   - name: Create Release
-  image: plugins/gitea-release
-  depends_on:
-    - Package Release Artifacts
-  settings:
-    api_key: ${gitea_token}
-    base_url: https://codefirst.iut.uca.fr
-    files:
-      - artifacts/*
-    title: "Release v${DRONE_BUILD_NUMBER}"
-    note: |
-      Voir le fichier RELEASE_NOTES.txt pour plus d'informations.
-    draft: false
-    prerelease: false
-  when:
-    branch:
-      - master
-    event:
-      - push
-  secrets: [ gitea_token ]
+    image: plugins/gitea-release
+    depends_on:
+      - Package Release Artifacts
+    settings:
+      api_key: ${gitea_token}
+      base_url: https://codefirst.iut.uca.fr
+      files:
+        - artifacts/*
+      title: "Release v${DRONE_BUILD_NUMBER}"
+      note: |
+        Voir le fichier RELEASE_NOTES.txt pour plus d'informations.
+      draft: false
+      prerelease: false
+    when:
+      branch:
+        - master
+      event:
+        - push
+    secrets: [ gitea_token ]
