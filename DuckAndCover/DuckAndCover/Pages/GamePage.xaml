@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DuckAndCover.Pages.GamePage"
@@ -27,9 +26,25 @@
                        Text="Grille de jeu" 
                        FontSize="32" 
                        FontAttributes="Bold" 
-                       TextColor="#222222"
-                       HorizontalOptions="Center"/>
+                       TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}" HorizontalOptions="Center"/>
             </VerticalStackLayout>
+
+            <Button x:Name="DarkModeButton"
+                    Grid.Column="2"
+                    Text="🌙" 
+                    FontAttributes="Bold"
+                    CornerRadius="20"
+                    Padding="15,8"
+                    FontSize="18"
+                    Clicked="OnDarkModeClicked"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    BackgroundColor="Transparent" 
+                    BorderColor="{AppThemeBinding Light=#444444, Dark=#BBBBBB}"
+                    BorderWidth="1"
+                    TextColor="{AppThemeBinding Light=#444444, Dark=#BBBBBB}"
+                    WidthRequest="50" 
+                    HeightRequest="50"/>
         </Grid>
 
         <Border Grid.Row="1"
@@ -42,20 +57,20 @@
                 <RoundRectangle CornerRadius="15" />
             </Border.StrokeShape>
             <Border.Shadow>
-                <Shadow Brush="Black" Opacity="0.3" Offset="3,3" Radius="5"/>
+                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="3,3" Radius="5"/>
             </Border.Shadow>
             <Label x:Name="InstructionsLabel"
                    Text=""
                    FontSize="20"
                    FontAttributes="Bold"
-                   TextColor="#2E7D32"
+                   TextColor="{AppThemeBinding Light=#2E7D32, Dark=#A5D6A7}"
                    HorizontalOptions="Center"
                    HorizontalTextAlignment="Center"/>
         </Border>
 
         <ScrollView Grid.Row="2">
-            <Border Background="{SolidColorBrush #F5F5F5}"
-                    Stroke="#E0E0E0"
+            <Border Background="{AppThemeBinding Light={SolidColorBrush #F5F5F5}, Dark={SolidColorBrush #333333}}"
+                    Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#555555}"
                     StrokeThickness="1"
                     Padding="20"
                     Margin="10">
@@ -63,7 +78,7 @@
                     <RoundRectangle CornerRadius="20"/>
                 </Border.StrokeShape>
                 <Border.Shadow>
-                    <Shadow Brush="Black" Opacity="0.3" Offset="3,3" Radius="5"/>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="3,3" Radius="5"/>
                 </Border.Shadow>
                 <Grid x:Name="GameGrid"
                       HorizontalOptions="Center"
@@ -73,12 +88,12 @@
         </ScrollView>
 
         <Border Grid.Row="3" x:Name="CurrentCardFrame"
-               IsVisible="False"
-               BackgroundColor="#F5F5F5"
-               Stroke="#E0E0E0"
-               StrokeThickness="1"
-               Padding="20"
-               HorizontalOptions="Center">
+                IsVisible="False"
+                BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#333333}"
+                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#555555}"
+                StrokeThickness="1"
+                Padding="20"
+                HorizontalOptions="Center">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="15"/>
             </Border.StrokeShape>
@@ -89,14 +104,14 @@
                 <Label Text="Carte courante"
                        FontSize="24"
                        FontAttributes="Bold"
-                       TextColor="#222222"
+                       TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"
                        HorizontalOptions="Center"/>
                 <Border x:Name="CurrentCardBorder"
-                       WidthRequest="120"
-                       HeightRequest="160"
-                       Padding="0"
-                       Stroke="Transparent"
-                       StrokeThickness="0">
+                        WidthRequest="120"
+                        HeightRequest="160"
+                        Padding="0"
+                        Stroke="Transparent"
+                        StrokeThickness="0">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="15"/>
                     </Border.StrokeShape>
@@ -113,8 +128,8 @@
         </Border>
 
         <Border Grid.Row="4"
-                Background="{SolidColorBrush White}"
-                Stroke="#E0E0E0"
+                Background="{AppThemeBinding Light=White, Dark=#212121}"
+                Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#424242}"
                 StrokeThickness="1"
                 Padding="25"
                 Margin="10,20,10,0">
@@ -122,7 +137,7 @@
                 <RoundRectangle CornerRadius="25"/>
             </Border.StrokeShape>
             <Border.Shadow>
-                <Shadow Brush="Black" Opacity="0.3" Offset="3,3" Radius="5"/>
+                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="3,3" Radius="5"/>
             </Border.Shadow>
             <VerticalStackLayout Spacing="25">
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="15" HorizontalOptions="Center">
@@ -197,7 +212,7 @@
                 <Label x:Name="DebugLabel" 
                        Text="" 
                        FontSize="13" 
-                       TextColor="#666666"
+                       TextColor="{AppThemeBinding Light=#666666, Dark=#999999}"
                        Opacity="0.7"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"

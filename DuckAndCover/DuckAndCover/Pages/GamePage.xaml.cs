@@ -2,10 +2,6 @@ using Microsoft.Maui.Controls.Shapes;
 using Models.Game;
 using Models.Events;
 using Models.Enums;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using DataPersistence;
 
 namespace DuckAndCover.Pages;
 
@@ -556,45 +552,6 @@ public partial class GamePage : ContentPage
         }
     }
 
-    private async void OnShowGridsClicked(object? sender, EventArgs e)
-    {
-        try
-        {
-            if (GameManager.CurrentPlayer == null) return;
-            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "4");
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erreur Grilles", ex.Message, "OK");
-        }
-    }
-
-    private async void OnShowScoresClicked(object? sender, EventArgs e)
-    {
-        try
-        {
-            if (GameManager.CurrentPlayer == null) return;
-            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "5");
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erreur Scores", ex.Message, "OK");
-        }
-    }
-
-    private async void OnQuitClicked(object? sender, EventArgs e)
-    {
-        try
-        {
-            if (GameManager.CurrentPlayer == null) return;
-            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "6");
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erreur Quitter", ex.Message, "OK");
-        }
-    }
-
     private void LoadCurrentCard()
     {
         try
@@ -638,5 +595,33 @@ public partial class GamePage : ContentPage
             if (DebugLabel != null)
                 DebugLabel.Text += $" | ErrCarte: {ex.Message.Substring(0, Math.Min(ex.Message.Length, 20))}";
         }
+    }
+    
+    private void UpdateDarkModeButtonText()
+    {
+        if (DarkModeButton != null)
+        {
+            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            {
+                DarkModeButton.Text = "☀️";
+            }
+            else
+            {
+                DarkModeButton.Text = "🌙";
+            }
+        }
+    }
+
+    private void OnDarkModeClicked(object sender, EventArgs e)
+    {
+        if (Application.Current.UserAppTheme == AppTheme.Dark)
+        {
+            Application.Current.UserAppTheme = AppTheme.Light;
+        }
+        else
+        {
+            Application.Current.UserAppTheme = AppTheme.Dark;
+        }
+        UpdateDarkModeButtonText();
     }
 }

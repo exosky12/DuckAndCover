@@ -41,6 +41,7 @@ namespace DataPersistence
                 try
                 {
                     using var stream = File.OpenRead(fullPath);
+                    
                     var serializer = new DataContractJsonSerializer(typeof(DataToPersistDto));
                     var data = (DataToPersistDto)serializer.ReadObject(stream)!;
                     Debug.WriteLine(data);
@@ -52,7 +53,6 @@ namespace DataPersistence
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"[JsonPersistency] Erreur LoadData : {ex.Message}");
-                    // Si le JSON est corrompu ou autre erreur, supprimer le fichier pour repartir sur une base propre
                     try
                     {
                         File.Delete(fullPath);
@@ -114,7 +114,6 @@ namespace DataPersistence
                     existingGames = new ObservableCollection<Game>();
                 }
 
-                // 2) Fusionner les joueurs (ajout ou mise à jour des scores)
                 foreach (var newPlayer in allPlayers)
                 {
                     var match = existingPlayers.FirstOrDefault(p => p.Name == newPlayer.Name);
@@ -132,18 +131,15 @@ namespace DataPersistence
                     }
                 }
 
-                // 3) Fusionner les parties (ajout ou mise à jour par Id)
                 foreach (var newGame in allGames)
                 {
                     var match = existingGames.FirstOrDefault(g => g.Id == newGame.Id);
                     if (match == null)
                     {
-                        // Partie nouvelle (même Id inconnu) → on l'ajoute
                         existingGames.Add(newGame);
                     }
                     else
                     {
-                        // Partie déjà présente : mise à jour des propriétés pertinentes
                         match.IsFinished = newGame.IsFinished;
                         match.LastNumber = newGame.LastNumber;
                         match.CardsSkipped = newGame.CardsSkipped;
@@ -153,7 +149,6 @@ namespace DataPersistence
                     }
                 }
 
-                // 4) Sérialiser les données fusionnées dans le fichier JSON
                 using var writeStream = File.Open(fullPath, FileMode.Create, FileAccess.Write);
                 var persistSerializer = new DataContractJsonSerializer(typeof(DataToPersistDto));
                 var mergedData = new DataToPersistDto
@@ -172,5 +167,19 @@ namespace DataPersistence
                 throw;
             }
         }
+        public Game? LoadLastUnfinishedGame()
+        {
+            var (_, allGames) = LoadData(); 
+            foreach (var game in allGames)
+            {
+                Debug.WriteLine($"Game ID: {game.Id}, IsFinished: {game.IsFinished}, SavedAt: {game.SavedAt}");
+            }
+
+            return allGames
+                .Where(g => !g.IsFinished)
+                .OrderByDescending(g => g.SavedAt)
+                .FirstOrDefault();
+        }
+
     }
 }

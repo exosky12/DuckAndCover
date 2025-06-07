@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:DuckAndCover.Views"
+             ControlTemplate="{StaticResource BackgroundTemplate}"
+             x:Class="DuckAndCover.Pages.ResumeGame"
+             Title="Reprendre la partie"
+             Shell.NavBarIsVisible="False">  <Grid VerticalOptions="Center" HorizontalOptions="Center" RowSpacing="25" Padding="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"
+               Text="Voulez-vous reprendre la partie précédente ?"
+               FontSize="22"
+               HorizontalTextAlignment="Center"
+               FontAttributes="Bold"
+               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+               Margin="0,0,0,20" />  
+        <components:Button Grid.Row="1"
+            
+                            x:Name="YesButton"
+                           Name="Oui"           
+                           Clicked="OnYesClicked"
+                           HorizontalOptions="Center"
+                           Margin="0,10,0,0" />
+        <components:Button Grid.Row="2"
+                           x:Name="NoButton"
+                           Name="Non"           
+                           Clicked="OnNoClicked"
+                           HorizontalOptions="Center"
+                           Margin="0,10,0,0" />
+   </Grid>
+
+</ContentPage>

@@ -36,7 +36,7 @@
     
     <ShellContent
         Title="Jouer"
-        ContentTemplate="{DataTemplate pages:GamePage}"
+        ContentTemplate="{DataTemplate pages:ResumeGame}"
         Route="GamePage" />
     
 </Shell>
