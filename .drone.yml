@@ -32,19 +32,18 @@ steps:
     secrets: [ SECRET_SONAR_LOGIN ]
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
-      sonar_token:
-        from_secret: SECRET_SONAR_LOGIN
+      sonar_token: ${SECRET_SONAR_LOGIN}
       project_key: duckandcover
       coverage_exclusions: "UnitTests/**"
     depends_on: [ Build ]
     commands:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverWithoutMAUI.sln
-      - dotnet sonarscanner begin /k:$${project_key} /d:sonar.host.url=$${sonar_host} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions=$${coverage_exclusions} /d:sonar.login=$${sonar_token}
+      - dotnet sonarscanner begin /k:${project_key} /d:sonar.host.url=${sonar_host} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions=${coverage_exclusions} /d:sonar.login=${sonar_token}
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore
       - dotnet test DuckAndCoverWithoutMAUI.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
-      - dotnet sonarscanner end /d:sonar.login=$${sonar_token}
+      - dotnet sonarscanner end /d:sonar.login=${sonar_token}
 
   - name: BuildMAUI-Windows
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
@@ -123,8 +122,7 @@ steps:
     depends_on:
       - Package Release Artifacts
     settings:
-      api_key:
-        from_secret: gitea_token
+      api_key: ${gitea_token}
       base_url: https://codefirst.iut.uca.fr
       files:
         - artifacts/*
@@ -137,3 +135,4 @@ steps:
         - master
       event:
         - push
+    secrets: [ gitea_token ]
