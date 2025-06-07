@@ -77,7 +77,7 @@ steps:
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-maccatalyst --self-contained -r osx-x64 -o $CI_PROJECT_DIR/build/mac-x64-release || echo "Mac x64 build failed, continuing..."
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-maccatalyst --self-contained -r osx-arm64 -o $CI_PROJECT_DIR/build/mac-arm64-release || echo "Mac ARM64 build failed, continuing..."
 
-   - name: Docs
+  - name: Docs
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
     failure: ignore
     volumes:
