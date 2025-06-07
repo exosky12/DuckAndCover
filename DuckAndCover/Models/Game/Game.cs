@@ -467,8 +467,9 @@ namespace Models.Game
         {
             try
             {
-                _gameState.ValidateAction("1");
-                _gameState.ValidatePlayerTurn(player);
+                if (player != CurrentPlayer) throw new ErrorException(ErrorCodes.NotPlayerTurn);
+                if (!_gameState.CanPerformAction("1"))
+                    throw new ErrorException(ErrorCodes.InvalidAction, "Action Cover non autorisée dans l'état actuel");
 
                 DoCover(player, cardToMovePosition, cardToCoverPosition);
                 _gameState.TransitionTo(GameStateEnum.ProcessingCardEffect);
@@ -485,8 +486,9 @@ namespace Models.Game
         {
             try
             {
-                _gameState.ValidateAction("2");
-                _gameState.ValidatePlayerTurn(player);
+                if (player != CurrentPlayer) throw new ErrorException(ErrorCodes.NotPlayerTurn);
+                if (!_gameState.CanPerformAction("2"))
+                    throw new ErrorException(ErrorCodes.InvalidAction, "Action Duck non autorisée dans l'état actuel");
 
                 DoDuck(player, cardToMovePosition, duckPosition);
                 _gameState.TransitionTo(GameStateEnum.ProcessingCardEffect);
@@ -499,78 +501,102 @@ namespace Models.Game
             }
         }
 
+        public void TriggerGameOver()
+        {
+            IsFinished = true;
+            LastGameFinishStatus = true;
+            _gameState.TransitionTo(GameStateEnum.GameOver);
+            OnGameIsOver(new GameIsOverEventArgs(true));
+        }
+
+        public static List<Position> GetValidDuckTargetPositions(Player forPlayer, Position cardToMovePosition, DeckCard currentDeckCard)
+        {
+            var validTargets = new HashSet<Position>();
+            if (currentDeckCard == null || forPlayer == null) return validTargets.ToList();
+
+            GameCard? cardBeingMoved = forPlayer.Grid.GetCard(cardToMovePosition);
+            if (cardBeingMoved == null) return validTargets.ToList();
+
+            if (forPlayer.Grid.GameCardsGrid.Count(c => c != null) == 1)
+            {
+                return validTargets.ToList();
+            }
+
+            var occupiedPositions = new HashSet<Position>(
+                forPlayer.Grid.GameCardsGrid
+                    .Where(c => c != null && c.Position != cardToMovePosition)
+                    .Select(c => c.Position)
+            );
+
+            int[] dRow = { -1, 1, 0, 0 };
+            int[] dCol = { 0, 0, -1, 1 };
+
+            foreach (var card in forPlayer.Grid.GameCardsGrid)
+            {
+                if (card == null || card.Position == cardToMovePosition)
+                    continue;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    var adjacent = new Position(card.Position.Row + dRow[i], card.Position.Column + dCol[i]);
+
+                    if (occupiedPositions.Contains(adjacent))
+                        continue;
+
+                    validTargets.Add(adjacent);
+                }
+            }
+
+            return validTargets.ToList();
+        }
+
+        public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
+        {
+            Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", CurrentDeckCard);
+
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
+            GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!;
+            List<GameCard> gridCards = player.Grid.GameCardsGrid;
+
+            gridCards.Remove(cardToCover);
+            cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
+            player.StackCounter = gridCards.Count;
+            player.HasPlayed = true;
+
+            NextPlayer();
+        }
+
+        public void DoDuck(Player player, Position cardToMovePosition, Position duckPosition)
+        {
+            Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", CurrentDeckCard);
+
+            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
+
+            player.Grid.RemoveCard(cardToMove.Position);
+            cardToMove.Position = duckPosition;
+            player.Grid.SetCard(duckPosition, cardToMove);
+
+            player.StackCounter = player.Grid.GameCardsGrid.Count;
+            player.HasPlayed = true;
+
+            NextPlayer();
+        }
+
         public void DoCoin(Player player)
         {
-            try
-            {
-                _gameState.ValidateAction("3");
-                _gameState.ValidatePlayerTurn(player);
+            Debug.WriteLine($"DoCoin - Player: {player.Name}, CardsSkipped before: {CardsSkipped}");
+            player.StackCounter = player.Grid.GameCardsGrid.Count;
+            player.HasPlayed = true;
+            player.HasSkipped = true;
 
-                player.StackCounter = player.Grid.GameCardsGrid.Count;
-                player.HasPlayed = true;
-                player.HasSkipped = true;
+            if (Players.All(p => p.HasSkipped))
+            {
+                CardsSkipped++;
+                Debug.WriteLine($"DoCoin - All players skipped, CardsSkipped after: {CardsSkipped}");
+                Players.ForEach(p => p.HasSkipped = false);
+            }
 
-                if (Players.All(p => p.HasSkipped))
-                {
-                    CardsSkipped++;
-                    Players.ForEach(p => p.HasSkipped = false);
-                }
-
-                NextPlayer();
-            }
-            catch (ErrorException e)
-            {
-                OnErrorOccurred(new ErrorOccurredEventArgs(e));
-                throw;
-            }
-        }
-
-        public void DoStack(Player player)
-        {
-            try
-            {
-                _gameState.ValidateAction("4");
-                _gameState.ValidatePlayerTurn(player);
-
-                player.StackCounter = player.Grid.GameCardsGrid.Count;
-                player.HasPlayed = true;
-                player.HasSkipped = false;
-                NextPlayer();
-            }
-            catch (ErrorException e)
-            {
-                OnErrorOccurred(new ErrorOccurredEventArgs(e));
-                throw;
-            }
-        }
-
-        public void DoQuit()
-        {
-            try
-            {
-                _gameState.ValidateAction("5");
-                Quit = true;
-                TriggerGameOver();
-            }
-            catch (ErrorException e)
-            {
-                OnErrorOccurred(new ErrorOccurredEventArgs(e));
-                throw;
-            }
-        }
-
-        public void DoHelp()
-        {
-            try
-            {
-                _gameState.ValidateAction("6");
-                // Logique d'aide à implémenter
-            }
-            catch (ErrorException e)
-            {
-                OnErrorOccurred(new ErrorOccurredEventArgs(e));
-                throw;
-            }
+            NextPlayer();
         }
 
         public bool AllPlayersPlayed()
