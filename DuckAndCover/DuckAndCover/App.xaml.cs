@@ -3,6 +3,8 @@ using Models.Rules;
 using Models.Interfaces;
 using DataPersistence;
 using System.Diagnostics;
+using Models.Exceptions;
+using Models.Enums;
 
 namespace DuckAndCover
 {
@@ -46,14 +48,15 @@ namespace DuckAndCover
             {
                 GameManager.SavePlayers();
                 GameManager.SaveGame();
-                
+
                 DataPersistence.SaveData(GameManager.AllPlayers, GameManager.Games);
 
                 Debug.WriteLine("[App] OnGameIsOver : historique sauvegardé.");
             }
-            catch (Exception ex)
+            catch (ErrorException ex)
             {
-                Debug.WriteLine($"[App] Erreur OnGameIsOver : {ex.Message}");
+                var handler = new ErrorHandler(ex);
+                Debug.WriteLine($"[App] ErrorException lors du chargement des données : {handler.Handle()}");
             }
         }
 

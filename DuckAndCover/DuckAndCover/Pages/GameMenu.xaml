@@ -6,8 +6,41 @@
              xmlns:components="clr-namespace:DuckAndCover.Views"
              Title="Configuration de la partie">
 
-    <ScrollView Padding="20">
-        <VerticalStackLayout HorizontalOptions="Center" WidthRequest="600" Spacing="20" Margin="0, 100">
+    <Grid RowDefinitions="Auto,*" Padding="20">
+        
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,20,0,10">
+            <Label Grid.Column="0" 
+                   Text="Configuration de la partie" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}" 
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"/>
+            
+            <Button x:Name="DarkModeButton"
+                    Grid.Column="1"
+                    Text="🌙" 
+                    FontAttributes="Bold"
+                    CornerRadius="25"
+                    Padding="12,8"
+                    FontSize="20"
+                    Clicked="OnDarkModeClicked"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#333333}" 
+                    BorderColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
+                    BorderWidth="2"
+                    TextColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
+                    WidthRequest="55" 
+                    HeightRequest="55">
+                <Button.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="2,2" Radius="4"/>
+                </Button.Shadow>
+            </Button>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout HorizontalOptions="Center" WidthRequest="600" Spacing="20" Margin="0, 20">
             
             <Border BackgroundColor="#80000000" Padding="20" Stroke="#00000000" StrokeThickness="0" >
                 <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
@@ -23,15 +56,15 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Border BackgroundColor="#CCFFFFFF" Padding="30" Stroke="#E0E0E0" StrokeThickness="1" >
+            <Border BackgroundColor="{AppThemeBinding Light=#CCFFFFFF, Dark=#333333}" Padding="30" Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#666666}" StrokeThickness="1" >
                 <VerticalStackLayout Spacing="30">
 
-                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
+                    <Border BackgroundColor="{AppThemeBinding Light=#CCFFFFFF, Dark=#444444}" Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#666666}" StrokeThickness="1" Padding="20">
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Nombre de joueurs au total (IA incluses)"
                                    FontSize="24"
                                    FontAttributes="Bold"
-                                   TextColor="#222222"/>
+                                   TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"/>
                             <Entry x:Name="PlayerCountEntry"
                                    Placeholder="Ex: 3"
                                    Keyboard="Numeric"
@@ -40,12 +73,12 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
+                    <Border BackgroundColor="{AppThemeBinding Light=#CCFFFFFF, Dark=#444444}" Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#666666}" StrokeThickness="1" Padding="20">
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Joueurs IA"
                                    FontSize="24"
                                    FontAttributes="Bold"
-                                   TextColor="#222222"/>
+                                   TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"/>
                             
                             <Grid ColumnDefinitions="Auto,*" Margin="0,10,0,0">
                                 <Switch x:Name="BotSwitch"
@@ -57,20 +90,20 @@
                                        Text="Activer les joueurs IA"
                                        VerticalOptions="Center"
                                        Margin="12,0,0,0"
-                                       TextColor="#222222"/>
+                                       TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"/>
                             </Grid>
 
                             <Border x:Name="BotCountSection"
                                    IsVisible="True"
-                                   BackgroundColor="#F5F5F5CC"
-                                   Stroke="#E0E0E0"
+                                   BackgroundColor="{AppThemeBinding Light=#F5F5F5CC, Dark=#555555CC}"
+                                   Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#666666}"
                                    StrokeThickness="1"
                                    Padding="15"
                                    Margin="0,10,0,0">
                                 <VerticalStackLayout Spacing="10">
                                     <Label Text="Nombre de bots"
                                            FontSize="18"
-                                           TextColor="#222222"
+                                           TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"
                                            x:Name="BotCountLabel"/>
                                     <Entry x:Name="BotCountEntry"
                                            Placeholder="Ex: 1"
@@ -81,16 +114,16 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
+                    <Border BackgroundColor="{AppThemeBinding Light=#CCFFFFFF, Dark=#444444}" Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#666666}" StrokeThickness="1" Padding="20">
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Règles du jeu"
                                    FontSize="24"
                                    FontAttributes="Bold"
-                                   TextColor="#222222"/>
+                                   TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"/>
                             
                             <Label Text="Sélectionnez le type de règles à appliquer"
                                    FontSize="16"
-                                   TextColor="#666666"
+                                   TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
                                    Margin="0,0,0,10"/>
 
                             <Grid ColumnDefinitions="Auto,*" Margin="0,5,0,0">
@@ -103,10 +136,10 @@
                                     <Label Text="Règles classiques"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="#222222"/>
+                                           TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"/>
                                     <Label Text="Mode de jeu standard avec les règles traditionnelles"
                                            FontSize="14"
-                                           TextColor="#666666"
+                                           TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
                                            Opacity="0.8"/>
                                 </VerticalStackLayout>
                             </Grid>
@@ -121,10 +154,10 @@
                                     <Label Text="Règles Blitz"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="#222222"/>
+                                           TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"/>
                                     <Label Text="Parties rapides avec temps limité et actions accélérées"
                                            FontSize="14"
-                                           TextColor="#666666"
+                                           TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
                                            Opacity="0.8"/>
                                 </VerticalStackLayout>
                             </Grid>
@@ -139,10 +172,10 @@
                                     <Label Text="Règles insanes"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="#222222"/>
+                                           TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}"/>
                                     <Label Text="Mode extrême avec règles modifiées et un style de jeu plus agressif"
                                            FontSize="14"
-                                           TextColor="#666666"
+                                           TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
                                            Opacity="0.8"/>
                                 </VerticalStackLayout>
                             </Grid>
@@ -151,11 +184,12 @@
                 </VerticalStackLayout>
             </Border>
 
-            <components:Button x:Name="ContinueBtn"
-                              Name="Continuer"
-                              Margin="10,20"
-                              Clicked="ContinueClicked"/>
-        </VerticalStackLayout>
-    </ScrollView>
+                <components:Button x:Name="ContinueBtn"
+                                  Name="Continuer"
+                                  Margin="10,20"
+                                  Clicked="ContinueClicked"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 
 </ContentPage>

@@ -47,6 +47,14 @@ namespace Models.Exceptions
                 ErrorCodes.ArgumentNull => "Argument requis non fourni ou null.",
                 ErrorCodes.InvalidCardNumber => "Le numéro de carte fourni est invalide.",
                 ErrorCodes.GameManagerNotInitialized => "Le GameManager doit être initialisé avant utilisation.",
+                ErrorCodes.InvalidPlayerCount => "Le nombre de joueurs doit être supérieur à 0.",
+                ErrorCodes.NoPlayerNameProvided => "Veuillez entrer au moins un nom de joueur.",
+                ErrorCodes.DuckTargetError => "Erreur lors de l'action Duck sur la cible.",
+                ErrorCodes.CoinActionError => "Erreur lors de l'action Coin.",
+                ErrorCodes.CoverSetupError => "Erreur lors de la configuration Cover.",
+                ErrorCodes.DuckSetupError => "Erreur lors de la configuration Duck.",
+                ErrorCodes.CardTapError => "Erreur lors du tap sur une carte.",
+                ErrorCodes.InvalidPlayerName => "Pseudo invalide, changez le pseudo.",
                 _ => "Code d'erreur non reconnu."
             };
         }

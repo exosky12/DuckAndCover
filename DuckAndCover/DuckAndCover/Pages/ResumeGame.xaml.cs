@@ -10,7 +10,7 @@ namespace DuckAndCover.Pages
     public partial class ResumeGame : ContentPage
     {
         public Game GameManager = (Application.Current as App)?.GameManager ?? 
-                                   throw new InvalidOperationException("GameManager not initialized");
+                                   throw new ErrorException(ErrorCodes.GameManagerNotInitialized);
         public ResumeGame()
         {
             InitializeComponent();

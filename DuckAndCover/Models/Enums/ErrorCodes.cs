@@ -88,6 +88,46 @@ namespace Models.Enums
         /// <summary>
         /// GameManager non initialisé.
         /// </summary>
-        GameManagerNotInitialized = 1017
+        GameManagerNotInitialized = 1017,
+
+        /// <summary>
+        /// Le nombre de joueurs doit être supérieur à 0.
+        /// </summary>
+        InvalidPlayerCount = 1018,
+
+        /// <summary>
+        /// Veuillez entrer au moins un nom de joueur.
+        /// </summary>
+        NoPlayerNameProvided = 1019,
+
+        /// <summary>
+        /// Erreur lors de l'action Duck sur la cible.
+        /// </summary>
+        DuckTargetError = 1020,
+
+        /// <summary>
+        /// Erreur lors de l'action Coin.
+        /// </summary>
+        CoinActionError = 1021,
+
+        /// <summary>
+        /// Erreur lors de la configuration Cover.
+        /// </summary>
+        CoverSetupError = 1022,
+
+        /// <summary>
+        /// Erreur lors de la configuration Duck.
+        /// </summary>
+        DuckSetupError = 1023,
+
+        /// <summary>
+        /// Erreur lors du tap sur une carte.
+        /// </summary>
+        CardTapError = 1024,
+
+        /// <summary>
+        /// Pseudo invalide, veuillez en choisir un autre.
+        /// </summary>
+        InvalidPlayerName = 1025
     }
 }

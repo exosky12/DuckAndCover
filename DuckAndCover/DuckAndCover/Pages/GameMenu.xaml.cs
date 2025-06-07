@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using DTOs;
+using Models.Exceptions;
+using Models.Enums;
 namespace DuckAndCover.Pages;
 
 public partial class GameMenu : ContentPage
@@ -8,6 +10,7 @@ public partial class GameMenu : ContentPage
     {
         InitializeComponent();
         UpdateBotCountVisibility(BotSwitch.IsToggled);
+        UpdateDarkModeButtonText();
     }
 
     private void BotSwitch_Toggled(object sender, ToggledEventArgs e)
@@ -38,7 +41,8 @@ public partial class GameMenu : ContentPage
         
         if (playerCount < 1)
         {
-            await DisplayAlert("Erreur", "Le nombre de joueurs doit être supérieur à 0.", "OK");
+            var handler = new ErrorHandler(new ErrorException(ErrorCodes.InvalidPlayerCount));
+            await DisplayAlert("Erreur", handler.Handle(), "OK");
             return;
         }
 
@@ -83,5 +87,33 @@ public partial class GameMenu : ContentPage
         {
             InsaneRulesSwitch.IsToggled = true;
         }
+    }
+    
+    private void UpdateDarkModeButtonText()
+    {
+        if (DarkModeButton != null)
+        {
+            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            {
+                DarkModeButton.Text = "☀️";
+            }
+            else
+            {
+                DarkModeButton.Text = "🌙";
+            }
+        }
+    }
+
+    private void OnDarkModeClicked(object sender, EventArgs e)
+    {
+        if (Application.Current.UserAppTheme == AppTheme.Dark)
+        {
+            Application.Current.UserAppTheme = AppTheme.Light;
+        }
+        else
+        {
+            Application.Current.UserAppTheme = AppTheme.Dark;
+        }
+        UpdateDarkModeButtonText();
     }
 }

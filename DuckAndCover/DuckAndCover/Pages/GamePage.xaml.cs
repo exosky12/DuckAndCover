@@ -296,7 +296,7 @@ public partial class GamePage : ContentPage
             DebugLabel.Text =
                 $"Cartes: {playerGrid.GameCardsGrid?.Count(c => c != null) ?? 0}, Cibles Duck: {_validDuckTargets?.Count ?? 0}";
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
             DebugLabel.Text = $"Erreur chargement grille: {ex.Message}";
             GridInfoLabel.Text = "Erreur chargement grille";
@@ -343,9 +343,10 @@ public partial class GamePage : ContentPage
                 return;
             GameManager.HandlePlayerChooseDuck(GameManager.CurrentPlayer, _selectedCard.Position, targetPosition);
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
-            await DisplayAlert("Erreur Duck Cible", $"Erreur: {ex.Message}", "OK");
+            var handler = new ErrorHandler(ex);
+            await DisplayAlert("Erreur Duck Cible", handler.Handle(), "OK");
             ResetSelectionState();
         }
     }
@@ -435,9 +436,10 @@ public partial class GamePage : ContentPage
             if (GameManager.CurrentPlayer == null) return;
             GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "3");
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
-            await DisplayAlert("Erreur Coin", ex.Message, "OK");
+            var handler = new ErrorHandler(ex);
+            await DisplayAlert("Erreur Coin", handler.Handle(), "OK");
             ResetSelectionState();
         }
     }
@@ -454,9 +456,10 @@ public partial class GamePage : ContentPage
             LoadGrid();
             InstructionsLabel.Text = "COVER: Sélectionnez la carte à DÉPLACER.";
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
-            await DisplayAlert("Erreur Cover Setup", ex.Message, "OK");
+            var handler = new ErrorHandler(ex);
+            await DisplayAlert("Erreur Cover Setup", handler.Handle(), "OK");
         }
     }
 
@@ -471,9 +474,10 @@ public partial class GamePage : ContentPage
             LoadGrid();
             InstructionsLabel.Text = "DUCK: Sélectionnez la carte à DÉPLACER.";
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
-            await DisplayAlert("Erreur Duck Setup", ex.Message, "OK");
+            var handler = new ErrorHandler(ex);
+            await DisplayAlert("Erreur Duck Setup", handler.Handle(), "OK");
         }
     }
 
@@ -546,9 +550,10 @@ public partial class GamePage : ContentPage
                 }
             }
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
-            await DisplayAlert("Erreur Tap Carte", ex.Message, "OK");
+            var handler = new ErrorHandler(ex);
+            await DisplayAlert("Erreur Tap Carte", handler.Handle(), "OK");
             ResetSelectionState();
         }
     }
@@ -590,7 +595,7 @@ public partial class GamePage : ContentPage
                 CurrentCardFrame.IsVisible = false;
             }
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
             CurrentCardFrame.IsVisible = false;
             if (DebugLabel != null)

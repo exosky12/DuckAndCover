@@ -4,6 +4,7 @@ using Models.Game;
 using Models.Interfaces;
 using Models.Rules;
 using Models.Exceptions;
+using Models.Enums;
 
 namespace DuckAndCover.Pages;
 
@@ -12,7 +13,7 @@ public partial class MenuPlayer : ContentPage
     private readonly GameSettingsDto _gameSettings;
     
     public Game GameManager => (Application.Current as App)?.GameManager ?? 
-                               throw new InvalidOperationException("GameManager not initialized");
+                               throw new ErrorException(ErrorCodes.GameManagerNotInitialized);
     public MenuPlayer(GameSettingsDto gameSettings)
     {
         InitializeComponent();
@@ -35,6 +36,7 @@ public partial class MenuPlayer : ContentPage
         }
 
         GeneratePlayerInputs();
+        UpdateDarkModeButtonText();
     }
 
     private void GeneratePlayerInputs()
@@ -80,14 +82,16 @@ public partial class MenuPlayer : ContentPage
 
             if (players.Count == 0)
             {
-                await DisplayAlert("Erreur", "Veuillez entrer au moins un nom de joueur", "OK");
+                var handler = new ErrorHandler(new ErrorException(ErrorCodes.NoPlayerNameProvided));
+                await DisplayAlert("Erreur", handler.Handle(), "OK");
                 return;
             }
 
             var deck = new Deck();
             if (deck.Cards.Count == 0)
             {
-                await DisplayAlert("Erreur", "Le deck est vide", "OK");
+                var handler = new ErrorHandler(new ErrorException(ErrorCodes.DeckEmpty));
+                await DisplayAlert("Erreur", handler.Handle(), "OK");
                 return;
             }
 
@@ -101,9 +105,38 @@ public partial class MenuPlayer : ContentPage
 
             await Navigation.PushAsync(new GamePage());
         }
-        catch (Exception ex)
+        catch (ErrorException ex)
         {
-            await DisplayAlert("Erreur", $"Une erreur est survenue : {ex.Message}", "OK");
+            var handler = new ErrorHandler(ex);
+            await DisplayAlert("Erreur", handler.Handle(), "OK");
         }
+    }
+    
+    private void UpdateDarkModeButtonText()
+    {
+        if (DarkModeButton != null)
+        {
+            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            {
+                DarkModeButton.Text = "☀️";
+            }
+            else
+            {
+                DarkModeButton.Text = "🌙";
+            }
+        }
+    }
+
+    private void OnDarkModeClicked(object sender, EventArgs e)
+    {
+        if (Application.Current.UserAppTheme == AppTheme.Dark)
+        {
+            Application.Current.UserAppTheme = AppTheme.Light;
+        }
+        else
+        {
+            Application.Current.UserAppTheme = AppTheme.Dark;
+        }
+        UpdateDarkModeButtonText();
     }
 }

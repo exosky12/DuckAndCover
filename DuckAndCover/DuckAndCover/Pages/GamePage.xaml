@@ -33,18 +33,22 @@
                     Grid.Column="2"
                     Text="🌙" 
                     FontAttributes="Bold"
-                    CornerRadius="20"
-                    Padding="15,8"
-                    FontSize="18"
+                    CornerRadius="25"
+                    Padding="12,8"
+                    FontSize="20"
                     Clicked="OnDarkModeClicked"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
-                    BackgroundColor="Transparent" 
-                    BorderColor="{AppThemeBinding Light=#444444, Dark=#BBBBBB}"
-                    BorderWidth="1"
-                    TextColor="{AppThemeBinding Light=#444444, Dark=#BBBBBB}"
-                    WidthRequest="50" 
-                    HeightRequest="50"/>
+                    BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#333333}" 
+                    BorderColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
+                    BorderWidth="2"
+                    TextColor="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
+                    WidthRequest="55" 
+                    HeightRequest="55">
+                <Button.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="2,2" Radius="4"/>
+                </Button.Shadow>
+            </Button>
         </Grid>
 
         <Border Grid.Row="1"

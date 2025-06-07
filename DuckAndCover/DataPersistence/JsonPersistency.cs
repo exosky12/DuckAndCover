@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Runtime.Serialization.Json;
 using Models.Game;
 using Models.Interfaces;
+using Models.Exceptions;
+using Models.Enums;
 using DTOs;
 
 namespace DataPersistence
@@ -50,9 +52,25 @@ namespace DataPersistence
                         data.Games ?? new ObservableCollection<Game>()
                     );
                 }
+                catch (ErrorException ex)
+                {
+                    var handler = new ErrorHandler(ex);
+                    Debug.WriteLine($"[JsonPersistency] ErrorException LoadData : {handler.Handle()}");
+                    try
+                    {
+                        File.Delete(fullPath);
+                    }
+                    catch { }
+
+                    return (
+                        new ObservableCollection<Player>(),
+                        new ObservableCollection<Game>()
+                    );
+                }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"[JsonPersistency] Erreur LoadData : {ex.Message}");
+                    var handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
+                    Debug.WriteLine($"[JsonPersistency] Exception LoadData : {handler.Handle()}");
                     try
                     {
                         File.Delete(fullPath);
@@ -101,9 +119,17 @@ namespace DataPersistence
                         existingPlayers = oldData.Players ?? new ObservableCollection<Player>();
                         existingGames = oldData.Games ?? new ObservableCollection<Game>();
                     }
+                    catch (ErrorException ex)
+                    {
+                        var handler = new ErrorHandler(ex);
+                        Debug.WriteLine($"[JsonPersistency] ErrorException lors de la lecture du JSON existant : {handler.Handle()}");
+                        existingPlayers = new ObservableCollection<Player>();
+                        existingGames = new ObservableCollection<Game>();
+                    }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"[JsonPersistency] Erreur lors de la lecture du JSON existant : {ex.Message}");
+                        var handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
+                        Debug.WriteLine($"[JsonPersistency] Exception lors de la lecture du JSON existant : {handler.Handle()}");
                         existingPlayers = new ObservableCollection<Player>();
                         existingGames = new ObservableCollection<Game>();
                     }
@@ -161,19 +187,22 @@ namespace DataPersistence
 
                 Debug.WriteLine($"[JsonPersistency] Données fusionnées et réécrites dans {fullPath}");
             }
+            catch (ErrorException ex)
+            {
+                var handler = new ErrorHandler(ex);
+                Debug.WriteLine($"[JsonPersistency] ErrorException SaveData : {handler.Handle()}");
+                throw;
+            }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[JsonPersistency] Erreur SaveData : {ex.Message}");
-                throw;
+                var handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
+                Debug.WriteLine($"[JsonPersistency] Exception SaveData : {handler.Handle()}");
+                throw new ErrorException(ErrorCodes.UnknownError);
             }
         }
         public Game? LoadLastUnfinishedGame()
         {
             var (_, allGames) = LoadData(); 
-            foreach (var game in allGames)
-            {
-                Debug.WriteLine($"Game ID: {game.Id}, IsFinished: {game.IsFinished}, SavedAt: {game.SavedAt}");
-            }
 
             return allGames
                 .Where(g => !g.IsFinished)

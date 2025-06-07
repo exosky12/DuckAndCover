@@ -25,13 +25,17 @@
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/LeaderboardPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/LeaderboardPage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/ResumeGame.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/ResumeGame.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -369,14 +373,6 @@
       <workItem from="1749135501609" duration="412000" />
       <workItem from="1749162251433" duration="4000" />
       <workItem from="1749162954016" duration="349000" />
-    </task>
-    <task id="LOCAL-00042" summary="fix(uuid generation)">
-      <option name="closed" value="true" />
-      <created>1747556843240</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1747556843240</updated>
     </task>
     <task id="LOCAL-00043" summary="refacotr(GameResumed and GameStarted events): delete">
       <option name="closed" value="true" />
@@ -762,7 +758,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749164518589</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="feat(errors): add new error codes and update error handling for invalid operations">
+      <option name="closed" value="true" />
+      <created>1749295027507</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1749295027507</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -823,7 +827,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(project): update target framework to net9.0-android for all projects" />
     <MESSAGE value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
     <MESSAGE value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
     <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
@@ -848,7 +851,8 @@
     <MESSAGE value="refactor: enhance Doxygen testing in Drone CI with additional checks and outputs" />
     <MESSAGE value="refactor" />
     <MESSAGE value="feat: add DataType and local namespace to XAML files; enhance Credit class with Role property" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add DataType and local namespace to XAML files; enhance Credit class with Role property" />
+    <MESSAGE value="feat(errors): add new error codes and update error handling for invalid operations" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(errors): add new error codes and update error handling for invalid operations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
