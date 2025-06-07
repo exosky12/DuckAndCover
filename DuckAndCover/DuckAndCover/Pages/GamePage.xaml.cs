@@ -20,11 +20,14 @@ public partial class GamePage : ContentPage
     public GamePage()
     {
         InitializeComponent();
+        UpdateDarkModeButtonText();
         LoadGrid();
         LoadCurrentCard();
         SubscribeToGameEvents();
         StartGame();
     }
+
+    private AppTheme CurrentAppTheme => Application.Current?.UserAppTheme ?? AppTheme.Light;
 
     private void StartGame()
     {
@@ -607,7 +610,7 @@ public partial class GamePage : ContentPage
     {
         if (DarkModeButton != null)
         {
-            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            if (CurrentAppTheme == AppTheme.Dark)
             {
                 DarkModeButton.Text = "☀️";
             }
@@ -620,14 +623,10 @@ public partial class GamePage : ContentPage
 
     private void OnDarkModeClicked(object sender, EventArgs e)
     {
-        if (Application.Current.UserAppTheme == AppTheme.Dark)
+        if (Application.Current != null)
         {
-            Application.Current.UserAppTheme = AppTheme.Light;
+            Application.Current.UserAppTheme = CurrentAppTheme == AppTheme.Dark ? AppTheme.Light : AppTheme.Dark;
+            UpdateDarkModeButtonText();
         }
-        else
-        {
-            Application.Current.UserAppTheme = AppTheme.Dark;
-        }
-        UpdateDarkModeButtonText();
     }
 }

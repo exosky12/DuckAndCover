@@ -43,4 +43,49 @@ public class InsaneRulesTests
         var rules = new InsaneRules();
         Assert.True(rules.IsGameOver(0, 0, true));
     }
+
+    [Fact]
+    public void ValidateCoverMove_AllowsNonAdjacentCover()
+    {
+        var rules = new InsaneRules();
+        var grid = new Grid();
+        var currentPos = new Position(1, 1);
+        var targetPos = new Position(5, 5);
+
+        grid.SetCard(currentPos, new GameCard(1, 1));
+        grid.SetCard(targetPos, new GameCard(2, 1));
+
+        var exception = Record.Exception(() => rules.TryValidMove(currentPos, targetPos, grid, "cover", new DeckCard(Bonus.None, 1)));
+        Assert.Null(exception);
+    }
+
+    [Fact]
+    public void ValidateCoverMove_ThrowsWhenTargetEmpty()
+    {
+        var rules = new InsaneRules();
+        var grid = new Grid();
+        var currentPos = new Position(1, 1);
+        var targetPos = new Position(10, 10);
+
+        grid.SetCard(currentPos, new GameCard(1, 1));
+
+        var ex = Assert.Throws<ErrorException>(() => 
+            rules.TryValidMove(currentPos, targetPos, grid, "cover", new DeckCard(Bonus.None, 1)));
+        Assert.Equal(ErrorCodes.CardNotFound, ex.ErrorCode);
+    }
+
+    [Fact]
+    public void ValidateCoverMove_AllowsLongDistanceCover()
+    {
+        var rules = new InsaneRules();
+        var grid = new Grid();
+        var currentPos = new Position(0, 0);
+        var targetPos = new Position(8, 8);
+
+        grid.SetCard(currentPos, new GameCard(1, 1));
+        grid.SetCard(targetPos, new GameCard(2, 1));
+
+        var exception = Record.Exception(() => rules.TryValidMove(currentPos, targetPos, grid, "cover", new DeckCard(Bonus.None, 1)));
+        Assert.Null(exception);
+    }
 } 

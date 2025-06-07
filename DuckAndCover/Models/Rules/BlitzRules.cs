@@ -1,4 +1,8 @@
-﻿namespace Models.Rules
+﻿using Models.Enums;
+using Models.Game;
+using Models.Exceptions;
+
+namespace Models.Rules
 {
     /// <summary>
     /// Implémentation des règles du jeu "Blitz".
@@ -15,7 +19,7 @@
         /// Description des règles.
         /// </summary>
         public override string Description =>
-            "Vivez cette partie de manière intense et rapide";
+            "Mode rapide et intense où vous pouvez déplacer vos cartes n'importe où ! Les actions rapides rapportent des points bonus.";
 
         /// <summary>
         /// Nombre de cartes dans le deck pour ces règles.
@@ -30,9 +34,7 @@
         /// <param name="quit">Indique si un joueur a quitté la partie.</param>
         /// <returns>True si la partie est finie, sinon false.</returns>
         public override bool IsGameOver(int cardPassed, int stackCounter, bool quit) => 
-            cardPassed == 3 || stackCounter == 5 || quit;
+            cardPassed == 2 || stackCounter == 5 || quit;
 
-        // Note : BlitzRules utilise la validation Duck par défaut de BaseRules
-        // qui est identique à InsaneRules, donc pas besoin de surcharger ValidateDuckAdjacency
     }
 }

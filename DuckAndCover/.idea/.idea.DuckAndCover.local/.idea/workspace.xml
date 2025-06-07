@@ -26,16 +26,16 @@
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/ResumeGame.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/ResumeGame.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/BlitzRulesTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/InsaneRulesTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,6 +123,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/579c781aa664439d7be6bc64b2c1d9ed0301dc19bcef3822adeaa7a64f6f/CodeGenerator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5f265c315f1ee2785ad9c6ad26a7a8e182fa65ce2a118388be2f887b15a856/XmlObjectSerializerWriteContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/68b06b8592b1287fd78f3ee68566d6a38d6e2f45b9a9e6ebd4d0e9972f7c29/Object.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/70dca1006e174ca697a5a38d709b54eb498b28/_e67e6/Void.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/90e467c62b863bbc99f92cdbd4cba1b397b849b92623c9ae176fe135c6c6f2d/ObservableCollection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a8d0cf45f932131a2b7de4b1ed709f3a78928f4c703dd3678d31e2159cb42/XmlObjectSerializerReadContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b3c63f8346871f177f9e798be966c256529336a22e4f618eec8a4f9a14eaf/XmlException.cs" root0="FORCE_HIGHLIGHTING" />
@@ -373,14 +374,6 @@
       <workItem from="1749135501609" duration="412000" />
       <workItem from="1749162251433" duration="4000" />
       <workItem from="1749162954016" duration="349000" />
-    </task>
-    <task id="LOCAL-00043" summary="refacotr(GameResumed and GameStarted events): delete">
-      <option name="closed" value="true" />
-      <created>1747656038738</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1747656038738</updated>
     </task>
     <task id="LOCAL-00044" summary="feat(game menu): add dto">
       <option name="closed" value="true" />
@@ -766,7 +759,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749295027507</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="feat(errors): enhance error handling with new error codes and improve user feedback">
+      <option name="closed" value="true" />
+      <created>1749296816169</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1749296816169</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -827,7 +828,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
     <MESSAGE value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
     <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
     <MESSAGE value="fix(DeckCard MAX Bonus): attribute the correct card number when the deck card's bonus is MAX" />
@@ -852,7 +852,8 @@
     <MESSAGE value="refactor" />
     <MESSAGE value="feat: add DataType and local namespace to XAML files; enhance Credit class with Role property" />
     <MESSAGE value="feat(errors): add new error codes and update error handling for invalid operations" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(errors): add new error codes and update error handling for invalid operations" />
+    <MESSAGE value="feat(errors): enhance error handling with new error codes and improve user feedback" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(errors): enhance error handling with new error codes and improve user feedback" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -39,6 +39,8 @@ public partial class MenuPlayer : ContentPage
         UpdateDarkModeButtonText();
     }
 
+    private AppTheme CurrentAppTheme => Application.Current?.UserAppTheme ?? AppTheme.Light;
+
     private void GeneratePlayerInputs()
     {
         PlayerInputsLayout.Children.Clear();
@@ -116,7 +118,7 @@ public partial class MenuPlayer : ContentPage
     {
         if (DarkModeButton != null)
         {
-            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            if (CurrentAppTheme == AppTheme.Dark)
             {
                 DarkModeButton.Text = "☀️";
             }
@@ -129,14 +131,10 @@ public partial class MenuPlayer : ContentPage
 
     private void OnDarkModeClicked(object sender, EventArgs e)
     {
-        if (Application.Current.UserAppTheme == AppTheme.Dark)
+        if (Application.Current != null)
         {
-            Application.Current.UserAppTheme = AppTheme.Light;
+            Application.Current.UserAppTheme = CurrentAppTheme == AppTheme.Dark ? AppTheme.Light : AppTheme.Dark;
+            UpdateDarkModeButtonText();
         }
-        else
-        {
-            Application.Current.UserAppTheme = AppTheme.Dark;
-        }
-        UpdateDarkModeButtonText();
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace Models.Rules
+﻿using Models.Enums;
+using Models.Exceptions;
+using Models.Game;
+
+namespace Models.Rules
 {
     /// <summary>
     /// Implémentation des règles "Insanes" du jeu.
@@ -15,7 +19,7 @@
         /// Obtient la description des règles.
         /// </summary>
         public override string Description =>
-            "Dans cette variante, les joueurs peuvent déplacer leurs cartes de manière plus agressive.";
+            "Mode chaotique où tout est permis ! Recouvrez n'importe quelle carte, utilisez des cartes spéciales et jouez avec un deck plus grand.";
 
         /// <summary>
         /// Obtient le nombre de cartes dans le deck.
@@ -32,7 +36,27 @@
         public override bool IsGameOver(int cardPassed, int stackCounter, bool quit) => 
             cardPassed == 16 || stackCounter == 7 || quit;
 
-        // Note : InsaneRules utilise la validation Duck par défaut de BaseRules
-        // qui correspond au comportement souhaité, donc pas besoin de surcharger ValidateDuckAdjacency
+        /// <summary>
+        /// Spécialisation de la validation Cover pour les règles Insanes.
+        /// Permet de recouvrir des cartes non adjacentes.
+        /// </summary>
+        /// <param name="currentPosition">Position actuelle.</param>
+        /// <param name="newPosition">Nouvelle position.</param>
+        /// <param name="grid">Grille de jeu.</param>
+        protected override void ValidateCoverMove(Position currentPosition, Position newPosition, Grid grid)
+        {
+            if (!grid.IsInGrid(newPosition))
+            {
+                throw new ErrorException(ErrorCodes.CardNotFound);
+            }
+        }
+
+        protected override void ValidateDuckAdjacency(Position currentPosition, Position newPosition, Grid grid)
+        {
+            if (!grid.IsInGrid(newPosition))
+            {
+                throw new ErrorException(ErrorCodes.CardNotFound);
+            }
+        }
     }
 }

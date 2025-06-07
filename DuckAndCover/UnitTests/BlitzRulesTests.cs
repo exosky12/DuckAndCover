@@ -17,10 +17,10 @@ public class BlitzRulesTests
     }
 
     [Fact]
-    public void GameOver_CardPassed3()
+    public void GameOver_CardPassed2()
     {
         var rules = new BlitzRules();
-        Assert.True(rules.IsGameOver(3, 5, false));
+        Assert.True(rules.IsGameOver(2, 5, false));
     }
 
     [Fact]
@@ -43,4 +43,5 @@ public class BlitzRulesTests
         var rules = new BlitzRules();
         Assert.True(rules.IsGameOver(0, 0, true));
     }
+
 } 

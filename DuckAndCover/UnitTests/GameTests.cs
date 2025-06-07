@@ -457,7 +457,7 @@ public class GameTests
         var game = SetupSimpleGame();
         var player = game.CurrentPlayer;
 
-        Assert.Throws<InvalidOperationException>(() => Game.GetEffectiveDeckCardNumber(player, null));
+        Assert.Throws<ErrorException>(() => Game.GetEffectiveDeckCardNumber(player, null));
     }
 
     [Fact]

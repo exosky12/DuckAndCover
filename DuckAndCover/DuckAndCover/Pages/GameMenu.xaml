@@ -14,7 +14,7 @@
                    FontSize="24" 
                    FontAttributes="Bold" 
                    TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}" 
-                   HorizontalOptions="Start"
+                   HorizontalOptions="Center"
                    VerticalOptions="Center"/>
             
             <Button x:Name="DarkModeButton"

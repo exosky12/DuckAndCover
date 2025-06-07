@@ -67,21 +67,6 @@ namespace DataPersistence
                         new ObservableCollection<Game>()
                     );
                 }
-                catch (Exception ex)
-                {
-                    var handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
-                    Debug.WriteLine($"[JsonPersistency] Exception LoadData : {handler.Handle()}");
-                    try
-                    {
-                        File.Delete(fullPath);
-                    }
-                    catch { }
-
-                    return (
-                        new ObservableCollection<Player>(),
-                        new ObservableCollection<Game>()
-                    );
-                }
             }
             else
             {
@@ -123,13 +108,6 @@ namespace DataPersistence
                     {
                         var handler = new ErrorHandler(ex);
                         Debug.WriteLine($"[JsonPersistency] ErrorException lors de la lecture du JSON existant : {handler.Handle()}");
-                        existingPlayers = new ObservableCollection<Player>();
-                        existingGames = new ObservableCollection<Game>();
-                    }
-                    catch (Exception ex)
-                    {
-                        var handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
-                        Debug.WriteLine($"[JsonPersistency] Exception lors de la lecture du JSON existant : {handler.Handle()}");
                         existingPlayers = new ObservableCollection<Player>();
                         existingGames = new ObservableCollection<Game>();
                     }
@@ -192,12 +170,6 @@ namespace DataPersistence
                 var handler = new ErrorHandler(ex);
                 Debug.WriteLine($"[JsonPersistency] ErrorException SaveData : {handler.Handle()}");
                 throw;
-            }
-            catch (Exception ex)
-            {
-                var handler = new ErrorHandler(new ErrorException(ErrorCodes.UnknownError));
-                Debug.WriteLine($"[JsonPersistency] Exception SaveData : {handler.Handle()}");
-                throw new ErrorException(ErrorCodes.UnknownError);
             }
         }
         public Game? LoadLastUnfinishedGame()

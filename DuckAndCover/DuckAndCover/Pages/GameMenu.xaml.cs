@@ -13,6 +13,8 @@ public partial class GameMenu : ContentPage
         UpdateDarkModeButtonText();
     }
 
+    private AppTheme CurrentAppTheme => Application.Current?.UserAppTheme ?? AppTheme.Light;
+
     private void BotSwitch_Toggled(object sender, ToggledEventArgs e)
     {
         UpdateBotCountVisibility(e.Value);
@@ -93,7 +95,7 @@ public partial class GameMenu : ContentPage
     {
         if (DarkModeButton != null)
         {
-            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            if (CurrentAppTheme == AppTheme.Dark)
             {
                 DarkModeButton.Text = "☀️";
             }
@@ -106,14 +108,10 @@ public partial class GameMenu : ContentPage
 
     private void OnDarkModeClicked(object sender, EventArgs e)
     {
-        if (Application.Current.UserAppTheme == AppTheme.Dark)
+        if (Application.Current != null)
         {
-            Application.Current.UserAppTheme = AppTheme.Light;
+            Application.Current.UserAppTheme = CurrentAppTheme == AppTheme.Dark ? AppTheme.Light : AppTheme.Dark;
+            UpdateDarkModeButtonText();
         }
-        else
-        {
-            Application.Current.UserAppTheme = AppTheme.Dark;
-        }
-        UpdateDarkModeButtonText();
     }
 }
