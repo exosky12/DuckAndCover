@@ -135,7 +135,3 @@ steps:
       event:
         - push
 
-volumes:
-  - name: docs
-    host:
-      path: /var/lib/docs
