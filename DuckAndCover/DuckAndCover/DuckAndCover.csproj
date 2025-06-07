@@ -3,12 +3,12 @@
 
   <PropertyGroup>
     <!-- Configuration conditionnelle des frameworks cibles -->
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux'))">net8.0-android</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">net8.0-android;net8.0-windows10.0.19041.0</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux'))">net9.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">net9.0-android;net9.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
     
     <!-- Fallback par défaut si aucune condition ne correspond -->
-    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net8.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net9.0-android</TargetFrameworks>
     
     <!-- Sortie de l'application -->
     <OutputType>Exe</OutputType>
@@ -20,11 +20,11 @@
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
     <!-- Configuration Windows -->
-    <EnableWindowsTargeting Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</EnableWindowsTargeting>
-    <UseWindowsTargeting Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</UseWindowsTargeting>
-    <WindowsPackageType Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">None</WindowsPackageType>
-    <DisableXamlCompilation Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</DisableXamlCompilation>
-    <SkipXamlCompilation Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</SkipXamlCompilation>
+    <EnableWindowsTargeting Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">true</EnableWindowsTargeting>
+    <UseWindowsTargeting Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">true</UseWindowsTargeting>
+    <WindowsPackageType Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">None</WindowsPackageType>
+    <DisableXamlCompilation Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">true</DisableXamlCompilation>
+    <SkipXamlCompilation Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">true</SkipXamlCompilation>
 
     <!-- Informations d'application -->
     <ApplicationTitle>DuckAndCover</ApplicationTitle>
