@@ -123,8 +123,7 @@ steps:
     depends_on:
       - Package Release Artifacts
     settings:
-      api_key:
-        from_secret: gitea_token
+      api_key: ${gitea_token}
       base_url: https://codefirst.iut.uca.fr
       files:
         - artifacts/DuckAndCover-Desktop-${DRONE_BUILD_NUMBER}.zip
