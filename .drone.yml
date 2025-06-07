@@ -26,21 +26,15 @@ steps:
       BUILD_MAUI: "true"
     commands:
       - cd DuckAndCover/
-      # Mise à jour des workloads si nécessaire
       - dotnet workload update || true
-      # Restore des dépendances d'abord (projets net9.0 standard)
       - dotnet restore DTOs/DTOs.csproj
       - dotnet restore Models/Models.csproj
       - dotnet restore DataPersistence/DataPersistence.csproj
-      # Build des dépendances
       - dotnet build DTOs/DTOs.csproj -c Release
       - dotnet build Models/Models.csproj -c Release
       - dotnet build DataPersistence/DataPersistence.csproj -c Release
-      # Restore du projet MAUI principal
       - dotnet restore DuckAndCover/DuckAndCover.csproj
-      # Build et publish pour Windows
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-windows10.0.19041.0 --self-contained -r win-x64 -o $CI_PROJECT_DIR/build/windows-release
-      # Build et publish pour Android (si supporté)
       - dotnet build DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0 || true
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0 -o $CI_PROJECT_DIR/build/android-release || true
 
@@ -51,7 +45,6 @@ steps:
       BUILD_MAUI: "true"
     commands:
       - cd DuckAndCover/
-      # Build et publish pour macOS
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-maccatalyst --self-contained -r osx-x64 -o $CI_PROJECT_DIR/build/mac-x64-release || echo "Mac x64 build failed, continuing..."
       - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-maccatalyst --self-contained -r osx-arm64 -o $CI_PROJECT_DIR/build/mac-arm64-release || echo "Mac ARM64 build failed, continuing..."
 
@@ -92,69 +85,55 @@ steps:
     commands:
       - /entrypoint.sh
 
-  # Nouvelle étape pour créer les artefacts de release
   - name: Package Release Artifacts
     image: alpine:latest
     commands:
       - apk add --no-cache zip
-      # Créer le dossier d'artefacts
       - mkdir -p $CI_PROJECT_DIR/artifacts
-      
-      # Compresser la version standard (.NET Desktop)
       - if [ -d "$CI_PROJECT_DIR/build/release" ]; then cd $CI_PROJECT_DIR/build/release && zip -r $CI_PROJECT_DIR/artifacts/DuckAndCover-Desktop-${DRONE_BUILD_NUMBER}.zip .; fi
-      
-      # Compresser la version Windows
       - if [ -d "$CI_PROJECT_DIR/build/windows-release" ]; then cd $CI_PROJECT_DIR/build/windows-release && zip -r $CI_PROJECT_DIR/artifacts/DuckAndCover-Windows-x64-${DRONE_BUILD_NUMBER}.zip .; fi
-      
-      # Compresser la version Mac x64
       - if [ -d "$CI_PROJECT_DIR/build/mac-x64-release" ]; then cd $CI_PROJECT_DIR/build/mac-x64-release && zip -r $CI_PROJECT_DIR/artifacts/DuckAndCover-macOS-x64-${DRONE_BUILD_NUMBER}.zip .; fi
-      
-      # Compresser la version Mac ARM64 (Apple Silicon)
       - if [ -d "$CI_PROJECT_DIR/build/mac-arm64-release" ]; then cd $CI_PROJECT_DIR/build/mac-arm64-release && zip -r $CI_PROJECT_DIR/artifacts/DuckAndCover-macOS-ARM64-${DRONE_BUILD_NUMBER}.zip .; fi
-      
-      # Compresser la version Android (si elle existe)
       - if [ -d "$CI_PROJECT_DIR/build/android-release" ]; then cd $CI_PROJECT_DIR/build/android-release && zip -r $CI_PROJECT_DIR/artifacts/DuckAndCover-Android-${DRONE_BUILD_NUMBER}.zip .; fi
-      
-      # Créer un fichier de notes de version avec les plateformes disponibles
-      - echo "# DuckAndCover - Release v${DRONE_BUILD_NUMBER}" > $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "**Informations de build:**" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "- Build #${DRONE_BUILD_NUMBER}" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "- Commit: ${DRONE_COMMIT_SHA:0:8}" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "- Branche: ${DRONE_BRANCH}" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "- Date: $(date)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - echo "**Plateformes disponibles:**" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt
-      - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-Windows-x64-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ Windows x64" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; else echo "- ❌ Windows x64 (échec du build)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
-      - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-macOS-x64-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ macOS x64 (Intel)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; else echo "- ❌ macOS x64 (échec du build)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
-      - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-macOS-ARM64-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ macOS ARM64 (Apple Silicon)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; else echo "- ❌ macOS ARM64 (échec du build)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
-      - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-Desktop-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ Desktop (.NET Multi-plateforme)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
-      - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-Android-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ Android" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
+      - "echo \"# DuckAndCover - Release v${DRONE_BUILD_NUMBER}\" > $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"**Informations de build:**\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"- Build #${DRONE_BUILD_NUMBER}\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"- Commit: ${DRONE_COMMIT_SHA:0:8}\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"- Branche: ${DRONE_BRANCH}\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"- Date: $(date)\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "echo \"**Plateformes disponibles:**\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt"
+      - "if [ -f \"$CI_PROJECT_DIR/artifacts/DuckAndCover-Windows-x64-${DRONE_BUILD_NUMBER}.zip\" ]; then echo \"- ✅ Windows x64\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; else echo \"- ❌ Windows x64 (échec du build)\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi"
+      - "if [ -f \"$CI_PROJECT_DIR/artifacts/DuckAndCover-macOS-x64-${DRONE_BUILD_NUMBER}.zip\" ]; then echo \"- ✅ macOS x64 (Intel)\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; else echo \"- ❌ macOS x64 (échec du build)\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi"
+      - "if [ -f \"$CI_PROJECT_DIR/artifacts/DuckAndCover-macOS-ARM64-${DRONE_BUILD_NUMBER}.zip\" ]; then echo \"- ✅ macOS ARM64 (Apple Silicon)\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; else echo \"- ❌ macOS ARM64 (échec du build)\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi"
+      - "if [ -f \"$CI_PROJECT_DIR/artifacts/DuckAndCover-Desktop-${DRONE_BUILD_NUMBER}.zip\" ]; then echo \"- ✅ Desktop (.NET Multi-plateforme)\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi"
+      - "if [ -f \"$CI_PROJECT_DIR/artifacts/DuckAndCover-Android-${DRONE_BUILD_NUMBER}.zip\" ]; then echo \"- ✅ Android\" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi"
     depends_on:
       - Build
       - BuildMAUI-Windows
       - BuildMAUI-Mac
 
-    - name: Create Release
-      image: plugins/gitea-release
-      secrets:
-        - gitea_token
-      settings:
-        api_key: ${GITEA_TOKEN}
-        base_url: https://codefirst.iut.uca.fr
-        files:
-          - artifacts/*
-        title: "Release v${DRONE_BUILD_NUMBER}"
-        note: artifacts/RELEASE_NOTES.txt
-        draft: false
-        prerelease: false
-      depends_on:
-        - Package Release Artifacts
-      when:
-        branch:
-          - master
-        event:
-          - push
+  - name: Create Release
+    image: plugins/gitea-release
+    secrets:
+      - gitea_token
+    settings:
+      api_key: ${GITEA_TOKEN}
+      base_url: https://codefirst.iut.uca.fr
+      files:
+        - artifacts/*
+      title: "Release v${DRONE_BUILD_NUMBER}"
+      note: artifacts/RELEASE_NOTES.txt
+      draft: false
+      prerelease: false
+    depends_on:
+      - Package Release Artifacts
+    when:
+      branch:
+        - master
+      event:
+        - push
 
 volumes:
   - name: docs
