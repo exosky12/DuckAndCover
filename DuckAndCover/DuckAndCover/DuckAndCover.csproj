@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <!-- Configuration conditionnelle des frameworks cibles -->
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux'))">net9.0-android</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">net9.0-android;net9.0-windows10.0.17763.0</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('linux'))">net8.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">net8.0-android;net8.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
     
     <!-- Fallback par défaut si aucune condition ne correspond -->
-    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net9.0-android</TargetFrameworks>
+    <TargetFrameworks Condition="'$(TargetFrameworks)' == ''">net8.0-android</TargetFrameworks>
     
     <!-- Sortie de l'application -->
     <OutputType>Exe</OutputType>
@@ -17,14 +17,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
-    
+
+    <!-- Configuration Windows -->
+    <EnableWindowsTargeting Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</EnableWindowsTargeting>
+    <UseWindowsTargeting Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</UseWindowsTargeting>
+    <WindowsPackageType Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">None</WindowsPackageType>
+    <DisableXamlCompilation Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</DisableXamlCompilation>
+    <SkipXamlCompilation Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">true</SkipXamlCompilation>
 
     <!-- Informations d'application -->
     <ApplicationTitle>DuckAndCover</ApplicationTitle>
     <ApplicationId>com.companyname.duckandcover</ApplicationId>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
-    <WindowsPackageType>None</WindowsPackageType>
 
     <!-- Versions minimum des plateformes -->
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
@@ -52,7 +57,7 @@
   <ItemGroup>
     <!-- Packages -->
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageReference Include="Plugin.Maui.Audio" Version="3.1.1" />
   </ItemGroup>
 

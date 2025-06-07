@@ -8,7 +8,7 @@ trigger:
         - push
 steps:
   - name: Build
-    image: mcr.microsoft.com/dotnet/sdk:9.0
+    image: mcr.microsoft.com/dotnet/sdk:8.0
     environment:
       CI: "true"  # Variable pour forcer les projets à ne pas cibler Android
     commands:
@@ -18,7 +18,7 @@ steps:
       - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
   
   - name: BuildMAUI
-    image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet9-maui:latest
+    image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet8-maui:latest
     environment:
       CI: "true"
       BUILD_MAUI: "true"  # Variable pour activer les targets mobiles
@@ -26,7 +26,7 @@ steps:
       - cd DuckAndCover/
       # Mise à jour des workloads si nécessaire
       - dotnet workload update || true
-      # Restore des dépendances d'abord (projets net9.0 standard)
+      # Restore des dépendances d'abord (projets net8.0 standard)
       - dotnet restore DTOs/DTOs.csproj
       - dotnet restore Models/Models.csproj  
       - dotnet restore DataPersistence/DataPersistence.csproj
@@ -36,19 +36,19 @@ steps:
       - dotnet build DataPersistence/DataPersistence.csproj -c Release
       # Restore et build du projet MAUI principal
       - dotnet restore DuckAndCover/DuckAndCover.csproj
-      - dotnet build DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
+      - dotnet build DuckAndCover/DuckAndCover.csproj -c Release -f net8.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
       # Publish du projet MAUI
-      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net9.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0 -o $CI_PROJECT_DIR/build/release
+      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net8.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0 -o $CI_PROJECT_DIR/build/release
 
   - name: Tests
-    image: mcr.microsoft.com/dotnet/sdk:9.0
+    image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverWithoutMAUI.sln
       - dotnet test DuckAndCoverWithoutMAUI.sln --no-restore
 
   - name: Code Inspection
-    image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet9
+    image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dronesonarplugin-dotnet8
     secrets: [ SECRET_SONAR_LOGIN ]
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
