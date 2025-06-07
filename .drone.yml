@@ -130,6 +130,14 @@ steps:
       - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-macOS-ARM64-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ macOS ARM64 (Apple Silicon)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; else echo "- ❌ macOS ARM64 (échec du build)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
       - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-Desktop-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ Desktop (.NET Multi-plateforme)" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
       - if [ -f "$CI_PROJECT_DIR/artifacts/DuckAndCover-Android-${DRONE_BUILD_NUMBER}.zip" ]; then echo "- ✅ Android" >> $CI_PROJECT_DIR/artifacts/RELEASE_NOTES.txt; fi
+      # Créer un script de release manuel
+      - echo "#!/bin/bash" > $CI_PROJECT_DIR/artifacts/create_release.sh
+      - echo "# Script pour créer la release manuellement" >> $CI_PROJECT_DIR/artifacts/create_release.sh
+      - echo "echo 'Création de la release v${DRONE_BUILD_NUMBER}...'" >> $CI_PROJECT_DIR/artifacts/create_release.sh
+      - echo "# Copie ce script et exécute-le avec ton token Gitea" >> $CI_PROJECT_DIR/artifacts/create_release.sh
+      - chmod +x $CI_PROJECT_DIR/artifacts/create_release.sh
+      - echo "✅ Artefacts créés dans $CI_PROJECT_DIR/artifacts/"
+      - ls -la $CI_PROJECT_DIR/artifacts/
     depends_on:
       - Build
       - BuildMAUI-Windows
@@ -140,7 +148,7 @@ steps:
     image: plugins/gitea-release
     settings:
       api_key:
-        from_secret: gitea_token
+        from_secret: GITEA_TOKEN
       base_url: https://codefirst.iut.uca.fr
       files:
         - artifacts/*
