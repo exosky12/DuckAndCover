@@ -234,8 +234,11 @@ namespace ConsoleApp
 
             game.GameIsOver += (s, e) =>
             {
-                game.IsFinished = true;
-                Utils.EndGame(game.Players, game);
+                if (e.IsOver)
+                {
+                    game.IsFinished = true;
+                    Utils.EndGame(game.Players, game);
+                }
             };
 
             game.ErrorOccurred += (s, e) =>

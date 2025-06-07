@@ -1,6 +1,6 @@
 ﻿namespace DTOs
 {
-    public class GameSettingsDTO
+    public class GameSettingsDto
     {
         public int PlayerCount { get; set; }
         public bool UseBots { get; set; }

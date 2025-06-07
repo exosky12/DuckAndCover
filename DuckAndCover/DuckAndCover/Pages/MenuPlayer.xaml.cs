@@ -9,11 +9,11 @@ namespace DuckAndCover.Pages;
 
 public partial class MenuPlayer : ContentPage
 {
-    private readonly GameSettingsDTO _gameSettings;
+    private readonly GameSettingsDto _gameSettings;
     
-    public Game GameManager => (App.Current as App).GameManager;
-
-    public MenuPlayer(GameSettingsDTO gameSettings)
+    public Game GameManager => (Application.Current as App)?.GameManager ?? 
+                               throw new InvalidOperationException("GameManager not initialized");
+    public MenuPlayer(GameSettingsDto gameSettings)
     {
         InitializeComponent();
         _gameSettings = gameSettings;
@@ -51,7 +51,8 @@ public partial class MenuPlayer : ContentPage
             {
                 Placeholder = $"Nom du joueur {i + 1}"
             };
-            entry.Style = (Style)Application.Current.Resources["InputEntryStyle"];
+            entry.Style = Application.Current?.Resources?["InputEntryStyle"] as Style ?? 
+                new Style(typeof(Entry));
             PlayerInputsLayout.Children.Add(entry);
         }
     }

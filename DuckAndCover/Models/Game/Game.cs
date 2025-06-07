@@ -5,8 +5,6 @@ using Models.Interfaces;
 using Models.Events;
 using Models.Enums;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Models.Game
 {
@@ -567,7 +565,8 @@ namespace Models.Game
             var existingGame = Games.FirstOrDefault(g => g.Id == Id);
             if (existingGame != null)
             {
-                existingGame.IsFinished = true;
+                if(!existingGame.Quit)
+                    existingGame.IsFinished = true;
                 existingGame.CardsSkipped = CardsSkipped;
                 existingGame.LastGameFinishStatus = LastGameFinishStatus;
                 existingGame.LastNumber = LastNumber;

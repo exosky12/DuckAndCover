@@ -26,40 +26,14 @@
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ConsoleApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/FakePersistency.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/GameSettingsDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/GameSettingsDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/JsonPersistency.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Enums/Bonus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/Bonus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/CardEffectProcessedEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/CardEffectProcessedEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/DisplayMenuNeededEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/DisplayMenuNeededEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/ErrorOccurredEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/GameIsOverEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/GameIsOverEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChangedEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChangedEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseCoinEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseCoinEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseCoverEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseCoverEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseDuckEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseDuckEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseQuitEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseQuitEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseShowPlayersGridEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseShowPlayersGridEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Events/PlayerChooseShowScoresEventArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Events/PlayerChooseShowScoresEventArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Exceptions/Error.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/Error.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Card.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Deck.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/DeckCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/DeckCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/ResumeGame.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/ResumeGame.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/GameCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/GameCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Grid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Grid.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Game/Position.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Position.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Generators/DeckGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/DeckGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/GridGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Interfaces/IDataPersistence.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Interfaces/IDataPersistence.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Interfaces/IGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Interfaces/IGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Interfaces/IRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Interfaces/IRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/BlitzRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/ClassicRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Rules/InsaneRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UnitTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/GameTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,12 +65,15 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/17.12.0/build/netcoreapp3.1/Microsoft.NET.Test.Sdk.Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleApp/Utils.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DTOs/obj/Debug/net9.0-android/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/App.xaml.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/AppShell.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/AppShell.xaml.cs" root0="FORCE_HIGHLIGHTING" />
@@ -104,8 +81,6 @@
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Credits.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/GameMenu.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/Pages/GamePage.xaml.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/DuckAndCover/Pages/GamePage.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DuckAndCover/Pages/MenuPlayer.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -129,8 +104,7 @@
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/Error.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Exceptions/ErrorHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Models/Game/Game.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Game.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Game/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/exosky12/Documents/cours/SAE2.01/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover/Models/Rules/BlitzRules.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameCardTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UnitTests/GameTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Downloads/Leaderboard Page.xaml" root0="FORCE_HIGHLIGHTING" />
@@ -191,7 +165,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
-    "git-widget-placeholder": "code-docs",
+    "git-widget-placeholder": "feat(ResumeGame)",
     "macOS.DuckAndCover.local.executor": "Run",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -330,7 +304,7 @@
     <configuration name="DuckAndCover.local" type="XamarinMacProject" factoryName="Xamarin.Mac">
       <option name="PROJECT_PATH" value="$PROJECT_DIR$/DuckAndCover/DuckAndCover.local.csproj" />
       <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/DuckAndCover/bin/Debug/net9.0-maccatalyst/maccatalyst-arm64" />
       <option name="PASS_PARENT_ENVS_MAC" value="1" />
       <method v="2">
         <option name="Build" />
@@ -895,35 +869,9 @@
           <option name="timeStamp" value="6" />
         </breakpoint>
         <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
-          <properties exception="Models.Exceptions.Error" breakIfHandledByUserCode="true" displayValue="Error" namespaceName="Models.Exceptions" />
+          <properties exception="Models.Exceptions.Error" breakIfHandledByOtherCode="false" displayValue="Error" namespaceName="Models.Exceptions" />
           <option name="timeStamp" value="9" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs</url>
-          <line>21</line>
-          <properties documentPath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" containingFunctionPresentation="Method 'RulesClicked'">
-            <startOffsets>
-              <option value="575" />
-            </startOffsets>
-            <endOffsets>
-              <option value="615" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Models/Game/Game.cs</url>
-          <line>498</line>
-          <properties documentPath="$PROJECT_DIR$/Models/Game/Game.cs" containingFunctionPresentation="Method 'DoCover'">
-            <startOffsets>
-              <option value="19395" />
-            </startOffsets>
-            <endOffsets>
-              <option value="19418" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

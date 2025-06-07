@@ -36,7 +36,6 @@ namespace DuckAndCover
 
             Debug.WriteLine($"[App] Chargé : {players.Count} joueurs et {games.Count} parties.");
 
-            // 4) On s’abonne à l’événement “GameIsOver”
             GameManager.GameIsOver += OnGameIsOver;
 
         }
