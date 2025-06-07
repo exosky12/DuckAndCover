@@ -135,28 +135,26 @@ steps:
       - BuildMAUI-Windows
       - BuildMAUI-Mac
 
-  # Création du tag et de la release
-  - name: Create Release
-    image: plugins/gitea-release
-    secrets:
-      - gitea_token
-    settings:
-      api_key: ${GITEA_TOKEN}
-      base_url: https://codefirst.iut.uca.fr
-      files:
-        - artifacts/*
-      title: "Release v${DRONE_BUILD_NUMBER}"
-      note: artifacts/RELEASE_NOTES.txt
-      draft: false
-      prerelease: false
-    depends_on:
-      - Package Release Artifacts
-  when:
-    branch:
-      - master
-    event:
-      - push
-
+    - name: Create Release
+      image: plugins/gitea-release
+      secrets:
+        - gitea_token
+      settings:
+        api_key: ${GITEA_TOKEN}
+        base_url: https://codefirst.iut.uca.fr
+        files:
+          - artifacts/*
+        title: "Release v${DRONE_BUILD_NUMBER}"
+        note: artifacts/RELEASE_NOTES.txt
+        draft: false
+        prerelease: false
+      depends_on:
+        - Package Release Artifacts
+      when:
+        branch:
+          - master
+        event:
+          - push
 
 volumes:
   - name: docs
