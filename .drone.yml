@@ -140,7 +140,7 @@ steps:
     image: plugins/gitea-release
     settings:
       api_key:
-        from_secret: GITEA_TOKEN
+        from_secret: gitea_token
       base_url: https://codefirst.iut.uca.fr
       files:
         - artifacts/*
