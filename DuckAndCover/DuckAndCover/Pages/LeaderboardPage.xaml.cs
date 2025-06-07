@@ -2,6 +2,8 @@ using Microsoft.Maui.Controls;
 using Models.Game;
 using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls.Shapes;
+using Models.Exceptions;
+using Models.Enums;
 using Grid = Microsoft.Maui.Controls.Grid;
 
 namespace DuckAndCover.Pages;
@@ -9,7 +11,7 @@ namespace DuckAndCover.Pages;
 public partial class LeaderboardPage : ContentPage
 {
     public Game GameManager => (App.Current as App)?.GameManager ??
-                               throw new InvalidOperationException("GameManager not initialized");
+                               throw new ErrorException(ErrorCodes.GameManagerNotInitialized);
 
     public LeaderboardPage()
     {

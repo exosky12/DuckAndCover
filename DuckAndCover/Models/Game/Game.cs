@@ -237,7 +237,7 @@ namespace Models.Game
         {
             if (deckCard == null)
             {
-                throw new InvalidOperationException("Deck card cannot be null to get effective number.");
+                throw new ErrorException(ErrorCodes.InvalidOperation);
             }
 
             if (deckCard.Bonus == Bonus.Max)

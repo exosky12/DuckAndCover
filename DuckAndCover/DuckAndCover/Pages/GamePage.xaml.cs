@@ -2,13 +2,14 @@ using Microsoft.Maui.Controls.Shapes;
 using Models.Game;
 using Models.Events;
 using Models.Enums;
+using Models.Exceptions;
 
 namespace DuckAndCover.Pages;
 
 public partial class GamePage : ContentPage
 {
     public Game GameManager => (Application.Current as App)?.GameManager ?? 
-                               throw new InvalidOperationException("GameManager not initialized");
+                               throw new ErrorException(ErrorCodes.GameManagerNotInitialized);
 
     private GameCard? _selectedCard;
     private GameCard? _cardToCover;
@@ -351,7 +352,7 @@ public partial class GamePage : ContentPage
 
     private View CreateCardView(GameCard card)
     {
-        if (card == null) throw new ArgumentNullException(nameof(card));
+        if (card == null) throw new ErrorException(ErrorCodes.ArgumentNull);
         var backgroundColor = GetSplashColor(card.Splash);
         var textColor = GetContrastingTextColor(backgroundColor);
         var border = new Border

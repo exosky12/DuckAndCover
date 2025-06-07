@@ -1,4 +1,6 @@
 using System.Security.Cryptography;
+using Models.Enums;
+using Models.Exceptions;
 using Models.Game;
 using Models.Interfaces;
 
@@ -92,7 +94,7 @@ namespace Models.Generators
                     7 or 8 or 9 => 3,
                     10 or 11 => 4,
                     12 => 5,
-                    _ => throw new InvalidOperationException("Invalid card number")
+                    _ => throw new ErrorException(ErrorCodes.InvalidCardNumber)
                 };
 
                 cards.Add(new GameCard(splash, number));

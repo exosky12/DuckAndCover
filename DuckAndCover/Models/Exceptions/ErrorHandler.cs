@@ -43,6 +43,10 @@ namespace Models.Exceptions
                 ErrorCodes.InvalidChoice => "Choix invalide. Veuillez réessayer.",
                 ErrorCodes.UnknownError => "Une erreur inconnue s'est produite.",
                 ErrorCodes.NotPlayerTurn => "Ce n'est pas le tour du joueur.",
+                ErrorCodes.InvalidOperation => "Opération invalide dans le contexte actuel.",
+                ErrorCodes.ArgumentNull => "Argument requis non fourni ou null.",
+                ErrorCodes.InvalidCardNumber => "Le numéro de carte fourni est invalide.",
+                ErrorCodes.GameManagerNotInitialized => "Le GameManager doit être initialisé avant utilisation.",
                 _ => "Code d'erreur non reconnu."
             };
         }

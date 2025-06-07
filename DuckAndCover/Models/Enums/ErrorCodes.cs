@@ -68,6 +68,26 @@ namespace Models.Enums
         /// <summary>
         /// Ce n'est pas le tour du joueur.
         /// </summary>
-        NotPlayerTurn = 1013
+        NotPlayerTurn = 1013,
+
+        /// <summary>
+        /// Opération invalide dans le contexte actuel.
+        /// </summary>
+        InvalidOperation = 1014,
+
+        /// <summary>
+        /// Argument null ou non fourni.
+        /// </summary>
+        ArgumentNull = 1015,
+
+        /// <summary>
+        /// Numéro de carte invalide.
+        /// </summary>
+        InvalidCardNumber = 1016,
+
+        /// <summary>
+        /// GameManager non initialisé.
+        /// </summary>
+        GameManagerNotInitialized = 1017
     }
 }
