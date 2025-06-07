@@ -68,6 +68,16 @@ namespace Models.Enums
         /// <summary>
         /// Ce n'est pas le tour du joueur.
         /// </summary>
-        NotPlayerTurn = 1013
+        NotPlayerTurn = 1013,
+
+        /// <summary>
+        /// La transition d'état est invalide.
+        /// </summary>
+        InvalidStateTransition,
+
+        /// <summary>
+        /// L'action effectuée est invalide.
+        /// </summary>
+        InvalidAction
     }
 }

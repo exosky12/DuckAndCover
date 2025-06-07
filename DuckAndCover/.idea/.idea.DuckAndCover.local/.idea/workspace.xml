@@ -24,9 +24,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c440b792-260c-40e3-a520-2b09de1e0c68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Dockerfile.windows" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../build-windows.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.drone.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../.drone.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Dockerfile.windows" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_31_25,_3_32 PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_31_25__3_32PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DuckAndCover.local/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp/ConsoleApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp/ConsoleApp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/DTOs.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/DTOs.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DataPersistence/DataPersistence.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/DuckAndCover.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/DuckAndCover.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DuckAndCover/Pages/GamePage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Enums/ErrorCodes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Game/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Models.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Models.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnitTests/UnitTests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/UnitTests/UnitTests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build-windows.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.sh" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,27 +172,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.DuckAndCover.local: Windows Machine.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.ConsoleApp.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;f13ac3f2-de1b-496b-9677-a8a288b628c0.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;macOS.DuckAndCover.local.executor&quot;: &quot;Run&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.DuckAndCover.local: Windows Machine.executor": "Debug",
+    ".NET Project.ConsoleApp.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "f13ac3f2-de1b-496b-9677-a8a288b628c0.executor": "Debug",
+    "git-widget-placeholder": "master",
+    "macOS.DuckAndCover.local.executor": "Debug",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected=".NET Project.ConsoleApp">
+}]]></component>
+  <component name="RunManager" selected="macOS.DuckAndCover.local">
     <configuration name="ConsoleApp" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/ConsoleApp/bin/Debug/net9.0-android/ConsoleApp.dll" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -365,23 +379,8 @@
       <workItem from="1749135501609" duration="412000" />
       <workItem from="1749162251433" duration="4000" />
       <workItem from="1749162954016" duration="349000" />
-      <workItem from="1749300989648" duration="1135000" />
-    </task>
-    <task id="LOCAL-00043" summary="refacotr(GameResumed and GameStarted events): delete">
-      <option name="closed" value="true" />
-      <created>1747656038738</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1747656038738</updated>
-    </task>
-    <task id="LOCAL-00044" summary="feat(game menu): add dto">
-      <option name="closed" value="true" />
-      <created>1747841435987</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1747841435987</updated>
+      <workItem from="1749300989648" duration="3463000" />
+      <workItem from="1749334065004" duration="58000" />
     </task>
     <task id="LOCAL-00045" summary="fix">
       <option name="closed" value="true" />
@@ -759,7 +758,23 @@
       <option name="project" value="LOCAL" />
       <updated>1749302124040</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Update build scripts and CI configuration for .NET 8.0 support">
+      <option name="closed" value="true" />
+      <created>1749302174049</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1749302174049</updated>
+    </task>
+    <task id="LOCAL-00093" summary="s">
+      <option name="closed" value="true" />
+      <created>1749302272920</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1749302272920</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -820,8 +835,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(project): update target framework from net9.0-android to net9.0 for all projects" />
-    <MESSAGE value="refactor(rules): clean up comments and whitespace in ClassicRules and related tests" />
     <MESSAGE value="feat(game): update CurrentDeckCard property to be settable and add new unit tests for game logic" />
     <MESSAGE value="fix(DeckCard MAX Bonus): attribute the correct card number when the deck card's bonus is MAX" />
     <MESSAGE value="feat(persistence): switch to JSON-based data persistence and update player scores property" />
@@ -845,7 +858,9 @@
     <MESSAGE value="refactor" />
     <MESSAGE value="feat: add DataType and local namespace to XAML files; enhance Credit class with Role property" />
     <MESSAGE value="Update project files to target .NET 8.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update project files to target .NET 8.0" />
+    <MESSAGE value="Update build scripts and CI configuration for .NET 8.0 support" />
+    <MESSAGE value="s" />
+    <option name="LAST_COMMIT_MESSAGE" value="s" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -878,19 +893,6 @@
           <properties exception="Models.Exceptions.Error" breakIfHandledByUserCode="true" displayValue="Error" namespaceName="Models.Exceptions" />
           <option name="timeStamp" value="9" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs</url>
-          <line>21</line>
-          <properties documentPath="$PROJECT_DIR$/DuckAndCover/Pages/Home.xaml.cs" containingFunctionPresentation="Method 'OnAppearing'">
-            <startOffsets>
-              <option value="458" />
-            </startOffsets>
-            <endOffsets>
-              <option value="486" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

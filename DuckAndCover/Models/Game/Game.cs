@@ -135,6 +135,10 @@ namespace Models.Game
         /// </summary>
         public bool IsGameStarted { get; private set; }
 
+        private GameState _gameState;
+
+        public GameState GameState => _gameState;
+
         public event EventHandler<PlayerChangedEventArgs>? PlayerChanged;
         public event EventHandler<GameIsOverEventArgs>? GameIsOver;
         public event EventHandler<ErrorOccurredEventArgs>? ErrorOccurred;
@@ -189,6 +193,7 @@ namespace Models.Game
         {
             this.Rules = rules;
             this._rulesName = rules.GetType().Name;
+            this._gameState = new GameState(this);
         }
 
         /// <summary>
@@ -252,9 +257,17 @@ namespace Models.Game
         /// <returns>true si le jeu est terminé ; sinon, false.</returns>
         public bool CheckGameOverCondition()
         {
+            Debug.WriteLine($"CheckGameOverCondition - CardsSkipped: {CardsSkipped}, StackCounter: {CurrentPlayer.StackCounter}, Quit: {Quit}");
+            Debug.WriteLine($"CheckGameOverCondition - IsGameOver: {Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit)}");
+            Debug.WriteLine($"CheckGameOverCondition - _gameOverAlreadyTriggered: {_gameOverAlreadyTriggered}");
+
             if (!_gameOverAlreadyTriggered && Rules.IsGameOver(CardsSkipped, CurrentPlayer.StackCounter, Quit))
             {
+                Debug.WriteLine("CheckGameOverCondition - Game Over conditions met!");
                 _gameOverAlreadyTriggered = true;
+                IsFinished = true;
+                LastGameFinishStatus = true;
+                _gameState.TransitionTo(GameStateEnum.GameOver);
                 OnGameIsOver(new GameIsOverEventArgs(true));
                 return true;
             }
@@ -335,8 +348,17 @@ namespace Models.Game
         {
             try
             {
+                Debug.WriteLine("ProcessTurn - Starting");
+                if (CheckGameOverCondition())
+                {
+                    Debug.WriteLine("ProcessTurn - Game Over detected at start");
+                    return;
+                }
+
                 if (AllPlayersPlayed())
                 {
+                    Debug.WriteLine("ProcessTurn - All players played");
+                    CheckAllPlayersSkipped();
                     NextDeckCard();
                     Players.ForEach(p =>
                     {
@@ -347,6 +369,7 @@ namespace Models.Game
 
                 if (CheckGameOverCondition())
                 {
+                    Debug.WriteLine("ProcessTurn - Game Over detected after NextDeckCard");
                     return;
                 }
 
@@ -355,6 +378,7 @@ namespace Models.Game
                     throw new ErrorException(ErrorCodes.DeckEmpty, "Plus de cartes disponibles");
                 }
 
+                _gameState.TransitionTo(GameStateEnum.WaitingForPlayerAction);
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
             }
             catch (ErrorException e)
@@ -383,6 +407,7 @@ namespace Models.Game
                     throw new ErrorException(ErrorCodes.DeckEmpty, "Aucune carte disponible pour démarrer le jeu");
                 }
 
+                _gameState.TransitionTo(GameStateEnum.WaitingForPlayerAction);
                 ProcessCardEffect(CurrentDeckCard, CurrentPlayer);
                 OnPlayerChanged(new PlayerChangedEventArgs(CurrentPlayer, CurrentDeckCard));
             }
@@ -396,40 +421,36 @@ namespace Models.Game
         {
             try
             {
-                if (player != CurrentPlayer && choice != "4" && choice != "5" && choice != "6")
-                {
-                    OnErrorOccurred(new ErrorOccurredEventArgs(new ErrorException(ErrorCodes.NotPlayerTurn,
-                        "Ce n'est pas votre tour.")));
-                    return;
-                }
+                if (player != CurrentPlayer) throw new ErrorException(ErrorCodes.NotPlayerTurn);
+                if (!_gameState.CanPerformAction(choice)) 
+                    throw new ErrorException(ErrorCodes.InvalidAction, "Action non autorisée dans l'état actuel");
 
                 switch (choice)
                 {
                     case "1":
-                        OnPlayerChooseCover(new PlayerChooseCoverEventArgs(CurrentPlayer));
+                        _gameState.TransitionTo(GameStateEnum.WaitingForCoverTarget);
+                        OnPlayerChooseCover(new PlayerChooseCoverEventArgs(player));
                         break;
                     case "2":
-                        OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(CurrentPlayer));
+                        _gameState.TransitionTo(GameStateEnum.WaitingForDuckTarget);
+                        OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(player));
                         break;
                     case "3":
-                        DoCoin(CurrentPlayer);
-                        CheckAllPlayersSkipped();
-                        OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(CurrentPlayer));
+                        DoCoin(player);
+                        _gameState.TransitionTo(GameStateEnum.ProcessingCardEffect);
                         ProcessTurn();
                         break;
                     case "4":
                         OnPlayerChooseShowPlayersGrid(new PlayerChooseShowPlayersGridEventArgs(Players));
-                        OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
                         break;
                     case "5":
                         OnPlayerChooseShowScores(new PlayerChooseShowScoresEventArgs(Players));
-                        OnDisplayMenuNeeded(new DisplayMenuNeededEventArgs(CurrentPlayer, CurrentDeckCard));
                         break;
                     case "6":
-                        OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(CurrentPlayer, this));
-                        if (this.Quit)
+                        OnPlayerChooseQuit(new PlayerChooseQuitEventArgs(player, this));
+                        if (CheckGameOverCondition())
                         {
-                            CheckGameOverCondition();
+                            _gameState.TransitionTo(GameStateEnum.GameOver);
                         }
                         break;
                     default:
@@ -446,8 +467,11 @@ namespace Models.Game
         {
             try
             {
-                if (player != CurrentPlayer) throw new ErrorException(ErrorCodes.NotPlayerTurn);
+                _gameState.ValidateAction("1");
+                _gameState.ValidatePlayerTurn(player);
+
                 DoCover(player, cardToMovePosition, cardToCoverPosition);
+                _gameState.TransitionTo(GameStateEnum.ProcessingCardEffect);
                 ProcessTurn();
             }
             catch (ErrorException e)
@@ -455,21 +479,17 @@ namespace Models.Game
                 OnErrorOccurred(new ErrorOccurredEventArgs(e));
                 throw;
             }
-        }
-
-        public void TriggerGameOver()
-        {
-            IsFinished = true;
-            LastGameFinishStatus = true;
-            OnGameIsOver(new GameIsOverEventArgs(true));
         }
 
         public void HandlePlayerChooseDuck(Player player, Position cardToMovePosition, Position duckPosition)
         {
             try
             {
-                if (player != CurrentPlayer) throw new ErrorException(ErrorCodes.NotPlayerTurn);
+                _gameState.ValidateAction("2");
+                _gameState.ValidatePlayerTurn(player);
+
                 DoDuck(player, cardToMovePosition, duckPosition);
+                _gameState.TransitionTo(GameStateEnum.ProcessingCardEffect);
                 ProcessTurn();
             }
             catch (ErrorException e)
@@ -479,88 +499,78 @@ namespace Models.Game
             }
         }
 
-        public static List<Position> GetValidDuckTargetPositions(Player forPlayer, Position cardToMovePosition, DeckCard currentDeckCard)
-        {
-            var validTargets = new HashSet<Position>();
-            if (currentDeckCard == null || forPlayer == null) return validTargets.ToList();
-
-            GameCard? cardBeingMoved = forPlayer.Grid.GetCard(cardToMovePosition);
-            if (cardBeingMoved == null) return validTargets.ToList();
-
-            if (forPlayer.Grid.GameCardsGrid.Count(c => c != null) == 1)
-            {
-                return validTargets.ToList();
-            }
-
-            var occupiedPositions = new HashSet<Position>(
-                forPlayer.Grid.GameCardsGrid
-                    .Where(c => c != null && c.Position != cardToMovePosition)
-                    .Select(c => c.Position)
-            );
-
-            int[] dRow = { -1, 1, 0, 0 };
-            int[] dCol = { 0, 0, -1, 1 };
-
-            foreach (var card in forPlayer.Grid.GameCardsGrid)
-            {
-                if (card == null || card.Position == cardToMovePosition)
-                    continue;
-
-                for (int i = 0; i < 4; i++)
-                {
-                    var adjacent = new Position(card.Position.Row + dRow[i], card.Position.Column + dCol[i]);
-
-                    if (occupiedPositions.Contains(adjacent))
-                        continue;
-
-                    validTargets.Add(adjacent);
-                }
-            }
-
-            return validTargets.ToList();
-        }
-
-
-
-        public void DoCover(Player player, Position cardToMovePosition, Position cardToCoverPosition)
-        {
-            Rules.TryValidMove(cardToMovePosition, cardToCoverPosition, player.Grid, "cover", CurrentDeckCard);
-
-            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
-            GameCard cardToCover = player.Grid.GetCard(cardToCoverPosition)!;
-            List<GameCard> gridCards = player.Grid.GameCardsGrid;
-
-            gridCards.Remove(cardToCover);
-            cardToMove.Position = new Position(cardToCover.Position.Row, cardToCover.Position.Column);
-            player.StackCounter = gridCards.Count;
-            player.HasPlayed = true;
-
-            NextPlayer();
-        }
-
-        public void DoDuck(Player player, Position cardToMovePosition, Position duckPosition)
-        {
-            Rules.TryValidMove(cardToMovePosition, duckPosition, player.Grid, "duck", CurrentDeckCard);
-
-            GameCard cardToMove = player.Grid.GetCard(cardToMovePosition)!;
-
-            player.Grid.RemoveCard(cardToMove.Position);
-            cardToMove.Position = duckPosition;
-            player.Grid.SetCard(duckPosition, cardToMove);
-
-            player.StackCounter = player.Grid.GameCardsGrid.Count;
-            player.HasPlayed = true;
-
-            NextPlayer();
-        }
-
         public void DoCoin(Player player)
         {
-            player.StackCounter = player.Grid.GameCardsGrid.Count;
-            player.HasPlayed = true;
-            player.HasSkipped = true;
+            try
+            {
+                _gameState.ValidateAction("3");
+                _gameState.ValidatePlayerTurn(player);
 
-            NextPlayer();
+                player.StackCounter = player.Grid.GameCardsGrid.Count;
+                player.HasPlayed = true;
+                player.HasSkipped = true;
+
+                if (Players.All(p => p.HasSkipped))
+                {
+                    CardsSkipped++;
+                    Players.ForEach(p => p.HasSkipped = false);
+                }
+
+                NextPlayer();
+            }
+            catch (ErrorException e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                throw;
+            }
+        }
+
+        public void DoStack(Player player)
+        {
+            try
+            {
+                _gameState.ValidateAction("4");
+                _gameState.ValidatePlayerTurn(player);
+
+                player.StackCounter = player.Grid.GameCardsGrid.Count;
+                player.HasPlayed = true;
+                player.HasSkipped = false;
+                NextPlayer();
+            }
+            catch (ErrorException e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                throw;
+            }
+        }
+
+        public void DoQuit()
+        {
+            try
+            {
+                _gameState.ValidateAction("5");
+                Quit = true;
+                TriggerGameOver();
+            }
+            catch (ErrorException e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                throw;
+            }
+        }
+
+        public void DoHelp()
+        {
+            try
+            {
+                _gameState.ValidateAction("6");
+                // Logique d'aide à implémenter
+            }
+            catch (ErrorException e)
+            {
+                OnErrorOccurred(new ErrorOccurredEventArgs(e));
+                throw;
+            }
         }
 
         public bool AllPlayersPlayed()

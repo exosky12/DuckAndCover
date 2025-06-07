@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DataPersistence;
+using System.Diagnostics;
 
 namespace DuckAndCover.Pages;
 
@@ -102,11 +103,26 @@ public partial class GamePage : ContentPage
 
     private async void OnGameIsOver(object? sender, GameIsOverEventArgs e)
     {
-        await MainThread.InvokeOnMainThreadAsync(async () =>
+        Debug.WriteLine("OnGameIsOver called in GamePage!");
+        try
         {
-            await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
-            await Navigation.PopAsync();
-        });
+            if (e.IsOver)
+            {
+                Debug.WriteLine("Game is over, showing final scores");
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
+                    GameManager.SavePlayers();
+                    GameManager.SaveGame();
+                    await Navigation.PopAsync();
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in OnGameIsOver: {ex.Message}");
+            await DisplayAlert("Erreur", "Une erreur est survenue lors de la fin de partie.", "OK");
+        }
     }
 
     private async void OnErrorOccurred(object? sender, ErrorOccurredEventArgs e)
@@ -133,7 +149,9 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            InstructionsLabel.Text = $"{e.Player.Name} effectue un déplacement Duck";
+            _isWaitingForDuckTarget = true;
+            _isWaitingForCoverTarget = false;
+            InstructionsLabel.Text = "DUCK: Sélectionnez la carte à DÉPLACER.";
         });
     }
 
@@ -141,8 +159,42 @@ public partial class GamePage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            InstructionsLabel.Text = $"{e.Player.Name} effectue un recouvrement";
+            _isWaitingForCoverTarget = true;
+            _isWaitingForDuckTarget = false;
+            LoadGrid();
+            InstructionsLabel.Text = "COVER: Sélectionnez la carte à DÉPLACER.";
         });
+    }
+
+    private async void OnCoverClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            if (GameManager.CurrentPlayer == null)
+            {
+                await DisplayAlert("Erreur", "Aucun joueur actif", "OK");
+                return;
+            }
+
+            if (!GameManager.GameState.CanPerformAction("1"))
+            {
+                await DisplayAlert("Erreur", "Action Cover non autorisée dans l'état actuel", "OK");
+                return;
+            }
+
+            GameManager.HandlePlayerChoice(GameManager.CurrentPlayer, "1");
+            _isWaitingForCoverTarget = true;
+            _isWaitingForDuckTarget = false;
+            _selectedCard = null;
+            _cardToCover = null;
+            _validDuckTargets.Clear();
+            LoadGrid();
+            InstructionsLabel.Text = "COVER: Sélectionnez la carte à DÉPLACER.";
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur Cover Setup", ex.Message, "OK");
+        }
     }
 
     private async void OnPlayerChooseQuit(object? sender, EventArgs e)
@@ -445,24 +497,6 @@ public partial class GamePage : ContentPage
         }
     }
 
-    private async void OnCoverClicked(object? sender, EventArgs e)
-    {
-        try
-        {
-            _isWaitingForCoverTarget = true;
-            _isWaitingForDuckTarget = false;
-            _selectedCard = null;
-            _cardToCover = null;
-            _validDuckTargets.Clear();
-            LoadGrid();
-            InstructionsLabel.Text = "COVER: Sélectionnez la carte à DÉPLACER.";
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erreur Cover Setup", ex.Message, "OK");
-        }
-    }
-
     private async void OnDuckClicked(object? sender, EventArgs e)
     {
         try
@@ -518,9 +552,17 @@ public partial class GamePage : ContentPage
                         return;
                     }
 
+                    if (!GameManager.GameState.CanPerformAction("1"))
+                    {
+                        await DisplayAlert("Erreur", "Action Cover non autorisée dans l'état actuel", "OK");
+                        ResetSelectionState();
+                        return;
+                    }
+
                     _cardToCover = card;
                     GameManager.HandlePlayerChooseCover(GameManager.CurrentPlayer, _selectedCard.Position,
                         _cardToCover.Position);
+                    ResetSelectionState();
                 }
             }
             else if (_isWaitingForDuckTarget)
@@ -530,7 +572,7 @@ public partial class GamePage : ContentPage
                     if (card.Number != effectiveDeckCardNumber)
                     {
                         await DisplayAlert("Action invalide",
-                            $"La carte N°{card.Number} (à déplacer) ne correspond pas au N°{effectiveDeckCardNumber} (effectif) du deck pour Duck.",
+                            $"La carte N°{card.Number} ne correspond pas au N°{effectiveDeckCardNumber} (effectif) du deck pour Duck.",
                             "OK");
                         return;
                     }
@@ -541,9 +583,21 @@ public partial class GamePage : ContentPage
                     LoadGrid();
                     InstructionsLabel.Text = "DUCK: Sélectionnez la CASE de destination.";
                 }
+                else if (_validDuckTargets.Contains(card.Position))
+                {
+                    if (!GameManager.GameState.CanPerformAction("2"))
+                    {
+                        await DisplayAlert("Erreur", "Action Duck non autorisée dans l'état actuel", "OK");
+                        ResetSelectionState();
+                        return;
+                    }
+
+                    GameManager.HandlePlayerChooseDuck(GameManager.CurrentPlayer, _selectedCard.Position, card.Position);
+                    ResetSelectionState();
+                }
                 else
                 {
-                    await DisplayAlert("Action",
+                    await DisplayAlert("Action invalide",
                         "Sélectionnez une case vide en surbrillance pour 'Ducker', ou cliquez à nouveau sur 'Duck' pour changer la carte à déplacer.",
                         "OK");
                 }
