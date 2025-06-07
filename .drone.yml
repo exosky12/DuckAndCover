@@ -39,9 +39,9 @@ steps:
       - dotnet build DataPersistence/DataPersistence.csproj -c Release
       # Restore et build du projet MAUI principal
       - dotnet restore DuckAndCover/DuckAndCover.csproj
-      - dotnet build DuckAndCover/DuckAndCover.csproj -c Release -f net8.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0
+      - dotnet build DuckAndCover/DuckAndCover.csproj -c Release -f net8.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/34.0.0
       # Publish du projet MAUI
-      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net8.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/35.0.0 -o $CI_PROJECT_DIR/build/release
+      - dotnet publish DuckAndCover/DuckAndCover.csproj -c Release -f net8.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT -property:Aapt2ToolPath=$ANDROID_SDK_ROOT/build-tools/34.0.0 -o $CI_PROJECT_DIR/build/release
 
   - name: Tests
     image: mcr.microsoft.com/dotnet/sdk:8.0
