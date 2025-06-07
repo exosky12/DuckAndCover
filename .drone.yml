@@ -15,7 +15,10 @@ steps:
       - cd DuckAndCover/
       - dotnet restore DuckAndCoverWithoutMAUI.sln
       - dotnet build DuckAndCoverWithoutMAUI.sln -c Release --no-restore 
-      - dotnet publish DuckAndCoverWithoutMAUI.sln -c Release --no-restore -o $CI_PROJECT_DIR/build/release
+      - dotnet publish DTOs/DTOs.csproj -c Release -f net8.0 --no-restore -o $CI_PROJECT_DIR/build/release/DTOs
+      - dotnet publish Models/Models.csproj -c Release -f net8.0 --no-restore -o $CI_PROJECT_DIR/build/release/Models
+      - dotnet publish DataPersistence/DataPersistence.csproj -c Release -f net8.0 --no-restore -o $CI_PROJECT_DIR/build/release/DataPersistence
+      - dotnet publish ConsoleApp/ConsoleApp.csproj -c Release -f net8.0 --no-restore -o $CI_PROJECT_DIR/build/release/ConsoleApp
   
   - name: BuildMAUI
     image: hub.codefirst.iut.uca.fr/marc.chevaldonne/codefirst-dotnet8-maui:latest
