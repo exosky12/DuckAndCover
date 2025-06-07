@@ -436,6 +436,7 @@ namespace Models.Game
                         OnPlayerChooseDuck(new PlayerChooseDuckEventArgs(player));
                         break;
                     case "3":
+                        OnPlayerChooseCoin(new PlayerChooseCoinEventArgs(player));
                         DoCoin(player);
                         _gameState.TransitionTo(GameStateEnum.ProcessingCardEffect);
                         ProcessTurn();

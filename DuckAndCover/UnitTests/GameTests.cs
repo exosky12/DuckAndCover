@@ -136,17 +136,18 @@ public class GameTests
         var players = new List<Player> { new Player("Test") };
         var game = new Game(new ClassicRules());
         game.Players = players;
+        game.StartGame();
 
         bool menuDisplayed = false;
-        game.DisplayMenuNeeded += (sender, args) =>
+        game.PlayerChooseShowPlayersGrid += (sender, args) =>
         {
             menuDisplayed = true;
-            Assert.NotNull(args.CurrentPlayer);
-            Assert.NotNull(args.CurrentDeckCard);
+            Assert.NotNull(args.Players);
         };
 
         game.HandlePlayerChoice(game.CurrentPlayer, "4");
         Assert.True(menuDisplayed);
+        Assert.Equal(GameStateEnum.WaitingForPlayerAction, game.GameState.CurrentState);
     }
 
     [Fact]
@@ -159,6 +160,7 @@ public class GameTests
         };
         var game = new Game(new ClassicRules());
         game.Players = players;
+        game.StartGame();
 
         int gridsDisplayed = 0;
         game.PlayerChooseShowPlayersGrid += (sender, args) =>
@@ -169,6 +171,7 @@ public class GameTests
 
         game.HandlePlayerChoice(game.CurrentPlayer, "4");
         Assert.Equal(2, gridsDisplayed);
+        Assert.Equal(GameStateEnum.WaitingForPlayerAction, game.GameState.CurrentState);
     }
 
     [Fact]
@@ -181,6 +184,7 @@ public class GameTests
         };
         var game = new Game(new ClassicRules());
         game.Players = players;
+        game.StartGame();
 
         bool scoresDisplayed = false;
         game.PlayerChooseShowScores += (sender, args) =>
@@ -191,6 +195,7 @@ public class GameTests
 
         game.HandlePlayerChoice(game.CurrentPlayer, "5");
         Assert.True(scoresDisplayed);
+        Assert.Equal(GameStateEnum.WaitingForPlayerAction, game.GameState.CurrentState);
     }
 
     [Fact]
@@ -199,6 +204,7 @@ public class GameTests
         var players = new List<Player> { new Player("Test") };
         var game = new Game(new ClassicRules());
         game.Players = players;
+        game.StartGame();
 
         bool quitHandled = false;
         game.PlayerChooseQuit += (sender, args) =>
@@ -289,18 +295,21 @@ public class GameTests
     public void TriggerGameOver_RaisesGameIsOverEvent()
     {
         var game = SetupSimpleGame();
+        game.StartGame();
         bool triggered = false;
 
         game.GameIsOver += (s, e) => triggered = true;
         game.TriggerGameOver();
 
         Assert.True(triggered);
+        Assert.Equal(GameStateEnum.GameOver, game.GameState.CurrentState);
     }
 
     [Fact]
     public void CheckGameOverCondition_ReturnsTrue_AndRaisesEvent()
     {
         var game = SetupSimpleGame();
+        game.StartGame();
         bool eventRaised = false;
 
         game.GameIsOver += (s, e) => eventRaised = true;
@@ -310,6 +319,7 @@ public class GameTests
 
         Assert.True(result);
         Assert.True(eventRaised);
+        Assert.Equal(GameStateEnum.GameOver, game.GameState.CurrentState);
     }
 
     [Fact]
@@ -332,6 +342,7 @@ public class GameTests
         var players = new List<Player> { new Player("Test") };
         var game = new Game(new ClassicRules());
         game.Players = players;
+        game.StartGame();
 
         bool coinHandled = false;
         game.PlayerChooseCoin += (sender, args) =>
@@ -681,6 +692,7 @@ public class GameTests
     public void HandlePlayerChoice_Case1_CoverEvent()
     {
         var game = SetupSimpleGame();
+        game.StartGame();
         bool coverEventRaised = false;
 
         game.PlayerChooseCover += (s, e) =>
@@ -692,12 +704,14 @@ public class GameTests
         game.HandlePlayerChoice(game.CurrentPlayer, "1");
 
         Assert.True(coverEventRaised);
+        Assert.Equal(GameStateEnum.WaitingForCoverTarget, game.GameState.CurrentState);
     }
 
     [Fact]
     public void HandlePlayerChoice_Case2_DuckEvent()
     {
         var game = SetupSimpleGame();
+        game.StartGame();
         bool duckEventRaised = false;
 
         game.PlayerChooseDuck += (s, e) =>
@@ -709,12 +723,14 @@ public class GameTests
         game.HandlePlayerChoice(game.CurrentPlayer, "2");
 
         Assert.True(duckEventRaised);
+        Assert.Equal(GameStateEnum.WaitingForDuckTarget, game.GameState.CurrentState);
     }
 
     [Fact]
     public void HandlePlayerChoice_Case6_QuitAndCheckGameOver()
     {
         var game = SetupSimpleGame();
+        game.StartGame();
         game.Quit = true;
         bool gameOverEventRaised = false;
 
@@ -723,6 +739,7 @@ public class GameTests
         game.HandlePlayerChoice(game.CurrentPlayer, "6");
 
         Assert.True(gameOverEventRaised);
+        Assert.Equal(GameStateEnum.GameOver, game.GameState.CurrentState);
     }
 
     [Fact]
@@ -852,6 +869,7 @@ public class GameTests
     public void ProcessTurn_ChecksGameOverAfterNextDeckCard()
     {
         var game = SetupSimpleGame();
+        game.StartGame();
         game.Players.ForEach(p => p.HasPlayed = true);
         game.CardsSkipped = 8; // This will trigger game over in classic rules
 
@@ -861,6 +879,7 @@ public class GameTests
         game.ProcessTurn();
 
         Assert.True(gameOverTriggered);
+        Assert.Equal(GameStateEnum.GameOver, game.GameState.CurrentState);
     }
 
     [Fact]
