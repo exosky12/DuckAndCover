@@ -16,7 +16,7 @@
                 JouerBtn,
                 ClassementBtn,
                 ReglesBtn,
-                CreditsBtn
+                CreditsBtn 
             };
 
             foreach (var el in elements)

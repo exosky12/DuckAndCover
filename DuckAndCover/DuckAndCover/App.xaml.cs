@@ -29,16 +29,18 @@ namespace DuckAndCover
             var (players, games) = DataPersistence.LoadData();
 
             Debug.WriteLine(players);
+            
+            
 
             GameManager = new Game(new ClassicRules())
             {
                 AllPlayers = players,
                 Games = games
             };
-
             Debug.WriteLine($"[App] Chargé : {players.Count} joueurs et {games.Count} parties.");
 
             GameManager.GameIsOver += OnGameIsOver;
+            
 
         }
 

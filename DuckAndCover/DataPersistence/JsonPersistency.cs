@@ -172,15 +172,52 @@ namespace DataPersistence
                 throw;
             }
         }
-        public Game? LoadLastUnfinishedGame()
+
+
+
+        public Game? LoadLastUnfinishedGame(IRules rules)
         {
-            var (_, allGames) = LoadData(); 
-
-            return allGames
+            var (_, allGames) = LoadData();
+            var savedGame = allGames
                 .Where(g => !g.IsFinished)
-                .OrderByDescending(g => g.SavedAt)
+                .OrderByDescending(g => g.SavedAt) 
                 .FirstOrDefault();
-        }
 
+            if (savedGame == null)
+                return null;
+
+            Debug.WriteLine($"Players count: {savedGame.Players?.Count ?? 0}");
+            Debug.WriteLine($"Current player index: {savedGame._currentPlayerIndex}");
+            if (savedGame.Players?.Count > 0)
+            {
+                Debug.WriteLine($"First player name: {savedGame.Players[0].Name}");
+            }
+
+            var restoredGame = new Game(rules);
+            restoredGame.InitializeGame(
+                id: savedGame.Id,
+                players: savedGame.Players ?? new List<Player>(),
+                deck: savedGame.Deck ?? new Deck(),
+                currentDeckCard: savedGame.CurrentDeckCard,
+                currentPlayerIndex: savedGame._currentPlayerIndex,
+                cardsSkipped: savedGame.CardsSkipped,
+                isFinished: savedGame.IsFinished,
+                lastNumber: savedGame.LastNumber
+            );
+
+            // Debug après initialisation
+            Debug.WriteLine($"Restored current player index: {restoredGame._currentPlayerIndex}");
+            Debug.WriteLine($"Current player is null: {restoredGame.CurrentPlayer == null}");
+
+            // Reste du code...
+            restoredGame.LastGameFinishStatus = savedGame.LastGameFinishStatus;
+            restoredGame.SavedAt = savedGame.SavedAt;
+            restoredGame.Quit = savedGame.Quit;
+            restoredGame.Games = new ObservableCollection<Game>(allGames);
+            var (allPlayers, _) = LoadData();
+            restoredGame.AllPlayers = new ObservableCollection<Player>(allPlayers);
+            Debug.WriteLine(restoredGame);
+            return restoredGame;
+        }
     }
 }

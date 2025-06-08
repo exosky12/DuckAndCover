@@ -3,6 +3,7 @@ using Models.Game;
 using Models.Events;
 using Models.Enums;
 using Models.Exceptions;
+using System.Diagnostics;
 
 namespace DuckAndCover.Pages;
 
@@ -30,8 +31,10 @@ public partial class GamePage : ContentPage
     private AppTheme CurrentAppTheme => Application.Current?.UserAppTheme ?? AppTheme.Light;
 
     private void StartGame()
-    {
+    { 
+        Debug.WriteLine(GameManager);
         GameManager.StartGame();
+        
     }
 
     private void SubscribeToGameEvents()
@@ -107,6 +110,8 @@ public partial class GamePage : ContentPage
             await DisplayAlert("Fin de partie", "La partie est terminée !", "OK");
             await Navigation.PopAsync();
         });
+
+        //System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
     }
 
     private async void OnErrorOccurred(object? sender, ErrorOccurredEventArgs e)

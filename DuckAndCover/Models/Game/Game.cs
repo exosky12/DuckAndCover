@@ -5,6 +5,7 @@ using Models.Interfaces;
 using Models.Events;
 using Models.Enums;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Models.Game
 {
@@ -72,6 +73,12 @@ namespace Models.Game
         /// </summary>
         [DataMember] private string _rulesName = string.Empty;
 
+        [DataMember]
+        public int PlayersCount 
+        {
+            get => Players.Count;
+            set { }
+        }
         /// <summary>
         /// Nombre de cartes passées.
         /// </summary>
@@ -91,13 +98,16 @@ namespace Models.Game
         /// <summary>
         /// Index du joueur actuel.
         /// </summary>
-        [DataMember] private int _currentPlayerIndex;
+        [DataMember] public int _currentPlayerIndex;
 
         /// <summary>
         /// Deck de cartes du jeu.
         /// </summary>
         [DataMember]
         public Deck Deck { get; set; } = new Deck();
+
+        
+
 
         /// <summary>
         /// Indique si le jeu est quitté.
@@ -120,6 +130,8 @@ namespace Models.Game
         /// <summary>
         /// Carte actuelle du deck.
         /// </summary>
+        /// 
+        [DataMember]
         public DeckCard CurrentDeckCard { get; set; } = new DeckCard(Bonus.None, 0);
         
         
@@ -205,13 +217,19 @@ namespace Models.Game
         /// <param name="isFinished">Indique si le jeu est terminé.</param>
         /// <param name="lastNumber">Le dernier numéro joué.</param>
         public void InitializeGame(string id, List<Player> players, Deck deck, DeckCard currentDeckCard,
-            int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
+    int currentPlayerIndex = 0, int cardsSkipped = 0, bool isFinished = false, int? lastNumber = null)
         {
             this.Id = id;
             this.Players = players;
             this.Deck = deck;
             this._currentPlayerIndex = currentPlayerIndex;
-            this.CurrentPlayer = players[_currentPlayerIndex];
+            
+
+            if (players.Count > 0 && currentPlayerIndex >= 0 && currentPlayerIndex < players.Count)
+            {
+                this.CurrentPlayer = players[currentPlayerIndex];
+            }
+
             this.CurrentDeckCard = currentDeckCard;
             this.CardsSkipped = cardsSkipped;
             this.IsFinished = isFinished;
@@ -223,7 +241,8 @@ namespace Models.Game
         /// </summary>
         public void NextPlayer()
         {
-            _currentPlayerIndex = (_currentPlayerIndex + 1) % Players.Count;
+            
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % PlayersCount;
             CurrentPlayer = Players[_currentPlayerIndex];
         }
 
@@ -404,7 +423,6 @@ namespace Models.Game
                         "Ce n'est pas votre tour.")));
                     return;
                 }
-
                 switch (choice)
                 {
                     case "1":
@@ -605,16 +623,10 @@ namespace Models.Game
             var existingGame = Games.FirstOrDefault(g => g.Id == Id);
             if (existingGame != null)
             {
-                if(!existingGame.Quit)
-                    existingGame.IsFinished = true;
-                existingGame.CardsSkipped = CardsSkipped;
-                existingGame.LastGameFinishStatus = LastGameFinishStatus;
-                existingGame.LastNumber = LastNumber;
-                existingGame.Deck = Deck;
-                existingGame.Players = Players;
-                existingGame.Rules = Rules;
-                
-                existingGame.SavedAt = DateTime.Now;
+
+                existingGame.Id = Id;
+
+ 
                 existingGame.Players = Players.Select(p => new Player(
                     p.Name,
                     p.StackCounter,
@@ -630,7 +642,39 @@ namespace Models.Game
                             })
                             .ToList()
                     }
-                )).ToList();
+                )
+                {
+                    IsBot = p.IsBot 
+                }).ToList();
+
+                existingGame.Deck = new Deck
+                {
+                    Cards = this.Deck.Cards.Select(card => new DeckCard(card.Bonus, card.Number)).ToList()
+                };
+
+                existingGame.CurrentDeckCard = CurrentDeckCard; 
+
+                existingGame._currentPlayerIndex = _currentPlayerIndex;
+
+   
+                existingGame.CardsSkipped = CardsSkipped;
+
+
+                if (!existingGame.Quit)
+                    existingGame.IsFinished = IsFinished;
+
+                existingGame.LastNumber = LastNumber;
+
+                if (existingGame.Players.Count > 0 &&
+                    existingGame._currentPlayerIndex >= 0 &&
+                    existingGame._currentPlayerIndex < existingGame.Players.Count)
+                {
+                    existingGame.CurrentPlayer = existingGame.Players[existingGame._currentPlayerIndex];
+                }
+
+                existingGame.LastGameFinishStatus = LastGameFinishStatus;
+                existingGame.SavedAt = DateTime.Now;
+                existingGame._rulesName = _rulesName;
             }
             else
             {

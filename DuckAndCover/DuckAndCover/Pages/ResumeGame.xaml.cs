@@ -3,6 +3,7 @@ using Models.Game;
 using DataPersistence;
 using Models.Exceptions;
 using Models.Enums;
+using Models.Rules;
 
 
 namespace DuckAndCover.Pages
@@ -21,7 +22,11 @@ namespace DuckAndCover.Pages
 
         private async void OnYesClicked(object sender, EventArgs e)
         {
-            var lastGame = new JsonPersistency().LoadLastUnfinishedGame();
+
+            var rules = new ClassicRules(); 
+
+            var lastGame = new JsonPersistency().LoadLastUnfinishedGame(rules);
+            Debug.WriteLine(lastGame);
             Debug.WriteLine("Dernière partie non terminée : " + lastGame?.Id);
 
             if (lastGame == null)

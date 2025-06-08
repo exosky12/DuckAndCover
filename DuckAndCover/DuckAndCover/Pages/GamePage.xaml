@@ -6,8 +6,11 @@
              ControlTemplate="{StaticResource BackgroundTemplate}">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Padding="20">
-        
+
+        <!-- Header avec boutons Quit et Dark Mode -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,20,0,10">
+
+            <!-- Bouton Quitter -->
             <Button x:Name="QuitBtn"
                     Grid.Column="0"
                     Text="✕ Quitter"
@@ -20,15 +23,18 @@
                     Clicked="OnPlayerChooseQuit"
                     HorizontalOptions="Start"
                     VerticalOptions="Center"/>
-            
+
+            <!-- Titre central -->
             <VerticalStackLayout Grid.Column="1" Spacing="5" HorizontalOptions="Center">
                 <Label x:Name="GridInfoLabel" 
                        Text="Grille de jeu" 
                        FontSize="32" 
                        FontAttributes="Bold" 
-                       TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}" HorizontalOptions="Center"/>
+                       TextColor="{AppThemeBinding Light=#222222, Dark=#DDDDDD}" 
+                       HorizontalOptions="Center"/>
             </VerticalStackLayout>
 
+            <!-- Bouton Dark Mode -->
             <Button x:Name="DarkModeButton"
                     Grid.Column="2"
                     Text="🌙" 
@@ -46,11 +52,16 @@
                     WidthRequest="55" 
                     HeightRequest="55">
                 <Button.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="2,2" Radius="4"/>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" 
+                            Opacity="0.3" 
+                            Offset="2,2" 
+                            Radius="4"/>
                 </Button.Shadow>
             </Button>
+
         </Grid>
 
+        <!-- Zone d'instructions -->
         <Border Grid.Row="1"
                 Background="{SolidColorBrush #E8F5E8}"
                 Stroke="#4CAF50"
@@ -61,7 +72,10 @@
                 <RoundRectangle CornerRadius="15" />
             </Border.StrokeShape>
             <Border.Shadow>
-                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="3,3" Radius="5"/>
+                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" 
+                        Opacity="0.3" 
+                        Offset="3,3" 
+                        Radius="5"/>
             </Border.Shadow>
             <Label x:Name="InstructionsLabel"
                    Text=""
@@ -72,6 +86,7 @@
                    HorizontalTextAlignment="Center"/>
         </Border>
 
+        <!-- Zone de jeu principale -->
         <ScrollView Grid.Row="2">
             <Border Background="{AppThemeBinding Light={SolidColorBrush #F5F5F5}, Dark={SolidColorBrush #333333}}"
                     Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#555555}"
@@ -82,7 +97,10 @@
                     <RoundRectangle CornerRadius="20"/>
                 </Border.StrokeShape>
                 <Border.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="3,3" Radius="5"/>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" 
+                            Opacity="0.3" 
+                            Offset="3,3" 
+                            Radius="5"/>
                 </Border.Shadow>
                 <Grid x:Name="GameGrid"
                       HorizontalOptions="Center"
@@ -91,7 +109,9 @@
             </Border>
         </ScrollView>
 
-        <Border Grid.Row="3" x:Name="CurrentCardFrame"
+        <!-- Carte courante -->
+        <Border Grid.Row="3" 
+                x:Name="CurrentCardFrame"
                 IsVisible="False"
                 BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#333333}"
                 Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#555555}"
@@ -102,7 +122,10 @@
                 <RoundRectangle CornerRadius="15"/>
             </Border.StrokeShape>
             <Border.Shadow>
-                <Shadow Brush="Black" Opacity="0.3" Offset="3,3" Radius="5"/>
+                <Shadow Brush="Black" 
+                        Opacity="0.3" 
+                        Offset="3,3" 
+                        Radius="5"/>
             </Border.Shadow>
             <VerticalStackLayout Spacing="15">
                 <Label Text="Carte courante"
@@ -120,7 +143,10 @@
                         <RoundRectangle CornerRadius="15"/>
                     </Border.StrokeShape>
                     <Border.Shadow>
-                        <Shadow Brush="Black" Opacity="0.3" Offset="3,3" Radius="5"/>
+                        <Shadow Brush="Black" 
+                                Opacity="0.3" 
+                                Offset="3,3" 
+                                Radius="5"/>
                     </Border.Shadow>
                     <Label x:Name="CurrentCardNumber"
                            FontSize="48"
@@ -131,6 +157,7 @@
             </VerticalStackLayout>
         </Border>
 
+        <!-- Zone des boutons d'action -->
         <Border Grid.Row="4"
                 Background="{AppThemeBinding Light=White, Dark=#212121}"
                 Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#424242}"
@@ -141,11 +168,18 @@
                 <RoundRectangle CornerRadius="25"/>
             </Border.StrokeShape>
             <Border.Shadow>
-                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Opacity="0.3" Offset="3,3" Radius="5"/>
+                <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" 
+                        Opacity="0.3" 
+                        Offset="3,3" 
+                        Radius="5"/>
             </Border.Shadow>
+
             <VerticalStackLayout Spacing="25">
+
+                <!-- Boutons d'action principaux -->
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="15" HorizontalOptions="Center">
-                    
+
+                    <!-- Bouton COVER -->
                     <Border Grid.Column="0"
                             Background="{SolidColorBrush #4CAF50}"
                             Padding="0">
@@ -153,7 +187,10 @@
                             <RoundRectangle CornerRadius="20"/>
                         </Border.StrokeShape>
                         <Border.Shadow>
-                            <Shadow Brush="Black" Opacity="0.3" Offset="2,2" Radius="4"/>
+                            <Shadow Brush="Black" 
+                                    Opacity="0.3" 
+                                    Offset="2,2" 
+                                    Radius="4"/>
                         </Border.Shadow>
                         <Button x:Name="CoverBtn"
                                 Text="COVER"
@@ -168,6 +205,7 @@
                                 HeightRequest="80"/>
                     </Border>
 
+                    <!-- Bouton DUCK -->
                     <Border Grid.Column="1"
                             Background="{SolidColorBrush #2196F3}"
                             Padding="0">
@@ -175,7 +213,10 @@
                             <RoundRectangle CornerRadius="20"/>
                         </Border.StrokeShape>
                         <Border.Shadow>
-                            <Shadow Brush="Black" Opacity="0.3" Offset="2,2" Radius="4"/>
+                            <Shadow Brush="Black" 
+                                    Opacity="0.3" 
+                                    Offset="2,2" 
+                                    Radius="4"/>
                         </Border.Shadow>
                         <Button x:Name="DuckBtn"
                                 Text="DUCK"
@@ -190,6 +231,7 @@
                                 HeightRequest="80"/>
                     </Border>
 
+                    <!-- Bouton COIN -->
                     <Border Grid.Column="2"
                             Background="{SolidColorBrush #FF9800}"
                             Padding="0">
@@ -197,7 +239,10 @@
                             <RoundRectangle CornerRadius="20"/>
                         </Border.StrokeShape>
                         <Border.Shadow>
-                            <Shadow Brush="Black" Opacity="0.3" Offset="2,2" Radius="4"/>
+                            <Shadow Brush="Black" 
+                                    Opacity="0.3" 
+                                    Offset="2,2" 
+                                    Radius="4"/>
                         </Border.Shadow>
                         <Button x:Name="CoinBtn"
                                 Text="COIN"
@@ -211,8 +256,10 @@
                                 WidthRequest="120"
                                 HeightRequest="80"/>
                     </Border>
+
                 </Grid>
 
+                <!-- Label de debug -->
                 <Label x:Name="DebugLabel" 
                        Text="" 
                        FontSize="13" 
@@ -221,7 +268,9 @@
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"
                        Margin="0,10,0,0"/>
+
             </VerticalStackLayout>
         </Border>
+
     </Grid>
 </ContentPage>
