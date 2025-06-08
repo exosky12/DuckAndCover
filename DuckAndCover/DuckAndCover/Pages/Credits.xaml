@@ -8,6 +8,21 @@
     
     <ContentPage.Content>
         <Grid>
+            <!-- Bouton Dark Mode en haut à droite -->
+            <Button x:Name="DarkModeButton"
+                    Text="🌙"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                    FontSize="24"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    Margin="20"
+                    ZIndex="1000"
+                    Clicked="OnDarkModeClicked" />
+            
             <Image
                 Source="bg.jpg"
                 Aspect="AspectFill"
@@ -20,20 +35,20 @@
 
                     <Label Text="Crédits"
                            FontSize="42"
-                           TextColor="black"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"
                            Margin="0,0,0,20" />
 
                     <BoxView HeightRequest="3"
                              WidthRequest="120"
-                             Color="black"
+                             Color="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                              HorizontalOptions="Center"
                              Margin="0,5" />
 
                     <Label Text="Développé avec passion par :"
                            FontSize="22"
-                           TextColor="black"
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                            FontAttributes="Italic"
                            HorizontalOptions="Center" />
 

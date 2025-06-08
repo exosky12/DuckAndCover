@@ -6,32 +6,66 @@
              xmlns:components="clr-namespace:DuckAndCover.Views"
              Title="Configuration de la partie">
 
-    <ScrollView Padding="20">
+    <Grid>
+        <!-- Bouton Dark Mode en haut à droite -->
+        <Button x:Name="DarkModeButton"
+                Text="🌙"
+                BackgroundColor="Transparent"
+                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                FontSize="24"
+                WidthRequest="50"
+                HeightRequest="50"
+                CornerRadius="25"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                Margin="20"
+                ZIndex="1000"
+                Clicked="OnDarkModeClicked" />
+        
+        <ScrollView Padding="20">
         <VerticalStackLayout HorizontalOptions="Center" WidthRequest="600" Spacing="20" Margin="0, 100">
             
-            <Border BackgroundColor="#80000000" Padding="20" Stroke="#00000000" StrokeThickness="0" >
+            <Border Background="{StaticResource CardBackgroundBrush}" 
+                    Padding="20" 
+                    Stroke="{StaticResource BorderBrush}" 
+                    StrokeThickness="2" >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15"/>
+                </Border.StrokeShape>
                 <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
                     <Label Text="Configuration de la partie" 
                            FontSize="32" 
                            FontAttributes="Bold" 
                            HorizontalOptions="Center"
-                           TextColor="White"/>
+                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                     <Label Text="Configurez les paramètres de votre partie"
                            FontSize="16"
                            HorizontalOptions="Center"
-                           TextColor="#DDDDDD"/>
+                           TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"/>
                 </VerticalStackLayout>
             </Border>
 
-            <Border BackgroundColor="#CCFFFFFF" Padding="30" Stroke="#E0E0E0" StrokeThickness="1" >
+            <Border Background="{StaticResource PageBackgroundBrush}" 
+                    Padding="30" 
+                    Stroke="{StaticResource BorderBrush}" 
+                    StrokeThickness="1" >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15"/>
+                </Border.StrokeShape>
                 <VerticalStackLayout Spacing="30">
 
-                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
+                    <Border Background="{StaticResource CardBackgroundBrush}" 
+                            Stroke="{StaticResource BorderBrush}" 
+                            StrokeThickness="1" 
+                            Padding="20">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Nombre de joueurs au total (IA incluses)"
                                    FontSize="24"
                                    FontAttributes="Bold"
-                                   TextColor="#222222"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                             <Entry x:Name="PlayerCountEntry"
                                    Placeholder="Ex: 3"
                                    Keyboard="Numeric"
@@ -40,12 +74,18 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
+                    <Border Background="{StaticResource CardBackgroundBrush}" 
+                            Stroke="{StaticResource BorderBrush}" 
+                            StrokeThickness="1" 
+                            Padding="20">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Joueurs IA"
                                    FontSize="24"
                                    FontAttributes="Bold"
-                                   TextColor="#222222"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                             
                             <Grid ColumnDefinitions="Auto,*" Margin="0,10,0,0">
                                 <Switch x:Name="BotSwitch"
@@ -57,20 +97,23 @@
                                        Text="Activer les joueurs IA"
                                        VerticalOptions="Center"
                                        Margin="12,0,0,0"
-                                       TextColor="#222222"/>
+                                       TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                             </Grid>
 
                             <Border x:Name="BotCountSection"
                                    IsVisible="True"
-                                   BackgroundColor="#F5F5F5CC"
-                                   Stroke="#E0E0E0"
+                                   Background="{StaticResource PageBackgroundBrush}"
+                                   Stroke="{StaticResource BorderBrush}"
                                    StrokeThickness="1"
                                    Padding="15"
                                    Margin="0,10,0,0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
                                 <VerticalStackLayout Spacing="10">
                                     <Label Text="Nombre de bots"
                                            FontSize="18"
-                                           TextColor="#222222"
+                                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                                            x:Name="BotCountLabel"/>
                                     <Entry x:Name="BotCountEntry"
                                            Placeholder="Ex: 1"
@@ -81,16 +124,22 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border BackgroundColor="#CCFFFFFF" Stroke="#E0E0E0" StrokeThickness="1" Padding="20">
+                    <Border Background="{StaticResource CardBackgroundBrush}" 
+                            Stroke="{StaticResource BorderBrush}" 
+                            StrokeThickness="1" 
+                            Padding="20">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
                         <VerticalStackLayout Spacing="15">
                             <Label Text="Règles du jeu"
                                    FontSize="24"
                                    FontAttributes="Bold"
-                                   TextColor="#222222"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                             
                             <Label Text="Sélectionnez le type de règles à appliquer"
                                    FontSize="16"
-                                   TextColor="#666666"
+                                   TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
                                    Margin="0,0,0,10"/>
 
                             <Grid ColumnDefinitions="Auto,*" Margin="0,5,0,0">
@@ -103,10 +152,10 @@
                                     <Label Text="Règles classiques"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="#222222"/>
+                                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                                     <Label Text="Mode de jeu standard avec les règles traditionnelles"
                                            FontSize="14"
-                                           TextColor="#666666"
+                                           TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
                                            Opacity="0.8"/>
                                 </VerticalStackLayout>
                             </Grid>
@@ -121,10 +170,10 @@
                                     <Label Text="Règles Blitz"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="#222222"/>
+                                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                                     <Label Text="Parties rapides avec temps limité et actions accélérées"
                                            FontSize="14"
-                                           TextColor="#666666"
+                                           TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
                                            Opacity="0.8"/>
                                 </VerticalStackLayout>
                             </Grid>
@@ -139,10 +188,10 @@
                                     <Label Text="Règles insanes"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="#222222"/>
+                                           TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"/>
                                     <Label Text="Mode extrême avec règles modifiées et un style de jeu plus agressif"
                                            FontSize="14"
-                                           TextColor="#666666"
+                                           TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
                                            Opacity="0.8"/>
                                 </VerticalStackLayout>
                             </Grid>
@@ -156,6 +205,7 @@
                               Margin="10,20"
                               Clicked="ContinueClicked"/>
         </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 
 </ContentPage>

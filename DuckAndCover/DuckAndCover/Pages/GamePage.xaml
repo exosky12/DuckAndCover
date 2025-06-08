@@ -8,6 +8,22 @@
 
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Padding="20">
         
+        <!-- Bouton Dark Mode en haut à droite -->
+        <Button x:Name="DarkModeButton"
+                Text="🌙"
+                BackgroundColor="Transparent"
+                TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                FontSize="24"
+                WidthRequest="50"
+                HeightRequest="50"
+                CornerRadius="25"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                Margin="20"
+                ZIndex="1000"
+                Grid.Row="0"
+                Clicked="OnDarkModeClicked" />
+        
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,20,0,10">
             <Button x:Name="QuitBtn"
                     Grid.Column="0"
@@ -27,15 +43,15 @@
                        Text="Grille de jeu" 
                        FontSize="32" 
                        FontAttributes="Bold" 
-                       TextColor="#222222"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                        HorizontalOptions="Center"/>
             </VerticalStackLayout>
         </Grid>
 
         <Border Grid.Row="1"
-                Background="{SolidColorBrush #E8F5E8}"
-                Stroke="#4CAF50"
-                StrokeThickness="1"
+                Background="{StaticResource CardBackgroundBrush}"
+                Stroke="{StaticResource AccentBrush}"
+                StrokeThickness="2"
                 Padding="15"
                 Margin="10,0,10,15">
             <Border.StrokeShape>
@@ -48,15 +64,15 @@
                    Text=""
                    FontSize="20"
                    FontAttributes="Bold"
-                   TextColor="#2E7D32"
+                   TextColor="{AppThemeBinding Light={StaticResource AccentLight}, Dark={StaticResource AccentDark}}"
                    HorizontalOptions="Center"
                    HorizontalTextAlignment="Center"/>
         </Border>
 
         <ScrollView Grid.Row="2">
-            <Border Background="{SolidColorBrush #F5F5F5}"
-                    Stroke="#E0E0E0"
-                    StrokeThickness="1"
+            <Border Background="{StaticResource PageBackgroundBrush}"
+                    Stroke="{StaticResource BorderBrush}"
+                    StrokeThickness="2"
                     Padding="20"
                     Margin="10">
                 <Border.StrokeShape>
@@ -74,9 +90,9 @@
 
         <Border Grid.Row="3" x:Name="CurrentCardFrame"
                IsVisible="False"
-               BackgroundColor="#F5F5F5"
-               Stroke="#E0E0E0"
-               StrokeThickness="1"
+               Background="{StaticResource CardBackgroundBrush}"
+               Stroke="{StaticResource BorderBrush}"
+               StrokeThickness="2"
                Padding="20"
                HorizontalOptions="Center">
             <Border.StrokeShape>
@@ -89,7 +105,7 @@
                 <Label Text="Carte courante"
                        FontSize="24"
                        FontAttributes="Bold"
-                       TextColor="#222222"
+                       TextColor="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}"
                        HorizontalOptions="Center"/>
                 <Border x:Name="CurrentCardBorder"
                        WidthRequest="120"
@@ -113,9 +129,9 @@
         </Border>
 
         <Border Grid.Row="4"
-                Background="{SolidColorBrush White}"
-                Stroke="#E0E0E0"
-                StrokeThickness="1"
+                Background="{StaticResource PageBackgroundBrush}"
+                Stroke="{StaticResource BorderBrush}"
+                StrokeThickness="2"
                 Padding="25"
                 Margin="10,20,10,0">
             <Border.StrokeShape>
@@ -197,7 +213,7 @@
                 <Label x:Name="DebugLabel" 
                        Text="" 
                        FontSize="13" 
-                       TextColor="#666666"
+                       TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"
                        Opacity="0.7"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"

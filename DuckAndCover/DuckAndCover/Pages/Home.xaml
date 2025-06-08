@@ -6,6 +6,21 @@
              Title="Accueil">
     <ContentPage.Content>
         <Grid>
+            <!-- Bouton Dark Mode en haut à droite -->
+            <Button x:Name="DarkModeButton"
+                    Text="🌙"
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                    FontSize="24"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    Margin="20"
+                    ZIndex="1000"
+                    Clicked="OnDarkModeClicked" />
+            
             <ScrollView Padding="20">
                 <VerticalStackLayout
                     Spacing="30"
@@ -25,13 +40,23 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Image x:Name="TitreImage"
-                               Grid.Row="0"
-                               HeightRequest="300"
-                               WidthRequest="500"
-                               Aspect="Fill"
-                               Source="titre.png"
-                               HorizontalOptions="Center" />
+                        <Border Grid.Row="0"
+                                Background="{StaticResource CardBackgroundBrush}"
+                                Stroke="{StaticResource BorderBrush}"
+                                StrokeThickness="2"
+                                Padding="20"
+                                Margin="10"
+                                HorizontalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15"/>
+                            </Border.StrokeShape>
+                            <Image x:Name="TitreImage"
+                                   HeightRequest="300"
+                                   WidthRequest="500"
+                                   Aspect="Fill"
+                                   Source="titre.png"
+                                   HorizontalOptions="Center" />
+                        </Border>
 
                         <FlexLayout Grid.Row="1"
                                     JustifyContent="Center"

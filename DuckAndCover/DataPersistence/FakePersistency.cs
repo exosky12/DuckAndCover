@@ -83,32 +83,26 @@ namespace DataPersistence
         {
             var players = new ObservableCollection<Player>();
 
-            // Jordy avec grille modifiée (1 déplacement)
             var jordyGrid = CreateJordyGrid();
             var jordy = new Player("Jordy", 11, new List<int> { 5, 6, 3 }, false, true, jordyGrid);
             jordy.Scores.Add(30);
             players.Add(jordy);
 
-            // Jules avec grille standard
             var jules = new Player("Jules", 12, new List<int> { 4, 7, 2 }, false, false, new Grid());
             jules.Scores.Add(30);
             jules.Scores.Add(5);
             players.Add(jules);
 
-            // Jordy2 avec grille standard
             var jordy2 = new Player("Jordy2", 1, new List<int> { 5, 6, 3 }, false, true, new Grid());
             players.Add(jordy2);
 
-            // Jules2 avec grille standard
             var jules2 = new Player("Jules2", 3, new List<int> { 4, 7, 2 }, false, false, new Grid());
             players.Add(jules2);
 
-            // Jordy1 avec grille modifiée (3 déplacements)
             var jordy1Grid = CreateJordy1Grid();
             var jordy1 = new Player("Jordy1", 9, new List<int> { 5, 6, 3 }, false, true, jordy1Grid);
             players.Add(jordy1);
 
-            // Jules1 avec grille modifiée (3 déplacements)
             var jules1Grid = CreateJules1Grid();
             var jules1 = new Player("Jules1", 9, new List<int> { 4, 7, 2 }, false, false, jules1Grid);
             jules1.Scores.Add(20);
@@ -127,25 +121,23 @@ namespace DataPersistence
             var games = new List<Game>();
             var allPlayers = GeneratePlayers();
 
-            // Partie en cours (7051E)
             var onGoingGame = new Game(new ClassicRules());
             Deck onGoingDeck = new Deck();
             onGoingGame.InitializeGame(
                 id: "7051E",
-                players: new List<Player> { allPlayers[0], allPlayers[1] }, // Jordy, Jules
+                players: new List<Player> { allPlayers[0], allPlayers[1] },
                 deck: onGoingDeck,
                 currentPlayerIndex: 0,
                 currentDeckCard: onGoingDeck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty)
             );
             games.Add(onGoingGame);
 
-            // Partie terminée (9051e)
             var finishedGame = new Game(new ClassicRules());
             Deck finishedDeck = new Deck();
 
             finishedGame.InitializeGame(
                 id: "9051e",
-                players: new List<Player> { allPlayers[2], allPlayers[3] }, // Jordy2, Jules2
+                players: new List<Player> { allPlayers[2], allPlayers[3] },
                 deck: finishedDeck,
                 currentPlayerIndex: 0,
                 currentDeckCard: finishedDeck.Cards.FirstOrDefault() ?? throw new ErrorException(ErrorCodes.DeckEmpty),
