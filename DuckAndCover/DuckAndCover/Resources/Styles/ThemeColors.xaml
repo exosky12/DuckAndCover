@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Couleurs pour le thème Light/Dark -->
+    
+    <!-- Couleurs de fond -->
+    <Color x:Key="PageBackgroundLight">#FFFFFF</Color>
+    <Color x:Key="PageBackgroundDark">#1E1E1E</Color>
+    
+    <Color x:Key="CardBackgroundLight">#F5F5F5</Color>
+    <Color x:Key="CardBackgroundDark">#2D2D2D</Color>
+    
+    <Color x:Key="BorderLight">#E0E0E0</Color>
+    <Color x:Key="BorderDark">#404040</Color>
+    
+    <!-- Couleurs de texte -->
+    <Color x:Key="TextPrimaryLight">#222222</Color>
+    <Color x:Key="TextPrimaryDark">#FFFFFF</Color>
+    
+    <Color x:Key="TextSecondaryLight">#666666</Color>
+    <Color x:Key="TextSecondaryDark">#CCCCCC</Color>
+    
+    <!-- Couleurs d'accent -->
+    <Color x:Key="AccentLight">#4CAF50</Color>
+    <Color x:Key="AccentDark">#66BB6A</Color>
+    
+    <!-- AppThemeBinding pour les couleurs -->
+    <SolidColorBrush x:Key="PageBackgroundBrush" 
+                     Color="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}" />
+    
+    <SolidColorBrush x:Key="CardBackgroundBrush" 
+                     Color="{AppThemeBinding Light={StaticResource CardBackgroundLight}, Dark={StaticResource CardBackgroundDark}}" />
+    
+    <SolidColorBrush x:Key="BorderBrush" 
+                     Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+    
+    <SolidColorBrush x:Key="TextPrimaryBrush" 
+                     Color="{AppThemeBinding Light={StaticResource TextPrimaryLight}, Dark={StaticResource TextPrimaryDark}}" />
+    
+    <SolidColorBrush x:Key="TextSecondaryBrush" 
+                     Color="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+    
+    <SolidColorBrush x:Key="AccentBrush" 
+                     Color="{AppThemeBinding Light={StaticResource AccentLight}, Dark={StaticResource AccentDark}}" />
+
+</ResourceDictionary> 
