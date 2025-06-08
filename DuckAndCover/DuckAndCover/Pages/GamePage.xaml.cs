@@ -111,7 +111,7 @@ public partial class GamePage : ContentPage
             await Navigation.PopAsync();
         });
 
-        //System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+        System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
     }
 
     private async void OnErrorOccurred(object? sender, ErrorOccurredEventArgs e)

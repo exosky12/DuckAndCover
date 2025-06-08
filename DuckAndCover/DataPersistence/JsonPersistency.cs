@@ -204,12 +204,11 @@ namespace DataPersistence
                 isFinished: savedGame.IsFinished,
                 lastNumber: savedGame.LastNumber
             );
-
-            // Debug après initialisation
+            
             Debug.WriteLine($"Restored current player index: {restoredGame._currentPlayerIndex}");
             Debug.WriteLine($"Current player is null: {restoredGame.CurrentPlayer == null}");
-
-            // Reste du code...
+            
+            
             restoredGame.LastGameFinishStatus = savedGame.LastGameFinishStatus;
             restoredGame.SavedAt = savedGame.SavedAt;
             restoredGame.Quit = savedGame.Quit;
