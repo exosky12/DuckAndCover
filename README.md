@@ -7,6 +7,43 @@
 
 # 🦆 DuckAndCover 🎮
 
+- .NET 9.0 SDK ou plus récent
+- Windows 10/11 ou macOS 11.0+
+
+### ▶️ Comment lancer le jeu
+
+#### Sur Windows 🪟
+```bash
+# Cloner le repository
+git clone https://codefirst.iut.uca.fr/git/2025_SAE_1A/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck.git
+cd SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover
+
+# Lancer l'application MAUI
+dotnet run --project DuckAndCover --framework net9.0-windows10.0.19041.0
+```
+
+#### Sur macOS 🍎
+```bash
+# Cloner le repository
+git clone https://codefirst.iut.uca.fr/git/2025_SAE_1A/SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck.git
+cd SAE_1A_G6_Barres_Barrere_Merienne_Ory_Duck/DuckAndCover
+
+# Lancer l'application MAUI (macOS)
+dotnet run --project DuckAndCover --framework net9.0-maccatalyst
+```
+
+#### Application Console (toutes plateformes) 💻
+```bash
+# Lancer la version console
+dotnet run --project ConsoleApp
+```
+
+#### Tests unitaires 🧪
+```bash
+# Exécuter les tests
+dotnet test
+```
+
 ## 🎯 Présentation
 
 **DuckAndCover** est un jeu multijoueur local où les joueurs incarnent des canards 🦆 dans un environnement ludique et amusant.
