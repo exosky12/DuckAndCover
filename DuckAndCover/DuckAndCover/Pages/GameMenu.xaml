@@ -44,6 +44,8 @@
                            TextColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}"/>
                 </VerticalStackLayout>
             </Border>
+            
+            
 
             <Border Background="{StaticResource PageBackgroundBrush}" 
                     Padding="30" 
